@@ -2,12 +2,12 @@ from graphviz import Digraph
 
 
 def collatz(i, edges):
-    while i != 1:
+    while i not in (1, 3):
         j = i
         if i % 2 == 0:
             i = i // 2
         else:
-            i = i * 3 + 1
+            i = i * 3 + 3
         edges.add((j, i))
 
 
@@ -21,4 +21,4 @@ def make_graph(n):
     g.render("test")
 
 
-make_graph(26)
+make_graph(50)
