@@ -4,3 +4,5 @@ def func(a, b):
 
 def func2(a):
     print(a)
+
+print("Hello")
