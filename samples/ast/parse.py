@@ -1,10 +1,7 @@
 import ast
+import sys
 
 from graphviz import Digraph
-
-
-def getname(node):
-    return str(type(node).__name__)
 
 
 def visit(node, parent, d, s):
@@ -17,19 +14,25 @@ def visit(node, parent, d, s):
         visit(i, node, d, s)
 
 
-f = open("test.py")
-src = f.read()
-tree = ast.parse(src)
+def draw(s, d):
+    g = Digraph(format="png")
+    for node in d:
+        name = str(type(node).__name__)
+        g.node(str(d[node]), name)
+    for node, parent in s:
+        node_id = d[node]
+        parent_id = d[parent]
+        g.edge(str(parent_id), str(node_id))
+    g.render("test")
 
-d = {}
-s = set()
-visit(tree, None, d, s)
 
-g = Digraph(format="png")
-for node in d:
-    g.node(str(d[node]), getname(node))
-for node, parent in s:
-    node_id = d[node]
-    parent_id = d[parent]
-    g.edge(str(parent_id), str(node_id))
-g.render("test")
+filename = sys.argv[0]
+if len(sys.argv) > 1:
+    filename = sys.argv[1]
+
+with open(filename) as f:
+    d = {}
+    s = set()
+    tree = ast.parse(f.read())
+    visit(tree, None, d, s)
+    draw(s, d)
