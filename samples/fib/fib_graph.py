@@ -1,5 +1,6 @@
 from graphviz import Digraph
 
+
 def fib(n, parent, nodes, g):
     index = len(nodes)
     nodes.append(index)
@@ -15,9 +16,8 @@ def fib(n, parent, nodes, g):
     fib(n-1, index, nodes, g)
     fib(n-2, index, nodes, g)
 
-def test():
-    g = Digraph(format="png")
-    fib(6, None, [], g)
-    g.render("test")
 
-test()
+g = Digraph(format="png")
+fib(6, None, [], g)
+g.graph_attr.update(size="10,10")
+g.render("test")
