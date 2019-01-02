@@ -75,7 +75,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * numpyとは？
 * SVDを用いた画像圧縮
 
-## Pythonが動く仕組み
+## [Pythonが動く仕組み](howtowork/README.md)
 
 * コンピュータはなぜ動くのか？
 * Pythonが動く仕組み
