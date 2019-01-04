@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
+from numba import jit
 import numpy as np
 
-# python gs.py  89.07s user 0.17s system 100% cpu 1:29.11 total
+# python gs_jit.py  1.91s user 0.16s system 119% cpu 1.736 total
 
 
+@jit
 def laplacian(ix, iy, s):
     ts = 0.0
     ts += s[ix-1, iy]
@@ -14,11 +16,12 @@ def laplacian(ix, iy, s):
     return ts
 
 
+@jit
 def calc(u, v, u2, v2):
     (L, _) = u.shape
+    dt = 0.2
     F = 0.04
     k = 0.06075
-    dt = 0.2
     lu = np.zeros((L, L))
     lv = np.zeros((L, L))
     for ix in range(1, L-1):

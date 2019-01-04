@@ -1,8 +1,12 @@
 import matplotlib.pyplot as plt
+from numba import jit
 import numpy as np
 from scipy.signal import convolve2d
 
+# python gs_convolve_jit.py  4.39s user 0.18s system 108% cpu 4.201 total
 
+
+@jit
 def calc(u, v, u2, v2):
     dt = 0.2
     F = 0.04
@@ -16,6 +20,7 @@ def calc(u, v, u2, v2):
     v2[:] = v + (lv+cv) * dt
 
 
+@jit
 def main():
     L = 64
     u = np.zeros((L, L))

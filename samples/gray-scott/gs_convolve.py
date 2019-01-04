@@ -1,30 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.signal import convolve2d
 
-# python gs.py  89.07s user 0.17s system 100% cpu 1:29.11 total
-
-
-def laplacian(ix, iy, s):
-    ts = 0.0
-    ts += s[ix-1, iy]
-    ts += s[ix+1, iy]
-    ts += s[ix, iy-1]
-    ts += s[ix, iy+1]
-    ts -= 4.0*s[ix, iy]
-    return ts
+# python gs_convolve.py  3.58s user 0.15s system 104% cpu 3.584 total
 
 
 def calc(u, v, u2, v2):
-    (L, _) = u.shape
+    dt = 0.2
     F = 0.04
     k = 0.06075
-    dt = 0.2
-    lu = np.zeros((L, L))
-    lv = np.zeros((L, L))
-    for ix in range(1, L-1):
-        for iy in range(1, L-1):
-            lu[ix, iy] = 0.05 * laplacian(ix, iy, u)
-            lv[ix, iy] = 0.1 * laplacian(ix, iy, v)
+    laplacian = np.array([[0, 1, 0], [1, -4, 1], [0, 1, 0]])
+    lu = 0.05*convolve2d(u, laplacian, mode="same")
+    lv = 0.1*convolve2d(v, laplacian, mode="same")
     cu = u*u*v - (F+k)*u
     cv = -u*u*v + F*(1.0 - v)
     u2[:] = u + (lu+cu) * dt
