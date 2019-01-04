@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-L = 32
+L = 64
 F = 0.04
 k = 0.06075
 Du = 0.05
@@ -39,6 +39,7 @@ def calcV(tu, tv):
     global F, k
     return -tu*tu*tv + F * (1.0 - tv)
 
+
 def calc(u, v, u2, v2):
     global L, Du, Dv, dt
     for ix in range(1, L-1):
@@ -50,17 +51,16 @@ def calc(u, v, u2, v2):
             u2[ix, iy] = u[ix, iy] + du*dt
             v2[ix, iy] = v[ix, iy] + dv*dt
 
-
-u = np.zeros((L,L))
-u2 = np.zeros((L,L))
-v = np.zeros((L,L))
-v2 = np.zeros((L,L))
-init(u,v)
+u = np.zeros((L, L))
+u2 = np.zeros((L, L))
+v = np.zeros((L, L))
+v2 = np.zeros((L, L))
+init(u, v)
 for i in range(2000):
-    if i%2 == 0:
-        calc(u,v,u2,v2)
+    if i % 2 == 0:
+        calc(u, v, u2, v2)
     else:
-        calc(u2,v2,u,v)
+        calc(u2, v2, u, v)
 
-plt.imshow(u,cmap="inferno")
+plt.imshow(u, cmap="inferno")
 plt.savefig("test.png")
