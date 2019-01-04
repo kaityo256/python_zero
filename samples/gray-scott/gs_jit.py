@@ -26,10 +26,10 @@ def calc(u, v, u2, v2):
     lv = np.zeros((L, L))
     for ix in range(1, L-1):
         for iy in range(1, L-1):
-            lu[ix, iy] = 0.05 * laplacian(ix, iy, u)
-            lv[ix, iy] = 0.1 * laplacian(ix, iy, v)
-    cu = u*u*v - (F+k)*u
-    cv = -u*u*v + F*(1.0 - v)
+            lu[ix, iy] = 0.1 * laplacian(ix, iy, u)
+            lv[ix, iy] = 0.05 * laplacian(ix, iy, v)
+    cu = -v*v*u + F*(1.0 - u)
+    cv = v*v*u - (F+k)*v
     u2[:] = u + (lu+cu) * dt
     v2[:] = v + (lv+cv) * dt
 
@@ -41,15 +41,15 @@ def main():
     v = np.zeros((L, L))
     v2 = np.zeros((L, L))
     h = L//2
-    u[h-3:h+3, h-3:h+3] = 0.7
-    v[h-6:h+6, h-6:h+6] = 0.9
+    u[h-6:h+6, h-6:h+6] = 0.9
+    v[h-3:h+3, h-3:h+3] = 0.7
     for i in range(10000):
         if i % 2 == 0:
             calc(u, v, u2, v2)
         else:
             calc(u2, v2, u, v)
-    return u
+    return v
 
 
 plt.imshow(main())
-plt.savefig("test.png")
+plt.savefig("gs.png")
