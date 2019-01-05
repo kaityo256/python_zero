@@ -22,9 +22,6 @@ class State:
         else:
             return "s\n" + s
 
-    def is_impossible(self, fi, si):
-        return self.f[fi] == 0 or self.s[si] == 0
-
     def next_state(self, fi, si):
         d = self.f[fi] + self.s[si]
         f2 = self.f.copy()
@@ -40,17 +37,14 @@ class State:
 
 def move(parent, index, is_first, nodes):
     fi, si = index
-    if parent.is_impossible(fi, si):
+    if parent.f[fi] == 0 or parent.s[si] == 0:
         return
     child = parent.next_state(fi, si)
-
     if child in parent.siblings:
         return
     s = str(child)
-    if s in nodes:
-        child = nodes[s]
-    else:
-        nodes[s] = child
+    child = nodes.get(s, child)
+    nodes[s] = child
     parent.siblings.append(child)
     for i in [(0, 0), (0, 1), (1, 0), (1, 1)]:
         move(child, i, not is_first, nodes)
@@ -68,12 +62,38 @@ def make_graph(node, g):
     if node.is_drawn:
         return
     node.is_drawn = True
+    ns = str(node)
+    if max(node.f) == 0:
+        g.node(ns, color="#FF9999", style="filled")
+    elif max(node.s) == 0:
+        g.node(ns, color="#9999FF", style="filled")
+    else:
+        g.node(ns)
     for n in node.siblings:
-        g.edge(str(node), str(n))
+        g.edge(ns, str(n))
         make_graph(n, g)
 
 
+def prun(node):
+    if max(node.s) == 0:
+        return True
+    if node.is_first:
+        for n in node.siblings:
+            if prun(n):
+                return True
+        return False
+    if not node.is_first:
+        sib = node.siblings.copy()
+        for n in sib:
+            if prun(n):
+                node.siblings.remove(n)
+        if len(node.siblings) == 0:
+            return True
+    return False
+
+
 root = make_tree()
+# prun(root)
 g = Digraph(format="png")
 make_graph(root, g)
 g.render("tree")
