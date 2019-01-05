@@ -39,7 +39,8 @@ class State:
         return State(not self.is_first, f2, s2)
 
 
-def move(state1, fi, si, nodes, edges, is_first):
+def move(state1, index, nodes, edges, is_first):
+    fi, si = index
     if state1.is_impossible(fi, si):
         return
     state2 = state1.next_state(fi, si)
@@ -49,10 +50,8 @@ def move(state1, fi, si, nodes, edges, is_first):
     i2 = nodes[state2]
     if (i1, i2) not in edges:
         edges.append((i1, i2))
-    move(state2, 0, 0, nodes, edges, not is_first)
-    move(state2, 0, 1, nodes, edges, not is_first)
-    move(state2, 1, 0, nodes, edges, not is_first)
-    move(state2, 1, 1, nodes, edges, not is_first)
+    for i in [(0,0),(0,1),(1,0),(1,1)]:
+        move(state2, i, nodes, edges, not is_first)
 
 
 def main():
@@ -60,7 +59,7 @@ def main():
     edges = []
     state1 = State(True, [1, 1], [1, 1])
     nodes[state1] = 0
-    move(state1, 0, 0, nodes, edges, True)
+    move(state1, (0, 0), nodes, edges, True)
     g = Digraph(format="png")
     for n in nodes:
         g.node(str(nodes[n]), str(n))
