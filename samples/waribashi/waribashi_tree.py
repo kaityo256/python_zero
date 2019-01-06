@@ -9,18 +9,18 @@ class State:
         self.siblings = []
         self.is_drawn = False
 
-    def params(self):
-        return (self.is_first, self.f, self.s)
-
-    def __eq__(self, other):
-        return self.params() == other.params()
-
     def __str__(self):
         s = str(self.f) + "\n" + str(self.s)
         if self.is_first:
             return "f\n" + s
         else:
             return "s\n" + s
+
+    def params(self):
+        return (self.is_first, self.f, self.s)
+
+    def __eq__(self, other):
+        return self.params() == other.params()
 
     def next_state(self, fi, si):
         d = self.f[fi] + self.s[si]
@@ -74,18 +74,18 @@ def make_graph(node, g):
         make_graph(n, g)
 
 
-def prun(node):
+def prune(node):
     if max(node.s) == 0:
         return True
     if node.is_first:
         for n in node.siblings:
-            if prun(n):
+            if prune(n):
                 return True
         return False
     if not node.is_first:
         sib = node.siblings.copy()
         for n in sib:
-            if prun(n):
+            if prune(n):
                 node.siblings.remove(n)
         if len(node.siblings) == 0:
             return True
@@ -93,7 +93,7 @@ def prun(node):
 
 
 root = make_tree()
-# prun(root)
+# prune(root)
 g = Digraph(format="png")
 make_graph(root, g)
 g.render("tree")
