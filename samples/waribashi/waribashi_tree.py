@@ -22,7 +22,10 @@ class State:
     def __eq__(self, other):
         return self.params() == other.params()
 
-    def next_state(self, fi, si):
+    def next_state(self, index):
+        fi, si = index
+        if self.f[fi] == 0 or self.s[si] == 0:
+            return None
         d = self.f[fi] + self.s[si]
         f2 = self.f.copy()
         s2 = self.s.copy()
@@ -35,26 +38,25 @@ class State:
         return State(not self.is_first, f2, s2)
 
 
-def move(parent, index, is_first, nodes):
-    fi, si = index
-    if parent.f[fi] == 0 or parent.s[si] == 0:
-        return
-    child = parent.next_state(fi, si)
-    if child in parent.siblings:
-        return
-    s = str(child)
-    child = nodes.get(s, child)
-    nodes[s] = child
-    parent.siblings.append(child)
+def move(parent, is_first, nodes):
     for i in [(0, 0), (0, 1), (1, 0), (1, 1)]:
-        move(child, i, not is_first, nodes)
+        child = parent.next_state(i)
+        if child is None:
+            continue
+        if child in parent.siblings:
+            continue
+        s = str(child)
+        child = nodes.get(s, child)
+        nodes[s] = child
+        parent.siblings.append(child)
+        move(child, not is_first, nodes)
 
 
 def make_tree():
     nodes = {}
     root = State(True, [1, 1], [1, 1])
     nodes[str(root)] = root
-    move(root, (0, 0), True, nodes)
+    move(root, True, nodes)
     return root
 
 
@@ -87,13 +89,18 @@ def prune(node):
         for n in sib:
             if prune(n):
                 node.siblings.remove(n)
-        if len(node.siblings) == 0:
+        if not node.siblings:
             return True
     return False
 
 
-root = make_tree()
-# prune(root)
-g = Digraph(format="png")
-make_graph(root, g)
-g.render("tree")
+def main():
+    root = make_tree()
+    #prune(root)
+    g = Digraph(format="png")
+    make_graph(root, g)
+    g.render("tree")
+
+
+if __name__ == '__main__':
+    main()
