@@ -36,7 +36,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 
-## [Pythonの基礎](day02/README.md)
+## [Pythonの基礎](basic/README.md)
 
 * 組み込み型
 * 関数の宣言と利用方法
