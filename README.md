@@ -31,12 +31,12 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * 例外処理はどうしようかな
 * Chainerやっちゃう？
 
-## [第一講](day01/README.md)
+## [Google Colabの使い方](hello/README.md)
 
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 
-## [第二講](day02/README.md)
+## [Pythonの基礎](day02/README.md)
 
 * 組み込み型
 * 関数の宣言と利用方法
