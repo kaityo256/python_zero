@@ -155,11 +155,16 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 
 プログラムについて書いた記事や、本稿の題材(元ネタ)となった数学や科学の本など。
 
+プログラムについて。
+
 * [オブジェクト指向と20年戦ってわかったこと @Qiita](https://qiita.com/shibukawa/items/2698b980933367ad93b4) 「オブジェクト指向」について改めて考える良いきっかけになった。
 * [「例外」がないからGo言語はイケてないとかって言ってるヤツが本当にイケてない件  @Qiita](https://qiita.com/Maki-Daisuke/items/80cbc26ca43cca3de4e4) 「例外」について改めて考える良いきっかけになった。
 * [Pythonの処理系はどのように実装され，どのように動いているのか？ 我々はその実態を調査すべくアマゾンへと飛んだ． @Slideshare](https://www.slideshare.net/utgw/python-73389442) PythonのVMについて参考にした。
 * [len が関数になっている理由](https://methane.hatenablog.jp/entry/20090702/1246556675) Pythonが`a.len()`ではなく、なぜ`len(a)`を採用したか(Thanks to yohhoi)。
 * [Pythonはどうやってlen関数で長さを手にいれているの？](https://www.slideshare.net/shimizukawa/how-does-python-get-the-length-with-the-len-function) Pythonのlenなどがどのように動作しているか(Thanks to yohhoi)。
+
+数学や科学について。
+
 * [『フカシギの数え方』 おねえさんといっしょ！ みんなで数えてみよう！](https://www.youtube.com/watch?v=Q4gTV4r0zRs) 日本科学未来館による、組み合わせ爆発を題材としたムービー。8分と短い動画ながら面白いのでおすすめ。
 * [数学ガール シリーズ (結城浩 著)](https://www.hyuki.com/girl/) 高校生達の青春ドラマに、数学の楽しさ美しさを織り込んでいったような本。魅力的な登場人物の会話を追いかけているうちに「数学は面白く、そして美しい」ことが実感できると思う。
 * [数学をつくった人びと I, II, III (E. T. Bell著、田中 勇、銀林 浩 訳)](https://www.amazon.co.jp/dp/4150502838) 数学という巨大で美しい学問の構築に携わった人々のドラマを描いた本。数学に興味があればもちろん、なくても楽しめる。大変おすすめ。
