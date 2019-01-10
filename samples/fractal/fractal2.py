@@ -20,13 +20,6 @@ def convert(a, b):
     return b
 
 
-def apply(a, b):
-    r = []
-    for i in a:
-        r += convert(i, b)
-    return r
-
-
 def draw_line(draw, a, s=(0, 0)):
     x1, y1 = s
     for (dx, dy) in a:
@@ -41,14 +34,10 @@ def main():
     im = Image.new("RGB", (size, size))
     draw = ImageDraw.Draw(im)
     a = [(size, 0)]
-    # sx = size/3
-    # sy = sx * sqrt(3)
-    # a = [(sx, sy), (sx, -sy), (-2*sx, 0)]
     b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
-    # b = [(1, 0), (0, 1), (1, 0), (0, -1), (1, 0)]
-    # b = [(1, 1), (1, -1), (1, 1), (1, -1)]
     for _ in range(5):
-        a = apply(a, b)
+        a = [convert(i, b) for i in a]
+        a = reduce(lambda x, y: x + y, a)
     draw_line(draw, a)
     im.save("test.png")
 

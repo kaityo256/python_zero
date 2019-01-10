@@ -230,7 +230,7 @@ def convert(a, b):
     s = ay/alen
     scale = alen/length(b)
     r = []
-    b = [(scale*x[0], scale*x[1]) for x in b]
+    b = [(scale*x, scale*y) for (x,y)) in b]
     for (bx, by) in b:
         nx = c * bx - s * by
         ny = s * bx + c*by
@@ -245,19 +245,25 @@ def convert(a, b):
     c = ax/alen
     s = ay/alen
     scale = alen/length(b)
-    b = [(scale*x[0], scale*x[1]) for x in b]
-    b = [(c * x[0] - s* x[1], s *x[0] + c *x[1]) for x in b]
+    b = [(scale*x, scale*y) for (x, y) in b]
+    b = [(c * x - s* y, s *x + c * y) for (x, y) in b]
     return b
 ```
 
 `bx, by`や`r`が消えた。
 
-### 長さ
+### reduce
 
 reduceの説明と`lambda`の説明。
 
 ```py
 def length(a):
-  (x, y) = reduce(lambda x,y: (x[0]+y[0], x[1]+y[1]),a)
+  (x, y) = reduce(lambda x, y: (x[0]+y[0], x[1]+y[1]),a)
   return sqrt(x**2 + y**2)
+```
+
+```py
+def apply(a, b):
+  c = [convert(i, b) for i in a]
+  return reduce(lambda x, y: x + y, c)
 ```
