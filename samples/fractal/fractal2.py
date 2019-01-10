@@ -1,13 +1,11 @@
+from functools import reduce
 from math import sqrt
 
 from PIL import Image, ImageDraw
 
 
 def length(a):
-    x, y = 0, 0
-    for (dx, dy) in a:
-        x += dx
-        y += dy
+    (x, y) = reduce(lambda x, y: (x[0]+y[0], x[1]+y[1]), a)
     return sqrt(x**2 + y**2)
 
 
@@ -17,14 +15,9 @@ def convert(a, b):
     c = ax/alen
     s = ay/alen
     scale = alen/length(b)
-    r = []
-    for (bx, by) in b:
-        bx *= scale
-        by *= scale
-        nx = c * bx - s * by
-        ny = s * bx + c*by
-        r.append((nx, ny))
-    return r
+    b = [(scale*x, scale*y) for (x, y) in b]
+    b = [(c * x - s * y, s * x + c * y) for (x, y) in b]
+    return b
 
 
 def apply(a, b):
@@ -48,12 +41,12 @@ def main():
     im = Image.new("RGB", (size, size))
     draw = ImageDraw.Draw(im)
     a = [(size, 0)]
-    #sx = size/3
-    #sy = sx * sqrt(3)
-    #a = [(sx, sy), (sx, -sy), (-2*sx, 0)]
+    # sx = size/3
+    # sy = sx * sqrt(3)
+    # a = [(sx, sy), (sx, -sy), (-2*sx, 0)]
     b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
-    #b = [(1, 0), (0, 1), (1, 0), (0, -1), (1, 0)]
-    #b = [(1, 1), (1, -1), (1, 1), (1, -1)]
+    # b = [(1, 0), (0, 1), (1, 0), (0, -1), (1, 0)]
+    # b = [(1, 1), (1, -1), (1, 1), (1, -1)]
     for _ in range(5):
         a = apply(a, b)
     draw_line(draw, a)
