@@ -85,19 +85,21 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 ## [計算量とアルゴリズム1](complexity/README.md)
 
-TODO: 2回にわける？
+TODO: 構成を変更中。内容を目次に追随させること
 
 * 計算のオーダー(ランダウ表記)
-* フィボナッチとメモ化
-* 貪欲法
-* ナップザック問題
-* 最短経路探索とダイクストラ法
-* 巡回セールスマン問題
+* 分割統治法
+  * [最近点対問題](https://en.wikipedia.org/wiki/Closest_pair_of_points_problem)を題材に
+  * ボロノイ図の作成
 
 ## 計算量とアルゴリズム2
 
-* Union Findアルゴリズム
-* ランダムアルゴリズム
+* 動的計画法
+* フィボナッチとメモ化
+* ナップザック問題
+* 貪欲法
+* 最短経路探索とダイクストラ法
+* 巡回セールスマン問題
 
 ## [再帰処理](recursion/README.md)
 
@@ -166,6 +168,9 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 * [Pythonの処理系はどのように実装され，どのように動いているのか？ 我々はその実態を調査すべくアマゾンへと飛んだ． @Slideshare](https://www.slideshare.net/utgw/python-73389442) PythonのVMについて参考にした。
 * [len が関数になっている理由](https://methane.hatenablog.jp/entry/20090702/1246556675) Pythonが`a.len()`ではなく、なぜ`len(a)`を採用したか(Thanks to yohhoi)。
 * [Pythonはどうやってlen関数で長さを手にいれているの？](https://www.slideshare.net/shimizukawa/how-does-python-get-the-length-with-the-len-function) Pythonのlenなどがどのように動作しているか(Thanks to yohhoi)。
+* [プログラミングコンテストでの動的計画法](https://www.slideshare.net/iwiwi/ss-3578511) 動的計画法の題材や計算量について参考にした。
+* [計算量オーダーの求め方を総整理！ 〜 どこから log が出て来るか 〜](https://qiita.com/drken/items/872ebc3a2b5caaa4a0d0) 計算量の複雑さや題材について参考にした。
+* [計算量](https://www.slideshare.net/catupper/ss-26238956) 様々なアルゴリズムの計算量について参考にした。
 
 数学や科学について。
 
