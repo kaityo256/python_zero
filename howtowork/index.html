@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+</head>
+<body>
+<h1 id="pythonはどうやって動くのか">Pythonはどうやって動くのか</h1>
+<ul>
+<li>コンピュータはなぜ動くのか？</li>
+<li>プログラム言語とは</li>
+<li>Pythonが動く仕組み1: 抽象構文木</li>
+<li>Pythonが動く仕組み2: バイトコードと仮想マシン</li>
+<li>仮想マシンハック(やるんですか？)抽象構文木をいじる程度にするかな。</li>
+</ul>
+<h2 id="コンピュータはなぜ動くのか">コンピュータはなぜ動くのか？</h2>
+<p>車を運転していない人でも、車はガソリンという可燃性の液体を燃料とし、それを噴射して点火、爆発させてピストンを動かし、そのピストンの運動を回転運動に変換してタイヤに伝えて動いている、ということはぼんやりと知っていることだろう。この知識は、車を運転するときにはあまり必要ない。実際、車の運転をする際にエンジンやトランスミッションの仕組みを意識することは(よほど車好きでない限り)稀であろう。しかしそれでも、車の仕組みは簡単に知っておくべきだと思う。冷蔵庫や電子レンジ、これらの家電は、その動作原理を知らずとも使うことは可能だし、おぼろげに原理を知っているからといってあまり役に立つ気はしないが、やはりざっくりとは知っておくべきだと思う。それが教養というものだ。コンピュータの動作についても同様である。</p>
+<p>これまで、ブラウザ上でプログラムを入力し、実行させ、その結果を表示させてきた。Pythonのプログラムはクラウド上で実行されたが、そのブラウザを実行しているのは皆さんの目の前にあるのはコンピュータである。コンピュータとはcomputeするもの、つまり計算機であり、何かしら計算してその結果を表示することを繰り返す機械である。では、そもそもプログラムとはどうやって動いているのだろうか？せっかくプログラミングを覚えるのだから、計算機がどういう仕組みで動いているのか知っておいた方が良いだろう。なお、私は古い人間なので、コンピュータのことをどうしても「計算機」と呼んでしまう。以後、パソコンやCPUなどを指して「計算機」と呼ぶのでそのつもりでいて欲しい。</p>
+<p>いま、目の前にある計算機は、ディスプレイ(表示装置)、キーボードやマウス(入力装置)、CPU(中央演算処理装置)、メモリ(記憶装置)などから構成されている。ディスクなどのストレージやネットワークなどの通信装置については今は忘れよう。このうちCPUがもっとも重要な装置であるが、やっていることは非常に単純で、</p>
+<ul>
+<li>メモリから命令とデータを取ってくる</li>
+<li>命令を解釈し、データを演算器に投げる</li>
+<li>演算器から返ってきた結果をメモリに書き戻す</li>
+</ul>
+<p>ということをひたすら繰り返しているに過ぎない。「命令」も一種のデータであり、メモリに置いてあることに注意しよう。演算器というのは、文字通り演算する機械である。例えば足し算をしたければ加算器を、掛け算をしたければ乗算器が必要になる。また、整数演算と浮動小数点演算は全く異なる演算器を用いる。</p>
+<p>さて、計算機が解釈できるのは数字だけである。したがって、人間が計算機に命令するためには、機械語(マシン語)と呼ばれる数字の羅列を使う必要がある。コンピュータとは計算機であり、計算とはデータに四則演算などの演算をすることである。したがって、計算機に何か計算させたければ「何を(データ)」「どうするか(命令)」がセットである必要があることがわかるだろう。機械語というと難しそうだが、結局のところ「何を」「どうするか」を羅列しているに過ぎない。</p>
+<div class="figure">
+<img src="opcode.png" alt="opcode.png" />
+<p class="caption">opcode.png</p>
+</div>
+<p>例えば一桁の整数を二つ受け取って四則演算をする計算機があったとしよう。四則演算をするので、演算は加算、減算、乗算、除算の四種類である。なのでそれぞれに0,1,2,3の数字を割り当てよう。四則演算をするには、整数が二つ必要だ。その数字も並べよう。例えば「034」という数字列は「3+4」を、「185」は「8-5」を表す。計算機は、メモリから三つの数字をとってきて、最初の数字を見て「どの演算器に投げるか」を決める(命令を最初に置いたのはそのためだ)。そして続く二つのデータを演算器に投げる。かなり単純化されているが、これが機械語である。</p>
+<h2 id="プログラム言語とは">プログラム言語とは</h2>
+<p>さて、計算機が解釈できるのは機械語だけである。機械語は難しくはないが、「足し算は0で・・・」と覚えるのは面倒だ。そこで「034」という数字の羅列の代わりに「ADD 3,4」という書き方をしよう。これを「034」に変換するのは簡単だし、人間が見て「3と4を足すんだな」とわかりやすい。このように機械語と一対一対応する言語を「アセンブリ言語(Assembly Language)」と呼ぶ。しかし、アセンブリ言語でもまだ面倒だ。もっと、人間にわかりやすい形式、先ほどの例なら「3+4」と書いて、それを計算機が理解できる形式に変換したい、と思うのは自然であろう。その「人間が理解できる形式」がプログラム言語と呼ばれるものである。</p>
+<p>プログラム言語は人間にわかりやすい形式になっているが、その分、計算機に分かりやすい形に直すのにいくつか手続きが必要になる。まず「3+4」という文字列が与えられたときに、これが「3と4は整数、+は演算子であり、先の3と4を引数に取っている」と認識しなければならない。この作業を行うのが「パーサ」と呼ばれるプログラムである。パーサは、プログラムを「抽象構文木 (Abstract Syntax Tree)」と呼ばれるデータ構造に変換する。</p>
+<div class="figure">
+<img src="ast.png" alt="ast.png" />
+<p class="caption">ast.png</p>
+</div>
+<p>プログラム言語には、大きく分けてコンパイル言語とインタプリタの二種類がある。C++などはコンパイル言語の代表格的な言語である。コンパイラと呼ばれるプログラムが、人間の書いたプログラムをあらかじめ全て機械語に翻訳してから実行する。インタプリタとは、人間の書いたコードを逐次的に解釈しながら実行する方式であり、Pythonもインタプリタに属す。しかし、プログラムをそのまま解釈、実行すると遅いため、Pythonは「バイトコード」と呼ばれる中間形式を出力し、それを実行することで高速化を図る。バイトコードを実行するプログラムを仮想マシン(Virtual Machine, VM)と呼ぶ。Javaは事前にプログラムをコンパイルするが、出力するのは現実の機械の機械語ではなく、仮想機械の機械語であり、それを仮想機械上で実行する。また、clangは、LLVMという仕組みを使い、まず仮想機械の機械語を出力してから現実の機械語に変換する。</p>
+<p>TODO: このあたりの言語の実行の仕組みの図解 TODO: VMの説明。Javaとの比較など TODO: レジスタマシン、スタックマシンの説明もする？高度すぎか？</p>
+<h2 id="pythonが動く仕組み1-抽象構文木">Pythonが動く仕組み1: 抽象構文木</h2>
+<p>ではまず、Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> ast
+<span class="im">import</span> sys
+<span class="im">import</span> IPython
+<span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> visit(node, nodes, pindex, g):
+    name <span class="op">=</span> <span class="bu">str</span>(<span class="bu">type</span>(node).<span class="va">__name__</span>)
+    index <span class="op">=</span> <span class="bu">len</span>(nodes)
+    nodes.append(index)
+    g.node(<span class="bu">str</span>(index), name)
+    <span class="cf">if</span> index <span class="op">!=</span> pindex:
+        g.edge(<span class="bu">str</span>(index), <span class="bu">str</span>(pindex))
+    <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):
+        visit(n, nodes, index, g)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span>
+<span class="st">3+4</span>
+<span class="st">&quot;&quot;&quot;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
+tree <span class="op">=</span> ast.parse(src)
+visit(tree, [], <span class="dv">0</span>, graph)
+graph.render(<span class="st">&quot;test&quot;</span>)
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>正しく入力されていれば、4つ目のセルを入力、実行したところで、抽象構文木のグラフが表示されるはずである。 これは、三つ目のセルで入力した以下のプログラムをパースしたものだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">3</span><span class="op">+</span><span class="dv">4</span></code></pre></div>
+<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。 それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的にまたその子ノードを取得するプログラムである。</p>
+<h3 id="課題1">課題1</h3>
+<p>先ほどの三番目のセル(入力するプログラムを与えるセル)の文字列を変え、別のプログラムをパースしてみよ。まずは<code>+</code>を<code>-</code>や<code>/</code>、<code>//</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a,b):
+    <span class="cf">return</span> a<span class="op">+</span>b</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]:
+    <span class="bu">print</span>(i)</code></pre></div>
+<p>上記のプログラムを入力するには、<code>&quot;&quot;&quot;</code>で囲まれた領域に入力すること。例えば最初の例なら、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span>
+<span class="st">a, b = (1,2)</span>
+<span class="st">&quot;&quot;&quot;</span></code></pre></div>
+<p>と入力する。何が作られて、何にアサインされているだろうか？</p>
+<h2 id="pythonが動く仕組み2-バイトコードと仮想マシン">Pythonが動く仕組み2: バイトコードと仮想マシン</h2>
+<p>TODO: dis.disによるバイトコードの確認</p>
+<h2 id="余談機械がやるべきことやるべきでないこと">余談：機械がやるべきこと、やるべきでないこと</h2>
+<p>今でこそ「面倒な単純作業は人間ではなく機械にやらせるべき」という考えが(たぶん)浸透しているが、昔は計算機は非常に高価であり、その計算時間は貴重な資源であった。アセンブリを機械語、つまり数字の羅列に変換するのを「アセンブル」と呼ぶが、それを人間が手で行うことを「ハンドアセンブル」と言う。計算機が使われ始めた当初は、もちろんアセンブラなどなかったから、みんなハンドアセンブルをしていた。さて、世界で初めてアセンブラを作ったと思われているのはドナルド・ギリース(Donald B. Gillies)である。1950年代、ギリースは、フォン・ノイマンの学生だった時、アセンブリを機械語に自動で翻訳するプログラムを書いていた。ギリースがアセンブラを書いているのをフォン・ノイマンが見つけたときのことを、ダグラス・ジョーンズという人が以下のように<a href="https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ">紹介</a>している。</p>
+<blockquote>
+<p>John Von Neumann's reaction was extremely negative. Gillies quotes his boss as having said &quot;We do not use a valuable scientific computing instrument to do clerical work!&quot; (I wish I could reproduce Gillies' imitation of Von Neumann's Hungarian accent, he was very good at it!)</p>
+</blockquote>
+<p>(適当な訳)</p>
+<blockquote>
+<p>ノイマンの反応は極めてネガティブだった。ギリースはボス(ノイマンのこと)の口真似をしながらこう言った「我々は貴重な科学計算機をそのようなつまらない仕事に使うべきでない！」 (ギリースの口真似を再現できたらと思う。彼はフォン・ノイマンのハンガリー訛りの英語の真似がすごく上手いんだ)</p>
+</blockquote>
+<p>現在、「AIが人間を超える(シンギュラリティ)」とか「AIにより人間の仕事が奪われる」とかいった、一種の終末思想が盛んに喧伝されている。私はAIの専門家ではないので、将来どうなるかはわからない。しかし、AIは人間が作るものである。自動車ができたら、運転手という職業ができたように、「AIが人間の可能性を奪う」という「引き算の考え」よりは、「AIと人間の組み合わせで新たな可能性が生まれる」と「足し算の考え」でポジティブに考えたい。おそらくそのほうが生産的であろう。</p>
+<h2 id="より詳しく学ぶために">より詳しく学ぶために</h2>
+<p>もしアセンブリや機械語に興味がある人がいたら、tanakmuraさんの<a href="https://tanakamura.github.io/pllp/docs/index.html">実践的低レベルプログラミング</a>の<a href="https://tanakamura.github.io/pllp/docs/x8664_language.html">x86_64 機械語入門</a>を参照せよ。</p>
+</body>
+</html>

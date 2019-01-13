@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<h1 id="数値シミュレーション">数値シミュレーション</h1>
+<ul>
+<li>弾道計算1: 抵抗なし</li>
+<li>弾道計算2: 抵抗あり</li>
+<li>反応拡散方程式(Gray-Scott Model)</li>
+</ul>
+<h2 id="はじめに">はじめに</h2>
+<p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？ 様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。 さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。 これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。 さて、加速度とは何か？それは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
+<p><span class="math display">\[
+m \frac{d v}{dt} = F
+\]</span></p>
+<p>となる。さらに速度とは、単位時間当たりの位置の変化分であった。したがって、それもちゃんと書くと、</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d v}{dt} &amp;= \frac{F}{m} \\
+\frac{d r}{dt} &amp;= v
+\end{aligned}
+\]</span></p>
+<p>これが運動方程式である。すなわち、運動方程式とは時間に関する連立常微分方程式である。上記の式は一次元だが、三次元に拡張し、 さらに二つの物質の間に距離の二乗に反比例する力を仮定すると、互いに重力で引き合う二つの星の運動を表す方程式となる。 これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。</p>
+<p>物理学とは、この宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている(らしい)。 したがって、物理学とは、微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。 しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する 方程式を支配方程式(Governing Equation)と呼ぶ。支配方程式を数値的に解いて、その振る舞いを調べることを 数値シミュレーションと呼ぶ。というわけで、今回は数値シミュレーションをやってみよう。</p>
+<h2 id="弾道計算1-抵抗無し">弾道計算1: 抵抗無し</h2>
+<p>TODO: 弾道計算の歴史を簡単に</p>
+<p>以下のプログラムを三つのセルに分けて入力し、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> math <span class="im">import</span> pi, cos, sin</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> run(theta):
+  x, y <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
+  vx, vy <span class="op">=</span> cos(theta), sin(theta)
+  ax, ay <span class="op">=</span> [], []
+  g <span class="op">=</span> <span class="fl">1.0</span>
+  dt <span class="op">=</span> <span class="fl">0.01</span>
+  <span class="cf">while</span> y <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+    x <span class="op">+=</span> vx <span class="op">*</span> dt
+    y <span class="op">+=</span> vy <span class="op">*</span> dt
+    vy <span class="op">-=</span> g <span class="op">*</span> dt
+    ax.append(x)
+    ay.append(y)
+  nx <span class="op">=</span> np.array(ax)
+  ny <span class="op">=</span> np.array(ay)
+  <span class="cf">return</span> nx, ny</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(nx,ny)
+plt.legend()
+plt.show()</code></pre></div>
+<h3 id="課題1">課題1</h3>
+<p>TODO: pi/4が最も飛ぶことを確認させる</p>
+<h2 id="弾道計算2-抵抗あり">弾道計算2: 抵抗あり</h2>
+<h2 id="反応拡散方程式gray-scott-model">反応拡散方程式(Gray-Scott Model)</h2>
+<p>TODO: Gray-Scottアニメーション</p>
+</body>
+</html>

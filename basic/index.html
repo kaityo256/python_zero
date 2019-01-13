@@ -1,0 +1,351 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<h1 id="条件分岐と繰り返し処理1">条件分岐と繰り返し処理1</h1>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
+<ul>
+<li>組み込み型</li>
+<li>関数の宣言と利用方法</li>
+<li>for文による繰り返し処理</li>
+<li>if文による条件分岐</li>
+<li>ニュートン法</li>
+</ul>
+<h2 id="組み込み型">組み込み型</h2>
+<p>Pythonに限らず、プログラム言語には「型 (type)」がある。「型」とは、そのデータが何を表現しているかを表すものである。 「型」は自分で作ることもできるが、言語にもともと備わっている型もあり、それを「組み込み型 (Built-in types)」と呼ぶ。</p>
+<h3 id="真偽値">真偽値</h3>
+<p>「真(True)」であるか「偽(False)」であるかの二値だけを取る型で、条件分岐などで使われる。セルに<code>True</code>と入力して実行せよ。<code>True</code>と表示されるはずである。これは<code>True</code>を評価したら<code>True</code>になった、という意味だ(これは全く当たり前のことではない。「評価」については後ほど触れる)。<code>False</code>を評価すると<code>False</code>になる。なお、<code>#</code>以降はコメントであり、入力の必要はない。また、<code># =&gt;</code>とは、慣習として「その行を実行するとこの結果が出てくるよ」という意味である。例えば一行目の<code>True # =&gt; True</code>は、<code>True</code>とだけ入力して実行すると、結果が<code>True</code>と帰ってくるという意味である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="co"># =&gt; True</span>
+<span class="va">False</span> <span class="co"># =&gt; False</span></code></pre></div>
+<p>上記は二行まとめて書いているが、実際にはどちらか一行を書いて実行すると、その右にある結果が表示される、という意味である。</p>
+<p>また、<code>not</code>をつけると真偽値が逆転する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
+<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
+<p>二つの真偽値を使って論理演算もできる。<code>and</code>は「かつ」、<code>or</code>は「または」を意味する。 「真かつ偽」は「偽」だし、「真または偽」は「真」である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="kw">and</span> <span class="va">False</span> <span class="co"># =&gt; False</span>
+<span class="va">True</span> <span class="kw">or</span> <span class="va">False</span> <span class="co"># =&gt; True</span>
+<span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
+<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
+<h3 id="整数">整数</h3>
+<p>「1」「2」「3」といった整数を表現する。四則演算や比較などができる。負の数も扱える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="co"># =&gt; 1</span>
+<span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3</span>
+<span class="dv">2</span> <span class="op">*</span> <span class="dv">6</span> <span class="co"># =&gt; 12</span>
+<span class="dv">2</span> <span class="op">-</span> <span class="dv">5</span> <span class="co"># =&gt; -3</span></code></pre></div>
+<p>整数同士を比較すると真偽値になる。条件分岐や、ループの終了条件等に用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">==</span> <span class="dv">1</span> <span class="co">#=&gt; True</span>
+<span class="dv">1</span> <span class="op">==</span> <span class="dv">2</span> <span class="co">#=&gt; False</span>
+<span class="dv">1</span> <span class="op">!=</span> <span class="dv">1</span> <span class="co">#=&gt; False</span>
+<span class="dv">1</span> <span class="op">!=</span> <span class="dv">2</span> <span class="co">#=&gt; True</span>
+<span class="dv">1</span> <span class="op">&lt;</span> <span class="dv">2</span>  <span class="co">#=&gt; True</span>
+<span class="dv">1</span> <span class="op">&gt;</span> <span class="dv">2</span>  <span class="co">#=&gt; False</span></code></pre></div>
+<h3 id="浮動少数点">浮動少数点</h3>
+<p>「0.1」「123.45」といった、整数ではない値を表現する。整数と同様に四則演算や比較ができるし、負の数も扱える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="co">#=&gt; 1.0</span>
+<span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="co">#=&gt; 0.25</span>
+<span class="fl">0.5</span> <span class="op">&lt;</span> <span class="fl">1.0</span> <span class="co">#=&gt; True</span></code></pre></div>
+<p>ただし、浮動小数点数は内部的には <strong>その数値に最も近い近似値</strong> を扱っているため、誤差が存在する。例えば0.1を3回足しても0.3にならない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="co">#=&gt; 0.30000000000000004</span>
+<span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.2</span> <span class="co"># =&gt; True</span>
+<span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.3</span> <span class="co">#=&gt; False</span></code></pre></div>
+<p>したがって、** 浮動小数点数同士の等号比較は信頼できない **。浮動小数点数同士の等号比較は、意図通りに動作したりしなかったりする。初心者がよく入れるバグなので注意すること。</p>
+<p>整数と浮動小数点数の演算結果は、(たとえ結果が整数になろうとも)浮動小数点数になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span><span class="op">*</span><span class="dv">2</span> <span class="co">#=&gt; 1.0</span></code></pre></div>
+<h3 id="整数の除算と余り">整数の除算と余り</h3>
+<p>整数同士の割り算は(たとえ演算結果が整数であろうとも)浮動小数点数になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">/</span><span class="dv">3</span> <span class="co">#=&gt; 2.0</span></code></pre></div>
+<p>もし、整数の割り算で整数を得たい場合(商を求めて余りを無視したい場合)は<code>//</code>を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">//</span><span class="dv">3</span> <span class="co"># =&gt; 2</span>
+<span class="dv">5</span><span class="op">//</span><span class="dv">2</span> <span class="co">#=&gt; 2</span></code></pre></div>
+<p>整数の割り算で余りが欲しい場合は<code>%</code>を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">%</span><span class="dv">3</span> <span class="co">#=&gt; 0</span>
+<span class="dv">5</span><span class="op">%</span><span class="dv">2</span> <span class="co">#=&gt; 1</span></code></pre></div>
+<h3 id="複素数">複素数</h3>
+<p>Pythonは複素数も扱うことができる。虚数単位がjなので注意。実部、虚部は<code>real</code>、<code>imag</code>で取り出すことができる。 また、整数で記述しても浮動小数点数として扱われることに注意。複素数の宣言は<code>1+2j</code>のように書くか、<code>complex(1,2)</code>のように書く。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">+</span><span class="ot"> 2j</span> <span class="co"># =&gt; (1+2j)</span>
+<span class="bu">complex</span>(<span class="dv">1</span>,<span class="dv">2</span>) <span class="co"># =&gt; (1+2j)</span>
+(<span class="dv">1</span><span class="op">+</span>2j) <span class="op">+</span> (<span class="dv">2</span><span class="op">+</span>4j) <span class="co">#=&gt; (3+6j)</span>
+(<span class="dv">1</span><span class="op">+</span>2j)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>2j) <span class="op">=&gt;</span> (<span class="dv">5</span><span class="op">+</span>0j)
+(<span class="dv">1</span><span class="op">+</span>2j).real <span class="co">#=&gt; 1.0</span>
+(<span class="dv">1</span><span class="op">+</span>2j).imag <span class="co">#=&gt; 2.0</span></code></pre></div>
+<h2 id="変数">変数</h2>
+<p>プログラム言語では、値にラベルをつけることができる。そのラベルは、値として振る舞う。このラベルを「変数 (variable)」と呼ぶ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
+<span class="bu">print</span>(a) <span class="co"># =&gt; 1</span>
+a <span class="op">+</span> <span class="dv">1</span> <span class="co">#=&gt; 2</span></code></pre></div>
+<p>値は演算結果で上書きすることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
+<span class="bu">print</span>(a) <span class="co"># =&gt; 1</span>
+a <span class="op">=</span> a <span class="op">+</span> <span class="dv">1</span>
+<span class="bu">print</span>(a) <span class="co"># =&gt; 2</span></code></pre></div>
+<h2 id="関数">関数</h2>
+<p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
+  <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
+<p><code>def</code>の後に続く部分をブロックと呼び、字下げをする。この字下げをインデントと呼ぶ。Pythonはブロックをインデントにより表現する。また、関数定義の右側にある「コロン」を忘れないように。定義した関数は後で何度でも呼ぶこともできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></code></pre></div>
+<p>関数にインプットを与えることもできる。このインプットを「引数(ひきすう)」と呼ぶ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> say(s):
+  <span class="bu">print</span>(s)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></code></pre></div>
+<p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> add(a, b):
+    <span class="cf">return</span> a <span class="op">+</span> b</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">add(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co">#=&gt; 7</span></code></pre></div>
+<p>関数が返した値を変数に代入することもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)
+<span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
+<h2 id="繰り返し処理">繰り返し処理</h2>
+<h3 id="for文">for文</h3>
+<p>繰り返し処理は以下のように書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  <span class="bu">print</span>(i)</code></pre></div>
+<p>これは、iの値を0から9まで変化させながら、<code>print(i)</code>を実行しなさい、という意味である。なお、<code>in</code>の前の変数はなんでも良い。例えば以下のようにしても同じ結果となる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  <span class="bu">print</span>(j)</code></pre></div>
+<p>また、単に10回繰り返したいだけで、現在何回目かは不要である場合には<code>_</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  <span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>) <span class="co"># Helloが10回表示される</span></code></pre></div>
+<h2 id="条件分岐">条件分岐</h2>
+<p>「もし〜なら」という処理を条件分岐と呼び、<code>if</code>文で書く。<code>if</code>の後ろには真偽値を与えるような式を書く。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">5</span> <span class="op">&gt;</span> <span class="dv">3</span>:
+  <span class="bu">print</span>(<span class="st">&quot;5&gt;3&quot;</span>)</code></pre></div>
+<p>「もし〜ならAをせよ、そうでなければBをせよ」という場合には<code>else:</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">3</span> <span class="op">&lt;</span> <span class="dv">5</span>:
+  <span class="bu">print</span>(<span class="st">&quot;A&quot;</span>) <span class="co"># 実行されない</span>
+<span class="cf">else</span>:
+  <span class="bu">print</span>(<span class="st">&quot;B&quot;</span>) <span class="co"># =&gt; B</span></code></pre></div>
+<p>「もし〜ならAをせよ、そうでない場合で〜ならBをせよ」という場合には<code>elif</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>
+<span class="cf">if</span> a <span class="op">==</span> b:
+  <span class="bu">print</span>(<span class="st">&quot;a == b&quot;</span>)
+<span class="cf">elif</span> a <span class="op">&gt;</span> b:
+  <span class="bu">print</span>(<span class="st">&quot;a &gt; b&quot;</span>)
+<span class="cf">else</span>:
+  <span class="bu">print</span>(<span class="st">&quot;a &lt; b&quot;</span>)</code></pre></div>
+<p>if文は入れ子構造にできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b, c <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
+<span class="cf">if</span> a <span class="op">&lt;</span> b:
+  <span class="cf">if</span> b <span class="op">&lt;</span> c:
+    <span class="bu">print</span>(<span class="st">&quot;a &lt; b &lt; c&quot;</span>)
+  <span class="cf">elif</span> c <span class="op">&lt;</span> a:
+    <span class="bu">print</span>(<span class="st">&quot;c &lt; a &lt; b&quot;</span>)
+  <span class="cf">else</span>:
+    <span class="bu">print</span>( <span class="st">&quot;a &lt;= c &lt;= b&quot;</span>)</code></pre></div>
+<h2 id="ニュートン法">ニュートン法</h2>
+<p>以上の知識で、何かコードを書いてみよう。 ある方程式を解きたいが、その解が厳密にはわからないとする。 その場合でも数値計算で必要な精度で解を求めることができる。 そのような場合によく用いられるのがニュートン法である。</p>
+<p>いま、</p>
+<p><span class="math display">\[
+f(x) = 0
+\]</span></p>
+<p>という方程式を解きたいとする。もし、真の解を<span class="math inline">\(x\)</span>として、それに近い値<span class="math inline">\(\tilde{x} = x+\epsilon\)</span>があったとする。<span class="math inline">\(f(x)\)</span>を<span class="math inline">\(\tilde{x}\)</span>の周りでテイラー展開すると、</p>
+<p><span class="math display">\[
+f(\tilde{x} - \varepsilon) = f(\tilde{x}) - \varepsilon f&#39;(\tilde{x}) + O(\varepsilon^2)
+\]</span></p>
+<p><span class="math inline">\(\varepsilon\)</span>の二次の項を無視した状態で、<span class="math inline">\(f(\tilde{x} - \varepsilon)\)</span>が0となるように<span class="math inline">\(\varepsilon\)</span>の値を選ぶと、</p>
+<p><span class="math display">\[
+\varepsilon = \frac{f(\tilde{x})}{f&#39;(\tilde{x})}
+\]</span></p>
+<p><span class="math inline">\(\tilde{x} = x + \varepsilon\)</span>であったから、<span class="math inline">\(\varepsilon\)</span>を引けば、より真の値に近づくはずである。以上から、</p>
+<p><span class="math display">\[
+x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
+\]</span></p>
+<p>という数値列を得る。この数列が収束するということは<span class="math inline">\(x_{n+1} = x_n\)</span>なので、<span class="math inline">\(f(x_n)=0\)</span>が満たされなければならず、それはすなわち<span class="math inline">\(x_n\)</span>が解に収束したことを示す。これを確認してみよう。</p>
+<p>いま、<span class="math inline">\(x^3 = 1\)</span>の解を知りたいとする。この時、<span class="math inline">\(f(x) = 0\)</span>の形に書きたいので、<span class="math inline">\(f(x) = x^3 - 1\)</span>である。<span class="math inline">\(f&#39;(x) = 3 x^2\)</span>であるから、対応するニュートン法のアルゴリズムは、</p>
+<p><span class="math display">\[
+x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
+\]</span></p>
+<p>である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
+  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">3</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span>)
+    <span class="bu">print</span>(x)</code></pre></div>
+<p>初期値として2.0を入れてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="fl">2.0</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">1.4166666666666665</span>
+<span class="ex">1.1105344098423684</span>
+<span class="ex">1.0106367684045563</span>
+<span class="ex">1.0001115573039492</span>
+<span class="ex">1.0000000124431812</span>
+<span class="ex">1.0000000000000002</span>
+<span class="ex">1.0</span>
+<span class="ex">1.0</span>
+<span class="ex">1.0</span>
+<span class="ex">1.0</span></code></pre></div>
+<p>急速に真の値である1.0に近づいていくことがわかるだろう。実際、ニュートン法の収束は非常に早く、一度繰り返すごとに精度が倍になっていく。</p>
+<h3 id="複素数の場合">複素数の場合</h3>
+<p>さて、複素数まで考えれば<span class="math inline">\(x^3 -1 = 0\)</span>の解は三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。複素数の場合にもニュートン法が機能することを確認しよう。先程の関数に、そのまま複素数を入れて実行してみよ。まずは実軸にある点を入力してみる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="dv">2</span><span class="op">+</span>0j)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">1.4166666666666665+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1.1105344098423682+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1.0106367684045563+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1.0001115573039492+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1.0000000124431812+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1.0000000000000002+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span></code></pre></div>
+<p>次は<code>-1 + 1j</code>を入力してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="op">-</span><span class="dv">1</span><span class="op">+</span>1j)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">-0.6666666666666667+0.8333333333333334j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5086919161874546+0.8410998744133783j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.49932999564375125+0.8662691717880057j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.4999999113699129+0.8660249031568892j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.4999999999999555+0.8660254037846933j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844387j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844387j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span></code></pre></div>
+<p><span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。同様に初期値として<code>-1-1j</code>を入力してみる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="op">-</span><span class="dv">1</span><span class="op">-</span>1j)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">-0.6666666666666667-0.8333333333333334j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5086919161874546-0.8410998744133783j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.49932999564375125-0.8662691717880057j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.4999999113699129-0.8660249031568892j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.4999999999999555-0.8660254037846933j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844387j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844387j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span>
+<span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span></code></pre></div>
+<p>今度は<span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。ナイーブに考えると、複数の解がある場合、初期値に近い解に収束すると考えられる。では、複素平面のどこからスタートしたらどこに収束するだろうか？単純に三分割になるだろうか？</p>
+<div class="figure">
+<img src="fig/map.png" alt="map.png" />
+<p class="caption">map.png</p>
+</div>
+<p>複素平面の様々な場所を初期として、</p>
+<ul>
+<li><code>1+0j</code>に収束したら赤</li>
+<li><code>-0.5+87j</code>に収束したら緑</li>
+<li><code>-0.5-87j</code>に収束したら青</li>
+</ul>
+<p>に塗ることで、「どの場所からスタートしたらどこに収束するか」という「収束地図」を作ってみよう。</p>
+<h3 id="課題1">課題1</h3>
+<p>新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
+<p>1つ目のセル。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
+<span class="im">import</span> IPython</code></pre></div>
+<p>2つ目のセル。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
+  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">3</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span>)
+  <span class="cf">return</span> x</code></pre></div>
+<p><code>return x</code>のインデントに注意。<code>x = x - (x**3-1)/(3*x**2)</code>ではなく、<code>for</code>と同じ高さにしなければならない。</p>
+<p>3つ目のセル。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(draw, s):
+    hs <span class="op">=</span> s<span class="op">/</span><span class="dv">2</span>
+    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
+    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
+    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
+        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
+            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs, y<span class="op">-</span>hs)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> <span class="fl">0.01</span>
+            z <span class="op">=</span> newton(z)
+            <span class="co"># ここを埋めよ</span>
+            draw.rectangle([x, y, x<span class="op">+</span><span class="dv">1</span>, y<span class="op">+</span><span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
+<p>上記の「ここを埋めよ」の箇所に</p>
+<ul>
+<li><code>z</code>の実部が正なら<code>c = red</code></li>
+<li><code>z</code>の実部が負かつ虚部が正なら<code>c = green</code></li>
+<li><code>z</code>の実部が負かつ虚部も負なら<code>c = blue</code></li>
+</ul>
+<p>を実行するようにプログラムを書くこと。</p>
+<p>4つ目のセル。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
+im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
+draw <span class="op">=</span> ImageDraw.Draw(im)
+plot(draw, size)
+im.save(<span class="st">&quot;test.png&quot;</span>)
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>正しく入力できていれば、「収束地図」が描けたはずだ。どのような地図になっただろうか？</p>
+<h3 id="課題2">課題2</h3>
+<p>先程は<span class="math inline">\(x^3 - 1 = 0\)</span>の解を考えた。次は<span class="math inline">\(x^4 - 1 = 0\)</span>の解を考えてみよう。この方程式には<span class="math inline">\(x = \pm 1\)</span>、<span class="math inline">\(x \pm i\)</span>の4つの解が存在する。この解をニュートン法で探し、「収束地図」を描こう。</p>
+<p>まず、先程の課題で作成したプログラムに名前をつけて保存し、複製して、そちらを修正することにしよう。ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「newton.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
+<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「newton.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「newton.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「newton2.ipynb」という名前にしよう。「newton2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
+<p>「newton2.ipynb」が開かれたら、まず2つ目のセルにある関数<code>newton</code>を次のように修正しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
+  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">4</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">4</span><span class="op">*</span>x<span class="op">**</span><span class="dv">3</span>)
+  <span class="cf">return</span> x</code></pre></div>
+<p><span class="math inline">\(f(x) = x^4 -1\)</span>とし、<span class="math inline">\(f(x)\)</span>と<span class="math inline">\(f&#39;(x)\)</span>を公式に代入しただけである。</p>
+<p>次に、3つ目のセルにある関数<code>plot</code>を次のように修正しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(draw, s):
+    hs <span class="op">=</span> s<span class="op">/</span><span class="dv">2</span>
+    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
+    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
+    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)  <span class="co"># ここを追加</span>
+    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
+        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
+            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs, y<span class="op">-</span>hs)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> <span class="fl">0.01</span>
+            z <span class="op">=</span> newton(z)
+            <span class="co"># ここを埋めよ</span>
+            draw.rectangle([x, y, x<span class="op">+</span><span class="dv">1</span>, y<span class="op">+</span><span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
+<p>解がそれぞれ1, -1, j, -jなので、</p>
+<ul>
+<li><code>z</code>の実部が正かつ虚部が正なら<code>c = red</code></li>
+<li><code>z</code>の実部が正かつ虚部が負なら<code>c = green</code></li>
+<li><code>z</code>の実部が負かつ虚部が正なら<code>c = blue</code></li>
+<li><code>z</code>の実部が負かつ虚部も負なら<code>c = purple</code></li>
+</ul>
+<p>となるように「# ここを埋めよ」の部分を書け。</p>
+<p>4つ目のセルはそのままで良い。すべてのセルを上から順番に実行、もしくは「ランタイム」メニューから「すべてのセルを実行」を実行せよ。もしおかしなことになったら、「ランタイム」から「再起動してすべてのセルを実行」せよ。</p>
+<p>ニュートン法の繰り返し数が10だと原点付近の収束が甘い。20くらいにして再実行してみよ。逆に5に減らすとどうなるだろうか？</p>
+<h3 id="任意課題">任意課題</h3>
+<p>TODO: 収束の回数に応じたグラデーション</p>
+<h2 id="余談バグについて">余談：バグについて</h2>
+<p>プログラムが何か意図しない動作をする場合、その原因となる箇所を「バグ」と呼ぶ。バグの語源については諸説あるようだが、詳しいことはわからない。 「i」と「l」と「1」など、似ている文字を誤入力してしまったり、考慮すべきケースを忘れていたり、バグの原因は様々である。 単純なバグについては、コンパイラや検査ツールの充実、テスト手法の向上などにより事前に検出できるようになってきた。 そんななか、未だによく見かけるバグに「オーバーフロー/アンダーフローバグ」がある。コンピュータが扱える数字には上限がある。 たとえば整数は32ビットで表現されることが多い。符号無し整数の場合、表現できる最大の数は4294967295、つまり43億ちょっとである。 符号付きの場合は、符号に1ビット使うので最大の数はその半分になる。 この数字を超える、すなわち最大値を取っている変数に1を足すと、またゼロに戻ってしまう。オーバーフローバグは、よくタイマー周りに潜む。 最近だと、ボーイング787という飛行機の電源制御システムが、連続して248日動作させると不具合を起こすことが報告された。 慣れたプログラマなら、「248日」と聞いた瞬間に「あ、オーバーフローやったな」と気がつく。 248日とは21427200秒である。31ビットで表現できる最大の数は2147483647であるから10ミリ秒を単位に動作する31ビットのクロックが、 248日でオーバーフローしたと考えられる。同根のバグに「497日問題」とか「49.7日問題」があるので、興味があれば調べられたい。</p>
+<p>オーバーフローとは逆に、値が0になってるのに引き算をして、値が逆に大きくなるバグもあり、アンダーフローバグと呼ばれている。 アンダーフローバグで有名なのは「突然キレるガンジー」であろう。 Cibilizationという、文明を発展させるゲームがある。歴史上の有名人をプレイヤーとして選び、 世界制覇などを目指すゲームである。この中のプレイヤーにガンジーがいた。 ガンジーは「非暴力、不服従」の提唱者であり、平和主義者なのであるが、文明がある程度発展すると 突如として核攻撃をしかけてくるようになる。これはアンダーフローバグであった。 Cibilizationでは各プレイヤーには攻撃性が設定されており、 文明が民主主義を採用すると攻撃性が2下がる、という仕組みがあった。 さて、ガンジーの攻撃性は1なのだが、インド文明が民主主義を採用し2を引くと-1になる。 しかし、攻撃性は「符号なし8ビット整数」で表現されていたため、1から2を引くと攻撃性最大の255になってしまった。 こうして「突然キレるガンジー」が誕生したのである。</p>
+<p>整数の表現できる数値に最大値があることに起因するバグは根深く、発見が難しい。 かくいう私も、4294967295回に一度意図しない動作をするというエグいバグを入れたことがある。 43億回に一度発生するため、研究室のPCでは再現せず、スパコンを使ったときにたまに発生する、という感じだったので 原因究明に時間がかかった。バグという概念が生まれてかなりの時間がたったが、まだ人類はバグを根絶できていない。 それなら僕がバグを入れるのもやむを得まい(言い訳である)。</p>
+<p>参考：<a href="https://note.mu/ruiu/n/n89d18450b1bb">オーバーフローが引き起こした面白いバグの話</a></p>
+</body>
+</html>
