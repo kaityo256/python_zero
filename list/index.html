@@ -52,7 +52,82 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>リストやタプルの扱いに慣れる</li>
 <li>リスト内包表記を使ってPythonらしく書く</li>
 </ul>
+<h2 id="リスト">リスト</h2>
+<p>プログラムを組んでいると、何かひとまとまりのデータをまとめて保持し、処理したい場合がある。 そのようなデータ構造を表現するのがリスト(list)である。他の言語では配列(array)と呼ぶことが多い。</p>
+<p>配列は<code>[]</code>の中に、カンマで区切って表現する。例えば、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre></div>
+<p>とすると、整数の1,2,3を含むリストができる。</p>
+<p>また、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</code></pre></div>
+<p>とすると、文字列のリストができる。リストにはどんなものも入れることができる。また、異なる種類のものを混ぜて入れることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="fl">1.0</span>]</code></pre></div>
+<p>リストの要素には、<code>[]</code>でアクセスできる。例えば<code>a</code>の最初の要素が欲しい場合は<code>a[0]</code>とする。カッコの中の数字を <strong>添え字(index)</strong> と呼ぶ。言語によって、添え字が0始まりの場合と1始まりの場合がある。Pythonは0始まりである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></code></pre></div>
+<p>要素に値を代入することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">5</span>
+a <span class="co"># =&gt; [1,5,3]</span></code></pre></div>
+<p>リストは入れ子にすることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</code></pre></div>
+<p>入れ子になったリストは、添え字を複数指定することで要素を得ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]
+a[<span class="dv">0</span>] <span class="co">#=&gt; [1,2]</span>
+a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co">#=&gt; 2</span></code></pre></div>
+<p>リストの長さは<code>len</code>という関数で取得できる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></code></pre></div>
+<p>二つのリストを結合することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="dv">1</span>,<span class="dv">2</span>] <span class="op">+</span> [<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>] <span class="co"># =&gt; [1,2,3,4,5]</span></code></pre></div>
+<p>要素を追加する場合は<code>append</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]
+a.append(<span class="dv">3</span>)
+a <span class="co"># =&gt; [1,2,3]</span></code></pre></div>
+<p>リストに要素が含まれるかどうかは、<code>in</code>で調べることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span>
+<span class="dv">4</span> <span class="kw">in</span> a <span class="co">#=&gt; False</span></code></pre></div>
+<p>リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、<code>for</code>と<code>in</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> i <span class="kw">in</span> a:
+  <span class="bu">print</span>(i)</code></pre></div>
+<h2 id="タプル">タプル</h2>
+<p>タプルは、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
+a <span class="co">#=&gt; (1, 2, 3)</span></code></pre></div>
+<p>タプルはリストと同様に<code>len</code>で長さを得たり、添え字で要素を得ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
+a[<span class="dv">0</span>] <span class="co">#=&gt; 1</span>
+<span class="bu">len</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
+<p>タプルの結合もできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">+</span> (<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># =&gt; (1,2,3,4)</span></code></pre></div>
+<p>このようにタプルはリストに似ているが、一度作成されたタプルは修正できない。</p>
+<p>タプルは関数で複数の値を返したい場合によく使われる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
+  <span class="cf">return</span> <span class="dv">1</span>,<span class="dv">2</span>
+
+func() <span class="co">#=&gt; (1,2)</span></code></pre></div>
+<p>タプルを使って、複数の変数を一度に初期化することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>
+a <span class="co">#=&gt; 1</span>
+b <span class="co">#=&gt; 2</span></code></pre></div>
+<p>以下のようにすると、変数の値の交換ができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> b, a</code></pre></div>
+<p>タプルのリストを作ることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]</code></pre></div>
+<p>その場合、例えば0番目の要素を以下のように変数に代入できる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]
+x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x = 1, y = 2になる</span></code></pre></div>
+<p>リストとタプルについて覚えて起きたいことは他にもいろいろあるが、それは必要に応じて説明していくことにしよう。</p>
 <h2 id="コッホ曲線の描画">コッホ曲線の描画</h2>
+<p>コッホ曲線を知っているだろうか。こんな図形である。</p>
+<div class="figure">
+<img src="fig/koch.png" alt="koch.png" />
+<p class="caption">koch.png</p>
+</div>
+<p>名前を知らなくても、その形は見たことがあるかと思う。この曲線は、以下のような手続きで作成される。</p>
+<p>TODO: コッホ曲線の作り方</p>
+<p>今回は、リストとタプルを駆使してコッホ曲線を描くプログラムを組んでみよう。</p>
 <h3 id="タプルのリスト">タプルのリスト</h3>
 <p>まずは変換ベクトルのリストの、始点と終点を結ぶベクトルの長さを求めよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> sqrt
