@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+</head>
+<body>
+<h1 id="乱数を使ったプログラム">乱数を使ったプログラム</h1>
+<ul>
+<li>疑似乱数とモンテカルロ法</li>
+<li>余談：疑似乱数とゲーム</li>
+<li>モンティパイソン問題</li>
+<li>パーコレーション</li>
+<li>迷路</li>
+<li>余談：確率の難しさ</li>
+</ul>
+<h2 id="疑似乱数とモンテカルロ法">疑似乱数とモンテカルロ法</h2>
+<h3 id="疑似乱数とは">疑似乱数とは</h3>
+<p>乱数とは、ランダムな数のことである。例えばサイコロをふると、1から6までの数字がほぼ等確率で出ると期待される(実際には少しずれるらしい)。 さて、計算機でもランダムな数字が必要になることがある。例えばゲームで低確率で出る「会心の一撃」や「痛恨の一撃」を表現するのに乱数が必要だ。レアなモンスターを出現させるのも乱数が必要である。しかし、計算機において「真の乱数列」を表現するのは難しい。 「真の乱数列」とは、これまでの数列から、次の数字が予想できないような数列のことである。 現在の計算機は決定論的に動作するため、同じ入力を与えると同じ結果を出力する。 このような計算機で用いられる乱数は「疑似乱数」と呼ばれる。疑似乱数とは、一見乱数列のように見えるが実は規則性があり、 これまでの乱数列から次の乱数が予想できてしまうものだ。</p>
+<p>以下のコードを書いて実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.randint(<span class="dv">0</span>,<span class="dv">10</span>))</code></pre></div>
+<p>実行するたびに結果が異なるだろう。しかし、以下のようにしてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+
+random.seed(<span class="dv">1</span>)
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.randint(<span class="dv">0</span>,<span class="dv">10</span>))</code></pre></div>
+<p>何度実行しても、同じ乱数列が得られることがわかるであろう。これは乱数の「種」を固定したためだ。 計算機は、漸化式により乱数列を作ることが多い。漸化式は、生成した乱数を入力として次の乱数を作る方法だが、 その一番最初に与える値を乱数の「種(seed)」と呼ぶ。同じ種からは同じ乱数列が生まれる。 これでは乱数としては不都合であるので、「現在時刻」を乱数の種とすることが多い。こうすると実行するたびに 異なる乱数列が得られる。しかし、主にデバッグ目的などで、毎回同じ乱数の種を与えたいときもある。 <code>random.seed</code>は、そのような場合に用いる。乱数列を作る方法には、線形合同法やM系列など様々な方法があるが、 現在広く使われているのはメルセンヌ・ツイスター法という手法である。多くのプログラム言語が乱数生成のデフォルトアルゴリズムとして メルセンヌ・ツイスター法を採用している。ここでは触れないが興味がある人は調べてみよ。</p>
+<h3 id="余談疑似乱数とゲーム">余談：疑似乱数とゲーム</h3>
+<p>ゲームには乱数がつきものである。先に述べたように、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、レアな敵が出たときにセーブしてリセットすると、全く同じ敵が現れてしまう、という仕様(バグ？)があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは「乱数調整」といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
+<p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
+<h2 id="モンテカルロ法">モンテカルロ法</h2>
+<p>乱数を利用してシミュレーションをしたり、何かを計算したりする方法を「モンテカルロ法」と呼ぶ。 例えば金融市場をシミュレーションしたいとする。あるプレイヤーについて、ある状況である株を「買う」か「売る」かは判断できない。 しかし、「これまでの履歴」を調べることで、似たような状況で「買った」か「売った」かは知っているとする。 すると、ある状況で株を「買う確率」と「売る確率」を推定できる。同様に、別のプレイヤーについても「買う確率」と「売る確率」を 推定し、その確率に従って仮想的に株を売り買いさせることで、その株が今後どのような値動きをするかシミュレーションすることができる。 アメリカは軍の作戦を立案する際、相手と自分の様々な「手」をシミュレーションしていたそうである(今もシミュレーションしているかもしれない)。</p>
+<p>モンテカルロ法は、数値積分にも用いられる。モンテカルロ法のによる数値積分で有名なのは、円周率の計算であろう。ダーツの要領でランダムに「矢」を投げ、当たった数で円周率を推定する方法である。n回ダーツを投げて円周率を推定するプログラムはこんな感じに書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> random
+
+<span class="kw">def</span> calc_pi(n):
+    r <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
+        x <span class="op">=</span> random()
+        y <span class="op">=</span> random()
+        <span class="cf">if</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">&lt;</span> <span class="fl">1.0</span>:
+            r <span class="op">+=</span> <span class="dv">1</span>
+    <span class="cf">return</span> <span class="dv">4</span> <span class="op">*</span> r <span class="op">/</span> n
+
+calc_pi(<span class="dv">10000</span>)</code></pre></div>
+<p>これは、実は以下のような二次元の数値積分をしていることと等価である。</p>
+<p><span class="math display">\[
+\pi \sim 4 \int_0^1 \int_0^1 \Theta(1-x^2-y^2) dx dy
+\]</span></p>
+<p>ただし<span class="math inline">\(\Theta(x)\)</span>はステップ関数で、<span class="math inline">\(x\geq 1\)</span>で1、そうでない場合は0となる関数である。</p>
+<p>このアルゴリズムは簡単で、少ない試行回数でそこそこの精度が出るが、収束が悪いために円周率を高精度に求めるのには向かない。 そもそも単純なモンテカルロ法はあまり使われないので、もし「モンテカルロ法はいい加減」とか「精度が悪い」と思っているのなら モンテカルロ法による円周率の推定については忘れてほしい。</p>
+<p>モンテカルロ法による数値積分では、現在ではほとんど「マルコフ連鎖モンテカルロ法 (Markov-chain Monte Calro method, MCMC)という手法が用いられている。マルコフ連鎖モンテカルロ法は非常に重要な手法であるが、今回は触れない。</p>
+<p>今回は、モンテカルロ法を使って様々なプログラムを組んでみよう。</p>
+<h2 id="モンティホール問題">モンティ・ホール問題</h2>
+<p>モンティ・ホール問題とは、アメリカの番組の中で行われた、あるゲームに由来する。そのゲームとはこういうものである。</p>
+<ul>
+<li>三つの箱が用意され、その中に一つだけ商品が入っており、残りの二つは空である。</li>
+<li>プレイヤーは、そのうちの一つを選ぶ</li>
+<li>司会者は、選ばれなかった二つの箱の中身を確認し、空であるほうの箱を開ける</li>
+<li>その上で司会者はプレイヤーに「選んだ箱を変えてよい」という</li>
+<li>さて、プレイヤーは選んだ箱を変えたほうが得だろうか？それとも確率は変わらないだろうか？</li>
+</ul>
+<p><img src="fig/mh1.png" alt="mh1.png" /> <img src="fig/mh2.png" alt="mh2.png" /></p>
+<p>この問題は有名なので、答えを知っている人も多いだろう。しかし、ここは答えを全く知らないとして、シミュレーションをしよう。</p>
+<h3 id="keep派">Keep派</h3>
+<p>まずは、司会者が選ばれなかった箱のうち一つを開け、「選んだ箱を変えてよい」と言った時に「最初に選んだ箱を変えない」戦略を考えよう。 これをKeep派と呼ぶ。この人が当たる確率は自明に1/3だが、それっぽくシミュレーションしてみよう。以下、練習のため、かなり冗長なプログラムを組んでいることに留意されたい。</p>
+<p>箱の中身のリストを渡されたときに、答えの箱と、プレイヤーの選ぶ箱をランダムに選ぶ関数<code>keep</code>を作ってみる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> choice, seed</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    player_choice <span class="op">=</span> choice(boxes)
+    <span class="bu">print</span>(answer, player_choice)</code></pre></div>
+<p><code>random.choice</code>とは、リストを与えられると、その中の要素をランダムに選ぶ関数である。 さて、適当な箱リストを与えて<code>keep</code>を呼んでみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
+boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    keep(boxes)</code></pre></div>
+<p>このような結果が得られるはずである。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">A</span> C
+<span class="ex">A</span> B
+<span class="ex">A</span> B
+<span class="ex">B</span> B
+<span class="ex">C</span> B
+<span class="ex">A</span> A
+<span class="ex">B</span> A
+<span class="ex">B</span> B
+<span class="ex">C</span> A
+<span class="ex">C</span> B</code></pre></div>
+<p>左が正解の箱、右がプレイヤーの選んだ箱である。では、正解を選んだ確率を計算してみよう。</p>
+<p>まず、関数<code>keep</code>を、正解を選んだら<code>True</code>を返すように修正する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    player_choice <span class="op">=</span> choice(boxes)
+    <span class="cf">return</span> player_choice <span class="op">==</span> answer</code></pre></div>
+<p>次に、三番目のセルに、正解確率を計算する関数<code>calc_prob</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc_prob(n):
+    seed(<span class="dv">1</span>)
+    boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+    k <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
+        <span class="cf">if</span> keep(boxes):
+            k <span class="op">+=</span> <span class="dv">1</span>
+    <span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))</code></pre></div>
+<p>四番目のセルに以下を入力して実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc_prob(<span class="dv">1000</span>)</code></pre></div>
+<p>Keep派の正解確率が出てきたはずである。</p>
+<p>ちなみに、ここでやったように部分的にコードを完成させ、そのたびに<code>print</code>で結果を確認する手法を <strong>print文デバッグ</strong> と呼ぶ。 print文デバッグはかなり古くからある手法であるが、デバッグの基本なので覚えておこう。</p>
+<h3 id="change派">Change派</h3>
+<p>さて、先ほどとは逆に「選んだ箱を変えてよい」と言った時に、必ず箱を変える戦略を考えよう。これをChange派と呼ぶ。 五番目のセルに、<code>change</code>を実装しよう。箱のリストを受け取り、正解と、プレイヤーが最初に選ぶ箱を決めるところまでは同じである。 さて、次に「司会者が開ける箱」を考える必要がある。司会者が開けるのは、プレイヤーが選んだ箱であっても、正解の箱あってもならない。 そこで、「箱リストから、プレイヤーが選んだ箱と、正解の箱を除外したリストを作り、そこからランダムに選ぶ」ことを考える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    player_choice <span class="op">=</span> choice(boxes)
+    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
+    <span class="bu">print</span>(answer, player_choice, boxes2)</code></pre></div>
+<p>6番目のセルにテストコードを書いて実行しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  change(boxes)</code></pre></div>
+<p>種を固定していないため、実行するたびに異なるが、例えば以下のような結果が得られるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">A A [<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>]
+C A [<span class="st">&#39;B&#39;</span>]
+B A [<span class="st">&#39;C&#39;</span>]
+B A [<span class="st">&#39;C&#39;</span>]
+B C [<span class="st">&#39;A&#39;</span>]
+C B [<span class="st">&#39;A&#39;</span>]
+A A [<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>]
+A C [<span class="st">&#39;B&#39;</span>]
+C A [<span class="st">&#39;B&#39;</span>]
+B B [<span class="st">&#39;A&#39;</span>, <span class="st">&#39;C&#39;</span>]</code></pre></div>
+<p>最初が正解の箱、二番目がプレイヤーの選んだ箱、三番目のリストが、司会者が開ける可能性のある箱である。司会者が開ける箱は、プレイヤーが選んだ箱でも、正解の箱でもないことに注意しよう。さて、<code>boxes2</code>から<code>choice</code>すれば、司会者が開ける箱が得られる。それを<code>chair_choice</code>としよう。 プレイヤーは、全部の箱のうち、「最初に自分が選んだ箱」でも、「司会者が開けた箱」でもないものを選ぶ。今回はそれは一つに決まるが、後の拡張のために。その候補リストを作ろう。先ほどの「司会者が開ける可能性の箱リスト」と同様に作ることができる。<code>change</code>を以下のように書き換えよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    player_choice <span class="op">=</span> choice(boxes)
+    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
+    chair_choice <span class="op">=</span> choice(boxes2)
+    boxes3 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, chair_choice), boxes))
+    <span class="bu">print</span>(player_choice, chair_choice, boxes3)</code></pre></div>
+<p>実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
+<span class="ex">B</span> A [<span class="st">&#39;C&#39;</span>]
+<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
+<span class="ex">B</span> A [<span class="st">&#39;C&#39;</span>]
+<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
+<span class="ex">B</span> C [<span class="st">&#39;A&#39;</span>]
+<span class="ex">A</span> B [<span class="st">&#39;C&#39;</span>]
+<span class="ex">A</span> B [<span class="st">&#39;C&#39;</span>]
+<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
+<span class="ex">B</span> C [<span class="st">&#39;A&#39;</span>]</code></pre></div>
+<p>最初がプレイヤーが選んだ箱、次が司会者が開けた箱、最後が「プレイヤーが選択を変える箱の候補リスト」である。 それぞれに重複がないことを確認せよ。この「候補リスト」から<code>choice</code>したものがプレイヤーの最終選択である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    player_choice <span class="op">=</span> choice(boxes)
+    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
+    chair_choice <span class="op">=</span> choice(boxes2)
+    boxes3 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, chair_choice), boxes))
+    player_choice <span class="op">=</span> choice(boxes3)
+    <span class="cf">return</span> player_choice <span class="op">==</span> answer</code></pre></div>
+<p>先ほど作成した<code>calc_prob</code>を、Change派の確率も計算するように修正しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc_prob(n):
+    seed(<span class="dv">1</span>)
+    boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+    k <span class="op">=</span> <span class="dv">0</span>
+    c <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
+        <span class="cf">if</span> keep(boxes):
+            k <span class="op">+=</span> <span class="dv">1</span>
+        <span class="cf">if</span> change(boxes):
+            c <span class="op">+=</span> <span class="dv">1</span>
+    <span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))
+    <span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
+<p>以下を実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc_prob(<span class="dv">10000</span>)</code></pre></div>
+<p>Keep派とChange派、どちらが正解確率が高いだろうか？</p>
+<h3 id="課題1-箱がつの場合">課題1: 箱が４つの場合</h3>
+<p><code>calc_prob</code>の中で定義している<code>boxes</code>を、<code>boxes = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;, &quot;D&quot;]</code>とすると、箱が4つバージョンのモンティ・ホール問題となる。 この場合は、</p>
+<ul>
+<li>4つ箱が用意され、一つだけ正解の箱がある</li>
+<li>プレイヤーは最初に一つ箱を選ぶ</li>
+<li>司会者は、プレイヤーが選んでいない箱の中から、正解でない箱を一つランダムに開ける</li>
+<li>プレイヤーは最初に選んだ箱から、残りの箱のどれかに選択を変更することができる</li>
+</ul>
+<p>というルールとなる。さて、Keep派とChange派、どちらが得かはもうわかるだろうが、どちらがどれだけ得か、理論計算できるだろうか？ まず理論計算してから、実際にシミュレーションし、予想が当たっていたか考察せよ。</p>
+<h2 id="パーコレーション">パーコレーション</h2>
+<p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。 いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)<span class="math inline">\(C\)</span>を知りたい。渡れる確率<span class="math inline">\(C\)</span>は確率pの関数となる。p=0の場合、通行可能な道が全くないのだから絶対に渡れない。したがって<span class="math inline">\(C(0)=0\)</span>である。また、p=1なら、すべての道が通行可能だから、絶対に向こう側に渡ることができる。すなわち<span class="math inline">\(C(1)=1\)</span>である。また、pが大きいほど、渡れる確率も大きくなると考えられる。したがって、<span class="math inline">\(C(p)\)</span>は<span class="math inline">\(p\)</span>に関して単調増加であると予想されるが、具体的にどんな関数形になるか想像できるだろうか。これは、ボンド・パーコレーションと呼ばれるモデルとなる。</p>
+<p>同様に、正方形に区切られたパネルがあるとする。その区画が、確率pで通行可能、1-pで通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。</p>
+<div class="figure">
+<img src="fig/percolation.png" alt="percolation.png" />
+<p class="caption">percolation.png</p>
+</div>
+<p>パーコレーションは、相転移を示す最も簡単なもののひとつだ。ボンド・パーコレーションはプログラムがやや面倒なので、サイト・パーコレーションについてシミュレーションしてみよう。</p>
+<h3 id="状態の生成">状態の生成</h3>
+<h3 id="union-findアルゴリズム">Union-Findアルゴリズム</h3>
+<h2 id="迷路">迷路</h2>
+<p>せっかくUnion-Findアルゴリズムを学んだので、それを別の問題に応用してみよう。ここでは迷路作成アルゴリズムにUnion-Findアルゴリズムを使ってみる。</p>
+<p>TODO: クラスタリングによる迷路生成の説明</p>
+<h2 id="余談確率の難しさ">余談：確率の難しさ</h2>
+<p>確率が絡んだ問題は、時として直観と合わない結果を生む。そんな問題は(厳密にはパラドックスではないが)パラドックスと呼ばれる。 有名なのは「誕生日のパラドックス」であろう。今、うるう年は考えず、一年が365日だとしよう。また、誕生日は一様であるとする。 さて、30人いるクラスで、誕生日が同じペアが存在する確率はどのくらいだろうか？ ちょっと想像してから、こんなコードを書いて確認してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
+    r <span class="op">=</span> <span class="fl">1.0</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
+        r <span class="op">*=</span> (<span class="dv">365</span><span class="op">-</span>i)<span class="op">/</span><span class="dv">365</span>
+    <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">-</span> r
+
+p(<span class="dv">30</span>)</code></pre></div>
+<p>思ったより大きかったのではないだろうか？逆に、直観より確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。 これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
+<ul>
+<li>複数種類の絵柄のあるカードがあり、お金を払うとそのどれかがランダムで手に入る</li>
+<li>複数の絵柄をすべて揃えたら、景品が当たる</li>
+</ul>
+<p>というものである。例えば、カードが10種類あり、一枚100円とする。全種類揃えるのに必要な経費の期待値はどのくらいか、すぐにわかるだろうか？ やはり少し想像してから計算してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
+    r <span class="op">=</span> <span class="fl">0.0</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
+        r <span class="op">+=</span> n<span class="op">/</span>(i<span class="op">+</span><span class="dv">1</span>)
+    <span class="cf">return</span> r
+
+p(<span class="dv">10</span>)</code></pre></div>
+<p>「10種類ある絵柄が等確率で当たり、10種類揃えたら景品を渡す」という文面に嘘がなく、確率操作などをせずその通りに実施するとしても、これは違法となる。なぜ違法とすべきなのか、考えてみると面白いであろう。</p>
+<p>モンティ・ホール問題でも、直観と乖離した結果に多くの人が騙された。間違った人々の中には数学者もいて、新聞に意見を投書して紹介され、のちに恥をかいたようだ。現在はネット社会であり、何か肩書を持った人が間違ったことを言うと多くの人の目に触れ、昔より炎上しやすい。この問題が教えてくれる本当の教訓は「何か発言するときは気を付けよう」ということかもしれない。</p>
+</body>
+</html>
