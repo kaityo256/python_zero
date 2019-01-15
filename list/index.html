@@ -44,9 +44,10 @@ code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* Com
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
   <link rel="stylesheet" href="https://gist.githubusercontent.com/griffin-stewie/9755783/raw/13cf5c04803102d90d2457a39c3a849a2d2cc04b/github.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
-<h1 id="リストとタプル">リストとタプル</h1>
+<h1 id="リストとタプル-html版">リストとタプル <a href="https://kaityo256.github.io/python_zero/list/">HTML版</a></h1>
 <p>本講の目的。</p>
 <ul>
 <li>リストやタプルの扱いに慣れる</li>
@@ -126,10 +127,30 @@ x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x
 <p class="caption">koch.png</p>
 </div>
 <p>名前を知らなくても、その形は見たことがあるかと思う。この曲線は、以下のような手続きで作成される。</p>
-<p>TODO: コッホ曲線の作り方</p>
-<p>今回は、リストとタプルを駆使してコッホ曲線を描くプログラムを組んでみよう。</p>
+<ol style="list-style-type: decimal">
+<li>まず線分を用意する</li>
+<li>線分を三等分する</li>
+<li>中央の線分を、正三角形の形に盛り上げる</li>
+</ol>
+<p>この手続きをすると、一本の線分が4本の線分に変換される。こうしてできた4本の線分のそれぞれに同様な手続きを繰り返すと、コッホ曲線ができあがる。</p>
+<div class="figure">
+<img src="fig/koch2.png" alt="koch2.png" />
+<p class="caption">koch2.png</p>
+</div>
+<p>コッホ曲線は、再帰を使って描画するのが自然だが、今回はリストとタプルを駆使してコッホ曲線を描くプログラムを組んでみよう。</p>
+<p>コッホ曲線とは、すべてつながった線分から構成されている。したがって、ある点から、次の点へのベクトルの集合とみなすことができる。さて、あるベクトルが与えられたとき、それをどのように変換したいかを表現したベクトルのリストを与えて変換することを考える。</p>
+<div class="figure">
+<img src="fig/koch3.png" alt="koch3.png" />
+<p class="caption">koch3.png</p>
+</div>
+<p>コッホ曲線では、最初にx方向に伸びた長さ1の線分がある。これを二次元ベクトル<span class="math inline">\((1,0)\)</span>で表現する。これを入力したら<span class="math inline">\((1/3, 0), (1/6, \sqrt{3}/6), (1/6, -\sqrt{3}/6), (1/3,0)\)</span>の4つのベクトルに変換したい。ここで、最初に与えたベクトルと、変換で与えたベクトルの始点から終点の長さが等しいことに注意せよ。ただ、変換リストを、長さを考えながら与えるのは面倒だ。変換リストとして<span class="math inline">\((1, 0), (1/2, \sqrt{3}/2), (1/2, -\sqrt{3}/2), (1,0)\)</span>を与えたら、長さを自動調節するようにしよう。 また、傾いたベクトルを入力したら、傾いた4つのベクトルにする。</p>
+<div class="figure">
+<img src="fig/koch3.png" alt="koch3.png" />
+<p class="caption">koch3.png</p>
+</div>
+<p>このような変換プログラムを書いたら、最初にタプルのリスト<code>[(1,0)]</code>を入力すると、それを変換した4つのタプルのリストに変換され、さらにそれを変換したら16個のタプルのリストに変換され・・・と、この処理を繰り返すことでコッホ曲線を表現するベクトルのリストを作ることができる。以下、そのプログラムを少しずつ作っていこう。</p>
 <h3 id="タプルのリスト">タプルのリスト</h3>
-<p>まずは変換ベクトルのリストの、始点と終点を結ぶベクトルの長さを求めよう。</p>
+<p>まず、長さの自動調節のため、変換ベクトルのリストが与えられたら、始点と終点を結ぶベクトルの長さを求めよう。変換ベクトルリストは、タプルのリストとして与える。これは要するに、リストに入っているタプルのx座標、y座標をそれぞれ合計すればよい。新しいノートブックを開き、最初と次のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> sqrt
 <span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
 <span class="im">import</span> IPython</code></pre></div>
@@ -139,14 +160,24 @@ x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x
         x <span class="op">+=</span> dx
         y <span class="op">+=</span> dy
     <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</code></pre></div>
+<p>それぞれのセルを実行したら、意図通りに実行されるかテストしてみよう。タプルが一つだけ含まれるリストが与えられたら、そのベクトルの長さが返ってくるはずである。三番目のセルに以下を入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>)]
 <span class="bu">print</span>(length(a)) <span class="co"># =&gt; 1.4142135623730951</span></code></pre></div>
+<p>次に、複数のベクトルが与えられたら、その合成ベクトルの長さが返ってくる。例えば<span class="math inline">\((1,0)\)</span>と<span class="math inline">\((0,1)\)</span>が与えられたら、始点と終点を結ぶベクトルは<span class="math inline">\((1,1)\)</span>となるので、その長さ<span class="math inline">\(\sqrt{2}\)</span>が返る。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>)]
 <span class="bu">print</span>(length(a)) <span class="co"># =&gt; 1.4142135623730951</span></code></pre></div>
+<p>また、始点と終点が一致する場合、つまり閉曲線が与えられたら、長さは0である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)]
 <span class="bu">print</span>(length(a))  <span class="co">#=&gt; 0.0</span></code></pre></div>
-<p>確認が終わったら、テスト用のセル(<code>print</code>を含むもの)は削除して良い。</p>
+<p>このように、値が0になるような特殊なケースをテストしておくのは重要である。確認が終わったら、テスト用のセル(<code>print</code>を含むもの)は削除して良い。</p>
 <h3 id="タプルからリストを作成">タプルからリストを作成</h3>
+<p>次に、入力ベクトルを、変換ベクトルリストに基づいて変換することを考えよう。処理は以下の通りである。</p>
+<ul>
+<li>入力ベクトルの長さと変換ベクトルリストの長さの比<code>scale</code>を求める</li>
+<li>入力ベクトルの傾き角度<span class="math inline">\(\theta\)</span>の<span class="math inline">\(sin\)</span>と<span class="math inline">\(cos\)</span>の値を求める</li>
+<li>変換ベクトルリストに含まれるベクトルそれぞれについて、<code>scale</code>倍して<span class="math inline">\(\theta\)</span>だけ傾けたものをリストに追加する</li>
+</ul>
+<p>以上を実現する以下のコードを、3つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> convert(a, b):
     ax, ay <span class="op">=</span> a
     alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)
@@ -161,36 +192,52 @@ x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x
         ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by
         r.append((nx, ny))
     <span class="cf">return</span> r</code></pre></div>
+<p>上に書いた処理そのままなので、難しくはないと思う。<code>for (bx, by) in b</code>は、リストに含まれる要素を<code>(bx, by)</code>というタプルで受けるという意味だ。より冗長に書けば、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> bi <span class="kw">in</span> b:
+  bx, by <span class="op">=</span> bi</code></pre></div>
+<p>というような意味である。さて、意図通りの動作をするか確認しよう。コッホ曲線は60度傾いており、確認が面倒なので、まずは90度傾いた変換ベクトルリストを食わせて実行してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">0</span>)
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 convert(a,b) <span class="co">#=&gt; [(0.5, 0.5), (-0.5, 0.5)]</span></code></pre></div>
+<p>入力ベクトルと出力ベクトルの、始点と終点を結ぶベクトルが一致しており、かつ出力ベクトルと変換ベクトルリストが相似になっていることを確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">1</span>)
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 convert(a,b) <span class="co">#=&gt; [(-0.5, 0.5), (-0.5, -0.5)]</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">1</span>)
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 convert(a,b) <span class="co">#=&gt; [(0.0, 1.0), (-1.0, 0.0)]</span></code></pre></div>
-<p>TODO: それぞれの図解</p>
+<p>それぞれの図解すると以下の通り。</p>
+<div class="figure">
+<img src="fig/koch4.png" alt="koch4.png" />
+<p class="caption">koch4.png</p>
+</div>
+<p>ここまで出来たら、テスト用のセルは削除してよい。</p>
 <h3 id="タプルのリストそれぞれに適用">タプルのリストそれぞれに適用</h3>
+<p>今、「ベクトルをタプルとして与えられたら、変換ベクトルリストに従って、タプルのリストに変換する関数」を<code>convert</code>として実装した。これを使えば、「タプルのリスト」が与えられたとき、それぞれのタプルに<code>convert</code>を適用した結果をまとめたリストを作る関数<code>apply</code>は簡単に実装できる。以下を4つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> <span class="bu">apply</span>(a, b):
     r <span class="op">=</span> []
     <span class="cf">for</span> i <span class="kw">in</span> a:
         r <span class="op">+=</span> convert(i, b)
     <span class="cf">return</span> r</code></pre></div>
+<p>入力したら動作確認しよう。<code>apply</code>はタプルのリストを引数に取る関数である。なので、まずはタプルを一つだけ含むリストを食わせてみよう。<code>convert</code>の実行結果をリストに入れたような結果が返ってくるはずである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 <span class="bu">apply</span>(a,b) <span class="co"># =&gt; [(0.5, 0.5), (-0.5, 0.5)]</span></code></pre></div>
+<p>次に、複数のタプルを含むリストを食わせてみよう。一つのベクトルを二つのベクトルに変換するので、二つ食わせれば四つのベクトルになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 <span class="bu">apply</span>(a,b) <span class="co"># =&gt; [(0.5, 0.5), (-0.5, 0.5), (-0.5, 0.5), (-0.5, -0.5)]</span></code></pre></div>
-<p>TODO: 図解</p>
+<p>さて、タプルのリストを処理できるようになったことで、「一度<code>apply</code>を適用した結果に、さらに<code>apply</code>を適用する」ということができるようになった。以下のコードを実行し、結果が正しいか考察せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)]
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):
     a <span class="op">=</span> <span class="bu">apply</span>(a,b)
 <span class="bu">print</span>(a)</code></pre></div>
-<p><code>range</code>の中の数字を増やしてみよ。</p>
+<p>また、<code>range</code>の中の数字を増やしてみよ。<code>print(len(a))</code>を表示し、想定通りの長さのリストになっているか確認せよ。</p>
+<p>動作確認ができたら、テスト用のコードは削除してよい。</p>
 <h3 id="描画">描画</h3>
+<p>ベクトルのリストが与えられたら、描画するのは難しくない。与えられたベクトルの通りに線を描画すればよい。ただし、線を描画したら、次に描画する始点を、現在の終点に取り直す必要がある。</p>
+<p>以下のプログラムを、5つ目と6つ目のセルに入力し、実行してみよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line(draw, a, s <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">0</span>)):
     x1, y1 <span class="op">=</span> s
     <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:
@@ -208,8 +255,14 @@ b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</spa
 draw_line(draw, a)
 im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p><code>range</code>の数字を増やしてみよ。</p>
-<p>入力として正三角形を与える。</p>
+<p>ちゃんと、コッホ曲線の一段階目の変換ができただろうか。できていたら、<code>range</code>の数字を増やしてみよ。最大でも5くらいにとどめておくこと。</p>
+<h3 id="課題1">課題1</h3>
+<p><code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
+<p>例えば、繰り返し数を<code>range(1)</code>としてから、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</code></pre></div>
+<p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>range(5)</code>に変えて描画し、想像と合致していたか確認せよ。</p>
+<h3 id="任意課題">任意課題</h3>
+<p>コッホ曲線の入力として正三角形を与えることもできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
 im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(im)
@@ -222,13 +275,20 @@ b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</spa
 draw_line(draw, a, (size<span class="op">/</span><span class="dv">6</span>,size<span class="op">/</span><span class="dv">4</span>)) <span class="co"># 修正</span>
 im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<h3 id="課題1">課題1</h3>
-<p><code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
-<p>例えば、繰り返し数を<code>range(1)</code>としてから、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</code></pre></div>
-<p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>range(5)</code>に変えて描画し、想像と合致していたか確認せよ。</p>
+<p>実行前に、どんな図形になるか、想像してから実行せよ。今回は変換を5回繰り返してできる図形を表示したが、変換を無限回繰り返した場合、この図形の周囲の長さと面積がそれぞれどうなるか考えよ。</p>
 <h2 id="enumerateについて">enumerateについて</h2>
+<p><code>for x in a:</code>という構文で、リスト<code>a</code>のそれぞれの要素<code>x</code>について処理をすることができる。しかし、たまに「要素の値」と、「その要素がリストの何番目にあるか」の情報が両方欲しい場合がある。その時に使うのが<code>enumerate</code>だ。</p>
+<p>例えば、こんなことができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(a):
+  <span class="bu">print</span>(i, x)</code></pre></div>
+<p>実行結果はこうなる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">0</span> A
+<span class="dv">1</span> B
+<span class="dv">2</span> C</code></pre></div>
+<p>これを念頭において、コッホ曲線の線分に色を塗るプログラムを組んでみよう。</p>
 <h3 id="課題2">課題2</h3>
+<p>以下のプログラムを空いているセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line_color(draw, a, c, s <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">0</span>)):
     x1, y1 <span class="op">=</span> s
     clen <span class="op">=</span> <span class="bu">len</span>(c)
@@ -242,15 +302,20 @@ im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, 
 draw <span class="op">=</span> ImageDraw.Draw(im)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]
-c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>)]
+c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>)] <span class="co"># 色リストの指定</span>
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
     a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line_color(draw, a, c)
 im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>色リストの指定部分を、以下のように変えたらどうなるか試してみよ。</p>
+<p>二色の場合</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>)]</code></pre></div>
+<p>三色の場合</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>),(<span class="dv">0</span>,<span class="dv">255</span>,<span class="dv">0</span>)]</code></pre></div>
+<p>色の指定と、変換ベクトルリストをいろいろ変えてみて、オリジナルのフラクタル図形を作成せよ。</p>
 <h2 id="pythonらしく書く">Pythonらしく書く</h2>
-<p>TODO: リストの内包表記を使って描く</p>
+<p>TODO: リストの内包表記の説明</p>
 <h3 id="内包表記">内包表記</h3>
 <p>リストの内包表記は「後ろから」読む。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
@@ -280,7 +345,7 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
     <span class="cf">return</span> b</code></pre></div>
 <p><code>bx, by</code>や<code>r</code>が消えた。</p>
 <h3 id="reduce">reduce</h3>
-<p>reduceの説明と<code>lambda</code>の説明。</p>
+<p>TODO: <code>reduce</code>と<code>lambda</code>の説明。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> length(a):
   (x, y) <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> x, y: (x[<span class="dv">0</span>]<span class="op">+</span>y[<span class="dv">0</span>], x[<span class="dv">1</span>]<span class="op">+</span>y[<span class="dv">1</span>]),a)
   <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</code></pre></div>

@@ -35,7 +35,7 @@ def main():
     draw = ImageDraw.Draw(im)
     a = [(size, 0)]
     b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
-    for _ in range(5):
+    for _ in range(2):
         a = [convert(i, b) for i in a]
         a = reduce(lambda x, y: x + y, a)
     draw_line(draw, a)
