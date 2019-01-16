@@ -1,6 +1,6 @@
 TARGET=$(shell ls */README.md | sed 's/README.md/index.html/')
 CSS=https://cdn.jsdelivr.net/npm/@ajusa/lit@latest/dist/lit.css
-PANDOC=pandoc -s --mathjax -c $(CSS)
+PANDOC=pandoc -s --mathjax -t html --template=template
 
 all: $(TARGET) index.html
 
