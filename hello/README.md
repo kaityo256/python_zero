@@ -1,4 +1,4 @@
-# Google Colabの使い方とPythonの基礎 [(HTML)](https://kaityo256.github.io/python_zero/hello/)
+# [Google Colabの使い方とPythonの基礎](https://kaityo256.github.io/python_zero/hello/)
 
 ## 本講の目的
 

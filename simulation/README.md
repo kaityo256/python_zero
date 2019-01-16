@@ -1,4 +1,4 @@
-# 数値シミュレーション [(HTML)](https://kaityo256.github.io/python_zero/simulation/)
+# [数値シミュレーション](https://kaityo256.github.io/python_zero/simulation/)
 
 * 弾道計算1: 抵抗なし
 * 弾道計算2: 抵抗あり

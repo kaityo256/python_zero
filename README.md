@@ -1,4 +1,4 @@
-# ゼロから学ぶPython [(HTML)](https://kaityo256.github.io/python_zero/)
+# [ゼロから学ぶPython](https://kaityo256.github.io/python_zero/)
 
 ## この記事について
 
@@ -25,6 +25,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * Chainerやっちゃう？
 
 ## [Google Colabの使い方とPythonの基礎](hello/README.md)
+
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 * 余談：タッチタイピングについて
@@ -72,7 +73,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * numpyとは？
 * SVDを用いた画像圧縮
 
-## [Pythonが動く仕組み](howtowork/README.md) 
+## [Pythonが動く仕組み](howtowork/README.md)
 
 * コンピュータはなぜ動くのか？
 * Pythonが動く仕組み
@@ -82,6 +83,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * 余談：機械がやるべきこと、やるべきでないこと
 
 ## [計算量とアルゴリズム1](complexity/README.md)
+
 TODO: 構成を変更中。内容を目次に追随させること
 
 * 計算のオーダー(ランダウ表記)

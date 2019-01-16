@@ -1,4 +1,4 @@
-# 計算量とアルゴリズム [(HTML)](https://kaityo256.github.io/python_zero/complexity/)
+# [計算量とアルゴリズム](https://kaityo256.github.io/python_zero/complexity/)
 
 本稿で学ぶこと
 
