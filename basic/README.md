@@ -1,4 +1,4 @@
-# 条件分岐と繰り返し処理1
+# 条件分岐と繰り返し処理1 [(HTML)](https://kaityo256.github.io/python_zero/basic/)
 
 ## 本講で学ぶこと
 

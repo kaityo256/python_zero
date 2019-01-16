@@ -1,4 +1,4 @@
-# リストとタプル [HTML版](https://kaityo256.github.io/python_zero/list/)
+# リストとタプル [(HTML)](https://kaityo256.github.io/python_zero/list/)
 
 本講の目的。
 

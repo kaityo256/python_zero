@@ -1,4 +1,4 @@
-# 条件分岐と繰り返し処理2
+# 条件分岐と繰り返し処理2 [(HTML)](https://kaityo256.github.io/python_zero/while/)
 
 * 前回の復習
 * 変数とは何か？

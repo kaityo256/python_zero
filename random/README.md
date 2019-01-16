@@ -1,4 +1,4 @@
-# 乱数を使ったプログラム
+# 乱数を使ったプログラム [(HTML)](https://kaityo256.github.io/python_zero/random/)
 
 * 疑似乱数とモンテカルロ法
 * 余談：疑似乱数とゲーム
