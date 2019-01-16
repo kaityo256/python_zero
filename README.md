@@ -24,13 +24,12 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * ファイル入出力、文字列処理
 * Chainerやっちゃう？
 
-## [Google Colabの使い方とPythonの基礎](hello/README.md) [(HTML)](https://kaityo256.github.io/python_zero/hello)
-
+## [Google Colabの使い方とPythonの基礎](hello/README.md)
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 * 余談：タッチタイピングについて
 
-## [条件分岐と繰り返し処理1](basic/README.md) [(HTML)](https://kaityo256.github.io/python_zero/basic)
+## [条件分岐と繰り返し処理1](basic/README.md)
 
 * 組み込み型
 * 関数の宣言と利用方法
@@ -39,14 +38,14 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * ニュートン法
 * 余談：バグについて
 
-## [条件分岐と繰り返し処理2](while/README.md) [(HTML)](https://kaityo256.github.io/python_zero/while)
+## [条件分岐と繰り返し処理2](while/README.md) 
 
 * 変数とは何か？
 * while文
 * Collatz問題
 * 余談：数論について
 
-## [リストやタプルの使い方](list/README.md) [(HTML)](https://kaityo256.github.io/python_zero/list)
+## [リストやタプルの使い方](list/README.md)
 
 * list, tupple, dict, setなど。
 * 浅いコピーと深いコピー
@@ -73,7 +72,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * numpyとは？
 * SVDを用いた画像圧縮
 
-## [Pythonが動く仕組み](howtowork/README.md) [(HTML)](https://kaityo256.github.io/python_zero/howtowork)
+## [Pythonが動く仕組み](howtowork/README.md) 
 
 * コンピュータはなぜ動くのか？
 * Pythonが動く仕組み
@@ -82,8 +81,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * 仮想マシンハック
 * 余談：機械がやるべきこと、やるべきでないこと
 
-## [計算量とアルゴリズム1](complexity/README.md) [(HTML)](https://kaityo256.github.io/python_zero/complexity)
-
+## [計算量とアルゴリズム1](complexity/README.md)
 TODO: 構成を変更中。内容を目次に追随させること
 
 * 計算のオーダー(ランダウ表記)
@@ -100,7 +98,7 @@ TODO: 構成を変更中。内容を目次に追随させること
 * 最短経路探索とダイクストラ法
 * 巡回セールスマン問題
 
-## [再帰処理](recursion/README.md) [(HTML)](https://kaityo256.github.io/python_zero/recursion)
+## [再帰処理](recursion/README.md)
 
 * 再帰呼び出しとは
 * 割り箸ゲーム
@@ -109,7 +107,7 @@ TODO: 構成を変更中。内容を目次に追随させること
 * 木構造の編集
 * 余談：エレファントな解法
 
-## [乱数を使ったプログラム](random/README.md) [(HTML)](https://kaityo256.github.io/python_zero/random)
+## [乱数を使ったプログラム](random/README.md)
 
 * 疑似乱数とモンテカルロ法
 * 余談：疑似乱数とゲーム
@@ -118,7 +116,7 @@ TODO: 構成を変更中。内容を目次に追随させること
 * 迷路
 * 余談：確率の難しさ
 
-## [数値シミュレーション](simulation/README.md) [(HTML)](https://kaityo256.github.io/python_zero/simulation)
+## [数値シミュレーション](simulation/README.md)
 
 * 弾道計算: 抵抗がない場合
 * 弾道計算: 抵抗がある場合
