@@ -75,7 +75,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>余談：疑似乱数とゲーム</li>
 <li>モンティ・ホール問題</li>
 <li>パーコレーション</li>
-<li>迷路</li>
 <li>余談：確率の難しさ</li>
 </ul>
 <h2 id="疑似乱数とモンテカルロ法">疑似乱数とモンテカルロ法</h2>
@@ -249,18 +248,187 @@ B B [<span class="st">&#39;A&#39;</span>, <span class="st">&#39;C&#39;</span>]</
 </ul>
 <p>というルールとなる。さて、Keep派とChange派、どちらが得かはもうわかるだろうが、どちらがどれだけ得か、理論計算できるだろうか？ まず理論計算してから、実際にシミュレーションし、予想が当たっていたか考察せよ。</p>
 <h2 id="パーコレーション">パーコレーション</h2>
-<p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。 いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)<span class="math inline">\(C\)</span>を知りたい。渡れる確率<span class="math inline">\(C\)</span>は確率pの関数となる。p=0の場合、通行可能な道が全くないのだから絶対に渡れない。したがって<span class="math inline">\(C(0)=0\)</span>である。また、p=1なら、すべての道が通行可能だから、絶対に向こう側に渡ることができる。すなわち<span class="math inline">\(C(1)=1\)</span>である。また、pが大きいほど、渡れる確率も大きくなると考えられる。したがって、<span class="math inline">\(C(p)\)</span>は<span class="math inline">\(p\)</span>に関して単調増加であると予想されるが、具体的にどんな関数形になるか想像できるだろうか。これは、ボンド・パーコレーションと呼ばれるモデルとなる。</p>
-<p>同様に、正方形に区切られたパネルがあるとする。その区画が、確率pで通行可能、1-pで通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。</p>
 <div class="figure">
 <img src="fig/percolation.png" alt="percolation.png" />
 <p class="caption">percolation.png</p>
 </div>
-<p>パーコレーションは、相転移を示す最も簡単なもののひとつだ。ボンド・パーコレーションはプログラムがやや面倒なので、サイト・パーコレーションについてシミュレーションしてみよう。</p>
+<p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)<span class="math inline">\(C\)</span>を知りたい。渡れる確率<span class="math inline">\(C\)</span>は確率pの関数となる。当然、<span class="math inline">\(p\)</span>が小さければ渡れる確率は低く、大きければ渡れる確率は高くなると思われるが、どんな関数になるか想像できるだろうか？</p>
+<p>いま、正方格子の「辺」を通ることを考えたが、これはボンド・パーコレーションと呼ばれるモデルとなる。同様に、正方形に区切られたパネルがあるとする。その区画が、確率<span class="math inline">\(p\)</span>で通行可能、<span class="math inline">\(1-p\)</span>で通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。</p>
+<p>この「向こう岸に渡れる確率」だが、十分大きなシステムでは、「<span class="math inline">\(p\)</span>がある臨界値<span class="math inline">\(p_c\)</span>未満ではほぼ確実に渡ることができず、<span class="math inline">\(p_c\)</span>より大きければほぼ確実に渡ることができる」という振る舞いを見せる。つまり、系の振る舞いがパラメータのある一点を境に大きく変化する。このように、あるパラメータを変化させていったときに、ある点で系の性質が大きく変化することを <strong>相転移(Phase Transigion)</strong> と呼ぶ。パーコレーションは、相転移を示す最も簡単なモデルのひとつだ。身近な相転移としては、水の沸騰などが挙げられる。水を一気圧の条件で温度を徐々に挙げていくと、摂氏100度で沸騰し、水蒸気になる。水も水蒸気も水分子から構成されており、それは全く変化していない。しかし、水分子の集団としての振る舞いが大きく変化するのである。0度以下に冷やすと凍るのも相転移である。</p>
+<p>TODO: 相転移の説明の図</p>
+<p>ここでは、サイト・パーコレーションについてシミュレーションしてみよう。</p>
 <h3 id="状態の生成">状態の生成</h3>
+<p>正方格子上に確立<span class="math inline">\(p\)</span>で「玉」をばらまくプログラムを作ろう。それぞれの要素が確率<span class="math inline">\(p\)</span>で<code>True</code>、そうでない場合は<code>False</code>となるような二次元のリストを作る。</p>
+<p>まずは必要なモジュールをインポートしよう。最初のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+<span class="im">import</span> IPython
+<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
+<p>次に、一辺のサイズ(<code>size</code>)と確率(<code>p</code>)を受け取り、それぞれのサイトに確率<span class="math inline">\(p\)</span>で玉をばらまくような関数<code>make_lattice</code>を作る。以下を二番目のセルに入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_lattice(size, p):
+    lattice <span class="op">=</span> [[<span class="va">False</span>] <span class="op">*</span> size <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(size)]
+    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(size):
+        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(size):
+            lattice[x][y] <span class="op">=</span> random.random() <span class="op">&lt;</span> p
+    <span class="cf">return</span> lattice</code></pre></div>
+<p>動作確認してみよう。三番目のセルに以下を入力、実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_lattice(<span class="dv">2</span>,<span class="fl">0.5</span>)</code></pre></div>
+<p>実行するたびに結果が異なるが、例えばこんな結果が得られるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="va">False</span>, <span class="va">True</span>], [<span class="va">False</span>, <span class="va">True</span>]]</code></pre></div>
+<p>2x2の二次元配列で、各要素が確率0.5で<code>True</code>になっていると思う。ここで安心して次に行かず、 確率を0にしたら必ず<code>False</code>だけに、1にしたらかならず<code>True</code>だけになることも確認しておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_lattice(<span class="dv">4</span>,<span class="dv">0</span>)
+make_lattice(<span class="dv">4</span>,<span class="dv">1</span>)</code></pre></div>
+<p>極端な入力値(ここでは0や1)について振る舞いがよくわかっている場合、そこを確認するのは極めて重要である。ここでテストをおざなりにする人は、ちゃんとテストする人に比べて生産性に桁で違いが出てしまう。プログラムを書いたら、しつこいほどテストをしよう。</p>
+<p>さて、<code>make_lattice</code>のテストが完了したら、三番目のテスト用のセルは削除して良い。</p>
+<h3 id="状態の描画">状態の描画</h3>
+<p>二次元正方格子にランダムに「玉」をばらまいた。ではそれを可視化してみよう。</p>
+<p>三番目、四番目のセルに以下のプログラムを入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_sites(lattice, g, draw):
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    <span class="cf">for</span> x, row <span class="kw">in</span> <span class="bu">enumerate</span>(lattice):
+        <span class="cf">for</span> y, site <span class="kw">in</span> <span class="bu">enumerate</span>(row):
+            <span class="cf">if</span> <span class="kw">not</span> site:
+                <span class="cf">continue</span>
+            ix <span class="op">=</span> x <span class="op">*</span> g
+            iy <span class="op">=</span> y <span class="op">*</span> g
+            pos <span class="op">=</span> (ix<span class="op">+</span><span class="dv">1</span>, iy<span class="op">+</span><span class="dv">1</span>, ix<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>, iy<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>)
+            draw.ellipse(pos, fill<span class="op">=</span>(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_all(lattice):
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    g <span class="op">=</span> <span class="dv">16</span>
+    s <span class="op">=</span> size <span class="op">*</span> g
+    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (s, s), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
+    draw <span class="op">=</span> ImageDraw.Draw(im)
+    black <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+    draw.rectangle((<span class="dv">0</span>, <span class="dv">0</span>, s<span class="op">-</span><span class="dv">1</span>, s<span class="op">-</span><span class="dv">1</span>), outline<span class="op">=</span>black)
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(size):
+        draw.line((<span class="dv">0</span>, i<span class="op">*</span>g, s, i<span class="op">*</span>g), fill<span class="op">=</span>black)
+        draw.line((i<span class="op">*</span>g, <span class="dv">0</span>, i<span class="op">*</span>g, s), fill<span class="op">=</span>black)
+    draw_sites(lattice, g, draw)
+    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>入力できたら、五つ目のセルに以下を入力し、実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
+lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
+draw_all(lattice)
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>正しく入力されていれば、32x32の正方格子に、確率0.5で赤い玉がばらまかれたはずである。実行するたびに形が変わるので見てみよう。</p>
+<h3 id="色の描画">色の描画</h3>
+<p>さて、この後「上下左右に隣接したセルは同じグループとして、同じグループは同じ色に塗る」という処理をするのだが、その前に色を塗る処理だけ先に作っておこう。 このグループは「クラスター」と呼ばれる。よくネット上で同じ趣味を持つ仲間を「○○クラスタ」などと言うが、あのクラスターである。 この同じグループは同じクラスターに属すとして、クラスター番号を得る処理を作ろう。</p>
+<p>今、セルは以下のようになっているはず。</p>
+<ol style="list-style-type: decimal">
+<li>import</li>
+<li>make_lattice</li>
+<li>draw_sites</li>
+<li>draw_all</li>
+<li>IPython.display.Image</li>
+</ol>
+<p>この状態で、二つ目と三つ目のセルの間に新たにセルを作り、以下のようなコードを入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_cluster_index(i, cluster_index):
+    <span class="cf">while</span> cluster_index[i] <span class="op">!=</span> i:
+        i <span class="op">=</span> cluster_index[i]
+    <span class="cf">return</span> i</code></pre></div>
+<p>これが何をする関数かは後で説明する。これで、セルはこうなった。</p>
+<ol style="list-style-type: decimal">
+<li>import</li>
+<li>make_lattice</li>
+<li>get_cluster_index</li>
+<li>draw_sites</li>
+<li>draw_all</li>
+<li>IPython.display.Image</li>
+</ol>
+<p>この状況で、<code>draw_sites</code>に、引数として<code>cluster_index</code>というリストを受け取るように修正しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_sites(lattice, g, draw, cluster_index): <span class="co"># 引数追加</span>
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    colors <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
+      , (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">255</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">255</span>)] <span class="co"># 追加</span>
+    <span class="cf">for</span> x, row <span class="kw">in</span> <span class="bu">enumerate</span>(lattice):
+        <span class="cf">for</span> y, site <span class="kw">in</span> <span class="bu">enumerate</span>(row):
+            <span class="cf">if</span> <span class="kw">not</span> site:
+                <span class="cf">continue</span>
+            ix <span class="op">=</span> x <span class="op">*</span> g
+            iy <span class="op">=</span> y <span class="op">*</span> g
+            ci <span class="op">=</span> x <span class="op">+</span> y <span class="op">*</span> size   <span class="co"># 追加</span>
+            c <span class="op">=</span> get_cluster_index(ci, cluster_index) <span class="co"># 追加</span>
+            c <span class="op">=</span> c <span class="op">%</span> <span class="dv">6</span> <span class="co"># 追加</span>
+            pos <span class="op">=</span> (ix<span class="op">+</span><span class="dv">1</span>, iy<span class="op">+</span><span class="dv">1</span>, ix<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>, iy<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>)
+            draw.ellipse(pos, fill<span class="op">=</span>colors[c]) <span class="co"># 修正</span></code></pre></div>
+<p>また、<code>draw_all</code>も、<code>cluster_index</code>を受け取り、それをそのまま<code>draw_sites</code>に渡すように修正しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_all(lattice, cluster_index): <span class="co"># 引数追加</span>
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    g <span class="op">=</span> <span class="dv">16</span>
+    s <span class="op">=</span> size <span class="op">*</span> g
+    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (s, s), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
+    draw <span class="op">=</span> ImageDraw.Draw(im)
+    black <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+    draw.rectangle((<span class="dv">0</span>, <span class="dv">0</span>, s<span class="op">-</span><span class="dv">1</span>, s<span class="op">-</span><span class="dv">1</span>), outline<span class="op">=</span>black)
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(size):
+        draw.line((<span class="dv">0</span>, i<span class="op">*</span>g, s, i<span class="op">*</span>g), fill<span class="op">=</span>black)
+        draw.line((i<span class="op">*</span>g, <span class="dv">0</span>, i<span class="op">*</span>g, s), fill<span class="op">=</span>black)
+    draw_sites(lattice, g, draw, cluster_index) <span class="co"># 修正</span>
+    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>この状態で、六つ目のセルを以下のように修正、実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
+lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
+cluster_index <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(size<span class="op">*</span>size)) <span class="co"># 追加</span>
+draw_all(lattice, cluster_index) <span class="co"># 修正</span>
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>それぞれの玉に色がついたはずである。</p>
 <h3 id="union-findアルゴリズム">Union-Findアルゴリズム</h3>
-<h2 id="迷路">迷路</h2>
-<p>せっかくUnion-Findアルゴリズムを学んだので、それを別の問題に応用してみよう。ここでは迷路作成アルゴリズムにUnion-Findアルゴリズムを使ってみる。</p>
-<p>TODO: クラスタリングによる迷路生成の説明</p>
+<p>TODO: Union-Findの説明</p>
+<p>現在、セル状況はこうなっている。</p>
+<ol style="list-style-type: decimal">
+<li>import</li>
+<li>make_lattice</li>
+<li>get_cluster_index</li>
+<li>draw_sites</li>
+<li>draw_all</li>
+<li>IPython.display.Image</li>
+</ol>
+<p>この三つ目と四つ目のセルの間に、以下を入力しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> <span class="ex">connect</span>(i, j, lattice, cluster_index):
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    (ix, iy) <span class="op">=</span> i
+    (jx, jy) <span class="op">=</span> j
+    <span class="cf">if</span> size <span class="kw">in</span> (ix, iy, jx, jy):
+        <span class="cf">return</span>
+    <span class="cf">if</span> <span class="kw">not</span> lattice[ix][iy]:
+        <span class="cf">return</span>
+    <span class="cf">if</span> <span class="kw">not</span> lattice[jx][jy]:
+        <span class="cf">return</span>
+    ci <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> size
+    cj <span class="op">=</span> jx <span class="op">+</span> jy <span class="op">*</span> size
+    ci <span class="op">=</span> get_cluster_index(ci, cluster_index)
+    cj <span class="op">=</span> get_cluster_index(cj, cluster_index)
+    <span class="cf">if</span> ci <span class="op">&gt;</span> cj:
+        ci, cj <span class="op">=</span> cj, ci
+    cluster_index[cj] <span class="op">=</span> ci</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> clastering(lattice, cluster_index):
+    size <span class="op">=</span> <span class="bu">len</span>(lattice)
+    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(size):
+        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(size):
+            <span class="ex">connect</span>((x, y), (x<span class="op">+</span><span class="dv">1</span>, y), lattice, cluster_index)
+            <span class="ex">connect</span>((x, y), (x, y<span class="op">+</span><span class="dv">1</span>), lattice, cluster_index)</code></pre></div>
+<p>セル状況はこうなったはずである。</p>
+<ol style="list-style-type: decimal">
+<li>import</li>
+<li>make_lattice</li>
+<li>get_cluster_index</li>
+<li>connect</li>
+<li>clastering</li>
+<li>draw_sites</li>
+<li>draw_all</li>
+<li>IPython.display.Image</li>
+</ol>
+<p>番号がよくわからなくなったら、「ランタイム」から「再起動してすべてのセルを実行」を実行せよ。</p>
+<p>8番目のセルを以下のように修正せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
+lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
+cluster_index <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(size<span class="op">*</span>size))
+clastering(lattice, cluster_index) <span class="co"># 追加</span>
+draw_all(lattice, cluster_index)
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>ここまで正しく入力できていれば、上下左右に隣接した「玉」が同じ色で塗られたはずである。</p>
+<h3 id="相転移の確認">相転移の確認</h3>
+<p>TODO: Crossing Probabilityの計算</p>
 <h2 id="余談確率の難しさ">余談：確率の難しさ</h2>
 <p>確率が絡んだ問題は、時として直観と合わない結果を生む。そんな問題は(厳密にはパラドックスではないが)パラドックスと呼ばれる。 有名なのは「誕生日のパラドックス」であろう。今、うるう年は考えず、一年が365日だとしよう。また、誕生日は一様であるとする。 さて、30人いるクラスで、誕生日が同じペアが存在する確率はどのくらいだろうか？ ちょっと想像してから、こんなコードを書いて確認してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):

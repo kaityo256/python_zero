@@ -4,7 +4,6 @@
 * 余談：疑似乱数とゲーム
 * モンティ・ホール問題
 * パーコレーション
-* 迷路
 * 余談：確率の難しさ
 
 ## 疑似乱数とモンテカルロ法
@@ -307,24 +306,266 @@ Keep派とChange派、どちらが正解確率が高いだろうか？
 
 ## パーコレーション
 
-札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。
-いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)$C$を知りたい。渡れる確率$C$は確率pの関数となる。p=0の場合、通行可能な道が全くないのだから絶対に渡れない。したがって$C(0)=0$である。また、p=1なら、すべての道が通行可能だから、絶対に向こう側に渡ることができる。すなわち$C(1)=1$である。また、pが大きいほど、渡れる確率も大きくなると考えられる。したがって、$C(p)$は$p$に関して単調増加であると予想されるが、具体的にどんな関数形になるか想像できるだろうか。これは、ボンド・パーコレーションと呼ばれるモデルとなる。
-
-同様に、正方形に区切られたパネルがあるとする。その区画が、確率pで通行可能、1-pで通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。
-
 ![percolation.png](fig/percolation.png)
 
-パーコレーションは、相転移を示す最も簡単なもののひとつだ。ボンド・パーコレーションはプログラムがやや面倒なので、サイト・パーコレーションについてシミュレーションしてみよう。
+札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)$C$を知りたい。渡れる確率$C$は確率pの関数となる。当然、$p$が小さければ渡れる確率は低く、大きければ渡れる確率は高くなると思われるが、どんな関数になるか想像できるだろうか？
+
+いま、正方格子の「辺」を通ることを考えたが、これはボンド・パーコレーションと呼ばれるモデルとなる。同様に、正方形に区切られたパネルがあるとする。その区画が、確率$p$で通行可能、$1-p$で通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。
+
+この「向こう岸に渡れる確率」だが、十分大きなシステムでは、「$p$がある臨界値$p_c$未満ではほぼ確実に渡ることができず、$p_c$より大きければほぼ確実に渡ることができる」という振る舞いを見せる。つまり、系の振る舞いがパラメータのある一点を境に大きく変化する。このように、あるパラメータを変化させていったときに、ある点で系の性質が大きく変化することを **相転移(Phase Transigion)** と呼ぶ。パーコレーションは、相転移を示す最も簡単なモデルのひとつだ。身近な相転移としては、水の沸騰などが挙げられる。水を一気圧の条件で温度を徐々に挙げていくと、摂氏100度で沸騰し、水蒸気になる。水も水蒸気も水分子から構成されており、それは全く変化していない。しかし、水分子の集団としての振る舞いが大きく変化するのである。0度以下に冷やすと凍るのも相転移である。
+
+TODO: 相転移の説明の図
+
+ここでは、サイト・パーコレーションについてシミュレーションしてみよう。
 
 ### 状態の生成
 
+正方格子上に確立$p$で「玉」をばらまくプログラムを作ろう。それぞれの要素が確率$p$で`True`、そうでない場合は`False`となるような二次元のリストを作る。
+
+まずは必要なモジュールをインポートしよう。最初のセルに以下を入力せよ。
+
+```py
+import random
+import IPython
+from PIL import Image, ImageDraw
+```
+
+次に、一辺のサイズ(`size`)と確率(`p`)を受け取り、それぞれのサイトに確率$p$で玉をばらまくような関数`make_lattice`を作る。以下を二番目のセルに入力せよ。
+
+```py
+def make_lattice(size, p):
+    lattice = [[False] * size for _ in range(size)]
+    for x in range(size):
+        for y in range(size):
+            lattice[x][y] = random.random() < p
+    return lattice
+```
+
+動作確認してみよう。三番目のセルに以下を入力、実行してみよ。
+
+```py
+make_lattice(2,0.5)
+```
+
+実行するたびに結果が異なるが、例えばこんな結果が得られるはずだ。
+
+```py
+[[False, True], [False, True]]
+```
+
+2x2の二次元配列で、各要素が確率0.5で`True`になっていると思う。ここで安心して次に行かず、
+確率を0にしたら必ず`False`だけに、1にしたらかならず`True`だけになることも確認しておこう。
+
+```py
+make_lattice(4,0)
+make_lattice(4,1)
+```
+
+極端な入力値(ここでは0や1)について振る舞いがよくわかっている場合、そこを確認するのは極めて重要である。ここでテストをおざなりにする人は、ちゃんとテストする人に比べて生産性に桁で違いが出てしまう。プログラムを書いたら、しつこいほどテストをしよう。
+
+さて、`make_lattice`のテストが完了したら、三番目のテスト用のセルは削除して良い。
+
+### 状態の描画
+
+二次元正方格子にランダムに「玉」をばらまいた。ではそれを可視化してみよう。
+
+三番目、四番目のセルに以下のプログラムを入力せよ。
+
+```py
+def draw_sites(lattice, g, draw):
+    size = len(lattice)
+    for x, row in enumerate(lattice):
+        for y, site in enumerate(row):
+            if not site:
+                continue
+            ix = x * g
+            iy = y * g
+            pos = (ix+1, iy+1, ix+g-1, iy+g-1)
+            draw.ellipse(pos, fill=(255,0,0))
+```
+
+```py
+def draw_all(lattice):
+    size = len(lattice)
+    g = 16
+    s = size * g
+    im = Image.new("RGB", (s, s), (255, 255, 255))
+    draw = ImageDraw.Draw(im)
+    black = (0, 0, 0)
+    draw.rectangle((0, 0, s-1, s-1), outline=black)
+    for i in range(size):
+        draw.line((0, i*g, s, i*g), fill=black)
+        draw.line((i*g, 0, i*g, s), fill=black)
+    draw_sites(lattice, g, draw)
+    im.save("test.png")
+```
+
+入力できたら、五つ目のセルに以下を入力し、実行してみよ。
+
+```py
+size = 32
+lattice = make_lattice(size, 0.5)
+draw_all(lattice)
+IPython.display.Image("test.png")
+```
+
+正しく入力されていれば、32x32の正方格子に、確率0.5で赤い玉がばらまかれたはずである。実行するたびに形が変わるので見てみよう。
+
+### 色の描画
+
+さて、この後「上下左右に隣接したセルは同じグループとして、同じグループは同じ色に塗る」という処理をするのだが、その前に色を塗る処理だけ先に作っておこう。
+このグループは「クラスター」と呼ばれる。よくネット上で同じ趣味を持つ仲間を「○○クラスタ」などと言うが、あのクラスターである。
+この同じグループは同じクラスターに属すとして、クラスター番号を得る処理を作ろう。
+
+今、セルは以下のようになっているはず。
+
+1. import
+2. make_lattice
+3. draw_sites
+4. draw_all
+5. IPython.display.Image
+
+この状態で、二つ目と三つ目のセルの間に新たにセルを作り、以下のようなコードを入力せよ。
+
+```py
+def get_cluster_index(i, cluster_index):
+    while cluster_index[i] != i:
+        i = cluster_index[i]
+    return i
+```
+
+これが何をする関数かは後で説明する。これで、セルはこうなった。
+
+1. import
+2. make_lattice
+3. get_cluster_index
+4. draw_sites
+5. draw_all
+6. IPython.display.Image
+
+この状況で、`draw_sites`に、引数として`cluster_index`というリストを受け取るように修正しよう。
+
+```py
+def draw_sites(lattice, g, draw, cluster_index): # 引数追加
+    size = len(lattice)
+    colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)
+      , (255, 255, 0), (255, 0, 255), (0, 255, 255)] # 追加
+    for x, row in enumerate(lattice):
+        for y, site in enumerate(row):
+            if not site:
+                continue
+            ix = x * g
+            iy = y * g
+            ci = x + y * size   # 追加
+            c = get_cluster_index(ci, cluster_index) # 追加
+            c = c % 6 # 追加
+            pos = (ix+1, iy+1, ix+g-1, iy+g-1)
+            draw.ellipse(pos, fill=colors[c]) # 修正
+```
+
+また、`draw_all`も、`cluster_index`を受け取り、それをそのまま`draw_sites`に渡すように修正しよう。
+
+```py
+def draw_all(lattice, cluster_index): # 引数追加
+    size = len(lattice)
+    g = 16
+    s = size * g
+    im = Image.new("RGB", (s, s), (255, 255, 255))
+    draw = ImageDraw.Draw(im)
+    black = (0, 0, 0)
+    draw.rectangle((0, 0, s-1, s-1), outline=black)
+    for i in range(size):
+        draw.line((0, i*g, s, i*g), fill=black)
+        draw.line((i*g, 0, i*g, s), fill=black)
+    draw_sites(lattice, g, draw, cluster_index) # 修正
+    im.save("test.png")
+```
+
+この状態で、六つ目のセルを以下のように修正、実行してみよう。
+
+```py
+size = 32
+lattice = make_lattice(size, 0.5)
+cluster_index = list(range(size*size)) # 追加
+draw_all(lattice, cluster_index) # 修正
+IPython.display.Image("test.png")
+```
+
+それぞれの玉に色がついたはずである。
+
 ### Union-Findアルゴリズム
 
-## 迷路
+TODO: Union-Findの説明
 
-せっかくUnion-Findアルゴリズムを学んだので、それを別の問題に応用してみよう。ここでは迷路作成アルゴリズムにUnion-Findアルゴリズムを使ってみる。
+現在、セル状況はこうなっている。
 
-TODO: クラスタリングによる迷路生成の説明
+1. import
+2. make_lattice
+3. get_cluster_index
+4. draw_sites
+5. draw_all
+6. IPython.display.Image
+
+この三つ目と四つ目のセルの間に、以下を入力しよう。
+
+```py
+def connect(i, j, lattice, cluster_index):
+    size = len(lattice)
+    (ix, iy) = i
+    (jx, jy) = j
+    if size in (ix, iy, jx, jy):
+        return
+    if not lattice[ix][iy]:
+        return
+    if not lattice[jx][jy]:
+        return
+    ci = ix + iy * size
+    cj = jx + jy * size
+    ci = get_cluster_index(ci, cluster_index)
+    cj = get_cluster_index(cj, cluster_index)
+    if ci > cj:
+        ci, cj = cj, ci
+    cluster_index[cj] = ci
+```
+
+```py
+def clastering(lattice, cluster_index):
+    size = len(lattice)
+    for x in range(size):
+        for y in range(size):
+            connect((x, y), (x+1, y), lattice, cluster_index)
+            connect((x, y), (x, y+1), lattice, cluster_index)
+```
+
+セル状況はこうなったはずである。
+
+1. import
+2. make_lattice
+3. get_cluster_index
+4. connect
+5. clastering
+6. draw_sites
+7. draw_all
+8. IPython.display.Image
+
+番号がよくわからなくなったら、「ランタイム」から「再起動してすべてのセルを実行」を実行せよ。
+
+8番目のセルを以下のように修正せよ。
+
+```py
+size = 32
+lattice = make_lattice(size, 0.5)
+cluster_index = list(range(size*size))
+clastering(lattice, cluster_index) # 追加
+draw_all(lattice, cluster_index)
+IPython.display.Image("test.png")
+```
+
+ここまで正しく入力できていれば、上下左右に隣接した「玉」が同じ色で塗られたはずである。
+
+### 相転移の確認
+
+TODO: Crossing Probabilityの計算
 
 ## 余談：確率の難しさ
 
