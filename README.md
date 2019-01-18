@@ -1,5 +1,9 @@
 # [ゼロから学ぶPython](https://kaityo256.github.io/python_zero/)
 
+リポジトリはこちら。
+
+[https://github.com/kaityo256/python_zero](https://github.com/kaityo256/python_zero)
+
 ## この記事について
 
 プログラム初学者がPythonを学ぶための資料にする予定。とりあえず書きなぐってあとで整形する？
