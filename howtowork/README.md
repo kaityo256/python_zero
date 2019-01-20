@@ -133,4 +133,4 @@ TODO: dis.disによるバイトコードの確認
 
 ## より詳しく学ぶために
 
-もしアセンブリや機械語に興味がある人がいたら、tanakmuraさんの[実践的低レベルプログラミング](https://tanakamura.github.io/pllp/docs/index.html)の[x86_64 機械語入門](https://tanakamura.github.io/pllp/docs/x8664_language.html)を参照せよ。
+もしアセンブリや機械語に興味がある人がいたら、tanakmuraさんの[実践的低レイヤプログラミング](https://tanakamura.github.io/pllp/docs/index.html)の[x86_64 機械語入門](https://tanakamura.github.io/pllp/docs/x8664_language.html)を参照せよ。

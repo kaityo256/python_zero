@@ -152,7 +152,7 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 
 * [リーダブルコード ―より良いコードを書くためのシンプルで実践的なテクニック (Theory in practice)](https://www.amazon.co.jp/dp/4873115655) 文法がわかり、とりあえず「動く」プログラムがかけるようになったら、次は「どのように書くべきか」を気にするべき。この本は読みやすいコード(リーダブルコード)を書くためのテクニックが詰まった古典的名著。手元において、たまに読んでみよう。その度に新たな発見があることだろう。
 
-* [実践的低レベルプログラミング](https://tanakamura.github.io/pllp/docs/index.html) [tanakamura](https://github.com/tanakamura)さんによる、低レベルプログラムの解説。アセンブリやリンカの解説がある。CやC++をある程度書ける人が読むと新たな発見があることだろう。
+* [実践的低レイヤプログラミング](https://tanakamura.github.io/pllp/docs/index.html) [tanakamura](https://github.com/tanakamura)さんによる、低レベルプログラムの解説。アセンブリやリンカの解説がある。CやC++をある程度書ける人が読むと新たな発見があることだろう。
 
 ### 上級者向け
 
