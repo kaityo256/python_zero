@@ -91,7 +91,7 @@ m \frac{d v}{dt} = F
 <p>これが運動方程式である。すなわち、運動方程式とは時間に関する連立常微分方程式である。上記の式は一次元で書いたが、これを三次元の式にして、さらに二つの物質の間に距離の二乗に反比例する力を仮定すると、互いに重力で引き合う二つの星の運動を表す方程式となる。これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。</p>
 <p>物理学とは、この宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている(らしい)。したがって、物理学とは、微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を支配方程式(Governing Equation)と呼ぶ。支配方程式を数値的に解いて、その振る舞いを調べることを数値シミュレーションと呼ぶ。というわけで、今回は数値シミュレーションをやってみよう。</p>
 <h2 id="空気抵抗がない場合の弾道計算">空気抵抗がない場合の弾道計算</h2>
-<p>ものを斜め上に投げると、どの角度で投げると最も遠くに飛ぶだろうか。ただし空気抵抗は無視するものとする。答えが投げる強さ(初速)に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？空気抵抗を無視すれば、二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばす」という設定は、物理としてはかなり簡単な部類に入るが、戦争においては極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気的もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っておいた。実際に射出して着弾距離を調べることももちろん行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することが軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
+<p>ものを斜め上に投げると、どの角度で投げると最も遠くに飛ぶだろうか。ただし空気抵抗は無視するものとする。答えが投げる強さ(初速)に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？空気抵抗を無視すれば、二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばす」という設定は、物理としてはかなり簡単な部類に入るが、戦争においては極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気的もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っていた。実際に射出して着弾距離を調べることももちろん行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することが軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
 <p>さて、いま皆さんの目の前にあるのは、ちょっと前のスーパーコンピュータなみの計算能力を持つ計算機である。それを使って、簡単なシミュレーションをしてみよう。まずは空気抵抗がない場合である。二次元の場合を考えよう。運動方程式は以下のようになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -182,9 +182,12 @@ plt.legend()
 plt.show()</code></pre></div>
 <p>ほぼ重なった二つのグラフが表示されたら成功である。次に、<code>run</code>の時間刻み<code>h</code>の値を<code>0.01</code>から<code>0.001</code>にして、結果がどう変わるか比較せよ。</p>
 <h2 id="空気抵抗がある場合の弾道計算">空気抵抗がある場合の弾道計算</h2>
-<p>さて、先程は空気抵抗が無い場合を考えた。次は空気抵抗がある場合を考えよう。一口に空気抵抗と言っても様々な要因があり、その扱いは難しいのだが、ここは単純に「速度に比例して向きと反対向きに『ひっぱられる』力」がかかっていると考えよう。</p>
-<p>TODO: 空気抵抗の図解。<span class="math inline">\(\phi\)</span>や<span class="math inline">\(v\)</span>の定義。</p>
-<p>速度に関係する運動方程式を書き下すとこうなる。</p>
+<p>さて、先程は空気抵抗が無い場合を考えた。次は空気抵抗がある場合を考えよう。一口に空気抵抗と言っても様々な要因があり、その扱いは難しいのだが、ここは単純に「速度に比例して向きと反対向きに『ひっぱられる』力」がかかっていると考えよう。仰角(地面となす角度)<span class="math inline">\(\theta\)</span>で打ち上げて、しばらくしてその角度が<span class="math inline">\(\phi\)</span>になった状況を考える。物体にかかるのは速度の向きに逆方向の抵抗であり、それを<span class="math inline">\(x\)</span>軸、<span class="math inline">\(y\)</span>軸に分解するとこんな感じになる。</p>
+<div class="figure">
+<img src="fig/forces.png" alt="物体にかかる力" />
+<p class="caption">物体にかかる力</p>
+</div>
+<p>この図をもとに、速度に関係する運動方程式を書き下すとこうなる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 \dot{v_x} &amp;= - \gamma v \cos(\phi) \\
@@ -208,6 +211,7 @@ plt.show()</code></pre></div>
 \end{aligned}
 \]</span></p>
 <p>これを実装してみよう。</p>
+<h3 id="課題3空気抵抗のある運動方程式の差分化">課題3:空気抵抗のある運動方程式の差分化</h3>
 <p>現在、セルの状況は</p>
 <ol style="list-style-type: decimal">
 <li>import</li>
@@ -282,7 +286,7 @@ r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g
   <span class="cf">while</span> y <span class="op">&gt;=</span> <span class="fl">0.0</span>:
     t <span class="op">+=</span> dt
     x <span class="op">=</span>  (<span class="fl">1.0</span> <span class="op">-</span> exp(<span class="op">-</span>gamma<span class="op">*</span>t))<span class="op">*</span>cos(theta)<span class="op">/</span>gamma
-    y <span class="op">=</span>  (<span class="fl">1.0</span> <span class="op">-</span> exp(<span class="op">-</span>gamma<span class="op">*</span>t))<span class="op">*</span>sin(theta)<span class="op">/</span>gamma 
+    y <span class="op">=</span>  (<span class="fl">1.0</span> <span class="op">-</span> exp(<span class="op">-</span>gamma<span class="op">*</span>t))<span class="op">*</span>sin(theta)<span class="op">/</span>gamma
     y <span class="op">+=</span> g<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> exp(<span class="op">-</span>gamma <span class="op">*</span>t) <span class="op">-</span> gamma <span class="op">*</span>t )<span class="op">/</span>(gamma<span class="op">**</span><span class="dv">2</span>)
     ax.append(x)
     ay.append(y)
@@ -316,7 +320,7 @@ plt.show()</code></pre></div>
 <p><span class="math display">\[
 \begin{aligned}
 f(x + h) &amp;= f(x) + f&#39;(x)h + \frac{h^2}{2} f&#39;&#39;(x) + O(h^3) \\
-f(x - h) &amp;= f(x) - f&#39;(x)h + \frac{h^2}{2} f&#39;&#39;(x) + O(h^3) 
+f(x - h) &amp;= f(x) - f&#39;(x)h + \frac{h^2}{2} f&#39;&#39;(x) + O(h^3)
 \end{aligned}
 \]</span></p>
 <p>両辺足すと<span class="math inline">\(f&#39;(x)\)</span>の項が消えるので、整理して</p>
@@ -334,7 +338,7 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{2h}
 <img src="fig/sabun.png" alt="差分計算の流れ" />
 <p class="caption">差分計算の流れ</p>
 </div>
-<h3 id="課題1-ラプラシアンの実装">課題1: ラプラシアンの実装</h3>
+<h3 id="課題4-ラプラシアンの実装">課題4: ラプラシアンの実装</h3>
 <p>では実際にグレイ・スコットモデルのシミュレーションを実装してみよう。新しいノートブックを開き、最初のセルにimport文を描こう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
