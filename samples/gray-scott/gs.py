@@ -11,6 +11,7 @@ def laplacian(ix, iy, s):
     ts += s[ix, iy-1]
     ts += s[ix, iy+1]
     ts -= 4.0*s[ix, iy]
+    ts /= 4.0
     return ts
 
 
@@ -23,8 +24,8 @@ def calc(u, v, u2, v2):
     lv = np.zeros((L, L))
     for ix in range(1, L-1):
         for iy in range(1, L-1):
-            lu[ix, iy] = 0.1 * laplacian(ix, iy, u)
-            lv[ix, iy] = 0.05 * laplacian(ix, iy, v)
+            lu[ix, iy] = 0.4 * laplacian(ix, iy, u)
+            lv[ix, iy] = 0.2 * laplacian(ix, iy, v)
     cu = -v*v*u + F*(1.0 - u)
     cv = v*v*u - (F+k)*v
     u2[:] = u + (lu+cu) * dt

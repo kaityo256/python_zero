@@ -125,11 +125,14 @@ plt.show()</code></pre></div>
 <p>グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\frac{\partial u}{\partial t} &amp;= D_u \nabla^2 u - uv^2 + F(1-u) \\
-\frac{\partial v}{\partial t} &amp;= D_v \nabla^2 v + uv^2 - (F+k)v
+\frac{\partial u}{\partial t} &amp;= D_u \Delta u - uv^2 + F(1-u) \\
+\frac{\partial v}{\partial t} &amp;= D_v \Delta v + uv^2 - (F+k)v
 \end{aligned}
 \]</span></p>
-<p>右辺の第一項が拡散項、その後ろにあるのが反応を記述する力学系である。三次元を考えることもできるが、ここでは二次元空間を考える。</p>
+<p>右辺の第一項が拡散項、その後ろにあるのが反応を記述する力学系である。三次元を考えることもできるが、ここでは二次元空間を考える。 <span class="math inline">\(\Delta\)</span>はラプラシアンと呼ばれる二階微分演算子で、二次元なら以下で定義される。</p>
+<p><span class="math display">\[
+\Delta \equiv \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}
+\]</span></p>
 <h3 id="差分化">差分化</h3>
 <p>さて、この式を計算機で扱えるように離散化しよう。離散化とは、本来連続である時間や空間を「小さな単位」に分解して近似することだ。例えばテレビは、画像をピクセルに分解して表現しており(空間の離散化)、また1秒間に30フレームを表示している(時間の離散化)。このように、時間も空間も十分小さい単位に区切って表現すれば、もとの連続空間での微分方程式の解の性質を精度よく表現できると考えられる。</p>
 <p>例えば、ある関数<span class="math inline">\(f(t)\)</span>の時間微分を離散化で近似したいとする。時間の離散単位(時間ステップ)を<span class="math inline">\(h\)</span>とし、テイラー展開で一次までとると、</p>
@@ -152,23 +155,181 @@ f(x - h) &amp;= f(x) - f&#39;(x)h + \frac{h^2}{2} f&#39;&#39;(x) + O(h^3)
 f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{2h}
 \]</span></p>
 <p>を得る。これを <strong>中央差分</strong> と呼ぶ。</p>
+<p>TODO: 差分から見たラプラシアンの物理的意味</p>
 <p>全く同様にして、二変数関数の二階微分(ラプラシアン)は、以下のように表現できる。</p>
-<p>先ほどの微分方程式は、時間に関して一階微分、空間に関して二階微分であったので、これで必要な式がそろった。<span class="math inline">\(u\)</span>、<span class="math inline">\(v\)</span>を二次元配列として保持し、適当な初期条件を与える。ある時刻において<span class="math inline">\((ix,iy)\)</span>において、物理量<span class="math inline">\(u\)</span>の値が<code>u[ix][iy]</code>で与えられているとしよう。この点におけるラプラシアン<span class="math inline">\(\nabla^2 u\)</span>の値は</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> laplacian(ix, iy, u):
-    ts <span class="op">=</span> <span class="fl">0.0</span>
-    ts <span class="op">+=</span> u[ix<span class="op">-</span><span class="dv">1</span>, iy]
-    ts <span class="op">+=</span> u[ix<span class="op">+</span><span class="dv">1</span>, iy]
-    ts <span class="op">+=</span> u[ix, iy<span class="op">-</span><span class="dv">1</span>]
-    ts <span class="op">+=</span> u[ix, iy<span class="op">+</span><span class="dv">1</span>]
-    ts <span class="op">-=</span> <span class="fl">4.0</span><span class="op">*</span>u[ix, iy]
-    <span class="cf">return</span> ts</code></pre></div>
-<p>で与えられる。他の項は「現時刻のその場所の値」で計算可能なので、これで次のステップの値が求まる。</p>
+<p><span class="math display">\[
+\Delta f(x,y) \sim \frac{f(x+h,y)+f(x-h,y)+f(x,y+h)+f(x,y-h)-4f(x,y)}{4h}
+\]</span></p>
+<p>先ほどの微分方程式は、時間に関して一階微分、空間に関して二階微分であったので、これで必要な式がそろった。他の項は「現時刻のその場所の値」で計算可能なので、これで次のステップの値が求まる。</p>
 <div class="figure">
 <img src="fig/sabun.png" alt="差分計算の流れ" />
 <p class="caption">差分計算の流れ</p>
 </div>
+<h3 id="課題1-ラプラシアンの実装">課題1: ラプラシアンの実装</h3>
+<p>では実際にグレイ・スコットモデルのシミュレーションを実装してみよう。新しいノートブックを開き、最初のセルにimport文を描こう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<p>次のセルに、二次元配列<code>s</code>の、座標<code>(ix,iy)</code>におけるラプラシアンの値を返す関数<code>laplacian</code>を実装せよ。ただし、空間差分の単位<span class="math inline">\(h\)</span>は1とする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> laplacian(ix, iy, s):
+    ts <span class="op">=</span> <span class="fl">0.0</span>
+    <span class="co"># ここを実装せよ</span>
+    <span class="cf">return</span> ts</code></pre></div>
+<p>実装したらテストしてみよう。三つ目のセルに<code>laplacian</code>に食わせるテスト用のNumPy二次元配列を作成する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
+a</code></pre></div>
+<p>実行すると以下のような表示になるはずである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">array([[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],
+       [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],
+       [<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]])</code></pre></div>
+<p>さて、中央に着目しよう。中央の値は4であり、1,3,5,7に囲まれている。周りの4つの数字の平均は4であり、中央の値と一致するため、この地点でのラプラシアンの値は0になるはずである。確認してみよう。三つ目のセルを以下のように書き換えよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
+laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a) <span class="co"># =&gt; 0.0</span></code></pre></div>
+<p>これは、<code>a</code>という配列の<code>(1,1)</code>地点におけるラプラシアンの中央差分の値を求めよ、という意味である。実行結果として<code>0.0</code>が返ってくれば正しい。</p>
+<p>これだけではテストとして不安なので、値を少しずらしてみよう。三つ目のテスト用セルを以下のように修正して実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
+a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
+a</code></pre></div>
+<p>まず、入力するリストが以下のような形になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">2</span>]
+ [<span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>]
+ [<span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span>]]</code></pre></div>
+<p>4の上が1であったのが0になった。したがって、中央は平均よりも高い値になっているから、ラプラシアンは負になるはずである。実際に計算してみよう。周りの数字の合計は15であり、その平均は3.75である。中央の値との差は0.25であるから、その差は<code>-0.25</code>になるはずだ。計算してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
+a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
+laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a) <span class="co"># =&gt; 0.25</span></code></pre></div>
+<p>正しく計算されただろうか？これも正しく計算できていれば、ラプラシアンは正しく実装できているであろう。三つ目のセルは消去してよい。</p>
+<h3 id="シミュレーションコードの実装">シミュレーションコードの実装</h3>
+<p>三つ目、四つ目、のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc(u, v, u2, v2):
+    (L, _) <span class="op">=</span> u.shape
+    dt <span class="op">=</span> <span class="fl">0.2</span>
+    F <span class="op">=</span> <span class="fl">0.04</span>
+    k <span class="op">=</span> <span class="fl">0.06075</span>
+    lu <span class="op">=</span> np.zeros((L, L))
+    lv <span class="op">=</span> np.zeros((L, L))
+    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
+        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
+            lu[ix, iy] <span class="op">=</span> <span class="fl">0.4</span> <span class="op">*</span> laplacian(ix, iy, u)
+            lv[ix, iy] <span class="op">=</span> <span class="fl">0.2</span> <span class="op">*</span> laplacian(ix, iy, v)
+    cu <span class="op">=</span> <span class="op">-</span>v<span class="op">*</span>v<span class="op">*</span>u <span class="op">+</span> F<span class="op">*</span>(<span class="fl">1.0</span> <span class="op">-</span> u)
+    cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v
+    u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
+    v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> simulation():
+    L <span class="op">=</span> <span class="dv">32</span>
+    u <span class="op">=</span> np.zeros((L, L))
+    u2 <span class="op">=</span> np.zeros((L, L))
+    v <span class="op">=</span> np.zeros((L, L))
+    v2 <span class="op">=</span> np.zeros((L, L))
+    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
+    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
+    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
+            calc(u, v, u2, v2)
+        <span class="cf">else</span>:
+            calc(u2, v2, u, v)
+    <span class="cf">return</span> v</code></pre></div>
+<p>ここまで入力したら、セルの状況は以下のようになっているはずである。</p>
+<ol style="list-style-type: decimal">
+<li>import</li>
+<li>laplacian</li>
+<li>calc</li>
+<li>simulation</li>
+</ol>
+<p>その状態で、5番目のセルに以下を入力して実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> simulation()
+plt.imshow(v)</code></pre></div>
+<div class="figure">
+<img src="fig/gs_mono.png" alt="シミュレーション結果" />
+<p class="caption">シミュレーション結果</p>
+</div>
+<p>こんな白黒の図が現れたら成功である。</p>
+<h3 id="jitによる高速化">JITによる高速化</h3>
+<p>これは32x32のグリッドを1000ステップ計算するシミュレーションであるが、実行に少し待たされた気がするであろう。まず時間を測定してみよう。5つ目のセルを以下のようにして実行してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>time v <span class="op">=</span> simulation()
+plt.imshow(v)</code></pre></div>
+<p>おそらくこんな結果が表示されたものと思う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">CPU times: user <span class="fl">3.25</span> s, sys: <span class="fl">1.11</span> ms, total: <span class="fl">3.25</span> s
+Wall time: <span class="fl">3.26</span> s</code></pre></div>
+<p>これは、計算に3秒ちょっとかかったよ、という意味だ。32x32のグリッドを2二種類、1000ステップなので、計算量としては、おおざっぱに100万ちょっと、つまり「メガ」のオーダーである。今、目の前にある計算機の処理能力はだいたい「ギガ」、つまり一秒間にメガの千倍の計算を処理する能力があるはずで、メガの量の計算に秒単位でかかるのは遅い気がしてくるであろう。そこでJITで高速化しよう。</p>
+<p>TODO: JITの説明</p>
+<p>まず、一つ目のセルを以下のように修正せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> numba <span class="im">import</span> jit</code></pre></div>
+<p>次に、<code>laplacian</code>や<code>calc</code>、<code>simulation</code>の関数定義の前に<code>@jit</code>と記述せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> laplacian(ix, iy, s):</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> calc(u, v, u2, v2):</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> simulation():</code></pre></div>
+<p>この状態で、全てのセルを実行してから、5つめのセルを実行しよう。面倒なら「ランタイム」から「再起動してすべてのセルを実行」を選んでもよい。おそらく20～30ms程度の実行時間になったはずである。</p>
+<h3 id="模様の確認">模様の確認</h3>
+<p>さて、それなりの速度になったところで、もう少し大きな系を長時間計算してみよう。まず、システムサイズを64x64にして、時間ステップも10倍の1000にしよう。具体的には、4つ目のセルの<code>simulation</code>を以下のように書き換えよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> simulation():
+    L <span class="op">=</span> <span class="dv">64</span> <span class="co"># ここを32から64に</span>
+    u <span class="op">=</span> np.zeros((L, L))
+    u2 <span class="op">=</span> np.zeros((L, L))
+    v <span class="op">=</span> np.zeros((L, L))
+    v2 <span class="op">=</span> np.zeros((L, L))
+    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
+    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
+    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>): <span class="co"># ここを1000から10000に</span>
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
+            calc(u, v, u2, v2)
+        <span class="cf">else</span>:
+            calc(u2, v2, u, v)
+    <span class="cf">return</span> v</code></pre></div>
+<p>その上で再度5つ目のセルを実行してみよ。不思議な模様が浮かび上がれば成功である。</p>
+<p>せっかく模様が出てきたのに、モノクロというのも味気ない。色を付けてみよう。5つ目のプロットのところで、カラーマップを指定してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>time v <span class="op">=</span> simulation()
+plt.imshow(v, cmap<span class="op">=</span><span class="st">&quot;inferno&quot;</span>) <span class="co"># ここを修正</span></code></pre></div>
+<p>カラーマップには他にも<code>viridis</code>や、<code>plasma</code>、<code>magma</code>などが用意されているので、興味があれば試してみよ。</p>
+<h3 id="任意課題アニメーション">任意課題：アニメーション</h3>
+<p>せっかくの時間発展シミュレーションなので、時間発展の様子をアニメーションで見てみよう。</p>
+<p>まず、一つ目のセルに以下を追加せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> numba <span class="im">import</span> jit
+<span class="im">from</span> matplotlib <span class="im">import</span> animation, rc <span class="co"># この行を追加</span></code></pre></div>
+<p>次に、<code>simulation</code>で、最後の結果だけではなく、途中の経過もまとめてリストで返すようにしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> simulation():
+    L <span class="op">=</span> <span class="dv">64</span>
+    u <span class="op">=</span> np.zeros((L, L))
+    u2 <span class="op">=</span> np.zeros((L, L))
+    v <span class="op">=</span> np.zeros((L, L))
+    v2 <span class="op">=</span> np.zeros((L, L))
+    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
+    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
+    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
+    r <span class="op">=</span> [] <span class="co"># この行を追加</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
+            calc(u, v, u2, v2)
+        <span class="cf">else</span>:
+            calc(u2, v2, u, v)
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>: <span class="co"># このif文を追加</span>
+          r.append(u.copy())
+    <span class="cf">return</span> r <span class="co"># uでなくrを返すよう修正</span></code></pre></div>
+<p>その上で、6つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation()
+fig <span class="op">=</span> plt.figure()
+<span class="kw">def</span> update(img):
+  plt.cla()
+  plt.imshow(img,cmap<span class="op">=</span><span class="st">&quot;inferno&quot;</span>)
+
+ani <span class="op">=</span> animation.FuncAnimation(fig, update, frames<span class="op">=</span>imgs,interval<span class="op">=</span><span class="dv">50</span>)
+rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
+ani</code></pre></div>
+<p>アニメーションが表示されたら成功である。</p>
+<p>TODO: 左下に余計な図が出る原因を調べること。</p>
 <h2 id="余談パーソナルスーパーコンピュータ">余談：パーソナルスーパーコンピュータ</h2>
-<p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
+<p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。東京大学工学部物理工学科の助手、宇宙科学研究所の助教授を経て、自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
 <p>それから紆余曲折あって、計算流体力学研究所はスパコンを手放し、技術コンサルやパソコンの組み立て、販売をする会社となった。私が大学院に進学した際に与えられたパソコンは、この計算流体力学研究所で購入したAlpha21164のマシンであった。指導教員の「せっかくだから組み立てさせてもらったら？」の言葉に甘え、目黒に行ってアルバイトのお兄さんと一緒に自分の研究に使うマシンを組み立てた。そこに社長である桑原氏が様子を見にやってきた。僕が物工の学生と知ると、興味をもっていろいろ聞いてきた。僕はまさか目の前の社長さんが元物工の助手だったなんて知らなかったので「物工のご出身なんですか？どこの研究室ですか？」と的外れな質問をした。彼はただ笑って何も答えなかったのを思い出す。その時は青二才で何もわからなかった私だが、スパコンを使って研究をするようになった今なら、彼からいろいろ興味深い話が聞けたのではないかと残念に思う。桑原氏は2008年、その豪快な生涯を閉じた。「親の遺産をもっとも有効に学術に活かした」と評されている。</p>
 </article>
 </body>
