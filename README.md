@@ -1,8 +1,8 @@
 # [ゼロから学ぶPython](https://kaityo256.github.io/python_zero/)
 
-リポジトリはこちら。
+[リポジトリ(kaityo256/python_zero)](https://github.com/kaityo256/python_zero)
 
-[https://github.com/kaityo256/python_zero](https://github.com/kaityo256/python_zero)
+[HTML版](https://kaityo256.github.io/python_zero/)
 
 ## この記事について
 
