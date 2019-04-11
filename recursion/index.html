@@ -62,6 +62,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -77,49 +78,39 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>木構造の編集</li>
 </ul>
 <h2 id="再帰呼び出しとは">再帰呼び出しとは</h2>
-<p>再帰呼出し(recursive call)とは、関数などの手続きが、自分自身を呼び出すことである。例えばあるフォルダ以下にある全てのファイルの合計を知りたいとする。フォルダの中にはフォルダがあるかもしれず、さらにそのフォルダの中にもフォルダがあるかもしれない。フォルダとファイルを定義すると、以下のようになる。</p>
-<ul>
-<li>ファイルシステムには、フォルダとファイルの二種類の構造が存在する</li>
-<li>フォルダは、0個以上のフォルダかファイル、もしくはその両方を持つ</li>
-</ul>
-<p>フォルダの定義にフォルダが表れることに注意しよう。このように、何かの定義にそれ自身が現れることを「再帰的定義」と呼ぶ。フォルダはフォルダを持つことができ、さらにそのフォルダもフォルダを持つ可能性が・・・と、フォルダは入れ子構造になっていることがわかる。再帰的定義はこのような入れ子構造を作る。再帰処理はこうした「入れ子構造」を持つ状態を扱うのに適している。</p>
-<p>いま、あるフォルダ以下にある全てのファイル数の合計を知りたいとしよう。例えば以下のようなフォルダ構造があるとする。</p>
+<p>再帰呼出し(recursive call)とは、関数などの手続きが、自分自身を呼び出すことである。再帰呼出しは慣れると極めて強力なアルゴリズムであり、中級以上のプログラマになるためには必須のプログラミング技法である。しかし、プログラムの初学者にとって再帰はループ構造や制御構造に比べてその動作ステップを想像することが難しい。今回は、この再帰呼び出しについて学んでみよう。</p>
+<p>突然だが、「階段ののぼり方問題」を考える。いま、目の前に<span class="math inline">\(n\)</span>段の階段があるとする。一度に1段、もしくは2段登るやり方を混ぜて登る時、「登り方の総数」は全部で何通りあるだろうか？</p>
 <div class="figure">
-<img src="fig/folder.png" alt="folder.png" />
-<p class="caption">folder.png</p>
+<img src="fig/kaidan.png" alt="階段の登り方問題" />
+<p class="caption">階段の登り方問題</p>
 </div>
-<p>最初のフォルダは２つのフォルダと1つのファイルを持ち、２つ目のフォルダはさらにサブフォルダがあり・・・という構造になっている。この構造を、入れ子構造を持つリストで表現してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="dv">3</span>],[[<span class="dv">4</span>],<span class="dv">2</span>],<span class="dv">1</span>]</code></pre></div>
-<p>数字がファイル数、リストがフォルダを表している。このリストは何重にも入れ子構造になる可能性がある。先程の「フォルダに含まれるファイルの総数を調べる」とは、この「リストに含まれる数字の合計を知りたい」という問題と等価である。</p>
-<p>この問題は以下のように考える。まず、ファイル(整数)かフォルダ(リスト)を与えられたら、そのサブフォルダも含めたすべてのファイル数を返す関数、<code>num_files</code>という関数を考える。もし与えられたのが整数であれば、それをそのまま返せば良い。もしリストだったら、その要素すべてに対して<code>num_files</code>を呼んでやり、その返り値の合計を返せば良い。以上を実装すると以下のようになる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> num_files(f):
-    <span class="cf">if</span> <span class="bu">isinstance</span>(f, <span class="bu">int</span>):
-        <span class="cf">return</span> f
-    s <span class="op">=</span> <span class="dv">0</span>
-    <span class="cf">for</span> i <span class="kw">in</span> f:
-        s <span class="op">+=</span> num_files(i)
-    <span class="cf">return</span> s</code></pre></div>
-<p>新しいノートブックを開き、上記を入力せよ。</p>
-<p>その上で次のセルに</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">3</span>],[[<span class="dv">4</span>],<span class="dv">2</span>],<span class="dv">1</span>]
-num_files(a)</code></pre></div>
-<p>を実行し、正しい答え10が表示されることを確認せよ。他にも様々な入れ子になったリスト構造を渡し、正しく動作することを確認せよ。</p>
-<p>これは、以下のように動いている。</p>
-<ol style="list-style-type: decimal">
-<li>まず、最初(第一階層)の<code>num_files</code>に渡されたリストは<code>[[3],[[4],2],1]</code>である。これは整数ではないので、for文に処理がわたり、<code>[3]</code>, <code>[[4],2]</code>, <code>[1]</code>の三つに要素が分割され、それぞれが<code>num_files</code>に渡される</li>
-<li><code>[3]</code>を渡された第二階層の<code>num_files</code>は、やはり整数ではないのでその中身<code>3</code>を<code>num_files</code>に渡す</li>
-<li><code>3</code>を渡された第三階層の<code>num_files</code>は、整数なのでそれをそのまま第二階層の<code>num_files</code>に返す</li>
-<li>第二階層の<code>num_files</code>は、<code>num_files(3)</code>の結果として3を得たので、それをそのまま帰す</li>
-<li>これにより第一階層の<code>num_files</code>は<code>num_files([3])</code>の結果として3を得たので、それを<code>s</code>に加える</li>
-</ol>
-<p>同様に、<code>num_files([[4],2])</code>の結果として6、<code>num_files([1])</code>の結果として1が返ってくるので、第一階層の<code>num_files([[3],[[4],2],1])</code>は3+6+1として10を返す。これが欲しい結果であった。</p>
-<div class="figure">
-<img src="fig/folder2.png" alt="folder2.png" />
-<p class="caption">folder2.png</p>
-</div>
-<p>再帰のコツは、「いつ再帰が終わるか」をちゃんと考えることである。<code>num_files</code>は、整数が渡されたら<code>return</code>を、リストが渡されたら再度<code>num_files</code>を呼ぶ。再帰処理は自然に木構造を作るが、その一番末端のノード(葉と呼ぶ)は、この場合は整数を渡された場合である。上記の木構造の「葉」が、必ずファイル(整数)になっていることに注意せよ。再帰は終端処理を間違えると無限に再帰してしまう。</p>
-<p>ここではフォルダに含まれるファイルの総数を考えたが、他にも将棋などのボードゲームの思考ルーチンなども自然に再帰が使われる。将棋を指すことを考えよう。現在の盤面から何か手を進めたら、相手がどう打ってくるか予想し、さらにそれに対して自分はどう打つか予想し・・・と、「将棋の盤面を見て次に打つ手を考える」ことを考えるであろう。このように将棋にも「入れ子構造」が表れる。</p>
-<p>再帰呼出しは、うまくハマるとプログラムがきれいに組めて気持ちが良いのだが、慣れていないとバグを入れたり、終了処理を間違えて無限に再帰してスタックオーバーフローでプログラムを落としたりしがちである。今回は、簡単なゲームを題材に、再帰呼出しを用いたプログラムを実装してみよう。</p>
+<p>まずは<span class="math inline">\(n\)</span>が小さい時の場合を考えてみよう。<span class="math inline">\(n=1\)</span>の時、つまり1段しかない時には、1段で登るしかないので1通りである。2段ある場合は、1段ずつ2回で登るか、2段で一度に登るかの2通りである。ここで、1もしくは2をいくつか足して、その合計をNにするようなやり方を数えれば良い、ということに気がつくであろう。例えば<span class="math inline">\(n=3\)</span>なら、</p>
+<p><span class="math display">\[
+\begin{aligned}
+3 &amp;= 1 + 1 + 1\\
+3 &amp;= 1 + 2 \\
+3 &amp;= 2 + 1
+\end{aligned}
+\]</span></p>
+<p>の3通りである。<span class="math inline">\(n=4\)</span>なら、</p>
+<p><span class="math display">\[
+\begin{aligned}
+4 &amp;= 1 + 1 + 1 + 1\\
+4 &amp;= 1 + 1 + 2 \\
+4 &amp;= 1 + 2 + 1 \\
+4 &amp;= 2 + 1 + 1 \\
+4 &amp;= 2 + 2 \\
+\end{aligned}
+\]</span></p>
+<p>の5通りである。さて、これを一般化して、<span class="math inline">\(n\)</span>段の時の登り方<span class="math inline">\(F_n\)</span>はどのように求めればよいだろうか？このような場合に「再帰的」な考え方をする。</p>
+<p>今、<span class="math inline">\(n-1\)</span>段までの登り方、<span class="math inline">\(F_1, F_2, \cdots F_{n-1}\)</span>が全てわかっているとしよう。その知識を使って、<span class="math inline">\(F_n\)</span>の値を求められないだろうか？</p>
+<p>最初のステップを考えよう。眼の前に<span class="math inline">\(n\)</span>段の階段がある。できることは、1段登るか、2段登るかの二通りである。さて、1段登ったら、残りは<span class="math inline">\(n-1\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-1}\)</span>通りである。2段登ったら残りは<span class="math inline">\(n-2\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-2}\)</span>通りである。ここから、漸化式</p>
+<p><span class="math display">\[
+F_n = F_{n-1} + F_{n-2}
+\]</span></p>
+<p>が成り立つことがわかる。さて、左辺にも右辺にも「登り方<span class="math inline">\(F\)</span>」が登場する。つまり、ある<span class="math inline">\(F\)</span>を、別の引数をもった<span class="math inline">\(F\)</span>自身で、再帰的に表現していることがわかる。さらに、左辺に比べて右辺は問題サイズ<span class="math inline">\(n\)</span>が小さいことがわかるであろう。つまり、ある大きさ<span class="math inline">\(n\)</span>をもつ問題が、それより小さいサイズの<span class="math inline">\(n-1\)</span>と<span class="math inline">\(n-2\)</span>という問題を解くことに帰着された。これが再帰の考え方である。すなわち、再帰アルゴリズムは本質的に<strong>分割統治法</strong>である。</p>
+<p>TODO: コードを階段の登り方問題に変更</p>
+<p>TODO: 速度の測定とメモ化について</p>
 <h2 id="割りばしゲーム">割りばしゲーム</h2>
 <p>「割りばし」という二人で行う指遊びがある。地方によって名前やルールは様々だが、基本ルールは以下のようなものだ。</p>
 <ol style="list-style-type: decimal">
