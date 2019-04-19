@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="pythonとは">Pythonとは</h1>
+<h2 id="本稿の目的">本稿の目的</h2>
+<ul>
+<li>プログラミング言語とはなにかを学ぶ</li>
+<li>変数と参照の概念について学ぶ</li>
+</ul>
+<h2 id="プログラミング言語について">プログラミング言語について</h2>
+<p>Pythonとはプログラミング言語の一つである。プログラミング言語とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
+<p>コンピュータは「機械語(マシン語)」という言葉しか解さない。機械語は数字の羅列であり、昔はそれを人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
+<p>この時、人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式と、機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式があり、前者を「スクリプト言語」後者を「コンパイラ言語」と呼ぶ。</p>
+<div class="figure">
+<img src="fig/language.png" alt="スクリプト言語とコンパイラ言語" />
+<p class="caption">スクリプト言語とコンパイラ言語</p>
+</div>
+<h2 id="余談スクリプト言語とコンパイラ言語">余談：スクリプト言語とコンパイラ言語</h2>
+<p>ここでは「スクリプト言語」と「コンパイラ言語」について分けて紹介したが、実際にはその区別は絶対ではない。現在、ほとんどのスクリプト言語は一度「中間コード」と呼ばれる言語に「コンパイル」され、中間コードを仮想マシン上で動かすことで動作の高速化を図っている。また、Javaはプログラムをコンパイルしてから実行する形式のためにユーザからは「コンパイル言語」のように見えるが、実際にはPythonと同様にプログラムを中間コードに変換し、それを「Java 仮想マシン (JVM)」上で動作させている。Java仮想マシンは中間コードを実行する際に、インタプリタのように実行する場合と、部分的に機械語に変換しながら実行する場合(JIT方式と呼ばれる)がある。さらに、Javaのプログラムをそのまま機械語に変換する処理系もある。</p>
+<p>また、C言語やC++言語は通常「コンパイラ言語」に分類され、GCCなどの処理系ではプログラムはそのまま機械語に変換されるが、clangやclang++は一度プログラムをLLVM IRという中間コードに変換し、それを機械語に変換している。</p>
+<p>スクリプト言語とコンパイラ言語に限らず、「プログラミング言語の分類」は極めて難しく、「関数型言語」「手続き型言語」の厳密な区別しようとしたり、「ある言語はオブジェクト指向言語かどうか」、もっと言えば「オブジェクト指向らしさとは何か」などのテーマは議論が白熱するわりに得るものが少ないので、雑談程度にとどめておいたほうが良いと思う。ただし、「自分が考える素敵な○○指向言語」を突き詰めて、「オレオレ言語」まで作ってしまうのは素晴らしいことなのでどんどんやれば良い。言語を自作しなくても、既存の言語処理系を作るのも面白そうである(筆者はまだやったことはないが)。有名なのはRui Ueyamaさんの<a href="https://www.sigbus.info/compilerbook/">低レイヤを知りたい人のための Cコンパイラ作成入門</a>などであろう。また、Lispの処理系自作もよく見かける。あくまで個人的な意見だが、プログラマは結局のところ「作ったもの」が全てだと思うので、議論に熱を上げるより手を動かしてほしい。</p>
+<h2 id="ライブラリについて">ライブラリについて</h2>
+<p>さて、スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
+<p>通常、スクリプト言語は、豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。</p>
+<p>よくプログラミング言語の優劣について聞かれるのだが、個人的な印象でいえば文法などはあまり重要でないと感じる。極論すれば、言語の優劣はライブラリの豊富さで決まる。Pythonには強力なライブラリが豊富にある。ある目的のために複数のライブラリを束ねたものをフレームワークと呼ぶ。Pythonには機械学習のフレームワークが多数存在し、機械学習を行うプログラミング言語のデファクトスタンダードとなっている。</p>
+<p>いずれにせよ、「とりあえずPythonを使って何かしたい」場合、Pythonの細かい文法を気にするより「当面はライブラリの使い方を学ぶ」と割り切った方が生産的だと思う。</p>
+<h2 id="pythonのインストール">Pythonのインストール</h2>
+<p>Pythonには最初からよくつかうライブラリが同封されており、標準ライブラリと呼ばれている。しかし、多くの場合は標準に含まれていないライブラリを使いたくなるであろう。その時、ライブラリを管理するツールがパッケージマネージャである。歴史的な事情で、Pythonには多数のパッケージマネージャが乱立している。実はもうベストプラクティスがあるのかもしれないが、筆者はそれを知らない。ただし、これまでプログラムをあまり組んだことがなく、かつWindowsにPython環境をインストールするならAnacondaが良いと思われる。以下、Anacondaのインストールの仕方を説明しておく。</p>
+<p>TODO: Anacondaのインストール方法</p>
+<h2 id="pythonの実行方法">Pythonの実行方法</h2>
+<p>Pythonにはいくつかの実行方法がある。ここではPythonを使う方法、IPythonを使う方法、Jupyter Notebookを使う方法を紹介する。</p>
+<div class="figure">
+<img src="fig/execution.png" alt="Pythonの実行方法" />
+<p class="caption">Pythonの実行方法</p>
+</div>
+<h3 id="pythonを使う方法">Pythonを使う方法</h3>
+<p>プログラムをファイルに保存し、それをPythonに渡して実行する方法である。別途エディタでプログラムを編集、保存し、端末でPythonを実行する必要がある。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python</span> test.py
+<span class="ex">Hello</span> Python!</code></pre></div>
+<p>LinuxやMacのように標準で端末が使いやすい環境なら良いが、端末が貧弱なWindowsではやや厳しいものがある(最近ではWSLやPowerShellなどもあるが・・・)。</p>
+<h3 id="ipythonを使う方法">IPythonを使う方法</h3>
+<p>IPythonとはPythonの対話的シェルである。端末から<code>ipython</code>を実行すると入力待ちになり、そこで対話的にプログラムを入力、実行ができる。タブ補完が効いたり、コードの色がついて見やすくなったりするため、ちょっとしたプログラムを試したりするのに便利なので、慣れたらこちらを使っても良い。</p>
+<h3 id="jupyter-notebookを使う方法">Jupyter Notebookを使う方法</h3>
+<p>コマンドラインから<code>jupyter notebook</code>を入力するか、WindowsでAnacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すだけで起動できる。</p>
+<p>こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。Google Colabolatoryも、ブラウザからJupyter Notebookが使えるサービスである。</p>
+<h2 id="pythonの基本文法">Pythonの基本文法</h2>
+<h3 id="変数について">変数について</h3>
+<p>TODO: メモリへのラベルとして説明する。</p>
+<h3 id="基本のデータ構造">基本のデータ構造</h3>
+<p>TODO: list、dict、tupleについて。「参照の値渡し」もここで説明しちゃう。</p>
+</article>
+</body>
+</html>

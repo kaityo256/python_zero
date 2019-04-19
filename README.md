@@ -14,8 +14,6 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 ## 書こうと思っているもの
 
-* REPLについて
-  * ipythonにも触れておく
 * コーディングスタイル
   * PEP8の簡単な説明
   * よいプログラムを書くために
@@ -25,6 +23,14 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
   * 変数の問題はリストやタプルの時に再訪したほうが良さそう。
 * ファイル入出力、文字列処理
 * Chainerやっちゃう？
+
+## [Pythonとは](what/README.md)
+
+* プログラミング言語について
+* ライブラリとは
+* 余談：スクリプト言語とコンパイラ言語
+* Pythonのインストール
+* Pythonの基本文法
 
 ## [Google Colabの使い方とPythonの基礎](hello/README.md) (ほぼ完成)
 
@@ -142,6 +148,7 @@ TODO: 構成を変更中。内容を目次に追随させること
 
 * [入門Python3 Bill Lubanovic (著), 斎藤 康毅  (監修), 長尾 高弘  (翻訳)](https://www.amazon.co.jp/dp/4873117380) プログラムに限らずなにかを学ぶ際、最初は「軽い、薄い」本を読みたくなるが、真面目にやろうとすると、どこかで「重い、厚い」本を読む必要が出てくる。とりあえずオライリーの本を買っておけば間違いない。
 * [15時間でわかるPython 集中講座 小田切 篤 (著), 露木 誠  (著)](https://www.amazon.co.jp/dp/4774178926) 全体の構成の参考にした。
+* [Chainer Tutorial](https://tutorials.chainer.org/ja/tutorial.html) 機械学習フレームワーク「Chainer」のチュートリアルだが、最初の[Python入門](https://tutorials.chainer.org/ja/src/02_Basics_of_Python_ja.html)はPythonのことが簡潔にまとまっており、初学者におすすめ。
 
 ### 中級者向け
 

@@ -75,4 +75,4 @@ TODO: メモリへのラベルとして説明する。
 
 ### 基本のデータ構造
 
-list、dict、tupleについて。
+TODO: list、dict、tupleについて。「参照の値渡し」もここで説明しちゃう。
