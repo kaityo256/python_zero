@@ -44,28 +44,36 @@ TODO: Anacondaのインストール方法
 
 Pythonにはいくつかの実行方法がある。ここではPythonを使う方法、IPythonを使う方法、Jupyter Notebookを使う方法を紹介する。
 
-![Pythonの実行方法](fig/execution.png)
-
 ### Pythonを使う方法
 
-プログラムをファイルに保存し、それをPythonに渡して実行する方法である。別途エディタでプログラムを編集、保存し、端末でPythonを実行する必要がある。
+![Pythonで実行](fig/execution_python.png)
+
+プログラムをファイルに保存し、それをPythonに渡して実行する方法である。別途エディタでプログラムを編集、保存し、コマンドラインでPythonを実行する。
 
 ```sh
 $ python test.py
 Hello Python!
 ```
 
-LinuxやMacのように標準で端末が使いやすい環境なら良いが、端末が貧弱なWindowsではやや厳しいものがある(最近ではWSLやPowerShellなどもあるが・・・)。
+スクリプト言語の基本的な使い方であり、Vim、Emacs、VS Codeなど、多くのエディタがPythonに対応しているため、そのような強力なエディタを使っていれば快適な開発環境が得られる。Pycharmという、Python専用のIDE(統合開発環境)もあるので、好きなものを使ってほしい。
+
+LinuxやMacのように標準でコマンドラインが使いやすい環境なら良いが、コマンドラインが貧弱なWindowsではやや厳しいものがある(最近ではWSLやPowerShellなどもあるが・・・)。エディタや開発環境によってはコマンドラインを開かずに実行できる場合もあるが、その場合でも一度はコマンドラインで実行し、何が起きているかわかってからコマンドラインを使わない実行に移った方が良いと思う。
 
 ### IPythonを使う方法
 
-IPythonとはPythonの対話的シェルである。端末から`ipython`を実行すると入力待ちになり、そこで対話的にプログラムを入力、実行ができる。タブ補完が効いたり、コードの色がついて見やすくなったりするため、ちょっとしたプログラムを試したりするのに便利なので、慣れたらこちらを使っても良い。
+![IPythonで実行](fig/execution_ipython.png)
+
+IPythonとはPythonの対話的シェルである。コマンドから`ipython`と実行すると入力待ちになり、そこで対話的にプログラムを入力、実行ができる。タブ補完が効いたり、コードの色がついて見やすくなったりするため、ちょっとしたプログラムを試したりするのに便利である。エディタや統合環境を使ったり、Jupyter Notebookを使う場合でも、この方法を覚えておいて損はない。
 
 ### Jupyter Notebookを使う方法
 
-コマンドラインから`jupyter notebook`を入力するか、WindowsでAnacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すだけで起動できる。
+![Jupyter Notebookで実行](fig/execution_jupyter.png)
 
-こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。Google Colabolatoryも、ブラウザからJupyter Notebookが使えるサービスである。
+コマンドラインから`jupyter notebook`を入力するか、WindowsでAnacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すと、Jupyter Notebookが起動する。
+
+こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。Google Colabolatoryも、ブラウザからJupyter Notebookが使えるサービスである。
+
+初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。ただし、例えばセル間でグローバル変数を共有したり、「セルの並び順」ではなく「セルを実行した順」にプログラムが実行されるため、書き方が悪いと混乱しやすいかもしれない。とりあえずJupyter Notebookを使いつつ、エディタによる開発に移行するか、併用するのが良いと思う。
 
 ## Pythonの基本文法
 
