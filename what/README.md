@@ -65,7 +65,7 @@ IPythonとはPythonの対話的シェルである。端末から`ipython`を実�
 
 コマンドラインから`jupyter notebook`を入力するか、WindowsでAnacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すだけで起動できる。
 
-こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。Google Colabolatoryも、ブラウザからJupyter Notebookが使えるサービスである。
+こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。Google Colabolatoryも、ブラウザからJupyter Notebookが使えるサービスである。
 
 ## Pythonの基本文法
 
