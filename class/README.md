@@ -1,5 +1,8 @@
 # [クラスとオブジェクト指向](https://kaityo256.github.io/python_zero/class/)
 
+[[Up]](../index.html)
+[[Repository]](https://github.com/kaityo256/python_zero)
+
 * オブジェクト指向とは？
 * 割り箸ゲーム
 * 余談：オブジェクト指向プログラミングの意義
