@@ -1,5 +1,8 @@
 # Pythonとは
 
+[[Up]](../index.html)
+[[Repository]](https://github.com/kaityo256/python_zero)
+
 ## 本稿の目的
 
 * プログラミング言語とはなにかを学ぶ

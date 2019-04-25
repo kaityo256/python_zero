@@ -1,5 +1,8 @@
 # [Pythonはどうやって動くのか](https://kaityo256.github.io/python_zero/howtowork/)
 
+[[Up]](../index.html)
+[[Repository]](https://github.com/kaityo256/python_zero)
+
 * コンピュータはなぜ動くのか？
 * プログラム言語とは
 * Pythonが動く仕組み1: 抽象構文木

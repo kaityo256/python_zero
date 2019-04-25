@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="はじめに"><a href="https://kaityo256.github.io/python_zero/list/introduction">はじめに</a></h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<p>この講義では、Pythonをゼロから学ぶ。しかし、始める前になぜPythonを学ぶべきなのか？Pythonを学んでどうするのか？について少し伝えたいことがある。</p>
+<p>この講義の目的は「これまでプログラムを組めなかった人がプログラムを組めるようになること」ではない。また、Pythonを扱うが、「Pythonをマスターすること」を目的とはしない。そもそも全くプログラムを組んだことがない状態から、半期の講義を受けたらPythonをバリバリ組めるようになる、というのは不可能だ。</p>
+<p>では何を目的とするか。それは「これくらいのプログラムを書けば、これくらいのことができるんだなぁ」という「感覚」を身につけることだ。これから短いプログラムから、それなりに長いプログラムを多数組むことになるが、そこで文法とか、ライブラリの使い方などを覚える必要はない。ざっくりと「Pythonにはこんなライブラリがあり、それを使うとわずか数行でこれくらいのことができる」ということを頭の片隅に置いてくれればそれでよい。</p>
+<p>なぜプログラムを覚えるべきか。それは今後プログラムが就職活動に必須スキルになるからでもなく、ましてAIがブームだからでもない。「プログラマ的な感覚」を身につけるためだ。たとえ普段プログラムをバリバリ組んでいなくても、「プログラマ的な感覚」を身に着けた人は、そうでない人に比べて作業能力が桁違いに上がる可能性がある。</p>
+<p>例を挙げよう。今、あなたは卒論もしくは仕事で、あるフォルダの中にある100枚くらいの画像を全て半分にリサイズする必要が出てきた。とりあえずWindowsユーザだとして、「ペイント」を使ってファイルを開き、「Ctrl+E」でイメージのプロパティを開き、そこで幅と高さを調整して上書き保存できることは知っているとしよう。</p>
+<p>ここで、この講義を受けた人は、詳細は覚えていなくとも「少なくともPythonには画像を扱うライブラリがあり、リサイズもできるはずで、またフォルダの中のファイル一覧も簡単に取れるに違いない」と思うだろう。そして「Python 画像 リサイズ」や「Python フォルダ ファイル 一覧」などのキーワードでググって、以下のようなコードを書く。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> glob
+<span class="im">from</span> PIL <span class="im">import</span> Image
+
+<span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> glob.glob(<span class="st">&quot;*.png&quot;</span>):
+    img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="bu">file</span>)
+    (w, h) <span class="op">=</span> img.size
+    img.resize((w<span class="op">//</span><span class="dv">2</span>, h<span class="op">//</span><span class="dv">2</span>), Image.LANCZOS).save(<span class="st">&quot;resized/&quot;</span><span class="op">+</span><span class="bu">file</span>)</code></pre></div>
+<p>カレントディレクトリにあるPNGファイルを、半分のサイズにしては<code>resized</code>というフォルダに放り込んでいくスクリプトである。たった6行だ。</p>
+<p>もしくは、「これくらいのことならPythonいらないかもしれない」と思って、「画像　リサイズ　一括」というキーワードで検索して、ImageMagickというツールにたどり着くかもしれない。それなら一行でできる。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mogrify</span> -path resized -resize 50% *.png</code></pre></div>
+<p>ここで重要なのは「PythonのglobやPILというライブラリの存在や使い方を覚えていること」でも「ImageMagickというツールを知っていること」でもない。「これくらいのことなら数行でできるに違いない」という感覚である。プログラマ的な感覚を身に着けていない人は、そもそも「これは簡単にできるだろう」という発想がないため、検索もできない。</p>
+<p>もしかしたら「プログラムの素養がなくたって画像のリサイズくらいなら自動でできると思いつくだろ」と思うかもしれない。では、こんな課題はどうだろう？</p>
+<p>あなたは卒論でトランジスタの特性を調べることになった。それぞれのトランジスタにはあるパラメータがあり、それを変えて作られている。そのトランジスタの電圧ー電流特性が、以下のようなファイルに保存されているとしよう。</p>
+<pre class="dat"><code>0.0 0.0
+0.1 0.01
+0.2 0.2
+0.3 0.8
+...</code></pre>
+<p>このようなデータが、トランジスタのパラメタを含めて<code>data_48.dat</code>といった名前で保存されており、それが100個近くある。トランジスタは、ゲートにかける電圧がある「しきい値」を超えると電流が流れ始める。このデータに適当にフィッティングをかけることで、「しきい値」を求めたいとしよう。ファイルそれぞれのデータにフィッティングをかけて、ファイル名のうしろにある値(この場合は48)をx軸に、しきい値をy軸にしてプロットしたい。</p>
+<p>「画像のリサイズ」は一般的なニーズだからツールはあるが、この卒論のテーマはあなたしかやっていないから、当然そんな便利なツールはない。ここで、もしあなたが「プログラマ的な感覚」がなければ、一つ一つエクセルでファイルを開き、スレッショルドを求めて、別のエクセルシートにパラメタとして記入していくかもしれない。そして徹夜で作業して「卒論がんばってる！」と錯覚するかもしれない。しかし、もしあなたが「プログラマ的な感覚」を持っていれば、「これはPythonを使えば、長くても数十行でできるな」と思うはずだ。</p>
+<p>くりかえしになるが、必要なのは「知識」ではなく「感覚」である。「<code>glob</code>を使ってファイル一覧を取得し、<code>scipy</code>の<code>curve_fit</code>でフィッティングをかけることができる」ということを覚えておく必要はない。大事なのは「そういうことが簡単にできるはずだ」と思うことで、そう思うことができれば「Python フィッティング」で検索すればすぐに<code>scipy.curve_fit</code>にたどり着けるはずだ。</p>
+<p>こういった考えは別にPythonに限らない。エクセルを使っていても、面倒な処理を見た時に「これは一括でできるマクロがあるに違いない」と思って探すかどうか。毎日決まった時間に、あるウェブサイトにアクセスして、ある値を読み取らないといけないという「仕事」が与えられた時に、「ウェブサイトにアクセスして値を読み込めるツールがあるに違いない。毎日決まった時間に何かを自動的に実行する方法があるに違いない。それを組み合わせれば良い」と思えるかどうか。これが「プログラマ的発想」である。</p>
+<p>こういう発想ができるようになれば、日々の作業効率が飛躍的に向上するのが想像できるであろう。別に全ての作業を自動化する必要はない。プログラムは何かの目的を達成するための手段の一つに過ぎず、プログラムするか、ツールを導入するか、それとも今回は手でやるか、自動化のためのコストと、自動化しなかった時のコストを考えて、その時その時に最適と思える選択をすればよい。</p>
+<p>細かい文法などは最初は気にせず、必要に応じて調べれば良い。「Pythonはこういうことができるんだな」「それはこれくらいの作業量でできるんだな」という「感覚」を頭の片隅に残すこと、それを目的として講義を受けて欲しい。</p>
+</article>
+</body>
+</html>

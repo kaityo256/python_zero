@@ -1,5 +1,8 @@
 # [乱数を使ったプログラム](https://kaityo256.github.io/python_zero/random/)
 
+[[Up]](../index.html)
+[[Repository]](https://github.com/kaityo256/python_zero)
+
 * 疑似乱数とモンテカルロ法
 * 余談：疑似乱数とゲーム
 * モンティ・ホール問題

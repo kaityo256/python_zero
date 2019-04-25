@@ -1,5 +1,8 @@
 # [数値シミュレーション](https://kaityo256.github.io/python_zero/simulation/)
 
+[[Up]](../index.html)
+[[Repository]](https://github.com/kaityo256/python_zero)
+
 * 空気抵抗がない場合の弾道計算
 * 空気抵抗がある場合の弾道計算
 * 反応拡散方程式(Gray-Scott Model)
