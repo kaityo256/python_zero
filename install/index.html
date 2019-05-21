@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="pythonのインストール">Pythonのインストール</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本稿の目的">本稿の目的</h2>
+<ul>
+<li>Pythonのインストールと実行方法について学ぶ</li>
+<li>パッケージとパッケージマネージャについて知る</li>
+</ul>
+<p>本講義では、原則としてGoogle Colabを用いてオンライン上でPythonを学ぶ。したがってローカルにPythonをインストールする必要はないが、後で必要になることもあるだろう。そこで、手元のPCにPythonをインストールする方法と、その実行方法について書いておく。</p>
+<h2 id="pythonのライブラリについて">Pythonのライブラリについて</h2>
+<p>Pythonのインストールそのものは難しくない。公式サイトからダウンロードしてインストールするだけである。問題なのはパッケージ管理である。Pythonには最初からよくつかうライブラリが同封されており、標準ライブラリと呼ばれている。しかし、Pythonには標準ライブラリに含まれないライブラリ(サードパーティ製のライブラリと呼ばれる)が大量にある。そして、多くの場合、そのサードパーティのライブラリが使いたくなるであろう。そのようなライブラリがウェブに分散していてはインストールが大変なので、一箇所で管理するリポジトリがある。それがPython Package Index (PyPI)である。</p>
+<p>PyPIには誰でもライブラリを登録することができ、本稿執筆時点(2019年5月)で179710個のプロジェクトが登録されている。</p>
+<div class="figure">
+<img src="fig/pypi.png" alt="PyPI" />
+<p class="caption">PyPI</p>
+</div>
+<p>PyPIから欲しいライブラリを探し、ダウンロードしてインストールすることも可能である。しかし、例えば「AというライブラリはBというライブラリに依存している」「CというライブラリはCで書かれているため、ダウンロード後にコンパイルが必要になる」といった状況があり、全部人力で解決するのは面倒である。そこで、パッケージのダウンロード、依存関係の解決などをするpipというコマンドが用意された。コマンドラインで</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">pip</span> install hoge</code></pre></div>
+<p>とすると、自動でPyPIから<code>hoge</code>を探してきて、依存関係も解決しつつインストールしてくれるようになる。しかし、Python本体にはPython2系とPython3系があり、お互いの互換性には問題がある。さらにライブラリでもバージョンによる互換性の問題が起きたため、「Pythonの環境を管理するマネージャ」が乱立した。このあたりは闇が深いので、ここでは深く突っ込まない。</p>
+<p>現在ではPythonの環境構築についてベストプラクティスもあるのであろうが、それはおいおい気になったらやってもらうことにして、ここでは、Anacondaというプラットフォームを紹介する。Anacondaには、科学技術計算に必要なライブラリや、Jupyter Notebookなどよく使うアプリケーションが最初から含まれているため、「とりあえず使ってみたい」という方にメリットが大きい。ただし、他のよく使われるパッケージマネージャとぶつかるため、使っていて気になりだしたら別のマネージャ(例えばpipenv)などを使えば良い。以下、Anacondaのインストールの仕方を説明しておく。</p>
+<h2 id="anacondaのインストール">Anacondaのインストール</h2>
+<p>以下、Windowsへのインストールを例に説明する。MacやLinuxでも手順は同様だと思われる。</p>
+<p>Googleで「Anaconda」と検索するか、<a href="https://www.anaconda.com/" class="uri">https://www.anaconda.com/</a>にアクセスし、右上にある「ダウンロード」をクリックする。</p>
+<div class="figure">
+<img src="fig/download.png" alt="Anacondaのダウンロード" />
+<p class="caption">Anacondaのダウンロード</p>
+</div>
+<p>現れたページの下の方に「Windows | macOS | Linux」のタブが現れるので「Windows」をクリックしてから「Python 3.7 version」の「Download」ボタンを押す。</p>
+<div class="figure">
+<img src="fig/download_win.png" alt="Anacondaのダウンロード" />
+<p class="caption">Anacondaのダウンロード</p>
+</div>
+<p>ダウンロードが完了したら、以下のアイコンをダブルクリックしてインストールを開始する。</p>
+<div class="figure">
+<img src="fig/anaconda.png" alt="Anacondaのアイコン" />
+<p class="caption">Anacondaのアイコン</p>
+</div>
+<p>すべてデフォルトのままで良いが、途中で自分だけにインストールするか、このPC全員にインストールされるか聞かれるので、適宜対応する。必要なパッケージをほとんど含んでいるため、インストールにはかなり時間がかかる。</p>
+<p>インストールが完了したら、「Anaconda Cloud」や「get started」を見るか聞かれる。必要ないので、チェックを外して「Finish」を押す。</p>
+<div class="figure">
+<img src="fig/finish.png" alt="インストール完了" />
+<p class="caption">インストール完了</p>
+</div>
+<p>Windowsのスタートメニューから、Anaconda Navigatorを実行する。Windows 10だとメニューが折り畳まれている場合もあるので注意。</p>
+<div class="figure">
+<img src="fig/navigator.png" alt="Anaconda Navigator" />
+<p class="caption">Anaconda Navigator</p>
+</div>
+<p>起動すると必要なパッケージを自動でインストールするため、環境によっては初回起動時に時間がかかるかもしれない。</p>
+<p>Navigatorが起動したら、Jupyter Notebookを実行する。以下の画面の「Jupyter Notebook」の下の「Launch」をクリックする。</p>
+<div class="figure">
+<img src="fig/jupyter.png" alt="Jupyter Notebook" />
+<p class="caption">Jupyter Notebook</p>
+</div>
+<p>デフォルトのブラウザで、Jupyter Notebookが開かれるので、右上の「New」ボタンから「Python 3」を選ぶ。</p>
+<div class="figure">
+<img src="fig/newbook2.png" alt="Open New Book" />
+<p class="caption">Open New Book</p>
+</div>
+<p>新しいタブが開き、入力待ちになるので、そこで何かプログラムを入力する。例えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello Python&quot;</span>)</code></pre></div>
+<p>と入力し「Shift+Return」もしくは上の「Run」ボタンをクリックする。</p>
+<div class="figure">
+<img src="fig/run2.png" alt="Jupyter Notebookの実行結果" />
+<p class="caption">Jupyter Notebookの実行結果</p>
+</div>
+<p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
+<p>右上の「Quit」を押してサーバを終了する。「Logout」を押して終了しようとすると、Anaconda Navigatorを終了しようとする時に 「Jupyter Notebookが終了していない」と言われるの注意。その場合はそのまま終了して問題ない。</p>
+<p>また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルの コマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すと コマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。</p>
+<h3 id="anacondaのトラブル">Anacondaのトラブル</h3>
+<p>たまに、Anaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。 しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
+</article>
+</body>
+</html>

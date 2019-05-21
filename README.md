@@ -16,12 +16,15 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 * なぜPythonを学ぶのか。「プログラマ的」発想について。
 
+## [Pythonのインストール](install/README.md)
+
+* Anacondaのインストール方法(Google Colabを使う場合は不要)
+
 ## [Pythonとは](what/README.md)
 
 * プログラミング言語について
 * ライブラリとは
 * 余談：スクリプト言語とコンパイラ言語
-* Pythonのインストール
 * Pythonの基本文法
 
 ## [Google Colabの使い方とPythonの基礎](hello/README.md) (ほぼ完成)
