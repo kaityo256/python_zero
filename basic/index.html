@@ -73,61 +73,108 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
-<li>組み込み型</li>
+<li>変数と組み込み型</li>
 <li>関数の宣言と利用方法</li>
 <li>for文による繰り返し処理</li>
 <li>if文による条件分岐</li>
 <li>ニュートン法</li>
 </ul>
-<h2 id="組み込み型">組み込み型</h2>
-<p>Pythonに限らず、プログラム言語には「型 (type)」がある。「型」とは、そのデータが何を表現しているかを表すものである。 「型」は自分で作ることもできるが、言語にもともと備わっている型もあり、それを「組み込み型 (Built-in types)」と呼ぶ。</p>
+<h2 id="変数と型について">変数と型について</h2>
+<h3 id="変数について">変数について</h3>
+<p>Pythonに限らず、プログラミング言語には「変数(Variable)」という概念が出てくる。変数は簡単なように見えて、意外に理解が難しい概念である。例え話を多用するととっつきやすが、後で混乱するもとなので、ここでは変数の実装に近いところから説明する。ただし、簡略化してあり、実装そのものではないので注意して欲しい。</p>
+<p>計算機とは、メモリにあるデータをCPUで処理して、またメモリに書き戻す機械である。メモリには「番地」という通し番号がついており、例えば足し算なら「0番地と1番地のデータを読み込んで足してから2番地に書き込め」といったことを指示する。しかし、いちいちどの値がどこにあるか番地で覚えるのは面倒だ。そこで変数というラベルを使うことにする。</p>
+<p>以下のプログラムを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span></code></pre></div>
+<p>これは、<code>a</code>という変数を用意し、そこに<code>10</code>という値を代入せよ、という意味だ。実際には、メモリ上に<code>a</code>というラベルを貼り、そこに<code>10</code>を書き込む、という処理をする。同様に<code>b = 20</code>とすると、<code>b</code>というラベルが作られ、そこに<code>20</code>が書き込まれる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+b <span class="op">=</span> <span class="dv">20</span></code></pre></div>
+<p><code>print</code>という命令を使うと、その値を確認することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co"># =&gt; 10</span></code></pre></div>
+<p>今後、<code># =&gt;</code>という記号は、「左を実行すると、右の結果が得られるよ」という意味だと約束する。</p>
+<p>また、Jupyter Notebookでは、変数名だけを含む、もしくはセルの最後に変数名だけを含むセルを実行すると、その値を確認することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="co">#=&gt; 10</span></code></pre></div>
+<p>さて、この状態で<code>c = a + b</code>を実行してみよう。まず、右の<code>a+b</code>が評価される。その結果得られた値<code>30</code>を<code>c</code>の指す場所に書きこもうとするが、まだ<code>c</code>という変数は作られていないので、まず<code>c</code>の場所が作られてからそこに値が書き込まれる。</p>
+<p>同様に、<code>a = a + b</code>を実行した場合、<code>a</code>の場所はすでに存在するので、その値が更新される。</p>
+<div class="figure">
+<img src="fig/add.png" alt="変数による足し算" />
+<p class="caption">変数による足し算</p>
+</div>
+<p>このようにPythonでは、代入文があった時、その左辺にある変数が未定義なら作成され、定義済みなら値を更新するので覚えておこう。</p>
+<p>また、その時に定義されていない変数を使おうとするとエラーになる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+b <span class="op">=</span> <span class="dv">10</span>
+a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39; is not defined</span></code></pre></div>
+<p>上記の例では、<code>a</code>と<code>b</code>だけ定義された状態で、<code>a</code>に<code>c</code>というラベルの指す内容を代入せよと指示しているが、この時点では<code>c</code>というラベルがないためにエラーになっている。</p>
+<div class="figure">
+<img src="fig/nameerror.png" alt="NameError" />
+<p class="caption">NameError</p>
+</div>
+<h3 id="型について">型について</h3>
+<p>変数とは、メモリにつけられた「ラベル」である。メモリには整数しか保存できないが、プログラムでは小数点を含む数や文字列なども表現したい。そこで、「このメモリの値をどう解釈するか」を指定する必要がでてくる。これが「型(Type)」である。全ての値や変数には型がある。</p>
+<p>例えば、<code>1</code>が代入された変数は「整数」の型を持っている。変数の型は<code>type</code>という命令で知ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
+<span class="bu">type</span>(a) <span class="co"># =&gt; int</span></code></pre></div>
+<p>小数点を含む数字は浮動小数点数(float型)になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> <span class="fl">1.0</span>
+<span class="bu">type</span>(b) <span class="co"># =&gt; float</span></code></pre></div>
+<p>ダブルクォーテーション<code>&quot; &quot;</code>やシングルクォーテーションマーク<code>' '</code>で囲まれた文字は「文字列」として扱われる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> <span class="st">&quot;test&quot;</span>
+<span class="bu">type</span>(c) <span class="co"># =&gt; str</span></code></pre></div>
+<p>例えば文字列の場合、メモリに<code>0x74</code>という数値があった場合、それをアルファベット小文字の<code>t</code>と解釈しましょう、という約束を決めておく。変数<code>c</code>の<code>str</code>という型は、<code>c</code>が指す先のメモリを「文字列として解釈する」という意味を持つ。すると、今<code>c</code>が指している「0x74 65 73 74」という数値列が<code>test</code>という文字列として解釈される。</p>
+<p>同様に、例えば「1.0」という浮動小数点数は、メモリ上では「0x3FF0000000000000」という8バイトの数字で表現されている。これをある約束(IEEE754という規格)に従って解釈すると「1.0」という数値となる。</p>
+<div class="figure">
+<img src="fig/type.png" alt="型とメモリ上のデータ" />
+<p class="caption">型とメモリ上のデータ</p>
+</div>
+<p>整数や浮動小数点数は四則演算が可能である。同じ型同士の演算は原則としてその型になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">type</span>(<span class="dv">1</span><span class="op">+</span><span class="dv">2</span>) <span class="co"># =&gt; int</span>
+<span class="bu">type</span>(<span class="fl">1.0</span><span class="op">+</span><span class="fl">2.0</span>) <span class="co"># =&gt; float</span></code></pre></div>
+<p>ただし、整数の割り算だけ注意を要する。Pythonでは、整数同士の割り算は、たとえ割り切れる場合でも、値は浮動小数点数になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">4</span> <span class="op">/</span> <span class="dv">2</span> <span class="co"># =&gt; 2.0</span></code></pre></div>
+<p>割り算のあまりを切り捨てた整数値が欲しければ<code>//</code>と、<code>/</code>記号を二つ続けた演算子を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">5</span><span class="op">/</span><span class="dv">2</span> <span class="co"># =&gt; 2</span></code></pre></div>
+<p>整数型と浮動小数点数型の演算結果は浮動小数点数型になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="dv">1</span><span class="op">+</span><span class="fl">1.0</span>) <span class="co"># =&gt; 2.0</span>
+<span class="bu">type</span>(<span class="dv">1</span><span class="op">+</span><span class="fl">1.0</span>) <span class="co"># =&gt; float</span></code></pre></div>
+<p>文字列同士は足し算ができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co">&quot;Hello &quot;</span> <span class="op">+</span> <span class="st">&quot;World!&quot;</span> <span class="co"># =&gt; &quot;Hello World!&quot;</span></code></pre></div>
+<p>文字列と数値の演算はできない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co">&quot;1&quot;</span> <span class="op">+</span> <span class="dv">2</span>  <span class="co"># =&gt; Type Error</span></code></pre></div>
+<p><code>int</code>や<code>float</code>で囲むと文字列から整数や浮動小数点数に変換できるので、演算も可能になる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">int</span>(<span class="st">&quot;1&quot;</span>) <span class="co"># =&gt; 1</span>
+<span class="bu">int</span>(<span class="st">&quot;1&quot;</span>) <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3</span>
+<span class="bu">float</span>(<span class="st">&quot;1&quot;</span>) <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3.0</span></code></pre></div>
 <h3 id="真偽値">真偽値</h3>
-<p>「真(True)」であるか「偽(False)」であるかの二値だけを取る型で、条件分岐などで使われる。セルに<code>True</code>と入力して実行せよ。<code>True</code>と表示されるはずである。これは<code>True</code>を評価したら<code>True</code>になった、という意味だ(これは全く当たり前のことではない。「評価」については後ほど触れる)。<code>False</code>を評価すると<code>False</code>になる。なお、<code>#</code>以降はコメントであり、入力の必要はない。また、<code># =&gt;</code>とは、慣習として「その行を実行するとこの結果が出てくるよ」という意味である。例えば一行目の<code>True # =&gt; True</code>は、<code>True</code>とだけ入力して実行すると、結果が<code>True</code>と帰ってくるという意味である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="co"># =&gt; True</span>
-<span class="va">False</span> <span class="co"># =&gt; False</span></code></pre></div>
-<p>上記は二行まとめて書いているが、実際にはどちらか一行を書いて実行すると、その右にある結果が表示される、という意味である。</p>
-<p>また、<code>not</code>をつけると真偽値が逆転する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
-<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
-<p>二つの真偽値を使って論理演算もできる。<code>and</code>は「かつ」、<code>or</code>は「または」を意味する。 「真かつ偽」は「偽」だし、「真または偽」は「真」である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="kw">and</span> <span class="va">False</span> <span class="co"># =&gt; False</span>
-<span class="va">True</span> <span class="kw">or</span> <span class="va">False</span> <span class="co"># =&gt; True</span>
-<span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
-<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
-<h3 id="整数">整数</h3>
-<p>「1」「2」「3」といった整数を表現する。四則演算や比較などができる。負の数も扱える。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="co"># =&gt; 1</span>
-<span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3</span>
-<span class="dv">2</span> <span class="op">*</span> <span class="dv">6</span> <span class="co"># =&gt; 12</span>
-<span class="dv">2</span> <span class="op">-</span> <span class="dv">5</span> <span class="co"># =&gt; -3</span></code></pre></div>
-<p>整数同士を比較すると真偽値になる。条件分岐や、ループの終了条件等に用いる。</p>
+<p>真偽値(bool)とは「真(True)」であるか「偽(False)」であるかの二値だけを取る型で、条件分岐などで使われる。</p>
+<p>値を比較すると真偽値になる。条件分岐や、ループの終了条件等に用いる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">==</span> <span class="dv">1</span> <span class="co">#=&gt; True</span>
 <span class="dv">1</span> <span class="op">==</span> <span class="dv">2</span> <span class="co">#=&gt; False</span>
 <span class="dv">1</span> <span class="op">!=</span> <span class="dv">1</span> <span class="co">#=&gt; False</span>
 <span class="dv">1</span> <span class="op">!=</span> <span class="dv">2</span> <span class="co">#=&gt; True</span>
 <span class="dv">1</span> <span class="op">&lt;</span> <span class="dv">2</span>  <span class="co">#=&gt; True</span>
-<span class="dv">1</span> <span class="op">&gt;</span> <span class="dv">2</span>  <span class="co">#=&gt; False</span></code></pre></div>
-<h3 id="浮動少数点">浮動少数点</h3>
+<span class="dv">1</span> <span class="op">&gt;</span> <span class="dv">2</span>  <span class="co">#=&gt; False</span>
+<span class="fl">1.0</span> <span class="op">&lt;</span> <span class="fl">2.0</span> <span class="co">#=&gt; True</span></code></pre></div>
+<p>文字列の比較もできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co">&quot;test&quot;</span> <span class="op">==</span> <span class="st">&quot;test&quot;</span> <span class="co">#=&gt; True</span>
+<span class="co">&quot;hoge&quot;</span> <span class="op">&lt;</span> <span class="st">&quot;piyo&quot;</span> <span class="co">#=&gt; True</span></code></pre></div>
+<p>真偽値は、<code>not</code>をつけると真偽値が逆転する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
+<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
+<p>二つの真偽値を使って論理演算もできる。<code>and</code>は「かつ」、<code>or</code>は「または」を意味する。例えば「真かつ偽」は「偽」に、「真または偽」は「真」となる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="kw">and</span> <span class="va">False</span> <span class="co"># =&gt; False</span>
+<span class="va">True</span> <span class="kw">or</span> <span class="va">False</span> <span class="co"># =&gt; True</span>
+<span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
+<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
+<h3 id="浮動少数点数">浮動少数点数</h3>
 <p>「0.1」「123.45」といった、整数ではない値を表現する。整数と同様に四則演算や比較ができるし、負の数も扱える。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="co">#=&gt; 1.0</span>
 <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="co">#=&gt; 0.25</span>
 <span class="fl">0.5</span> <span class="op">&lt;</span> <span class="fl">1.0</span> <span class="co">#=&gt; True</span></code></pre></div>
-<p>ただし、浮動小数点数は内部的には <strong>その数値に最も近い近似値</strong> を扱っているため、誤差が存在する。例えば0.1を3回足しても0.3にならない。</p>
+<p>ただし、浮動小数点数は内部的には <strong>その数値に最も近い近似値</strong> を扱っているため、誤差が存在する。例えば0.1を3回足しても0.3にならないことに注意。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="co">#=&gt; 0.30000000000000004</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.2</span> <span class="co"># =&gt; True</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.3</span> <span class="co">#=&gt; False</span></code></pre></div>
-<p>したがって、** 浮動小数点数同士の等号比較は信頼できない **。浮動小数点数同士の等号比較は、意図通りに動作したりしなかったりする。初心者がよく入れるバグなので注意すること。</p>
-<p>整数と浮動小数点数の演算結果は、(たとえ結果が整数になろうとも)浮動小数点数になる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span><span class="op">*</span><span class="dv">2</span> <span class="co">#=&gt; 1.0</span></code></pre></div>
-<h3 id="整数の除算と余り">整数の除算と余り</h3>
-<p>整数同士の割り算は(たとえ演算結果が整数であろうとも)浮動小数点数になる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">/</span><span class="dv">3</span> <span class="co">#=&gt; 2.0</span></code></pre></div>
-<p>もし、整数の割り算で整数を得たい場合(商を求めて余りを無視したい場合)は<code>//</code>を用いる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">//</span><span class="dv">3</span> <span class="co"># =&gt; 2</span>
-<span class="dv">5</span><span class="op">//</span><span class="dv">2</span> <span class="co">#=&gt; 2</span></code></pre></div>
-<p>整数の割り算で余りが欲しい場合は<code>%</code>を用いる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">6</span><span class="op">%</span><span class="dv">3</span> <span class="co">#=&gt; 0</span>
-<span class="dv">5</span><span class="op">%</span><span class="dv">2</span> <span class="co">#=&gt; 1</span></code></pre></div>
+<p>したがって、<strong>浮動小数点数同士の等号比較は信頼できない</strong>。浮動小数点数同士の等号比較は、意図通りに動作したりしなかったりする。初心者がよく入れるバグなので注意すること。</p>
 <h3 id="複素数">複素数</h3>
 <p>Pythonは複素数も扱うことができる。虚数単位がjなので注意。実部、虚部は<code>real</code>、<code>imag</code>で取り出すことができる。 また、整数で記述しても浮動小数点数として扱われることに注意。複素数の宣言は<code>1+2j</code>のように書くか、<code>complex(1,2)</code>のように書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">+</span><span class="ot"> 2j</span> <span class="co"># =&gt; (1+2j)</span>
@@ -136,33 +183,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 (<span class="dv">1</span><span class="op">+</span>2j)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>2j) <span class="op">=&gt;</span> (<span class="dv">5</span><span class="op">+</span>0j)
 (<span class="dv">1</span><span class="op">+</span>2j).real <span class="co">#=&gt; 1.0</span>
 (<span class="dv">1</span><span class="op">+</span>2j).imag <span class="co">#=&gt; 2.0</span></code></pre></div>
-<h2 id="変数">変数</h2>
-<p>プログラム言語では、値にラベルをつけることができる。そのラベルは、値として振る舞う。このラベルを「変数 (variable)」と呼ぶ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
-<span class="bu">print</span>(a) <span class="co"># =&gt; 1</span>
-a <span class="op">+</span> <span class="dv">1</span> <span class="co">#=&gt; 2</span></code></pre></div>
-<p>値は演算結果で上書きすることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
-<span class="bu">print</span>(a) <span class="co"># =&gt; 1</span>
-a <span class="op">=</span> a <span class="op">+</span> <span class="dv">1</span>
-<span class="bu">print</span>(a) <span class="co"># =&gt; 2</span></code></pre></div>
-<h2 id="関数">関数</h2>
-<p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
-  <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
-<p><code>def</code>の後に続く部分をブロックと呼び、字下げをする。この字下げをインデントと呼ぶ。Pythonはブロックをインデントにより表現する。また、関数定義の右側にある「コロン」を忘れないように。定義した関数は後で何度でも呼ぶこともできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></code></pre></div>
-<p>関数にインプットを与えることもできる。このインプットを「引数(ひきすう)」と呼ぶ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> say(s):
-  <span class="bu">print</span>(s)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></code></pre></div>
-<p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> add(a, b):
-    <span class="cf">return</span> a <span class="op">+</span> b</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">add(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co">#=&gt; 7</span></code></pre></div>
-<p>関数が返した値を変数に代入することもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)
-<span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
 <h2 id="繰り返し処理">繰り返し処理</h2>
 <h3 id="for文">for文</h3>
 <p>繰り返し処理は以下のように書ける。</p>
@@ -201,7 +221,7 @@ a <span class="op">=</span> a <span class="op">+</span> <span class="dv">1</span
   <span class="cf">else</span>:
     <span class="bu">print</span>( <span class="st">&quot;a &lt;= c &lt;= b&quot;</span>)</code></pre></div>
 <h2 id="ニュートン法">ニュートン法</h2>
-<p>以上の知識で、何かコードを書いてみよう。 ある方程式を解きたいが、その解が厳密にはわからないとする。 その場合でも数値計算で必要な精度で解を求めることができる。 そのような場合によく用いられるのがニュートン法である。</p>
+<p>以上の知識で、何かコードを書いてみよう。ある方程式を解きたいが、その解が厳密にはわからないとする。その場合でも数値計算で必要な精度で解を求めることができる。そのような場合によく用いられるのがニュートン法である。</p>
 <p>いま、</p>
 <p><span class="math display">\[
 f(x) = 0

@@ -70,22 +70,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="条件分岐と繰り返し処理2"><a href="https://kaityo256.github.io/python_zero/while/">条件分岐と繰り返し処理2</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
-<li>前回の復習</li>
-<li>変数とは何か？</li>
 <li>while文</li>
-<li>コラッツ問題</li>
+<li>関数の宣言と利用方法</li>
 </ul>
-<h2 id="前回の復習">前回の復習</h2>
-<ul>
-<li>基本型</li>
-<li>条件分岐</li>
-<li>繰り返し処理</li>
-<li>関数</li>
-<li>インデントによるブロック表現</li>
-</ul>
-<h2 id="変数とは何か">変数とは何か？</h2>
-<p>TODO: idやtypeの説明</p>
+<p>TODO: 前回の課題とバランスが悪いので、修正すること</p>
 <h2 id="while文">While文</h2>
 <p>「10回繰り返したい」という場合にはfor文が使えるが、「ある条件が満たされている限り繰り返したい」という場合もあるだろう。そんなときに使えるのがwhile文である。while文は以下のような構文になる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">while</span> 条件:
@@ -100,11 +90,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="cf">while</span> a:
     <span class="bu">print</span>(a)
     a <span class="op">-=</span> <span class="dv">1</span></code></pre></div>
-<h2 id="ループのスキップcontinue">ループのスキップ(continue)</h2>
-<h2 id="ループの脱出break">ループの脱出(break)</h2>
-<p>TODO: continueとbreakを使った課題を考えること。</p>
+<p>TODO: continueとbreakの説明</p>
+<h2 id="関数">関数</h2>
+<p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
+  <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
+<p>関数は「def 関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。定義した関数は後で何度でも呼ぶこともできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></code></pre></div>
+<p>関数にインプットを与えることもできる。このインプットを「引数(ひきすう)」と呼ぶ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> say(s):
+  <span class="bu">print</span>(s)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></code></pre></div>
+<p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> add(a, b):
+    <span class="cf">return</span> a <span class="op">+</span> b</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">add(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co">#=&gt; 7</span></code></pre></div>
+<p>関数が返した値を変数に代入することもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)
+<span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
 <h2 id="コラッツ問題">コラッツ問題</h2>
-<p>ではさっそくwhile文を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。 コラッツ問題とは、以下のようなものである。</p>
+<p>ではさっそくwhile文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
 <ul>
 <li>何か正の整数を考えよ</li>
 <li>それが偶数なら2で割れ</li>
