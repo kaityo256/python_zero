@@ -27,12 +27,12 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 * Pythohの特徴
 * Pythonの基本文法
-* 余談：スクリプト言語とコンパイラ言語
 
-## [Google Colabの使い方とPythonの基礎](hello/README.md) (ほぼ完成)
+## [Pythonの概要とGoogle Colabの使い方](hello/README.md) (ほぼ完成)
 
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
+* 余談：スクリプト言語とコンパイラ言語
 * 余談：タッチタイピングについて
 
 ## [条件分岐と繰り返し処理1](basic/README.md) (ほぼ完成)

@@ -68,15 +68,101 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="google-colabの使い方とpythonの基礎"><a href="https://kaityo256.github.io/python_zero/hello/">Google Colabの使い方とPythonの基礎</a></h1>
+<h1 id="pythonの概要とgoogle-colabの使い方"><a href="https://kaityo256.github.io/python_zero/hello/">Pythonの概要とGoogle Colabの使い方</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講の目的">本講の目的</h2>
 <ul>
-<li>Google Colabの使い方に慣れる</li>
-<li>Pythonに触れてみる</li>
+<li>Pythonの概要を知る</li>
+<li>Google Colabの使い方を覚える</li>
+<li>Google Colabを通してPythonに触れてみる</li>
 </ul>
-<h2 id="google-colabの動作確認">Google Colabの動作確認</h2>
-<p>本稿では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyterノートブーク環境であり、ブラウザさえあればPythonが実行できる。この環境が完全に無料で使えるというのだから恐れ入る。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
+<h2 id="pythonの特徴">Pythonの特徴</h2>
+<h3 id="プログラミング言語について">プログラミング言語について</h3>
+<p>Pythonとはプログラミング言語の一つである。プログラミング言語とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
+<p>コンピュータは「機械語(マシン語)」という言葉しか解さない。機械語は数字の羅列であり、昔はそれを人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
+<p>この時、人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式と、機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式があり、前者を「スクリプト言語」後者を「コンパイラ言語」と呼ぶ。ただし、両者の区別は絶対ではない。</p>
+<div class="figure">
+<img src="fig/language.png" alt="スクリプト言語とコンパイラ言語" />
+<p class="caption">スクリプト言語とコンパイラ言語</p>
+</div>
+<h3 id="オフサイドルールについて">オフサイドルールについて</h3>
+<p>プログラムは、いくつかの「文(statement)」でできている。「文」とはプログラム実行の単位である。プログラムは「文」が並んだものとして構成される。プログラムは原則として「上から順番に」実行されていく。しかし、例えば条件分岐などで「AならばXを、そうでなければYを実行したい」ということがあるだろう。この時、なんらかの方法で「X」や「Y」といった「かたまり」を表現しなければならない。いくつかの文で表現された「かたまり」を「コードブロック (code block)」あるいは単に「ブロック」と呼ぶ。このブロックをどのように表現するかが、プログラミング言語の見た目を決める。Pythonはブロックをインデントによって表現するのが大きな特徴である。これをオフサイドルールと呼ぶ。コードブロックの表現方法としては、他に中括弧方式や キーワード方式がある。</p>
+<div class="figure">
+<img src="fig/codeblock.png" alt="コードブロックの表現方法" />
+<p class="caption">コードブロックの表現方法</p>
+</div>
+<p>中括弧方式は、C言語、及びC言語に影響を受けた言語が採用している方法であり、コードブロックを<code>{}</code>で囲んで表現する。例えば「<code>a</code>が正ならYes、そうでなければNoを表示する」プログラムなら</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){
+  puts(<span class="st">&quot;Yes&quot;</span>);
+}<span class="cf">else</span>{
+  puts(<span class="st">&quot;No&quot;</span>);
+}</code></pre></div>
+<p>と表現する。C、C++、Java、C#などのコンパイル言語や、JavaScriptやPerl、PHPといったスクリプト言語など、多くの言語がこの中括弧方式を採用している。</p>
+<p>キーワード方式は、例えば<code>begin</code>や<code>do</code>、<code>end</code>といった、あらかじめ決められた言葉(予約語と呼ぶ)によってブロックを表現する方法である。例えばRubyなら</p>
+<div class="sourceCode"><pre class="sourceCode rb"><code class="sourceCode ruby"><span class="kw">if</span> a &gt; <span class="dv">0</span> <span class="kw">then</span>
+  puts(<span class="st">&quot;Yes&quot;</span>)
+<span class="kw">else</span>
+  puts(<span class="st">&quot;No&quot;</span>)
+<span class="kw">end</span></code></pre></div>
+<p>と書ける。ここでは<code>then</code>、<code>else</code>、<code>end</code>で囲まれた部分がコードブロックである(この例では<code>then</code>は省略可能)。</p>
+<p>この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
+<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは「インデント (indent)」と呼ばれ、特にブロックがネストした場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語は改行も無視される(空白とみなされる)ため、</p>
+<div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){puts(<span class="st">&quot;Yes&quot;</span>);}<span class="cf">else</span>{puts(<span class="st">&quot;No&quot;</span>);}</code></pre></div>
+<p>と書いても同じ意味である。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。</p>
+<p>しかし、Pythonはコードブロックをインデントで表現するため、空白にプログラム上の意味がある。先程のプログラムをPythonで書くと以下のようになる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
+    <span class="bu">print</span>(<span class="st">&quot;Yes&quot;</span>)
+<span class="cf">else</span>:
+    <span class="bu">print</span>(<span class="st">&quot;No&quot;</span>)</code></pre></div>
+<p>Pythonではこのように、「キーワード + コロン(:)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)
+  <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
+<p>このように、インデントでブロックを表現する方法を「オフサイドルール (off-side rule)」と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
+<p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はメモ化したフィボナッチ数の計算ルーチンである。</p>
+<div class="figure">
+<img src="fig/codeblock2.png" alt="Pythonのコードブロック" />
+<p class="caption">Pythonのコードブロック</p>
+</div>
+<p>関数が作るブロックの中に、if文が作るブロックがネストしており、その文だけインデントが深くなっている。</p>
+<h3 id="pythonの哲学とコーディングスタイル">Pythonの哲学とコーディングスタイル</h3>
+<p>Pythonに限らず、どのプログラミング言語にも、開発者の設計思想が強く表れる。Pythonの哲学は、例えば<a href="https://www.python.org/dev/peps/pep-0020/">The Zen of Python</a>にまとまっている。全部で19あるが、そのうちいくつかを引用してみよう(和訳は筆者による)。</p>
+<pre><code>Beautiful is better than ugly.
+美しいことはよいことだ。
+
+Simple is better than complex.
+単純であることはよいことだ。
+
+Complex is better than complicated.
+しかし、ややこしいよりは複雑であるほうが良い。
+
+Flat is better than nested.
+ネストは浅い方が良い。
+
+Readability counts.
+読みやすさが正義。
+
+Special cases aren&#39;t special enough to break the rules.
+特別な場合を許さない。
+
+Although practicality beats purity.
+純粋さよりは実用を重視せよ。
+
+Now is better than never.
+「いつか」より「今」
+
+Although never is often better than *right* now.
+しかし、あわてて今やるよりはやらない方が良いこともある。</code></pre>
+<p>この文章はPython Enhancement Proposals、通称PEPの20番として登録されたものだ。PEPとはPython開発コミュニティやユーザが参照するドキュメントのことで、様々な種類があり、多くのドキュメントが登録されているが、よく参照されるのが「Pythonのコーディング規約」を定めた<a href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>である。コーディング規約とは、コードを書く際の決まりごと、いわばマナーである。Pythonを貫く哲学の一つに、「誰が書いても同じようになるべし」というものがある。PEP8に従って書くことで、例えば「人によってインデントの深さや変数名の付け方が異なるので、大きなプロジェクトで流儀が混ざって読みづらくなる」といったことを防ぐことができる。また、バグの発生源となりやすい表記方法を禁止することで、バグの混入を防ぐ、という目的もある。</p>
+<p>PEP8は実に多くのルールを定めている。その多くは、「処理内容は変わらないが、より好ましい書き方を推奨する」というものだ。例えばある変数が真である時に何かを処理したい場合、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">==</span> <span class="va">True</span>:
+    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</code></pre></div>
+<p>と書くより、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a:
+    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</code></pre></div>
+<p>と書きましょう、といった具合だ。他にも「インデントは空白4文字」「空白の入れ方」「改行の入れ方」など、様々な細かい「マナー」が書いてある。</p>
+<p>本講義ではとりあえずこの「マナー」は気にしなくて良いが、実際にPythonを使ってコードを書いたり、それを外部に公開したりする場合は気にした方がよいだろう。Pythonには、コードがPEP8に従っているかチェックしてくれる<code>pep8</code>というツールや、コーディングスタイルだけではなく品質チェックもする<code>pylint</code>といったツールがある。広く使われているエディタはほとんどこういったツールとの連携機能があるので、それらを有効にするだけで自動的にコーディングスタイルを守れるようになるはずだ。</p>
+<h2 id="google-colabの使い方">Google Colabの使い方</h2>
+<p>本講義では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyterノートブーク環境であり、ブラウザさえあればPythonが実行できる。この環境が完全に無料で使えるというのだから恐れ入る。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
 <p>まず、Googleにログインした状態で、<a href="https://colab.research.google.com">Google Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogle Driveのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
 <p>正しくアクセスできると、以下のようなウェルカムメニューが表示される。</p>
 <div class="figure">
@@ -215,6 +301,13 @@ ny <span class="op">=</span> np.array(y)
 plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])
 plt.scatter(nx, ny, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <p>と入力して実行せよ。二つ目の画像が表示されるはずである。二つのグラフを見てどう思うか考えよ。</p>
+<h2 id="余談スクリプト言語とコンパイラ言語">余談：スクリプト言語とコンパイラ言語</h2>
+<p>スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
+<p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。</p>
+<p>よくプログラミング言語の優劣について聞かれるのだが、個人的な印象でいえば文法などはあまり重要でないと感じる。極論すれば、言語の優劣はライブラリの豊富さで決まる。Pythonには強力なライブラリが豊富にある。ある目的のために複数のライブラリを束ねたものをフレームワークと呼ぶ。Pythonには機械学習のフレームワークが多数存在し、機械学習を行うプログラミング言語のデファクトスタンダードとなっている。いずれにせよ、「とりあえずPythonを使って何かしたい」場合、Pythonの細かい文法を気にするより「当面はライブラリの使い方を学ぶ」と割り切った方が生産的だと思う。</p>
+<p>また、そもそも「スクリプト言語」と「コンパイラ言語」の区別は絶対ではない。現在、ほとんどのスクリプト言語は一度「中間コード」と呼ばれる言語に「コンパイル」され、中間コードを仮想マシン上で動かすことで動作の高速化を図っている。また、Javaはプログラムをコンパイルしてから実行する形式のためにユーザからは「コンパイル言語」のように見えるが、実際にはPythonと同様にプログラムを中間コードに変換し、それを「Java 仮想マシン (JVM)」上で動作させている。Java仮想マシンは中間コードを実行する際に、インタプリタのように実行する場合と、部分的に機械語に変換しながら実行する場合(JIT方式と呼ばれる)がある。さらに、Javaのプログラムをそのまま機械語に変換する処理系もある。</p>
+<p>また、C言語やC++言語は通常「コンパイラ言語」に分類され、GCCなどの処理系ではプログラムはそのまま機械語に変換されるが、clangやclang++は一度プログラムをLLVM IRという中間コードに変換し、それを機械語に変換している。</p>
+<p>スクリプト言語とコンパイラ言語に限らず、「プログラミング言語の厳密な分類」は難しく、「関数型言語」「手続き型言語」の厳密な区別をしようとしたり、「ある言語はオブジェクト指向言語かどうか」、もっと言えば「オブジェクト指向らしさとは何か」などのテーマは、議論が白熱するわりに得るものが少ないので雑談程度にとどめておいたほうが良いと思う。ただし、「自分が考える素敵な○○指向言語」を突き詰めて、「オレオレ言語」まで作ってしまうのは素晴らしいことなのでどんどんやれば良い。言語を自作しなくても、既存の言語処理系を作るのも面白そうである(筆者はまだやったことはないが)。有名なのものはRui Ueyamaさんの<a href="https://www.sigbus.info/compilerbook/">低レイヤを知りたい人のための Cコンパイラ作成入門</a>などであろう。また、Lispの処理系自作もよく見かけるので、興味のある人は試してみられたい。</p>
 <h2 id="余談タッチタイピングについて">余談：タッチタイピングについて</h2>
 <p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インターフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
 </article>
