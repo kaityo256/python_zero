@@ -53,7 +53,7 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 ## [リストやタプルの使い方](list/README.md)
 
-* list, tupple, dict, setなど。
+* list, tuple, dict, setなど。
 * 浅いコピーと深いコピー
 * 参照の値渡し
 * コッホ曲線
