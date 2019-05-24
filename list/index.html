@@ -71,27 +71,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="リストとタプル"><a href="https://kaityo256.github.io/python_zero/list/">リストとタプル</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<p>本講の目的。</p>
+<h2 id="本講の目的">本講の目的</h2>
 <ul>
-<li>リストやタプルの扱いに慣れる</li>
+<li>リストやタプルについて知る</li>
+<li>値のコピーとリストのコピーの違いを理解する</li>
 <li>リスト内包表記を使ってPythonらしく書く</li>
 </ul>
 <h2 id="リスト">リスト</h2>
 <p>プログラムを組んでいると、何かひとまとまりのデータをまとめて保持し、処理したい場合がある。 そのようなデータ構造を表現するのがリスト(list)である。他の言語では配列(array)と呼ぶことが多い。</p>
-<p>配列は<code>[]</code>の中に、カンマで区切って表現する。例えば、</p>
+<p>リストは<code>[]</code>の中に、カンマで区切って表現する。例えば、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre></div>
 <p>とすると、整数の1,2,3を含むリストができる。</p>
 <p>また、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</code></pre></div>
 <p>とすると、文字列のリストができる。リストにはどんなものも入れることができる。また、異なる種類のものを混ぜて入れることもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="fl">1.0</span>]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="fl">1.0</span>]</code></pre></div>
+<p>変数にリストを代入することもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</code></pre></div>
 <p>リストの要素には、<code>[]</code>でアクセスできる。例えば<code>a</code>の最初の要素が欲しい場合は<code>a[0]</code>とする。カッコの中の数字を <strong>添え字(index)</strong> と呼ぶ。言語によって、添え字が0始まりの場合と1始まりの場合がある。Pythonは0始まりである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></code></pre></div>
 <p>要素に値を代入することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">5</span>
-a <span class="co"># =&gt; [1,5,3]</span></code></pre></div>
+a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span>
+a <span class="co"># =&gt; [1,4,3]</span></code></pre></div>
 <p>リストは入れ子にすることもできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</code></pre></div>
 <p>入れ子になったリストは、添え字を複数指定することで要素を得ることができる。</p>
@@ -107,6 +110,17 @@ a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co">#=&gt; 
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]
 a.append(<span class="dv">3</span>)
 a <span class="co"># =&gt; [1,2,3]</span></code></pre></div>
+<p>リストを<code>append</code>する場合には注意が必要である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> []
+b <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]
+a.append(b)
+a.append(b)</code></pre></div>
+<p>とすると、見かけ上<code>a</code>は二行二列の行列のように見える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co">#=&gt; [[1, 2], [1, 2]]</span></code></pre></div>
+<p>しかし、要素に含まれる二つのリストは同じものであるから、一方を修正するともう一方も影響を受ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span>
+<span class="bu">print</span>(a) <span class="co">#=&gt; [[4, 2], [4, 2]]</span></code></pre></div>
+<p>なぜこうなるかは、メモリ上の表現を考えてみれば理解できるであろう。</p>
 <p>リストに要素が含まれるかどうかは、<code>in</code>で調べることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 <span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span>
@@ -143,6 +157,48 @@ b <span class="co">#=&gt; 2</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]
 x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x = 1, y = 2になる</span></code></pre></div>
 <p>リストとタプルについて覚えて起きたいことは他にもいろいろあるが、それは必要に応じて説明していくことにしよう。</p>
+<h2 id="リストのメモリ上の表現">リストのメモリ上の表現</h2>
+<p>さて、リストがメモリ上でどのように表現されているか見てみよう。すでに、「変数とはラベルである」と学んだ。これはリストにおいても変わらないが、リストは複数の要素を含むため、リストを表すラベルは「リストの先頭位置」を指す。</p>
+<div class="figure">
+<img src="fig/list.png" alt="リストのメモリ上での表現" />
+<p class="caption">リストのメモリ上での表現</p>
+</div>
+<p>例えば、<code>a = [1, 2, 3]</code>という命令を見てみよう。これは、</p>
+<ul>
+<li>メモリ上に<code>[1, 2, 3]</code>というリストを作成し、</li>
+<li>その先頭位置を指す場所を作成して、そこに<code>a</code>というラベルをつける</li>
+</ul>
+<p>という操作から構成される。ここで、<code>a</code>が「リストの先頭そのもの」ではなく、「リストの先頭を指す場所」を指していることに注意。この仕様から、リストをコピーする際には注意が必要となる。</p>
+<div class="figure">
+<img src="fig/copy_value.png" alt="値のコピー" />
+<p class="caption">値のコピー</p>
+</div>
+<p>まず、普通の変数のコピーを見てみよう。例えば<code>10</code>という値を指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b</code>に<code>20</code>を代入する操作を考える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+b <span class="op">=</span> a
+b <span class="op">=</span> <span class="dv">20</span></code></pre></div>
+<p>この時、</p>
+<ul>
+<li><code>a = 10</code>：メモリ上に「10」を表現する場所が作られて、そこに<code>a</code>というラベルを貼る</li>
+<li><code>b = a</code> ：<code>a</code>の指す値をコピーしてから、そこに<code>b</code>というラベルを貼る</li>
+<li><code>b = 20</code> : <code>b</code>の指す値を<code>20</code>に書き換える</li>
+</ul>
+<p>という操作が行われている。</p>
+<p>さて、<code>b = a</code>として他の変数にリストをコピーすると、整数等の場合と同様に、「ラベルの指している場所の値をコピーして、そこにラベルを貼る」という操作が行われる。この時コピーされるのは「リストの先頭の場所」という情報であるから、<code>a</code>と<code>b</code>のラベルは同じリストを指すことになる。したがって、<code>b</code>を通じてリストを修正すると、<code>a</code>が指すリストも修正されることになる。</p>
+<div class="figure">
+<img src="fig/copy_list.png" alt="リストのコピー" />
+<p class="caption">リストのコピー</p>
+</div>
+<p>また、同じリストを指している変数<code>a</code>、<code>b</code>がある時、<code>b</code>に異なるリストを代入すると、それぞれ別のリストを指す。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]
+b <span class="op">=</span> a
+b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</code></pre></div>
+<p>これは<code>b=a</code>を実行した時点では<code>a</code>と<code>b</code>は同じリストを指しているが、<code>b = [4, 5, 6]</code>を実行すると、まずメモリ上に<code>[4, 5, 6]</code>を表現するデータが作られ、その後<code>b</code>の指す内容が新しく作られたリストの先頭データとなるため、<code>a</code>と<code>b</code>が無関係となるためである。</p>
+<div class="figure">
+<img src="fig/copy_list2.png" alt="コピー後のリストの代入" />
+<p class="caption">コピー後のリストの代入</p>
+</div>
+<p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。 このように、値そのものではなく、「この場所を見よ」というような情報を「参照(reference) 」と呼ぶ。</p>
 <h2 id="コッホ曲線の描画">コッホ曲線の描画</h2>
 <p>コッホ曲線を知っているだろうか。こんな図形である。</p>
 <div class="figure">
@@ -337,7 +393,7 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 <p>三色の場合</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>),(<span class="dv">0</span>,<span class="dv">255</span>,<span class="dv">0</span>)]</code></pre></div>
 <p>色の指定と、変換ベクトルリストをいろいろ変えてみて、オリジナルのフラクタル図形を作成せよ。</p>
-<h2 id="pythonらしく書く">Pythonらしく書く</h2>
+<h2 id="pythonらしく書く内包表記やreduce">Pythonらしく書く(内包表記やreduce)</h2>
 <p>TODO: リストの内包表記の説明</p>
 <h3 id="内包表記">内包表記</h3>
 <p>リストの内包表記は「後ろから」読む。</p>

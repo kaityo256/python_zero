@@ -73,11 +73,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
-<li>変数と組み込み型</li>
-<li>関数の宣言と利用方法</li>
+<li>変数と型について</li>
 <li>for文による繰り返し処理</li>
 <li>if文による条件分岐</li>
-<li>ニュートン法</li>
 </ul>
 <h2 id="変数と型について">変数と型について</h2>
 <h3 id="変数について">変数について</h3>
@@ -244,12 +242,22 @@ x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
 x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 \]</span></p>
 <p>である。</p>
+<h3 id="課題1-1">課題1-1</h3>
+<p>ニュートン法を実装してみよう。新しいノートブックを開き、最初のセルに以下のように入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
   <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">3</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span>)
     <span class="bu">print</span>(x)</code></pre></div>
-<p>初期値として2.0を入れてみよう。</p>
+<p>ここで<code>def newton(x):</code>とあるのは、「<code>newton</code>という関数を定義し、<code>x</code>という名前で値を受け入れるよ」という宣言である。関数については次回紹介するが、ここでは</p>
+<ul>
+<li><code>def 関数名(入力):</code>という形で関数が宣言できる</li>
+<li>定義した<code>関数名(入力)</code>という形で呼び出すことができる</li>
+<li>関数内で<code>return 値</code>とすると、値を返すことができる</li>
+</ul>
+<p>ということを覚えておけば良い。</p>
+<p>初期値として2.0を入れてみよう。二つ目のセルに、以下のように入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="fl">2.0</span>)</code></pre></div>
+<p>以下のような実行結果が出れば成功である。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">1.4166666666666665</span>
 <span class="ex">1.1105344098423684</span>
 <span class="ex">1.0106367684045563</span>
@@ -261,9 +269,10 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="ex">1.0</span>
 <span class="ex">1.0</span></code></pre></div>
 <p>急速に真の値である1.0に近づいていくことがわかるだろう。実際、ニュートン法の収束は非常に早く、一度繰り返すごとに精度が倍になっていく。</p>
-<h3 id="複素数の場合">複素数の場合</h3>
-<p>さて、複素数まで考えれば<span class="math inline">\(x^3 -1 = 0\)</span>の解は三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。複素数の場合にもニュートン法が機能することを確認しよう。先程の関数に、そのまま複素数を入れて実行してみよ。まずは実軸にある点を入力してみる。</p>
+<h3 id="課題1-2">課題1-2</h3>
+<p><span class="math inline">\(x^3 -1 = 0\)</span>の解は、実数の範囲では<span class="math inline">\(x=1\)</span>しかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。複素数の場合にもニュートン法が機能することを確認しよう。 3つ目のセルに、以下の入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="dv">2</span><span class="op">+</span>0j)</code></pre></div>
+<p>先程と同じ値だが、複素数として入力している。以下のような結果が出力されれば成功である。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">1.4166666666666665+0j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">1.1105344098423682+0j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">1.0106367684045563+0j</span><span class="kw">)</span>
@@ -275,7 +284,8 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">1+0j</span><span class="kw">)</span></code></pre></div>
-<p>次は<code>-1 + 1j</code>を入力してみよう。</p>
+<p>収束先は実数だが、表示が複素数になっていることに注意。</p>
+<p>次は<code>-1 + 1j</code>を入力してみよう。4つ目のセルに以下のように入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="op">-</span><span class="dv">1</span><span class="op">+</span>1j)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">-0.6666666666666667+0.8333333333333334j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5086919161874546+0.8410998744133783j</span><span class="kw">)</span>
@@ -288,7 +298,8 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="kw">(</span><span class="ex">-0.5+0.8660254037844387j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5+0.8660254037844386j</span><span class="kw">)</span></code></pre></div>
-<p><span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。同様に初期値として<code>-1-1j</code>を入力してみる。</p>
+<p><span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。</p>
+<p>同様に、5つ目のセルに初期値として<code>-1-1j</code>を入力してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="op">-</span><span class="dv">1</span><span class="op">-</span>1j)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">(</span><span class="ex">-0.6666666666666667-0.8333333333333334j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5086919161874546-0.8410998744133783j</span><span class="kw">)</span>
@@ -301,7 +312,9 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844387j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span></code></pre></div>
-<p>今度は<span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。ナイーブに考えると、複数の解がある場合、初期値に近い解に収束すると考えられる。では、複素平面のどこからスタートしたらどこに収束するだろうか？単純に三分割になるだろうか？</p>
+<p>今度は<span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。</p>
+<h3 id="課題2">課題2</h3>
+<p>先程、ニュートン法が複素数の場合にも機能し、<span class="math inline">\(x^3 - 1 = 0\)</span>の解を三つとも見つけられることを確認した。 ナイーブに考えると、複数の解がある場合、初期値に近い解に収束すると考えられる。では、複素平面のどこからスタートしたらどこに収束するだろうか？単純に三分割になるだろうか？</p>
 <div class="figure">
 <img src="fig/map.png" alt="map.png" />
 <p class="caption">map.png</p>
@@ -313,7 +326,6 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <li><code>-0.5-87j</code>に収束したら青</li>
 </ul>
 <p>に塗ることで、「どの場所からスタートしたらどこに収束するか」という「収束地図」を作ってみよう。</p>
-<h3 id="課題1">課題1</h3>
 <p>新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
 <p>1つ目のセル。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
@@ -351,11 +363,11 @@ plot(draw, size)
 im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>正しく入力できていれば、「収束地図」が描けたはずだ。どのような地図になっただろうか？</p>
-<h3 id="課題2">課題2</h3>
+<h3 id="課題3">課題3</h3>
 <p>先程は<span class="math inline">\(x^3 - 1 = 0\)</span>の解を考えた。次は<span class="math inline">\(x^4 - 1 = 0\)</span>の解を考えてみよう。この方程式には<span class="math inline">\(x = \pm 1\)</span>、<span class="math inline">\(x \pm i\)</span>の4つの解が存在する。この解をニュートン法で探し、「収束地図」を描こう。</p>
-<p>まず、先程の課題で作成したプログラムに名前をつけて保存し、複製して、そちらを修正することにしよう。ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「newton.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
-<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「newton.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「newton.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「newton2.ipynb」という名前にしよう。「newton2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
-<p>「newton2.ipynb」が開かれたら、まず2つ目のセルにある関数<code>newton</code>を次のように修正しよう。</p>
+<p>まず、先程の課題で作成したプログラムに名前をつけて保存し、複製して、そちらを修正することにしよう。ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「newton3.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
+<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「newton3.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「newton3.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「newton4.ipynb」という名前にしよう。「newton4.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
+<p>「newton4.ipynb」が開かれたら、まず2つ目のセルにある関数<code>newton</code>を次のように修正しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
   <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">4</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">4</span><span class="op">*</span>x<span class="op">**</span><span class="dv">3</span>)

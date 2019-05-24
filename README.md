@@ -23,11 +23,6 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * Anacondaのインストール方法
 * Pythonの実行方法
 
-## [Pythonとは](what/README.md)
-
-* Pythohの特徴
-* Pythonの基本文法
-
 ## [Pythonの概要とGoogle Colabの使い方](hello/README.md) (ほぼ完成)
 
 * Google Colabの使い方に慣れる
@@ -44,18 +39,19 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * ニュートン法
 * 余談：バグについて
 
-## [条件分岐と繰り返し処理2](while/README.md) (ほぼ完成)
+## [条件分岐と繰り返し処理2](while/README.md)
 
-* 変数とは何か？
 * while文
+* 関数
+* スコープ
 * Collatz問題
 * 余談：数論について
 
 ## [リストやタプルの使い方](list/README.md)
 
-* list, tuple, dict, setなど。
-* 浅いコピーと深いコピー
-* 参照の値渡し
+* リストについて
+* タプルについて
+* リストのメモリ上の表現
 * コッホ曲線
 * Pythonらしく書く(内包表記やreduce)
 
@@ -111,7 +107,6 @@ TODO: 構成を変更中。内容を目次に追随させること
 * 貪欲法
 * 最短経路探索とダイクストラ法
 * 巡回セールスマン問題
-
 
 ## [乱数を使ったプログラム](random/README.md) (ほぼ完成)
 
