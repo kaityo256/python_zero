@@ -130,7 +130,7 @@ a.append(b)</code></pre></div>
 <span class="cf">for</span> i <span class="kw">in</span> a:
   <span class="bu">print</span>(i)</code></pre></div>
 <h2 id="タプル">タプル</h2>
-<p>タプルは、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
+<p>タプル(tuple)は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
 a <span class="co">#=&gt; (1, 2, 3)</span></code></pre></div>
 <p>タプルはリストと同様に<code>len</code>で長さを得たり、添え字で要素を得ることができる。</p>
@@ -140,6 +140,8 @@ a[<span class="dv">0</span>] <span class="co">#=&gt; 1</span>
 <p>タプルの結合もできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">+</span> (<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># =&gt; (1,2,3,4)</span></code></pre></div>
 <p>このようにタプルはリストに似ているが、一度作成されたタプルは修正できない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
+a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co">#=&gt; &#39;tuple&#39; object does not support item assignment</span></code></pre></div>
 <p>タプルは関数で複数の値を返したい場合によく使われる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
   <span class="cf">return</span> <span class="dv">1</span>,<span class="dv">2</span>
