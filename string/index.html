@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="文字列処理">文字列処理</h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
+<ul>
+<li>文字列処理</li>
+<li>辞書</li>
+<li>正規表現</li>
+<li>形態素解析</li>
+</ul>
+<h2 id="文字列と文字コードについて">文字列と文字コードについて</h2>
+<p>本稿では文字列処理を扱う。文字列処理とは文字列を何か処理することであり、文字列とは文字の列であるから、文字列処理のためには、「そもそも文字とは何か」を知らなければならない。プログラムの世界において「文字とは何か？」は極めて非自明な問題であり、筆者もきちんと説明できる自信がない。ここでの説明は必ずしも実際の文字コードの歴史に沿っていないことに注意されたい。</p>
+<p>「型」の項目で、「型」とはメモリ上のデータをどのように表現するかを約束する役割があると学んだ。例えば<code>test</code>という文字列は、メモリ上では「0x74 65 73 74」という4バイトの文字列として表現される。このように、アルファベットや数字は、7ビットの数字で表現される。7ビットの情報が表現できるのは2^7個、すなわち128個までである。アルファベットの大文字小文字、数字、記号などはこれで収めることができる。これらをASCII (American Standard Code for Information Interchange、アスキー)文字と呼ぶ。</p>
+<p>さて、計算機で日本語、すなわちひらがなやカタカナ、漢字を表示したい、というニーズがある。どうすればよいだろうか？そのためには、なんらかの方法で文字に数字を割り当てなければならない。昨今のマシンの1バイトは8ビットであり、8ビットで表現できるのは256種類であるが、当然ながら日本語は256種類に入り切らないので、必然的に複数のバイト列を用いて日本語を表現することになる。</p>
+<p>日本語を表現する文字コードは、大きく分けて「JIS、シフトJIS、EUC」が存在していたが、現在はUnicode(UTF-8)に統一されつつあり、将来は文字コードの知識は不要になるかもしれない。しかし、まだUnicode以外の文字コードを使った文書がある(例えば本稿で扱う「青空文庫」の文字コードもシフトJISである)し、歴史的な意味もあるので、ここで少し文字コードについて学んでおくのも良いであろう。</p>
+<p>まず、シフトJISはMicrosoft等が規定した文字コードで、日本語を2バイトで表現する。「二バイト文字」と呼ばれる所以である。MS-DOS、そしてWindowsで採用されている。ASCII文字と日本語が混在する文書においてもエスケープ文字を挿入しないで済むなどの利点があるが、2バイト文字の2バイト目に重要な記号(円記号もしくはバックスラッシュ)が出現することがあり、これがディレクトリの区切りやエスケープ文字と解釈されて誤動作を起こすことがあった。特に「表」という文字は、シフトJISでは「0x95 5c」となるが、この「5c」が円記号ないしバックスラッシュと同じアスキーコードであるため、よく文字化けの原因となった。</p>
+<p>EUC-JPはExtended UNIX Code Packed Format for Japaneseの略であり、その名の通りUNIXで広く使われた。こちらは日本語文字の範囲が0x80 - 0xFFの範囲にある。これはビットで表現すると、最上位ビットが1になっていることから、最上位ビットが0となるアスキー文字と区別がしやすかった。ただし、半角カナはシフトJISでは1バイトで表現できたが、EUC-JPでは2バイトを要し、漢字の中には3バイト必要とするものもあった。</p>
+<p>JISコードは、正式には「ISO-2022-JP」と呼ばれ、電子メール等のために広く使われた文字コードである。こちらは、文字列を表すバイト列の最上位ビットが必ず0になる、という特徴を持っている。太古の昔、インターネットを流れる「文字列」は、最上位ビットが0でなければならない、というルールがあった。インターネットは情報を「リレー」することで世界中のどこにでも通信が可能となるネットワークだが、その途中で「8ビット目を落とす」マシンがあったらしい(筆者はよく知らない)。そのため、8ビットが0でない文字コードを使うと文字化けの原因となるため、「電子メールはISO-2022-JPを使わなければならない」というルールがあった。</p>
+<div class="figure">
+<img src="fig/encoding.png" alt="文字コード" />
+<p class="caption">文字コード</p>
+</div>
+<p>このように、日本語ですら様々な文字の符号化方式があり、文字コードは混乱していた。他にも世界でそれぞれ独自のコードがあり、それらを切り替えながら表示する必要があった。特に、複数種類の文字コードが混在する文書の表示には問題があった。そこで、「世界で統一した符号化方法を作ろう」という動きが出てくるのは自然であろう。これが「ユニコード(Unicode)」である。</p>
+<p>文字コードは無限に面倒事があり、厳密な話をするのが難しいので、以下はざっくりした話だと承知されたい。まず、文字を表現するためには、「文字に背番号をつける」「背番号をつけた後で、それをどのようなバイナリに落とすか、エンコード方法を指定する」の2ステップを踏む必要がある。</p>
+<p>ユニコードは、まず文字に背番号をつける。この背番号をコードポイントと呼ぶ。例えばひらがなの「あ」のコードポイントは3042であり、これを「U+3042」と表記する。</p>
+<p>次に、この数字をどのようなバイナリ列に表すか(エンコード方法)だが、ここではUTF-8を例に取ろう。UTF-8では、よく使われる日本語は3バイトで表現される。UTF-8では、一番最初に「この文字を何バイトで表現するか」を、連続するビット列で表現する。例えば3バイトならば「1110」というビット列である。その後、2バイト目以降は頭の「10」が予約されており、それ以降が文字を表現するビットとなる。つまり、ビット構造としては以下のようになっている。</p>
+<div class="figure">
+<img src="fig/utf8_structure.png" alt="UTF-8のビット構造" />
+<p class="caption">UTF-8のビット構造</p>
+</div>
+<p>AAAABBBBCCCCDDDDは、ユニコード4桁のビット表現である。例えばひらがなの「あ」は「U+3042」なので、それぞれをビットにバラしてはめ込むと、</p>
+<div class="figure">
+<img src="fig/utf8_a.png" alt="UTF-8による「あ」の表現" />
+<p class="caption">UTF-8による「あ」の表現</p>
+</div>
+<p>となる。これは16進数になおすと「E3 81 82」となり、これが「あ」をUTF-8で符号化したものとなる。ユニコードの符号化方法には、他にもUTF-16やUTF-32などがあるが、仕様はともかく、そのあたりの事情は入り組んでいるのでここでは深入りしない。</p>
+<h2 id="辞書">辞書</h2>
+<p>TODO: 辞書の説明</p>
+<p>TODO: defaultdictの導入</p>
+<h2 id="正規表現">正規表現</h2>
+<p>正規表現(Regular expression)という言葉を聞いたことがあるだろうか。もしかしたら、身近にちょっと「つよめ」のプログラマがいて、正規表現で文字列の置換をしているのを見たことがあるかもしれない。例えば、Vim等を使っており、「#」で始まる行を削除するのに、慣れたプログラマなら以下を実行する。</p>
+<pre class="vim"><code>:%g/^#/d</code></pre>
+<p>他にも、以下のような文章があったとしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span></code></pre></div>
+<p>これは中島敦という作家の「山月記」という小説の冒頭だが、途中で「《...》」という形でルビが降ってある。これをテキストから削除したいとしよう。ナイーブに実装するなら</p>
+<ul>
+<li>「《」という文字列を見つけ、その場所を覚えておく</li>
+<li>その状態で「》」という文字列を見つけたら、先程覚えた場所からここまでの文字列を削除する</li>
+<li>上記を繰り返す</li>
+</ul>
+<p>といったプログラムになろう。しかし、正規表現を用いると以下のようにコマンド一発で実現できる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
+<span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.+?》&#39;</span>,<span class="st">&#39;&#39;</span>,text))</code></pre></div>
+<p>以下が実行結果だ。</p>
+<pre><code>隴西の李徴は博学｜才穎、天宝の末年、若くして名を虎榜に連ね、ついで江南尉に補せられたが、性、狷介、自ら恃むところ頗る厚く、賤吏に甘んずるを潔しとしなかった。</code></pre>
+<p>これらに出てきた呪文のような文字列「<code>^#</code>」や「<code>《.+?》</code>」が正規表現である。文字列処理をする上で、正規表現は欠かせない。正規表現を使えるとちょっとかっこいい(※個人の感想です)ので、ぜひマスターしよう。</p>
+<p>正規表現は、「マッチ」という概念がある。文字列をパターンとして与え、入力文字列の中でそのパターンにマッチする場所を探す、というのが正規表現の基本動作となる。</p>
+<p>例えば、文字列そのものは、同じ文字列にマッチする。マッチする場所を探すには、<code>re</code>モジュールの<code>search</code>を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">text <span class="op">=</span> <span class="st">&#39;hanamogera&#39;</span>
+m <span class="op">=</span> re.search(<span class="vs">r&#39;moge&#39;</span>, text)</code></pre></div>
+<p>上記の例は、「hanamogera」という文字列から、「moge」という文字列を探せ、という命令である。正規表現を表す文字列の頭には<code>r</code>をつけるが、ここでは深入りしないので、そういうものだと思っていて欲しい。<code>search</code>はマッチした場合、Matchオブジェクトを返すが、その<code>span()</code>メソッドによりマッチした場所がわかる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.span() <span class="co">#=&gt; (4, 8)</span></code></pre></div>
+<p><code>span()</code>はマッチした場所をタプルとして返すため、それを使って部分文字列を抜き出すことができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s, e <span class="op">=</span> m.span()
+text[s:e] <span class="co">#=&gt; &#39;moge&#39;</span></code></pre></div>
+<p>もしくは単に、<code>group()</code>でマッチした文字列を取り出すこともできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.group() <span class="co">#=&gt; &#39;moge&#39;</span></code></pre></div>
+<p><code>group()</code>を用いると、グループ化させた場合、それぞれのグループにアクセスできるのだが、ここでは詳細には立ち入らない。</p>
+<p>さて、より柔軟なパターン検索のために、正規表現には様々な特殊な文字、メタ文字がある。まずよく使うのが「どのような一文字にでもマッチする」メタ文字、「<code>.</code>」である。</p>
+<p>例えば「<code>.bc</code>」というパターンは、「<code>abc</code>」という文字列にも「<code>xbc</code>」という文字列にもマッチする。</p>
+<p>次によく使うのが、繰り返しを表す「<code>*?+</code>」だ。それぞれ以下のような意味を持つ。</p>
+<ul>
+<li><code>*</code> 直前のパターンが0回以上繰り返す場合にマッチ</li>
+<li><code>?</code> 直前のパターンが0回か1回だけの場合にマッチ</li>
+<li><code>+</code> 直前のパターンが1回以上マッチする場合</li>
+</ul>
+<p>正規表現にはこれらのメタ文字が頻出するため、一見「呪文」のように見えるが、ゆっくり読み解いていけば難しくはない。</p>
+<p>いくつか例を挙げよう。</p>
+<ul>
+<li>「<code>.*bc</code>」: なんでも良いが、何か文字が0個以上あり、その後「bc」という文字列が続くような文字列。</li>
+<li><code>bc</code> =&gt; <code>bc</code>にマッチ</li>
+<li><code>xxxbc</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li>「<code>.?bc</code>」：なんでも良いが、何か文字が0個か1個あり、その後「bc」という文字列が続くような文字列。</li>
+<li><code>bc</code> =&gt; <code>bc</code>にマッチ</li>
+<li><code>xxxbc</code> =&gt; <code>xbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li>「<code>.+bc</code>」：なんでも良いが、何か文字が1個以上、その後「bc」という文字列が続くような文字列。</li>
+<li><code>bc</code> =&gt; マッチしない</li>
+<li><code>xxxbc</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+</ul>
+<p>TODO: 上記三つの例を図解すること</p>
+<p>他によく使うメタ文字は「行頭」と「行末」を表す<code>^</code>と<code>$</code>である。例を挙げよう。</p>
+<ul>
+<li><code>^#.*</code>: 文頭に「#」があり、それ以後は何があっても良いような文字列。</li>
+<li><code>#hoge fuga</code> =&gt; <code>#hoge fuga</code>にマッチ</li>
+<li><code>hoge #fuga</code> =&gt; 文頭に<code>#</code>が無いのでマッチしない</li>
+<li><code>fuga$</code>: 文末に<code>fuga</code>があるような文字列</li>
+<li><code>hoge fuga</code> =&gt; <code>fuga</code>にマッチ</li>
+<li><code>fuga hoge</code> =&gt; マッチしない</li>
+</ul>
+<p>正規表現には他にも様々なメタ文字や機能が存在するが、ここでは深入りしない。興味を持ったら各自調べてみること。</p>
+<p>正規表現がよく使われるのは置換である。特定の文字列にマッチした場合、マッチした部分を別の文字列に置換したい、ということがよくある。この時、<code>re</code>モジュールの<code>sub</code>を用いる。<code>sub</code>は、置換したい文字列のパターン、置換文字列、入力文字列を与える。最初の例を見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
+text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span>
+<span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.+?》&#39;</span>,<span class="st">&#39;&#39;</span>,text))</code></pre></div>
+<p>これは、「《と》に囲まれた文字列」にマッチし、それを空文字列''に置換、すなわち削除することで、ルビの情報を削除している。</p>
+<h2 id="課題1-形態素解析">課題1 形態素解析</h2>
+<p>それでは、ここまで学んだことを使ってウェブから情報を取得し、解析してみよう。ここでは「<a href="https://www.aozora.gr.jp/">青空文庫</a>」からテキストを取得し、そのテキストを解析してみる。青空文庫は著作権が消滅した作品か、著者が許諾している作品のテキストをウェブ上に公開している電子図書館である。</p>
+<p>具体的な作業は以下の通りである。</p>
+<ul>
+<li>青空文庫から、zipファイルをダウンロードする</li>
+<li>zipファイルを展開し、文字コードを変換する</li>
+<li>MeCabを使って形態素解析し、一般名詞のみを取り出す</li>
+<li>一般名詞の頻度分布を取得し、利用頻度トップ10を出力する</li>
+</ul>
+<p>このようにウェブから何か情報を抽出する技術を <strong>ウェブスクレイピング (Web scraping)</strong>と呼ぶ。今回の作業は、ウェブスクレイピングのうちもっとも単純なものである。</p>
+<p><strong>注意</strong>：ウェブスクレイピングは、相手のサーバに負担がかからないように注意しながら行うこと。例えば「指定のパス以下のファイルをすべて取得する」といった作業は厳禁である。また、利用規約によってそもそもウェブスクレイピングが禁止されているサービスもある(例えばTwitterなど)。その場合はサービスが提供しているAPIを通じて情報を取得することが多い。</p>
+<h3 id="課題1-1-mecabのインストール">課題1-1 MeCabのインストール</h3>
+<p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。新しいPython3ノートブックを開き、最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt install aptitude</code></pre></div>
+<p>最後に「Processing triggers for libc-bin (2.27-3ubuntu1) ...」などと表示され、実行が終了したら完了である。</p>
+<p>次に、先程インストールしたaptitudeを使ってMeCabと必要なライブラリをインストールする。最後の<code>-y</code>を忘れないように。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y</code></pre></div>
+<p>出力の最後に</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">done</span>!
+<span class="ex">Setting</span> up mecab-jumandic (7.0-20130310-4) <span class="ex">...</span></code></pre></div>
+<p>などと表示されれば完了である。</p>
+<p>最後に、MeCabのPythonバインディングをインストールする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">!<span class="ex">pip</span> install mecab-python3==0.7</code></pre></div>
+<p>最新版は不具合があるようなので、バージョン0.7を指定してインストールする。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Successfully</span> installed mecab-python3-0.7</code></pre></div>
+<p>と表示されれば完了である。早速importしてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> MeCab</code></pre></div>
+<p>これを実行してエラーがでなければインストールに成功している。</p>
+<p>次のセルに以下を入力してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m <span class="op">=</span> MeCab.Tagger()
+<span class="bu">print</span>(m.parse (<span class="st">&quot;すもももももももものうち&quot;</span>))</code></pre></div>
+<p>以下のような実行結果が得られるはずである。</p>
+<pre><code>すもも 名詞,一般,*,*,*,*,すもも,スモモ,スモモ
+も   助詞,係助詞,*,*,*,*,も,モ,モ
+もも  名詞,一般,*,*,*,*,もも,モモ,モモ
+も   助詞,係助詞,*,*,*,*,も,モ,モ
+もも  名詞,一般,*,*,*,*,もも,モモ,モモ
+の   助詞,連体化,*,*,*,*,の,ノ,ノ
+うち  名詞,非自立,副詞可能,*,*,*,うち,ウチ,ウチ
+EOS</code></pre>
+<h3 id="課題1-2-青空文庫からのデータ取得">課題1-2 青空文庫からのデータ取得</h3>
+<p>ノートブックの上のメニューから「編集」「すべてのセルを選択」を実行し、その後「編集」「選択したセルを削除」を実行することで、全てのセルを削除せよ。この状態でもMeCabはインストールされたままである。</p>
+<p>「+コード」をクリックして現れた最初のセルに、以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> defaultdict
+<span class="im">import</span> re
+<span class="im">import</span> io
+<span class="im">import</span> urllib.request
+<span class="im">from</span> zipfile <span class="im">import</span> ZipFile
+<span class="im">import</span> MeCab</code></pre></div>
+<p>次のセルに、ウェブからデータを取得する関数<code>load_from_url</code>を以下のように実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> loadfromurl(url):
+    data <span class="op">=</span> urllib.request.urlopen(url).read()
+    zipdata <span class="op">=</span> ZipFile(io.BytesIO(data))
+    filename <span class="op">=</span> zipdata.namelist()[<span class="dv">0</span>]
+    text <span class="op">=</span> zipdata.read(filename).decode(<span class="st">&quot;shift-jis&quot;</span>)
+    text <span class="op">=</span> re.sub(<span class="vs">r&#39;［.+?］&#39;</span>, <span class="st">&#39;&#39;</span>, text)
+    text <span class="op">=</span> re.sub(<span class="vs">r&#39;《.+?》&#39;</span>, <span class="st">&#39;&#39;</span>, text)
+    <span class="cf">return</span> text</code></pre></div>
+<p>ここで、正規表現に入力するカギカッコは、それぞれ<code>［］</code>全角の角カッコと、<code>《》</code>全角の二重山括弧であることに注意。どちらも日本語入力モードで<code>「</code>や<code>」</code>を変換すると候補に出てくると思われる。ここで出てくる正規表現の意味は、「全角の角カッコや二重山括弧に囲まれた文字列を削除せよ」である。それぞれ注釈やルビに対応する。</p>
+<p>このセルを実行後、3つ目のセルに以下を入力、テストせよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
+load_from_url(URL)</code></pre></div>
+<p>以下のような結果が出力されれば成功である。</p>
+<pre><code>山月記\r\n中島敦 \r\n\r\n\r\n【テキスト中に現れる記号について】\r\n\r\n《》：ルビ\r\n……</code></pre>
+<p>これは、中島敦という作家の「山月記」という小説である。</p>
+<h3 id="課題1-3-形態素解析">課題1-3 形態素解析</h3>
+<p>ではいよいよ形態素解析をしてみよう。といってもMeCabを使えば楽勝である。</p>
+<p>2つ目のセルと3つ目のセルの間に新たにセルを作り、以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_top10(text):
+    m <span class="op">=</span> MeCab.Tagger()
+    node <span class="op">=</span> m.parseToNode(text)
+    dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
+    <span class="cf">while</span> node:
+        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)
+        key <span class="op">=</span> node.surface
+        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span>:
+            dic[key] <span class="op">+=</span> <span class="dv">1</span>
+        node <span class="op">=</span> node.<span class="bu">next</span>
+    <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:
+        <span class="bu">print</span>(k <span class="op">+</span> <span class="st">&quot;:&quot;</span> <span class="op">+</span> <span class="bu">str</span>(v))</code></pre></div>
+<p><code>URL = &quot;https:...&quot;</code>とある4つ目のセルを、以下のように修正、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
+text <span class="op">=</span> load_from_url(URL)
+show_top10(text)</code></pre></div>
+<p>文章に使われている一般名詞の頻度トップ10が、回数とともに出力されたはずである。</p>
+<p>別の作品も見てみよう。同じく中島敦の「名人伝」で同様な解析をしてみよう。5つ目のセルに以下を入力、実行せよ。4つ目のセルをコピーすると楽である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span>
+text <span class="op">=</span> load_from_url(URL)
+show_top10(text)</code></pre></div>
+<p>読んだことがなくても、なんとなくどんな作品なのかがわかるであろう。</p>
+<h2 id="課題2-類似度分析">課題2 類似度分析</h2>
+<p>TODO: TF-IDFとコサイン類似度やる？</p>
+<p>TODO: もしくはWord2vecで遊ぶ？</p>
+</article>
+</body>
+</html>
