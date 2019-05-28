@@ -9,6 +9,7 @@
 * 辞書
 * 正規表現
 * 形態素解析
+* ワードクラウド
 
 ## 文字列と文字コードについて
 
@@ -259,7 +260,7 @@ import MeCab
 次のセルに、ウェブからデータを取得する関数`load_from_url`を以下のように実装せよ。
 
 ```py
-def loadfromurl(url):
+def load_from_url(url):
     data = urllib.request.urlopen(url).read()
     zipdata = ZipFile(io.BytesIO(data))
     filename = zipdata.namelist()[0]
@@ -325,8 +326,109 @@ show_top10(text)
 
 読んだことがなくても、なんとなくどんな作品なのかがわかるであろう。
 
-## 課題2 類似度分析
+## 課題2-1 ワードクラウドの表示
 
-TODO: TF-IDFとコサイン類似度やる？
+せっかく形態素解析により、文章を単語に分解できているので、それを利用してワードクラウドを作ってみよう。ワードクラウドとはタグクラウドとも呼ばれ、文中の出現頻度の高い単語を強調して表示しつつ、多くの単語を詰め込んで、重要なキーワードをわかりやすく可視化する手法である。例えば、本講義の最初の「Pythonの概要とGoogle Colabの使い方」の文章から単語を取り出してワードクラウドを作るとこんな感じになる。
 
-TODO: もしくはWord2vecで遊ぶ？
+![ワードクラウドの例](fig/wc.png)
+
+単語を羅列しているだけなのだが、重要な単語が大きく強調されており、なんとなく文章のキーワードが読み取れる気がしてくるであろう。先程得られた単語リストを使って、青空文庫のワードクラウドを作ってみよう。
+
+まずは新しいPython3ノートブックを開く。この時、先程作成したノートブックを別のタブで開いておくといろいろ楽になる。
+
+最初のセルに以下を入力、実行すること、
+
+```py
+!apt install aptitude
+!aptitude install mecab libmecab-dev mecab-ipadic-utf8 git make curl xz-utils file -y
+!pip install mecab-python3==0.7
+!apt-get -y install fonts-ipafont-gothic
+```
+
+形態素解析エンジンであるMeCabの他に、日本語表示のためのフォント(IPAゴシック)のインストールが追加されている。
+
+無事にインストールされたら、次のセルで必要なモジュールをインポートしよう。
+
+```py
+import io
+import re
+import urllib.request
+from zipfile import ZipFile
+
+import IPython
+import MeCab
+from wordcloud import WordCloud
+```
+
+正しくインストールされていれば、エラーなくインポートできるはずだ。
+
+三つ目のセルに、URLを指定してZipファイルをダウンロード、展開し、不要な部分を削除する`load_from_url`を実装しよう。先程書いたものと全く同じなので、コピペしてかまわない。
+
+```py
+def load_from_url(url):
+    data = urllib.request.urlopen(url).read()
+    zipdata = ZipFile(io.BytesIO(data))
+    filename = zipdata.namelist()[0]
+    text = zipdata.read(filename).decode("shift-jis")
+    text = re.sub(r'［.+?］', '', text)
+    text = re.sub(r'《.+?》', '', text)
+    return text
+```
+
+WordCloundに食わせるデータは、半角空白で区切られた文字列である。そこで、与えられた文章を解析して、一般名詞だけを空白文字列を区切り文字としてつないだ文字列を返す関数、`get_words`を実装しよう。
+
+```py
+def get_words(text):
+    w = ""
+    m = MeCab.Tagger()
+    node = m.parseToNode(text)
+    while node:
+        a = node.feature.split(",")
+        if a[0] == u"名詞" and a[1] == u"一般":
+            w += node.surface + " "
+        node = node.next
+    return w
+```
+
+5つ目のセルで、ダウンロードがうまくいくことを確認しよう。
+
+```py
+URL = "https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip"
+download_text = loadfromurl(URL)
+download_text
+```
+
+「山月記\r\n中島敦 \r\n\r\n」といった文字列が出力されれば、ここまでは正しく実装されている。
+
+6つ目のセルでワードクラウドを作ろう。
+
+```py
+fpath='/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf'
+words = get_words(download_text)
+wc = WordCloud(background_color="white", width=480, height=320, font_path=fpath)
+wc.generate(words)
+wc.to_file("wc.png")
+IPython.display.Image("wc.png")
+```
+
+日本語表示のため、フォントの場所を指定してやる必要があることに注意。しかし、あとは`WordCloud`が勝手にやってくれる。実際にワードクラウドが出力されただろうか。
+
+出力されたら、次は「名人伝」でやってみよう。5つ目のセルのURLを
+
+```py
+URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
+```
+
+として実行し、「名人伝\r\n中島敦\r\n\r\n-」と表示されて正しくデータが取れたことを確認してから、また6つ目のセルを実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。
+
+## 課題2-2
+
+青空文庫で好きな小説を探し、ワードクラウドを作成して、その感想を述べよ。
+
+「小説名　青空文庫」で検索し、出てきたページの下の方にある「図書カード」のリンクをたどると、「ファイルのダウンロード」の箇所に「テキストファイル(ルビあり)」というzipファイルがあるはずである。ブラウザによるが、右クリックで「リンクのアドレスをコピー」できるはずなので、それをURLに指定してやってみよ。
+
+どうしても小説が思いつかない場合は、以下から選んで良い。
+
+* 「[学問のすすめ](https://www.aozora.gr.jp/cards/000296/card47061.html)」(福沢 諭吉) [https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip](https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip)
+* 「[走れメロス](https://www.aozora.gr.jp/cards/000035/card1567.html)」(太宰治) [https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip](https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip)
+* 「[吾輩は猫である](https://www.aozora.gr.jp/cards/000148/card789.html)」(夏目 漱石) [https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip](https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip)
