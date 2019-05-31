@@ -44,9 +44,9 @@ TODO: 最小二乗法の説明も入れる？
 
 GAN (Generative Adversarial Networks)とは、直訳すると「敵対的生成ネットワーク」であり、二つのモデルを競わせることで画像を生成する手法である。
 
-GANはGeneratorとDiscriminatorの二つのモデルを学習させるが、これらはよく「贋金作者」「鑑定者」に例えられる。まず、本物のデータセットを用意する。その後、ランダムに「本物のデータ」とGeneratorが生成した「偽物のデータ」をDiscriminatorに見せ、それを本物か、偽物か判定させる。Discriminatorから見れば、これは二値分類問題になっている。ラベルは「本物」か「偽物」である。Discriminatorは大量に見せられるデータをどんどん鑑定することで「鑑定士」としての観察眼を磨いていく。
+GANはGeneratorとDiscriminatorの二つのモデルを学習させるが、これらはよく「偽造者」「鑑定者」に例えられる。まず、本物のデータセットを用意する。その後、ランダムに「本物のデータ」とGeneratorが生成した「偽物のデータ」をDiscriminatorに見せ、それを本物か、偽物か判定させる。Discriminatorから見れば、これは二値分類問題になっている。ラベルは「本物」か「偽物」である。Discriminatorは大量に見せられるデータをどんどん鑑定することで「鑑定士」としての観察眼を磨いていく。
 
-逆に、Generatorは、自分が提出したデータが「偽物」と見破られたら失敗、「本物」と鑑定されたら成功であり、そのフィードバックを受けながら「贋金作者」としての腕を磨いていく。
+逆に、Generatorは、自分が提出したデータが「偽物」と見破られたら失敗、「本物」と鑑定されたら成功であり、そのフィードバックを受けながら「偽造者」としての腕を磨いていく。
 
 こうしてGeneratorとDiscriminatorがお互いに切磋琢磨しながら学習していくと、最終的に「本物と見紛うばかりのデータを生成できるGeneratorが誕生するだろう」というのがGANの要諦である。
 
@@ -109,7 +109,7 @@ def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
 
 ### 4. Discriminatorの宣言
 
-Discriminator(警官)の宣言を行う。
+Discriminator(鑑定者)の宣言を行う。
 
 ```py
 def discriminator_fn(img, _, weight_decay=2.5e-5, is_training=True):
