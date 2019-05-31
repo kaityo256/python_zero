@@ -1,4 +1,4 @@
-# [簡単な機械学習](https://kaityo256.github.io/python_zero/list/)
+# [簡単な機械学習](https://kaityo256.github.io/python_zero/gan/)
 
 [[Up]](../index.html)
 [[Repository]](https://github.com/kaityo256/python_zero)
