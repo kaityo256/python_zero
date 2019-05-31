@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="簡単な機械学習"><a href="https://kaityo256.github.io/python_zero/list/">簡単な機械学習</a></h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本講の目的">本講の目的</h2>
+<ul>
+<li>機械学習の概要について学ぶ</li>
+<li>GANを体験する</li>
+</ul>
+<h2 id="機械学習とは">機械学習とは</h2>
+<p>昨今、「機械学習」「ディープラーニング」「AI」といった言葉をよく聞く。Googleによる機械学習のフレームワーク「TensorFlow」や、PFNによる「Chainer」などがPythonで記述されていることもあり、機械学習をするには事実上Pythonが共通語になりつつある。機械学習による派手な結果を目にすることも多いだろう。せっかく本講義でPythonを学んだのであるから、最後は機械学習を体験してみよう。本稿では、ざっと機械学習の概要について触れてから、機械学習で注目されている技術の一つ、GANによる画像生成を体験してみよう。</p>
+<h3 id="機械学習の種類">機械学習の種類</h3>
+<p>機械学習がカバーする範囲は広く、現在も様々な技術が提案されているため、その全てを厳密に分類するのは難しいが、よく言われるのは以下の三種類の分類である。</p>
+<ol style="list-style-type: decimal">
+<li>教師あり学習</li>
+<li>教師なし学習</li>
+<li>強化学習</li>
+</ol>
+<p>教師あり学習(Supervised Learnings)とは、「正解のあるデータ」を与えて、それで学習させる方法である。例えば、予め大量の写真を用意し、それぞれに「ネコ」や「イヌ」といったラベルをつけておく。それを学習させることで、「初めて見る写真」に対しても正しく「ネコ」や「イヌ」と判定できるようにさせるのが典型的な教師あり学習である。</p>
+<p>教師なし学習は(Unsupervised Learnings)は、データだけを与えて、データを分類したり、似ているものを探したりさせる方法である。例えば物品の売上データを解析し、「ある商品Aを購入した人は、次は商品Bを購入する可能性が高い」といった関係を見つければ、商品Aを購入した人に「Bはいかがでしょうか？」と勧めることができ、売上向上につながる(Amazonなどでよく見る「この商品を買った人はこんな商品も買っています」というアレである)。</p>
+<p>強化学習とは、何かエージェントに行動をさせて、その結果として報酬を与えることで、「うまく」行動できるように学習させていく手法である。典型的な応用例はチェスや囲碁、将棋などのボードゲームのAIであろう。ある局面において、多数ある合法朱の中から「次の一手」を選ばなければならない。この時、「最終的に勝利につながった手」に正の報酬を、「敗北につながった手」に負の報酬を与えることで、「これは良い手」「これは悪手」と学習していく。</p>
+<p>これらはどれも面白いのだが、ここでは教師あり学習に注目しよう。</p>
+<p>「教師あり学習」が扱う問題は、大きく分けて「分類問題」と「回帰問題」にわけることができる。分類問題とは、入力に対して有限のラベルのどれかを当てる問題である。例えば「ネコ」「イヌ」「ゾウ」「パンダ」のどれかが写っている写真を見せられ、何が写っているかを答えるのが典型的な分類問題である。回帰問題とは、入力に対して何か連続な値を返す問題である。例えば家の広さ、築年数、駅からの距離や周りの条件等から家賃を推定するのが典型的な回帰問題である。</p>
+<p>分類問題のうち、「○か×か」のように、答えが二種類しかないものを「二値分類」と呼ぶ。</p>
+<h3 id="学習と最適化">学習と最適化</h3>
+<p>機械学習では、よく「学習」という言葉が出てくる。実際には、学習とは「ある関数を最適化」することである。例えば分類問題では正答率を高くしたいし、強化学習では報酬を最大化したいであろう。何か最大化、もしくは最小化したい関数を目的関数(cost function)と呼ぶ。</p>
+<p>TODO: 目的関数の説明</p>
+<p>TODO: 最小二乗法の説明も入れる？</p>
+<h3 id="ganとは">GANとは</h3>
+<p>GAN (Generative Adversarial Networks)とは、直訳すると「敵対的生成ネットワーク」であり、二つのモデルを競わせることで画像を生成する手法である。</p>
+<p>GANはGeneratorとDiscriminatorの二つのモデルを学習させるが、これらはよく「贋金作者」「鑑定者」に例えられる。まず、本物のデータセットを用意する。その後、ランダムに「本物のデータ」とGeneratorが生成した「偽物のデータ」をDiscriminatorに見せ、それを本物か、偽物か判定させる。Discriminatorから見れば、これは二値分類問題になっている。ラベルは「本物」か「偽物」である。Discriminatorは大量に見せられるデータをどんどん鑑定することで「鑑定士」としての観察眼を磨いていく。</p>
+<p>逆に、Generatorは、自分が提出したデータが「偽物」と見破られたら失敗、「本物」と鑑定されたら成功であり、そのフィードバックを受けながら「贋金作者」としての腕を磨いていく。</p>
+<p>こうしてGeneratorとDiscriminatorがお互いに切磋琢磨しながら学習していくと、最終的に「本物と見紛うばかりのデータを生成できるGeneratorが誕生するだろう」というのがGANの要諦である。</p>
+<div class="figure">
+<img src="fig/gan.png" alt="GANの概念図" />
+<p class="caption">GANの概念図</p>
+</div>
+<p>TODO: Lossの減少について</p>
+<h2 id="ganの実行">GANの実行</h2>
+<p>ではさっそくGANを組んでみよう。それなりにコード量があるので、間違いないように注意して入力すること。以下、番号がセルの番号に対応するので参考にしてほしい。</p>
+<h3 id="import">1. import</h3>
+<p>最初のセルで必要なモジュールをimportしよう。ついでにTensorFlowの警告を減らす設定をしておく。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">import</span> tensorflow <span class="im">as</span> tf
+tf.logging.set_verbosity(tf.logging.ERROR)</code></pre></div>
+<h3 id="宣言">2. 宣言</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tfgan <span class="op">=</span> tf.contrib.gan
+layers <span class="op">=</span> tf.contrib.layers
+framework <span class="op">=</span> tf.contrib.framework
+slim <span class="op">=</span> tf.contrib.slim
+dataprovider <span class="op">=</span> slim.dataset_data_provider.DatasetDataProvider
+BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></div>
+<p>「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。</p>
+<h3 id="generatorの宣言">3. Generatorの宣言</h3>
+<p>Generator(偽造者)の宣言を行う</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> generator_fn(noise, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
+    f1 <span class="op">=</span> framework.arg_scope(
+        [layers.fully_connected, layers.conv2d_transpose],
+        activation_fn<span class="op">=</span>tf.nn.relu,
+        normalizer_fn<span class="op">=</span>layers.batch_norm,
+        weights_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay))
+    f2 <span class="op">=</span> framework.arg_scope(
+        [layers.batch_norm],
+        is_training<span class="op">=</span>is_training,
+        zero_debias_moving_mean<span class="op">=</span><span class="va">True</span>)
+    <span class="cf">with</span> f1, f2:
+        net <span class="op">=</span> layers.fully_connected(noise, <span class="dv">1024</span>)
+        net <span class="op">=</span> layers.fully_connected(net, <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">256</span>)
+        net <span class="op">=</span> tf.reshape(net, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">256</span>])
+        net <span class="op">=</span> layers.conv2d_transpose(net, <span class="dv">64</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
+        net <span class="op">=</span> layers.conv2d_transpose(net, <span class="dv">32</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
+        net <span class="op">=</span> layers.conv2d(net, <span class="dv">1</span>, <span class="dv">4</span>, activation_fn<span class="op">=</span>tf.tanh)
+        <span class="cf">return</span> net</code></pre></div>
+<h3 id="discriminatorの宣言">4. Discriminatorの宣言</h3>
+<p>Discriminator(警官)の宣言を行う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> discriminator_fn(img, _, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
+    <span class="cf">with</span> framework.arg_scope(
+            [layers.conv2d, layers.fully_connected],
+            activation_fn<span class="op">=</span>(<span class="kw">lambda</span> n: tf.nn.leaky_relu(n, alpha<span class="op">=</span><span class="fl">0.01</span>)),
+            weights_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay),
+            biases_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay)):
+        net <span class="op">=</span> layers.conv2d(img, <span class="dv">64</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
+        net <span class="op">=</span> layers.conv2d(net, <span class="dv">128</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
+        net <span class="op">=</span> layers.flatten(net)
+        <span class="cf">with</span> framework.arg_scope([layers.batch_norm], is_training<span class="op">=</span>is_training):
+            net <span class="op">=</span> layers.fully_connected(
+                net, <span class="dv">1024</span>, normalizer_fn<span class="op">=</span>layers.batch_norm)
+        <span class="cf">return</span> layers.linear(net, <span class="dv">1</span>)</code></pre></div>
+<h3 id="データセットの準備">5. データセットの準備</h3>
+<p>データを受け取って、バッチとして返す関数を作成する。ここでは、「本物」のデータを作成する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> provide_data(source, batch_size):
+    keys_to_features <span class="op">=</span> {
+        <span class="st">&#39;image/encoded&#39;</span>: tf.FixedLenFeature((), tf.string, default_value<span class="op">=</span><span class="st">&#39;&#39;</span>),
+        <span class="st">&#39;image/format&#39;</span>: tf.FixedLenFeature((), tf.string, default_value<span class="op">=</span><span class="st">&#39;raw&#39;</span>),
+    }
+    datanum <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> _ <span class="kw">in</span> tf.python_io.tf_record_iterator(source))
+    items_to_handlers <span class="op">=</span> {
+        <span class="st">&#39;image&#39;</span>: slim.tfexample_decoder.Image(shape<span class="op">=</span>[<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>], channels<span class="op">=</span><span class="dv">1</span>),
+    }
+    decoder <span class="op">=</span> slim.tfexample_decoder.TFExampleDecoder(
+        keys_to_features, items_to_handlers)
+    reader <span class="op">=</span> tf.TFRecordReader
+    dataset <span class="op">=</span> slim.dataset.Dataset(source, reader, decoder, datanum, <span class="va">None</span>)
+    provider <span class="op">=</span> dataprovider(dataset, shuffle<span class="op">=</span><span class="va">True</span>)
+    image, <span class="op">=</span> provider.get([<span class="st">&#39;image&#39;</span>])
+    image <span class="op">=</span> (tf.cast(image, tf.float32) <span class="op">-</span> <span class="fl">128.0</span>) <span class="op">/</span> <span class="fl">128.0</span>
+    images <span class="op">=</span> tf.train.batch([image], batch_size<span class="op">=</span>batch_size)
+    <span class="cf">return</span> images</code></pre></div>
+<h3 id="データセットのダウンロード">6. データセットのダウンロード</h3>
+<p>データセットをダウンロードしよう。データセットは以下の三種類を用意してある。</p>
+<ul>
+<li><code>mnist.tfrecord</code> 手書きの数字(MNIST)</li>
+<li><code>hiragana.tfrecord</code> ひらがなすべて(IPAゴシックフォント)</li>
+<li><code>fontawesome.tfrecord</code> Font Awesomeというフォントのシンボルアイコン10種類</li>
+</ul>
+<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とすること。以下はMNISTを選んだ場合の例である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TRAIN_DATA <span class="op">=</span> <span class="st">&quot;mnist.tfrecord&quot;</span>
+url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/simple_tfgan/dataset/&quot;</span>
+<span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>TRAIN_DATA
+<span class="op">!</span>wget $file</code></pre></div>
+<p>上記を実行すると、ファイルがダウンロードされる。最後に以下のような表示がされたら成功である。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">2019-05-31</span> 08:03:55 (138 MB/s) <span class="ex">-</span> ‘mnist.tfrecord’ saved [20852051/20852051]</code></pre></div>
+<h3 id="初期化">7. 初期化</h3>
+<p>TensorFlowを初期化し、データをバッチに変換する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tf.reset_default_graph()
+<span class="cf">with</span> tf.device(<span class="st">&#39;/cpu:0&#39;</span>):
+  real_images <span class="op">=</span> provide_data(TRAIN_DATA, BATCH_SIZE)</code></pre></div>
+<h3 id="ganの宣言">8. GANの宣言</h3>
+<p>これまで宣言した「Generator」と「Discriminator」を競争させるGANを宣言する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_model <span class="op">=</span> tfgan.gan_model(
+    generator_fn,
+    discriminator_fn,
+    real_data<span class="op">=</span>real_images,
+    generator_inputs<span class="op">=</span>tf.random_normal([BATCH_SIZE, <span class="dv">64</span>]))
+
+improved_wgan_loss <span class="op">=</span> tfgan.gan_loss(
+    gan_model,
+    generator_loss_fn<span class="op">=</span>tfgan.losses.wasserstein_generator_loss,
+    discriminator_loss_fn<span class="op">=</span>tfgan.losses.wasserstein_discriminator_loss,
+    gradient_penalty_weight<span class="op">=</span><span class="fl">1.0</span>)
+
+generator_optimizer <span class="op">=</span> tf.train.AdamOptimizer(<span class="fl">0.001</span>, beta1<span class="op">=</span><span class="fl">0.5</span>)
+discriminator_optimizer <span class="op">=</span> tf.train.AdamOptimizer(<span class="fl">0.0001</span>, beta1<span class="op">=</span><span class="fl">0.5</span>)
+gan_train_ops <span class="op">=</span> tfgan.gan_train_ops(
+    gan_model,
+    improved_wgan_loss,
+    generator_optimizer,
+    discriminator_optimizer)
+
+<span class="cf">with</span> tf.variable_scope(<span class="st">&#39;Generator&#39;</span>, reuse<span class="op">=</span><span class="va">True</span>):
+    eval_images <span class="op">=</span> gan_model.generator_fn(
+        tf.random_normal([<span class="dv">500</span>, <span class="dv">64</span>]),
+        is_training<span class="op">=</span><span class="va">False</span>)
+
+visualizer <span class="op">=</span> tfgan.<span class="bu">eval</span>.image_reshaper(eval_images[:<span class="dv">20</span>, ...], num_cols<span class="op">=</span><span class="dv">10</span>)
+
+train_step_fn <span class="op">=</span> tfgan.get_sequential_train_steps()
+global_step <span class="op">=</span> tf.train.get_or_create_global_step()</code></pre></div>
+<h3 id="ganの実行-1">9. GANの実行</h3>
+<p>それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TOTAL_STEPS <span class="op">=</span> <span class="dv">201</span>
+INTERVAL <span class="op">=</span> <span class="dv">25</span>
+<span class="cf">with</span> tf.train.SingularMonitoredSession() <span class="im">as</span> sess:
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(TOTAL_STEPS):
+        train_step_fn(sess, gan_train_ops, global_step,
+                        train_step_kwargs<span class="op">=</span>{})
+        <span class="cf">if</span> i <span class="op">%</span> INTERVAL <span class="op">==</span> <span class="dv">0</span>:
+            digits_np <span class="op">=</span> sess.run([visualizer])
+            plt.axis(<span class="st">&#39;off&#39;</span>)
+            plt.imshow(np.squeeze(digits_np), cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)
+            plt.show()</code></pre></div>
+<p>Generatorが生成する画像は、最初は単なるノイズだが、徐々に「それっぽい」画像になっていくのがわかるであろう。</p>
+<p>うまくいったら、他のデータセットも試してみよ。ダウンロードするセルで<code>TRAIN_DATA</code>を書き換え、そこから順番にセルを再実行すれば、別のデータセットで学習をするはずである。もしくは，<code>TOTAL_STEPS</code>をもう少し長くして、学習結果がどうなるを見ても良い。MNISTやFont Awesomeなら1000ステップもあればそれなりの画像となるが、ひらがなは種類が多いため、学習に苦しむようである。</p>
+</article>
+</body>
+</html>
