@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="動的計画法"><a href="https://kaityo256.github.io/python_zero/dp/">動的計画法</a></h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
+<ul>
+<li>組み合わせ最適化問題</li>
+<li>動的計画法の要点</li>
+<li>貪欲法</li>
+<li>メモ化再帰</li>
+<li>漸化式とループ</li>
+<li>余談：人外について</li>
+</ul>
+<h2 id="組み合わせ最適化問題">組み合わせ最適化問題</h2>
+<p>これまで、どこかで「ナップサック問題」という言葉は聞いたことがあるだろう。あなたは洞窟の奥で見事宝物庫を見つけた。そこには重さと価値がまちまちな「宝物」が多数あるが、持ち帰ることができる重さには上限がある。この時、決められた重さの中で価値を最大化するにはどうすればよいだろうか？というのがナップサック問題である。</p>
+<div class="figure">
+<img src="fig/knapsack.png" alt="ナップサック問題" />
+<p class="caption">ナップサック問題</p>
+</div>
+<p>このような「たくさんの物のセットが与えられ、何かの条件(ここでは重さの総和)を満たしつつ、何かの価値を最大化するような組み合わせを探す」という問題は、「組み合わせ最適化問題」と呼ばれる。ナップサック問題は典型的な組み合わせ最適化問題の一つである。</p>
+<p>あまり意識していないかもしれないが、我々は日常的に組み合わせ最適化問題を解いている。例えばレストランでメニューを見ながら何を食べるか決める時、当然ながら美味しいものを食べたいと思うことであろう。しかし、美味しい物は一般に値段もカロリーも高いというのがこの世の摂理である。そこで、「ある程度の予算、カロリーの制限内で、一番幸せ度が高いメニューの組み合わせ」を探すことになる。これは典型的なナップサック問題である。</p>
+<p>何か作業をする際、目の前にタスクが一つしかない、ということは少ないであろう。多くの場合、多数のタスクがそれぞれ依存関係を持っており、それらは最終的にはすべて片付けないといけないのだが、取り組む順番によってはコストが大きく変わる、ということもよくある。</p>
+<p>例えばあなたは</p>
+<ul>
+<li>スーパーで食材の買い物をする</li>
+<li>郵便局で封筒を簡易書留で出す</li>
+<li>借りていた本を図書館に返しに行く</li>
+</ul>
+<p>という三つのタスクをこなす必要がある。実行順序は自由だ。簡単のため、スーパー、図書館、郵便局は家から等距離にあるとしよう。どのような順番でタスクをこなすべきだろうか？</p>
+<p>もし「スーパー」「郵便局」「図書館」という順序でタスクをこなすと、あなたは「重い本を持ちながらスーパーで買い物をして」「スーパーで購入した食材と本を持ちながら郵便局に行き」「最後に本を返す」ということになり、手が疲れてしまう。この場合は「図書館」「郵便局」「スーパー」の順番が良いだろう。まずは重い本をなんとかし、荷物が軽い状態で郵便局のタスクをこなし、最後に食材を買って帰れば、疲れは最小限で済む。</p>
+<p>あなたは旅行を計画している。目的値に到着するのに、複数の経路があるのだが、できるだけ早く、もしくはできるだけ安く到着したい。どのような経路を取ればよいだろうか？いま、この経路をグラフで表現してみよう。</p>
+<div class="figure">
+<img src="fig/shortestpath1.png" alt="最短経路問題" />
+<p class="caption">最短経路問題</p>
+</div>
+<p>いま、A地点からI地点までいきたい。そのための経由地(例えば電車の駅だと思えばよい)がBからHまである。それぞれの地点間にはコストが定義されている。この場合のコストは時間もしくは料金である。</p>
+<p>このように、我々は日常的に「何かの条件を満たしつつ、何かを最適化する」という問題に直面している。しかし、これらの問題の多くは「最適解」を得ることが難しい「NP困難 (NP-hard)」な問題であることが多い。「NP困難」については深く立ち入らないが、ようするに「最適解を得るには全ての組み合わせを調べるしかなく、要素数が増えると計算時間が爆発してしまう」という問題のことである。このような問題は、応用上は必ずしも厳密解を得る必要はなく、近似解が求まればそれで十分な場合も多いため、高速に近似解を求める手法も数多く提案されている。</p>
+<p>しかし、ある種の組み合わせ問題は効率的に解くことができる。その際に使われる手法が本講で紹介する「動的計画法」である。</p>
+<h2 id="動的計画法の要件">動的計画法の要件</h2>
+<p>「動的計画法」という、難しそうな名前がついているが、そのアルゴリズムの骨子はさして難しくない。動的計画法が適用できる条件は、以下の二つである。</p>
+<ul>
+<li>大きな問題を、より小さな問題に分解できること (分割統治)</li>
+<li>分解された小さな問題の結果が、再利用可能であること (メモ化)</li>
+</ul>
+<p>例を挙げよう。先程の最短経路探索問題の回答は、以下のようなものだ。</p>
+<div class="figure">
+<img src="fig/shortestpath2.png" alt="最短経路" />
+<p class="caption">最短経路</p>
+</div>
+<p>A→B→E→C→F→H→I</p>
+<p>この時、最短経路は13になる。さて、この経路をよく見てみよう。いま、最短経路がこのように定まったとしよう。AからEを経由してIに到達している。この時、「AからE」への経路も最短であり、「EからI」への経路も最短となっている。</p>
+<div class="figure">
+<img src="fig/shortestpath3.png" alt="部分経路の最短性" />
+<p class="caption">部分経路の最短性</p>
+</div>
+<p>このように、最短経路問題は「もし最短経路が求まったのなら、その途中の任意の二点間の経路も最短である」という性質をもっている。もしこの性質が満たされていないとしよう。例えば上記では、「AからE」の最短経路のコストは3であり、「EからI」の最短経路のコストは10、あわせて「AからI」へのコストは13となっている。もし「AからE」に、コスト2以下のパスがあるならば、そちらを採用すれば、「AからI」のコストを下げることができる。これは「AからIへの最短経路が求まった」という条件と矛盾する。以上から「最短経路の任意の二点間の経路も最短である」ことがわかる。</p>
+<div class="figure">
+<img src="fig/shortestpath4.png" alt="部分問題が解けている時の「最後の仕上げ」" />
+<p class="caption">部分問題が解けている時の「最後の仕上げ」</p>
+</div>
+<p>これがどのように問題を解くのに使えるか考えてみよう。いま知りたいのは「AからI」までの最短経路である。しかし、それより小さい問題、「AからG」までの最短経路と、「AからH」までの最短経路がわかっているものとしよう。それぞれ「A-G」のコストが13、「A-H」のコストが11である。すると、「GからI」のコストが1、「HからI」のコストが2であることがわかっているので、AからG経由でIに行く最短パスのコストは14、AからH経由でIに行くコストは13となり、A-H-Iの経路が最短であることがわかる。</p>
+<p>こうして、「問題が部分的に解けている」ならば、それを「再利用」することでより大きな問題が解けるでしょう、というのが動的計画法の骨子である。</p>
+<h2 id="サイゼリヤ問題">サイゼリヤ問題</h2>
+<p>TODO: サイゼリヤ問題とは</p>
+<p>TODO: 貪欲法</p>
+<p>TODO: メモ化再帰</p>
+<p>TODO: 漸化式＋ループ</p>
+<p>TODO: 解の最高性</p>
+<h2 id="余談人外について">余談：人外について</h2>
+<p>「人外」という言葉がある。「じんがい」と読む。同様に「人ではない」ということを意味する「非人」が侮蔑的な意味を持つことが多いのとは異なり、主にファンタジーなどの世界において、獣人や精霊、妖精など、人としての外見を持つが、基本的に人よりも高次の存在を「人外」と呼ぶことが多い。世界観にもよるが、基本的に「人外」は人間より優れた能力を持ち、通常の人間が敵う相手ではない、強大な存在として描かれることが多い。いつの頃からか、この「人外」という言葉が「同じ人間とは思えないような、卓越した成果を挙げている人間」を指すようになった。僕は、さらに意味が特化させ「同じ人とは思えないプログラム能力を持つ存在」として使っている。この意味での用例の初出がどこかはわからない。おそらく「競技プログラム」界隈から言われるようになったのではないかと思われる。</p>
+<p>本稿の読者は大学生を想定しているが、20年近く生きていれば、「あ、こいつには絶対にかなわない」というような、才能の差を感じて絶望したことが一度や二度はあるであろう。おそらく君たちの二倍以上生きている筆者も、自慢じゃないがこれまでなんども「才能の差」に絶望してきた。特に「プログラミング」は、「できる人」と「できない人」の差が極めて大きく開く分野である。定義にもよるが、「できる人」と「できない人」の生産性はかるく桁で変わってしまう。そして、「この人、本当に人間なんかいな」という「人外プログラマ」の作るものを目の当たりにして驚嘆し、自分と比較して絶望し、その後に達観するのである。</p>
+<p>我々一般人は、普通に生きていれば「人外」とぶつかる可能性は低い。むしろぶつからないように生きるのが正しい道である。しかし、何かとちくるって、一般人であるにもかかわらず「世界一になりたい」という野望を抱いてしまうと不幸である。なんでもよいが、何かの処理の最速、世界一を目指すと、極めて高確率で「人外」とぶつかる。人外は、その絶対数が少ない希少種である。しかし、何か数値化され、「世界一」が客観的に定義できる場所には(それがどんなにマイナーな分野であっても)必ず生息している。世界一になるためには、彼らに勝たなければいけない。ファンタジーでの定番、圧倒的な存在である人外をどうやって人間が討伐するか、という問題図式である。</p>
+<p>ではどうすればいいのか？　まだどの分野でも世界一になったことがない僕は、もちろんその答えを持っていない。</p>
+</article>
+</body>
+</html>
