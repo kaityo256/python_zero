@@ -154,21 +154,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <p>プログラムは以下のようになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> greedy(budget):
-  ind <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">114</span>)), key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)
+  ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
+  ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)
   psum <span class="op">=</span> <span class="dv">0</span>
   csum <span class="op">=</span> <span class="dv">0</span>
   <span class="cf">for</span> i <span class="kw">in</span> ind:
-    <span class="cf">if</span> psum <span class="op">+</span> prices[i] <span class="op">&gt;</span> budget:
+    <span class="cf">if</span> psum <span class="op">+</span> prices[i] <span class="op">&gt;=</span> budget:
       <span class="cf">continue</span>
     psum <span class="op">+=</span> prices[i]
     csum <span class="op">+=</span> cals[i]
     <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
   <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen, </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(psum,csum))</code></pre></div>
 <p>ここで、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  ind <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">114</span>)), key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)</code></pre></div>
-<p>が、「メニューを価格あたりのカロリーでソートする」部分である。<code>list(range(114))</code>は<code>[0,1,2,...,113]</code>という連番のインデックスを持つリストを作る部分である。このインデックスを、ある基準<code>key</code>でソートするようラムダ式で指定している。ラムダ式というと難しく聞こえるが、要するに</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
+  ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)</code></pre></div>
+<p>が、「メニューを価格あたりのカロリーでソートする」部分である。<code>list(range(len(names)))</code>は<code>[0,1,2,...,113]</code>という連番のインデックスを持つリストを作る部分である。このインデックスを、ある基準<code>key</code>でソートするようラムダ式で指定している。ラムダ式というと難しく聞こえるが、要するに</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x]</code></pre></div>
-<p>とは、「x」という値が与えられたら、<code>cals[x]/prices[x]</code>を返しなさい、と言っているだけで、関数</p>
+<p>とは、「x」という値が与えられたら、<code>cals[x]/prices[x]</code>を返しなさい、と言っているだけで、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> key(x):
     <span class="cf">return</span> cals[x]<span class="op">/</span>prices[x]</code></pre></div>
 <p>を一行で書いただけである。これにより、「値段あたりのカロリー」でソートできるが、<code>sorted</code>はデフォルトで昇順にソートするため、降順にするために<code>reverse=True</code>を指示している。</p>
@@ -187,8 +189,8 @@ greedy(<span class="dv">1000</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Total</span> 9960 Yen, 17004 kcal
 <span class="ex">CPU</span> times: user 3.17 ms, sys: 22 µs, total: 3.2 ms
 <span class="ex">Wall</span> time: 3.48 ms</code></pre></div>
-<p>さすがにこれは厳密解からずれるが、わりと良い線いっていることが後でわかる。また、実行時間も十分短い。</p>
-<h3 id="メモ化再帰">メモ化再帰</h3>
+<p>貪欲法は「1万円なら17004kcal摂取できる」と言ってきた。さすがにこれは厳密解からずれるが、わりと良い線いっていることが後でわかる。また、実行時間も十分短い。</p>
+<h3 id="全探索">全探索</h3>
 <p>では、いよいよ動的計画法を実装しよう。動的計画法は、大きく分けて「メモ化再帰」と「漸化式＋ループ」の二つの実装方法がある。まずは「メモ化再帰」で実装する。</p>
 <p>「メモ化再帰」は、簡単に言えば「再帰で組んだ全探索コードにメモ化というテクニックをつけたもの」だ。そこで、まずは再帰で全探索コードを書こう。</p>
 <p>いま、メニューが114個ある。全てのメニューについて「注文する/しない」を選ぶと、全体で<span class="math inline">\(O(2^N)\)</span>の手間がかかる。ただし、すでに予算を超えている時に、さらに追加でメニューを注文する必要はないので、その部分は枝刈をする。</p>
@@ -196,8 +198,126 @@ greedy(<span class="dv">1000</span>)</code></pre></div>
 <img src="fig/fullsearch.png" alt="再帰による全探索" />
 <p class="caption">再帰による全探索</p>
 </div>
-<p>TODO: 漸化式＋ループ</p>
-<p>TODO: 解の最高性</p>
+<p>これをナイーブに再帰で書いてみよう。<code>n</code>番目までのメニューを使って、<code>budget</code>円以内で得られる最大のカロリーを返す関数<code>search(n, budget)</code>を、以下のように定義しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> search(n, budget):
+  <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
+    <span class="cf">return</span> <span class="dv">0</span>
+  c1 <span class="op">=</span> <span class="dv">0</span>
+  <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
+    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+  c2 <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)
+  cmax <span class="op">=</span> <span class="bu">max</span>(c1,c2)
+  <span class="cf">return</span> cmax</code></pre></div>
+<p>再帰の最初に書くのは終端処理だ。ここでは<code>n</code>を減らしながら再帰するので、<code>n &lt; 0</code>になったら終了としている。</p>
+<p>次に、<code>n</code>番目のメニューを注文するか、しないかで二通りに分岐しながら再帰する。もし、<code>n</code>番目のメニューの値段が、現在の予算の範囲内であれば、それを採用した場合のカロリーは</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])</code></pre></div>
+<p>で得られる。ここで、<code>search(n-1, budget - prices[n])</code>は、「<code>n-1</code>番目までのメニューを使って、<code>budget-prices[n]</code>円で得られる最大カロリー」を返してくれるはずである。</p>
+<p>また、n番目のメニューを注文しなかった場合は、そのメニューのカロリーが得られないかわりに、予算も減らないので、得られるカロリー<code>c2</code>は</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c2 <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)</code></pre></div>
+<p>で得られる。動作としてはトーナメントをイメージすればよい。各試合で、追加してきたメニュー同士で戦う。予算オーバーしたら失格、両者予算内なら、カロリーが多い方が勝ちである。これで最後まで勝ち残ったメニューが、予算内で最大のカロリーとなるはずだ。</p>
+<p>実際に実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
+search(<span class="dv">113</span>,<span class="dv">1000</span>)</code></pre></div>
+<p>実行結果はこうなるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">CPU</span> times: user 6.41 s, sys: 0 ns, total: 6.41 s
+<span class="ex">Wall</span> time: 6.42 s
+<span class="ex">1940</span></code></pre></div>
+<p>最大カロリーは1940kcalであり、貪欲法と一致した。これは全探索しているので厳密解だ。ただし、実行時間が6秒と、かなりかかっている。</p>
+<p>なお、ここで求められるのは最大カロリーだけである。最大カロリーが求まった時、それを与えるメニューの組み合わせを求める方法は後述する。</p>
+<h3 id="メモ化再帰">メモ化再帰</h3>
+<p>先ほどの全探索コードは、予算が増えるにしたがって指数関数的に時間がかかるので実用的でない。例えば1000円の予算を1200円にするだけで、6秒が44秒になってしまう。これを改善しよう。</p>
+<p>ポイントは<code>search(n, budget)</code>の返す値は同じ<code>n</code>と<code>budget</code>の組み合わせについては同じ値を返す、ということである。特に<code>n</code>や<code>budget</code>が小さいところでは、同じ組み合わせが何度も呼ばれているため、それを毎回計算するのは無駄だ。そこで、一度計算した<code>(n, budget)</code>の組み合わせは、再利用することにしよう。やり方は簡単で、辞書を使うだけである。先ほどの<code>search</code>関数を定義しているセルを、以下のように修正せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)   <span class="co"># 追加(1)</span>
+<span class="kw">def</span> search(n, budget):
+  <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
+    <span class="cf">return</span> <span class="dv">0</span>
+  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(2)</span>
+    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(2)</span>
+  c1 <span class="op">=</span> <span class="dv">0</span>
+  <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
+    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+  c2 <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)
+  cmax <span class="op">=</span> <span class="bu">max</span>(c1,c2)
+  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(3)</span>
+  <span class="cf">return</span> cmax</code></pre></div>
+<p>先ほどの関数に、4行追加しただけだ。最初の追加(1)は、辞書の定義である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)   <span class="co"># 追加(1)</span></code></pre></div>
+<p>普通に辞書を作ると、存在しないキーを与えるとエラーとなるが、<code>defaultdict</code>は、キーが存在しなかった場合には、デフォルトの値を返すような辞書を作ってくれる。<code>defaultdict(int)</code>は、デフォルトの値として0を返す辞書を作って返す。</p>
+<p>次に、「もしすでに調べた<code>(n, budget)</code>の組み合わせなら、計算済みの値を返す」という再帰の終端条件を追加している。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(2)</span>
+    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(2)</span></code></pre></div>
+<p>ここで、<code>n</code>と<code>budget</code>をまとめたタプル<code>(n, budget)</code>を辞書のキーとしている。</p>
+<p>もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(3)</span></code></pre></div>
+<p>これは<code>(n, budget)</code>の組み合わせで得られる最大カロリーを、辞書<code>dict</code>に登録するコードだ。まるでメモを取っているようなので「メモ化 (Memoization)」と呼ぶ。メモ化は実装が簡単なわりに極めて効果的な高速化テクニックである。ここでメモした値が、先ほどの「追加(1)」で使われる。</p>
+<p>さて、早速実行してみよう。まずは予算1000円から。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">CPU times: user <span class="fl">94.1</span> ms, sys: <span class="fl">1.01</span> ms, total: <span class="fl">95.1</span> ms
+Wall time: <span class="fl">99.4</span> ms
+<span class="dv">1940</span></code></pre></div>
+<p>実行時間が6秒から0.1秒になった。特筆すべきは、実行時間の予算依存性である。全探索の場合は1000円を1200円にするだけで計算時間が7倍になった。しかし、メモ化を施した再帰ルーチンなら、10000円でも実行可能だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
+search(<span class="dv">113</span>,<span class="dv">10000</span>)</code></pre></div>
+<p>実行結果は以下のようになる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">CPU times: user <span class="fl">1.84</span> s, sys: <span class="fl">34.5</span> ms, total: <span class="fl">1.87</span> s
+Wall time: <span class="fl">1.87</span> s
+<span class="dv">17048</span></code></pre></div>
+<p>問題サイズは10倍になったが、2秒で計算が終わっている。ちなみに、このセルをもう一度実行すると一瞬で終わる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">CPU times: user <span class="dv">34</span> µs, sys: <span class="dv">0</span> ns, total: <span class="dv">34</span> µs
+Wall time: <span class="fl">38.1</span> µs
+<span class="dv">17048</span></code></pre></div>
+<p>先ほどの実行で<code>(n=113, budget=10000)</code>の組み合わせの調査結果がメモされており、それをただ返してきたためだ。</p>
+<p>このコードは基本的に全探索コードなので、得られる値は厳密解である。先ほど貪欲法で得られた答えは、1万円の予算で17004 kcalであった。厳密解は17048 kcalである。誤差わずか0.26%である。このように、「素直な問題」に対しては、貪欲法は良い近似解を与えることが多い。なお、何が「素直な問題」かはここでは深入りしない。</p>
+<h3 id="課題1解の再構成">課題1：解の再構成</h3>
+<p>さて、メモ化再帰により、「ある予算内で得られる最大カロリー」はわかったが、「その最大カロリーを与えるメニュー」はわからない。しかし、先ほどメモしたリストと、最大カロリーがわかれば、そのメニューを構成するのは簡単である。</p>
+<p>探索が終わったら、<code>dic[(n, budget)]</code>には、<code>n</code>番目のメニューまでを使って、予算<code>budget</code>内で得られる最大のカロリーがメモされているはずだ。再帰コードをもう一度見ると、この辞書が更新されるのは、メニュー<code>n</code>が注文されるか、されないかの二通りのどちらかだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co"># メニューnが注文される時</span>
+dic[(n, budget)] <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+
+<span class="co"># メニューnが注文されない時</span>
+dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])</code></pre></div>
+<p>今、<code>n</code>番目のメニューまで使って、予算<code>budget</code>で最大<code>cal</code>カロリーが得られるとわかっているとしよう。このカロリー最大化メニューに<code>n</code>番のメニューが含まれているならば、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">cal <span class="op">=</span> cals[n] <span class="op">+</span> dic[(n<span class="op">-</span><span class="dv">1</span>, budget<span class="op">-</span>prices[n])]</code></pre></div>
+<p>が成立しているはずである。従って、メニューを最後から順番にまわして、上記の条件が成立していたら<code>n</code>をメニューに追加して、予算とカロリーを減らし、そうでなければ次を探す、というループを回せばよい。それをそのまま実装したのが以下の関数である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_menu(budget, cal):
+  menu <span class="op">=</span> []
+  <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(<span class="bu">len</span>(names))):
+    <span class="cf">if</span> cal <span class="kw">is</span> <span class="dv">0</span>:
+      <span class="cf">break</span>
+    <span class="co"># ここを実装せよ</span>
+  <span class="cf">return</span> menu</code></pre></div>
+<p>上記のコードの「ここを実装せよ」の箇所に、</p>
+<ul>
+<li>もし<code>cal = cals[n] + dic[(n-1, budget-prices[n])]</code>が成立していたら</li>
+<li><code>cal</code>から<code>cal[n]</code>を引き、</li>
+<li><code>budget</code>から<code>prices[n]</code>を引き、</li>
+<li><code>menu</code>に<code>n</code>を追加する</li>
+</ul>
+<p>コードを記述せよ。</p>
+<p>この関数が、「カロリー最大化メニュー」のインデックスリストを返す。正しく実装できていれば、以下のように実行すれば以下のような出力が得られるはずである。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">[<span class="ex">100</span>, 72, 24]</code></pre></div>
+<p>このメニューインデックスリストを受け取って、名前やカロリーを表示するコードも書こう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_menu(menu):
+  <span class="cf">for</span> i <span class="kw">in</span> menu:
+    <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
+  total_price <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: prices[x], menu))
+  total_cal <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: cals[x], menu))
+  <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(total_price, total_cal))</code></pre></div>
+<p>上記二つをまとめて実行してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">1000</span>, <span class="dv">1940</span>)
+show_menu(menu)</code></pre></div>
+<p>以下のような実行結果が得られるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">ラージライス <span class="ex">219</span> Yen 454 kcal
+アーリオ・オーリオ<span class="kw">(</span><span class="ex">W</span>サイズ<span class="kw">)</span> <span class="ex">574</span> Yen 1120 kcal
+ポテトのグリル <span class="ex">199</span> Yen 366 kcal
+<span class="ex">Total</span> 992 Yen 1940 kcal</code></pre></div>
+<p>同様に、予算一万円の場合のメニューも調べてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">10000</span>, <span class="dv">17048</span>)
+show_menu(menu)</code></pre></div>
+<p>実行結果は以下の通り(途中のメニューリストは省略するが、是非自分の目で確認して欲しい)。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Total</span> 10000 Yen 17048 kcal</code></pre></div>
+<p>なんと1万円ぴったりである。成人男性が一日に摂取するカロリーが2000 kcalだそうなので、ざっくり25人前の食事ということになる。一人前あたり400円である。この値段をどう思うかは読者の評価に任せよう。</p>
+<h3 id="漸化式ループ">漸化式＋ループ</h3>
+<p>TODO: 漸化式＋ループ法をやる？</p>
 <h2 id="余談人外について">余談：人外について</h2>
 <p>「人外」という言葉がある。「じんがい」と読む。同様に「人ではない」ということを意味する「非人」が侮蔑的な意味を持つことが多いのとは異なり、主にファンタジーなどの世界において、獣人や精霊、妖精など、人としての外見を持つが、基本的に人よりも高次の存在を「人外」と呼ぶことが多い。世界観にもよるが、基本的に「人外」は人間より優れた能力 を持ち、通常の人間が敵う相手ではない、強大な存在として描かれることが多い。いつの頃からか、この「人外」という言葉が「同じ人間とは思えないような、卓越した成果を挙げている人間」を指すようになった。僕は、さらに意味が特化させ「同じ人とは思えないプログラム能力を持つ存在」として使っている。この意味での用例の初出がどこかはわからない。おそらく「競技プログラム」界隈から言われるようになったのではないかと思われる。</p>
 <p>本稿の読者は大学生を想定しているが、20年近く生きていれば、「あ、こいつには絶対にかなわない」というような、才能の差を感じて絶望したことが一度や二度はあるであろう。おそらく君たちの二倍以上生きている筆者も、自慢じゃないがこれまでなんども「才能の差」に絶望してきた。特に「プログラミング」は、「できる人」と「できない人」の差が極めて大きく開く分野である。定義にもよるが、「できる人」と「できない人」の生産性はかるく桁で変わってしまう。そして、「この人、本当に人間なんかいな」という「人外プログラマ」の作るものを目の当たりにして驚嘆し、自分と比較して絶望し、その後に達観するのである。</p>
