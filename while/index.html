@@ -73,6 +73,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
 <li>while文</li>
+<li>ループのスキップと脱出</li>
 <li>関数</li>
 <li>スコープ</li>
 </ul>
@@ -90,7 +91,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="cf">while</span> a:
     <span class="bu">print</span>(a)
     a <span class="op">-=</span> <span class="dv">1</span></code></pre></div>
-<p>TODO: continueとbreakの説明</p>
+<h2 id="ループのスキップと脱出">ループのスキップと脱出</h2>
+<p><code>for</code>や<code>while</code>といった「ループを作る構文」を使っていると、ある条件を満たした時にループをスキップしたり、ループから脱出したくなることがある。それぞれ<code>continue</code>、<code>break</code>で実現できる。</p>
+<h3 id="continue"><code>continue</code></h3>
+<p>例えば、0から9までの数字を表示するループを考えてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  <span class="bu">print</span>(i)</code></pre></div>
+<p>実行すると、0から9まで表示される。これを、「偶数の時だけ表示する」ようにしたい。そのまま書くと以下のようになるだろう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="cf">if</span> i<span class="op">%</span><span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
+        <span class="bu">print</span>(i)</code></pre></div>
+<p>同じ処理を、「奇数の時だけループをスキップする」という形でも書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="cf">if</span> <span class="kw">not</span> i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>:
+        <span class="cf">continue</span>
+    <span class="bu">print</span>(i)</code></pre></div>
+<p><code>continue</code>は、「以下の処理をスキップして、次のループに飛べ」という指示文である。やりたい処理を<code>if</code>文で囲むべきか、やりたくない処理を<code>continue</code>で飛ばすべきかは場合による。 <img src="fig/continue.png" alt="continueによる深いブロックの縮小" /></p>
+<p>上記の左では、ある条件が満たされた時に「何かやりたい処理」を実行しているが、右図では条件が満たされなかったらループをスキップして、スキップされなかった場合に「何かやりたい処理」を実行している。どちらも全く同じ処理を行うが、左は「for文が作るブロック」の中で「if文が作るブロック」が大きいのに対し、右では「if文が作るブロック」が小さくなり、「何かやりたい処理」が「for文の作るブロック」に移動している。</p>
+<p>一般に「ブロックのネスト」は浅い方がよく、「ネストが深いブロック」は小さい方が良い。したがって、ループの中で<code>if</code>文の中身が大きくなったら、<code>continue</code>で書き換えることで<code>if</code>文が小さくすることを検討すると良い。</p>
+<h3 id="break"><code>break</code></h3>
+<p>ある条件が満たされたら、ループを終了したい場合は、<code>break</code>を使う。</p>
+<p>TODO: breakを使いたくなる良い例を探す</p>
 <h2 id="関数">関数</h2>
 <p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
