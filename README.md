@@ -27,7 +27,6 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
-* 余談：スクリプト言語とコンパイラ言語
 * 余談：タッチタイピングについて
 
 ## [条件分岐と繰り返し処理1](basic/README.md) (ほぼ完成)
@@ -76,10 +75,11 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * 割り箸ゲーム
 * 余談：オブジェクト指向プログラミングの意義
 
-## Numpyの使い方
+## [Numpyの使い方](numpy/README.md)
 
-* numpyとは？
+* Numpyとは？
 * SVDを用いた画像圧縮
+* 余談：スクリプト言語とコンパイラ言語
 
 ## [Pythonが動く仕組み](howtowork/README.md)
 
@@ -150,6 +150,8 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 
 * [実践的低レイヤプログラミング](https://tanakamura.github.io/pllp/docs/index.html) [tanakamura](https://github.com/tanakamura)さんによる、低レベルプログラムの解説。アセンブリやリンカの解説がある。CやC++をある程度書ける人が読むと新たな発見があることだろう。
 
+* [間違ったコードは間違って見えるようにする](http://local.joelonsoftware.com/wiki/%E9%96%93%E9%81%95%E3%81%A3%E3%81%9F%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AF%E9%96%93%E9%81%95%E3%81%A3%E3%81%A6%E8%A6%8B%E3%81%88%E3%82%8B%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B) Joel Spolskyという人が書いた[Joel on Software](https://www.joelonsoftware.com/)というブログの記事の一つを和訳したもの。この人のブログ記事はどれも面白いが、特に若き日のビル・ゲイツによるレビューを受けた時の体験談、[My First BillG Review](https://www.joelonsoftware.com/2006/06/16/my-first-billg-review/)が面白い。[和訳](http://local.joelonsoftware.com/wiki/%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AEBillG%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%81%AE%E3%81%93%E3%81%A8)もある。
+
 ### 上級者向け
 
 上級者といっても、別にプログラムがバリバリかけるという意味ではなく、たとえばプログラム書いてご飯を食べるようになっているとか、そういう感じの人が読むと面白いかな、と思う本。
@@ -170,7 +172,9 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 * [プログラミングコンテストでの動的計画法](https://www.slideshare.net/iwiwi/ss-3578511) 動的計画法の題材や計算量について参考にした。
 * [計算量オーダーの求め方を総整理！ 〜 どこから log が出て来るか 〜](https://qiita.com/drken/items/872ebc3a2b5caaa4a0d0) 計算量の複雑さや題材について参考にした。
 * [計算量](https://www.slideshare.net/catupper/ss-26238956) 様々なアルゴリズムの計算量について参考にした。
-* [再帰関数を学ぶと、どんな世界が広がるか](https://qiita.com/drken/items/23a4f604fa3f505dd5ad)再帰の考え方の参考にした。
+* [再帰関数を学ぶと、どんな世界が広がるか](https://qiita.com/drken/items/23a4f604fa3f505dd5ad) 再帰の考え方の参考にした。
+* [典型的な DP (動的計画法) のパターンを整理 Part 1 ～ ナップサック DP 編 ～](https://qiita.com/drken/items/a5e6fe22863b7992efdb) 動的計画法の説明の参考にした。
+* [意外と解説がない！動的計画法で得た最適解を「復元」する一般的な方法](https://qiita.com/drken/items/0c7bab0384438f285f93) 動的計画法で得た答えから、その答えを与える組み合わせを構成する方法の説明の参考にした。
 
 数学や科学について。
 
