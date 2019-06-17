@@ -106,12 +106,42 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="cf">if</span> <span class="kw">not</span> i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>:
         <span class="cf">continue</span>
     <span class="bu">print</span>(i)</code></pre></div>
-<p><code>continue</code>は、「以下の処理をスキップして、次のループに飛べ」という指示文である。やりたい処理を<code>if</code>文で囲むべきか、やりたくない処理を<code>continue</code>で飛ばすべきかは場合による。 <img src="fig/continue.png" alt="continueによる深いブロックの縮小" /></p>
-<p>上記の左では、ある条件が満たされた時に「何かやりたい処理」を実行しているが、右図では条件が満たされなかったらループをスキップして、スキップされなかった場合に「何かやりたい処理」を実行している。どちらも全く同じ処理を行うが、左は「for文が作るブロック」の中で「if文が作るブロック」が大きいのに対し、右では「if文が作るブロック」が小さくなり、「何かやりたい処理」が「for文の作るブロック」に移動している。</p>
-<p>一般に「ブロックのネスト」は浅い方がよく、「ネストが深いブロック」は小さい方が良い。したがって、ループの中で<code>if</code>文の中身が大きくなったら、<code>continue</code>で書き換えることで<code>if</code>文が小さくすることを検討すると良い。</p>
+<p><code>continue</code>は、「以下の処理をスキップして、次のループに飛べ」という指示文である。やりたい処理を<code>if</code>文で囲むべきか、やりたくない処理を<code>continue</code>で飛ばすべきかは場合による。</p>
+<div class="figure">
+<img src="fig/continue.png" alt="continueによる深いブロックの縮小" />
+<p class="caption">continueによる深いブロックの縮小</p>
+</div>
+<p>上記の左では、ある条件が満たされた時に「何かやりたい処理」を実行しているが、右図では条件が満たされなかったらループをスキップして、スキップされなかった場合に「何かやりたい処理」を実行している。どちらも全く同じ処理を行うが、左は「for文が作るブロック」の中の「if文が作るブロック」が大きいのに対し、右では「if文が作るブロック」が小さくなり、「何かやりたい処理」が「for文の作るブロック」に移動している。</p>
+<p>このように、処理の冒頭で条件をチェックし、<code>continue</code>したり<code>return</code>したりすることを「ガード節」と呼ぶ。まるでガードマンが入り口の前に立ち、不要な来訪者を追い払う様に似ているからと思われる。人間の頭はネストした構造を正しく把握するのにコストがかかるため、一般に構造のネストは浅い方が良く、「深い」ブロックは小さい方が望ましい。ガード節はそのような深くて大きいネスト構造を防ぐ基本的なテクニックの一つである。</p>
 <h3 id="break"><code>break</code></h3>
-<p>ある条件が満たされたら、ループを終了したい場合は、<code>break</code>を使う。</p>
-<p>TODO: breakを使いたくなる良い例を探す</p>
+<p>ある条件が満たされたら、ループを終了したい場合は、<code>break</code>を使う。例えば、所持金5からスタートし、確率1/2で所持金が+1か-1されるギャンブルをしたとしよう。所持金が0になったら負け、10になったら勝ちで、いずれも終了とする。そのようなコードは、たとえば以下のように書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+  
+money <span class="op">=</span> <span class="dv">5</span>
+
+<span class="cf">while</span> <span class="va">True</span>:
+    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2</span><span class="op">-</span><span class="dv">1</span>
+    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:
+        <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)
+        <span class="cf">break</span>
+    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">10</span>:
+        <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)
+        <span class="cf">break</span></code></pre></div>
+<p><code>random.randint(0, 1)</code>は、確率1/2で0か1を返す乱数であり、2倍して1を引くことで、+1か-1を返すようにしている。所持金<code>money</code>にそれを加算し、0になったら「Lose」と表示して終了、10になったら「Win」と表示して終了している。</p>
+<p>ここでは<code>while True:</code>でループ構造を作っている。<code>while 条件:</code>は、条件が満たされている限りループする、というものであった。その条件に<code>True</code>を設定しているので、ループの条件は常に真であり、無限にループが回る。このようなループを「無限ループ」と呼ぶ。無限ループを抜けるには、<code>break</code>もしくは関数からの<code>return</code>、プログラムを終了させる<code>exit()</code>などを使うしかない。もし適切な終了条件を設定せずにループを無限ループにしてしまった場合は、コンソールプログラムならCtrl+Cを入力、Google Colab上ならば実行中のセルの四角いボタンを押せば停止できる。</p>
+<p>なお、先程と同じプログラムは、<code>break</code>を使わずに<code>while</code>の条件を工夫することでも実現できる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+  
+money <span class="op">=</span> <span class="dv">5</span>
+
+<span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;</span> money <span class="op">&lt;</span> <span class="dv">10</span>:
+    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2</span><span class="op">-</span><span class="dv">1</span>
+
+<span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:
+    <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)
+<span class="cf">else</span>:
+    <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</code></pre></div>
+<p><code>money</code>が0から10の間にある場合のみループを実行し、この条件を満たさなくなったら<code>while</code>文を終了するコードである。最終的に<code>money</code>が0になったか<code>10</code>になったかを確認し、「Lose」や「Win」を表示している。先程のコードよりも、このループがどのような条件で実行されるべきかがわかりやすくなっているのがわかるであろう。一般に、等価な制御構造の書き方は複数存在する。<code>while</code>の条件に含めるべきか、<code>break</code>で脱出すべきかはコードによる。こういったコードの書き方に興味のある人は「リーダブルコード」という古典的な名著があるので参照されたい。</p>
 <h2 id="関数">関数</h2>
 <p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
@@ -129,8 +159,82 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>関数が返した値を変数に代入することもできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)
 <span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
+<p>次回学ぶ「タプル」を用いると、複数の値を一度に返すこともできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(i):
+  <span class="cf">return</span> i, i<span class="op">+</span><span class="dv">1</span>
+
+a, b <span class="op">=</span> func(<span class="dv">5</span>) <span class="co"># a = 5, b = 6が代入される。</span></code></pre></div>
 <h2 id="スコープ">スコープ</h2>
-<p>TODO: スコープについて説明する</p>
+<p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。</p>
+<p>例えば以下のようなコードを見てみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
+    a <span class="op">=</span> <span class="dv">10</span>
+    <span class="bu">print</span>(a)
+
+func()
+<span class="bu">print</span>(a)</code></pre></div>
+<p>関数<code>func</code>内で、変数<code>a</code>に10を代入し、その値を表示されている。その後、関数<code>func</code>を実行すると10が表示され、確かに<code>a</code>に10が入っていることがわかるが、その後で<code>a</code>を表示しようとすると<code>NameError: name 'a' is not defined</code>、つまり「変数<code>a</code>なんて知らないよ」というエラーが出てしまう。</p>
+<p>このように、関数内で宣言された変数は<strong>ローカル変数</strong>と呼ばれ、その有効範囲は関数内に制限される。この「変数が見える範囲」をスコープと呼ぶ。ローカル変数が住むスコープを<strong>ローカルスコープ</strong>と呼ぶ。</p>
+<p>逆に、関数の外で宣言された変数は、関数の中からも見ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+
+<span class="kw">def</span> func():
+    <span class="bu">print</span>(a)
+
+func()</code></pre></div>
+<p>このコードは問題なく実行され、10が表示される。関数の外、つまりインデントがなく、地面に「ベタ」についている場所で宣言された変数を<strong>グローバル変数</strong>と呼ぶ。グローバル変数は<strong>グローバルスコープ</strong>に住んでいる。</p>
+<p>実はPythonには、ここで挙げた「ローカルスコープ」「グローバルスコープ」の他に、「関数内関数のスコープ」「ビルトインスコープ」というものもあるのだが、話がややこしくなるので本講義では取り上げない。</p>
+<p>この「ローカルスコープ」と「グローバルスコープ」についてとりあえず知っておくべきことは</p>
+<ul>
+<li>ローカルからグローバルは見える</li>
+<li>グローバルからローカルは見えない</li>
+</ul>
+<p>の二点である。</p>
+<div class="figure">
+<img src="fig/scope.png" alt="スコープ" />
+<p class="caption">スコープ</p>
+</div>
+<p>スコープは意外に難しく、直感に反する振る舞いがいくつかあるのだが、ここでは一つだけ将来ハマりそうなことを紹介しておく。</p>
+<p>ローカル変数からグローバル変数は参照可能だが、値を代入しようとすると問題がおきる。こんなコードを考えよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+
+<span class="kw">def</span> func():
+  <span class="bu">print</span>(a)
+  a <span class="op">=</span> <span class="dv">20</span>
+
+func()
+<span class="bu">print</span>(a)</code></pre></div>
+<p>このコードは</p>
+<ul>
+<li>最初にグローバル変数<code>a</code>に10が代入され、</li>
+<li>関数<code>func</code>内で変数<code>a</code>を表示し、</li>
+<li>関数<code>func</code>内で変数<code>a</code>に20が代入され、</li>
+<li>最後に<code>a</code>の変数の値を表示する</li>
+</ul>
+<p>プログラムである。どんな結果になるか想像できるだろうか？</p>
+<p>結果は、</p>
+<ul>
+<li><code>func</code>内で実行されたprint文は10を表示し、</li>
+<li>その後のグローバルスコープで実行されたprint文も10を表示</li>
+</ul>
+<p>する。これは、関数<code>func</code>内で<code>print(a)</code>した時には<code>a</code>はグローバル変数として扱われているが、その後<code>a=20</code>が実行された時に、「新たなローカル変数<code>a</code>が定義され、それに20が代入された」と解釈されるためである。</p>
+<div class="figure">
+<img src="fig/scope2.png" alt="ローカル変数によるグローバル変数の上書き" />
+<p class="caption">ローカル変数によるグローバル変数の上書き</p>
+</div>
+<p>多くの場合、これは意図する動作ではないであろう。ローカルスコープからグローバル変数を修正したい場合、ローカルスコープ内で<code>global</code>宣言をする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+
+<span class="kw">def</span> func():
+  <span class="kw">global</span> a <span class="co"># 変数aがグローバル変数であることを宣言する</span>
+  <span class="bu">print</span>(a)
+  a <span class="op">=</span> <span class="dv">20</span>
+
+func()
+<span class="bu">print</span>(a)</code></pre></div>
+<p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
+<p>しかし、このようなコードはバグの元であり、推奨されない。一般に、グローバス変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。</p>
+<p>とりあえず「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
 <h2 id="コラッツ問題">コラッツ問題</h2>
 <p>ではさっそくwhile文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
 <ul>
