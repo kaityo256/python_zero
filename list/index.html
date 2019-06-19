@@ -439,13 +439,42 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 <p>三色の場合</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>),(<span class="dv">0</span>,<span class="dv">255</span>,<span class="dv">0</span>)]</code></pre></div>
 <p>色の指定と、変換ベクトルリストをいろいろ変えてみて、オリジナルのフラクタル図形を作成せよ。</p>
-<h2 id="pythonらしく書く内包表記やreduce">Pythonらしく書く(内包表記やreduce)</h2>
-<p>TODO: リストの内包表記の説明</p>
-<h3 id="内包表記">内包表記</h3>
-<p>リストの内包表記は「後ろから」読む。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-[<span class="dv">2</span><span class="op">*</span>x <span class="cf">for</span> x <span class="kw">in</span> a]</code></pre></div>
-<p><code>[2*x for x in a]</code>は「aに含まれるxそれぞれを2*xにしたような新しいリストを作成してください」という意味になる。</p>
+<h2 id="リスト内包表記">リスト内包表記</h2>
+<div class="figure">
+<img src="fig/report.png" alt="大量のレポートを採点する教員" />
+<p class="caption">大量のレポートを採点する教員</p>
+</div>
+<p>日常業務において、何かまとまったデータを受け取り、それに何か処理をして、まとまったデータとして返す、という処理は非常に多い。例えば講義でレポートを出したら、全員分のレポートを受け取り、それを採点して、それぞれに成績をつける、という処理をしなければならない。</p>
+<p>同様に、プログラムでも、何かリストを受け取り、そのリストに何か処理をして、新しいリストを作成する、という処理をすることが多い。</p>
+<p>簡単な例として、整数のリストを受け取って、要素をすべて二倍にしたリストを作成するようなコードを書こう。普通にループを回すとこんな感じに書けるであろう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]
+result <span class="op">=</span> []
+<span class="cf">for</span> i <span class="kw">in</span> source:
+    result.append(i<span class="op">*</span><span class="dv">2</span>)</code></pre></div>
+<p>Pythonには、「<strong>リスト内包表記 (List Comprehension)</strong>」という表記法があり、上記のコードは以下のように書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]
+result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</code></pre></div>
+<p>リスト内包表記は</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[新しいリストの要素 <span class="cf">for</span> 元のリストの要素 <span class="kw">in</span> 元のリスト]</code></pre></div>
+<p>という書き方をする。リスト内包表記は「後ろから」読むのがコツである。</p>
+<p>つまり、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</code></pre></div>
+<p>という内包表記は、</p>
+<ul>
+<li><code>source</code>というリストに含まれる</li>
+<li>それぞれの要素<code>i</code>について</li>
+<li><code>2*i</code>を要素とするような新しいリストを作ってください</li>
+</ul>
+<p>という意味となる。</p>
+<div class="figure">
+<img src="fig/list_comp.png" alt="リスト内包表記" />
+<p class="caption">リスト内包表記</p>
+</div>
+<p>もちろん<code>source</code>のところに直接リストを入れてしまって、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]]</code></pre></div>
+<p>としてもかまわない。また、<code>range</code>を使って</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</code></pre></div>
+<p>と書くこともできる。リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> convert(a, b):
     ax, ay <span class="op">=</span> a
     alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)
@@ -453,30 +482,88 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
     s <span class="op">=</span> ay<span class="op">/</span>alen
     scale <span class="op">=</span> alen<span class="op">/</span>length(b)
     r <span class="op">=</span> []
-    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x,y)) <span class="kw">in</span> b]
     <span class="cf">for</span> (bx, by) <span class="kw">in</span> b:
+        bx <span class="op">*=</span> scale
+        by <span class="op">*=</span> scale
         nx <span class="op">=</span> c <span class="op">*</span> bx <span class="op">-</span> s <span class="op">*</span> by
         ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by
         r.append((nx, ny))
     <span class="cf">return</span> r</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> convert(a, b):
-    ax, ay <span class="op">=</span> a
-    alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)
-    c <span class="op">=</span> ax<span class="op">/</span>alen
-    s <span class="op">=</span> ay<span class="op">/</span>alen
-    scale <span class="op">=</span> alen<span class="op">/</span>length(b)
-    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]
+<p>この関数には、タプルのリスト<code>b</code>に関する<code>for</code>文がある。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="cf">for</span> (bx, by) <span class="kw">in</span> b:
+        bx <span class="op">*=</span> scale
+        by <span class="op">*=</span> scale
+        nx <span class="op">=</span> c <span class="op">*</span> bx <span class="op">-</span> s <span class="op">*</span> by
+        ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by
+        r.append((nx, ny))
+    <span class="cf">return</span> r</code></pre></div>
+<p>これは、</p>
+<ul>
+<li>タプルのリスト<code>b</code>の要素`(bx,by)'それぞれについて</li>
+<li>まず(bx,by)をそれぞれ<code>scale</code>倍し、</li>
+<li><code>nx = c * bx - s * by</code>、<code>ny = s * bx + c*by</code>という変換(回転行列の演算)をして</li>
+<li>得られた<code>(nx, ny)</code>というタプルを要素に持つリストを作成して返す</li>
+</ul>
+<p>という処理をしている。最初の、要素それぞれを<code>scale</code>倍するという処理は、リスト内包表記を使えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</code></pre></div>
+<p>と書ける。「リスト内包表記の読み方」を書いておくと</p>
+<ul>
+<li><code>b</code>というリストに含まれる</li>
+<li>それおぞれの要素<code>(x,y)</code>について</li>
+<li><code>(scale*x, scale*y)</code>を要素とするような新しいリストを作ってください</li>
+</ul>
+<p>という意味で、作成されたリストを<code>b</code>に上書き代入している。</p>
+<p>また、回転行列を書けるところも、そのまま</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</code></pre></div>
+<p>と書き換えることができる。念の為にまた読み方を書いておくと、</p>
+<ul>
+<li><code>b</code>というリストに含まれる</li>
+<li>それおぞれの要素<code>(x,y)</code>について</li>
+<li><code>(c * x - s* y, s *x + c * y)</code>を要素とするような新しいリストを作ってください</li>
+</ul>
+<p>となる。以上から、もともとこんな形であったコードが</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="cf">for</span> (bx, by) <span class="kw">in</span> b:
+        bx <span class="op">*=</span> scale
+        by <span class="op">*=</span> scale
+        nx <span class="op">=</span> c <span class="op">*</span> bx <span class="op">-</span> s <span class="op">*</span> by
+        ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by
+        r.append((nx, ny))
+    <span class="cf">return</span> r</code></pre></div>
+<p>こうなった。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]
     b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]
     <span class="cf">return</span> b</code></pre></div>
-<p><code>bx, by</code>や<code>r</code>が消えた。</p>
-<h3 id="reduce">reduce</h3>
-<p>TODO: <code>reduce</code>と<code>lambda</code>の説明。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> length(a):
-  (x, y) <span class="op">=</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> x, y: (x[<span class="dv">0</span>]<span class="op">+</span>y[<span class="dv">0</span>], x[<span class="dv">1</span>]<span class="op">+</span>y[<span class="dv">1</span>]),a)
-  <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> <span class="bu">apply</span>(a, b):
-  c <span class="op">=</span> [convert(i, b) <span class="cf">for</span> i <span class="kw">in</span> a]
-  <span class="cf">return</span> <span class="bu">reduce</span>(<span class="kw">lambda</span> x, y: x <span class="op">+</span> y, c)</code></pre></div>
+<p><code>for</code>文が消え、かつ「リストにどのような処理を施しているのか」が明確になったのがわかるであろう。リスト内包表記を使った方が良いか、素直に<code>for</code>で回した方が良いかは場合によるので、なんでもかんでも内包表記を使おうとせず、どちらが良いか毎回考えながら決めること。</p>
+<h2 id="余談名前解決とプログラミング言語の個性">余談：名前解決とプログラミング言語の個性</h2>
+<p>プログラムでは、変数や関数、クラスなどに名前をつける。例えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span></code></pre></div>
+<p>といった場合、<code>a</code>という変数に<code>10</code>という値が代入されるし、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
+    <span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)</code></pre></div>
+<p>といった関数<code>func</code>を定義すると、以後<code>func()</code>を実行するたびに「Hello」と表示される。このような「変数名」や「関数名」を「<strong>識別子 (identifier)</strong>」と呼ぶ。プログラムをコンパイル、評価した時に、「ある識別子が何を指しているのか？」を決めるのが「<strong>名前解決 (name resolution)</strong>」だ。名前解決は言語処理系の処理の根幹に関わってくるため、言語によって差異が出やすい。</p>
+<p>PythonやRubyは値の代入によって変数の宣言を行う言語だが、CやC++、Javaなどの言語は変数の宣言と値の代入は別だ。値の代入が変数宣言を兼ねる場合、それが代入なのか宣言なのかがわかりにくい場合がある。例えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">20</span></code></pre></div>
+<p>という文があった場合、これが新たな変数<code>a</code>を宣言しているのか、それとも既存の変数に値が代入されるかは、それまでに<code>a</code>という変数が存在しているかどうかによる。これにより、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+<span class="kw">def</span> func():
+    <span class="bu">print</span>(a)
+func()</code></pre></div>
+<p>がグローバル変数を表示するが、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
+<span class="kw">def</span> func():
+    a <span class="op">=</span> <span class="dv">20</span>
+func()</code></pre></div>
+<p>が、関数<code>func</code>内で新たなローカル変数が作られるため、グローバル変数に影響を与えないことは既に説明した。</p>
+<p>これがC++の場合は、</p>
+<div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> a = <span class="dv">10</span>;
+<span class="dt">void</span> func(){
+   a = <span class="dv">20</span>; <span class="co">// これはグローバル変数を修正する</span>
+   <span class="dt">int</span> a = <span class="dv">30</span>; <span class="co">// ここでローカル変数が宣言され、以後`a`はローカル変数となる</span>
+}</code></pre></div>
+<p>と、変数は宣言しないと利用できないため、<code>a=20</code>が宣言なのか代入なのかわからない、という問題は生じない。</p>
+<p>Pythonと同様に代入によって変数を宣言する言語であるRubyは、「グローバル変数には<code>$</code>をつける」という言語デザインにしたため、ローカルスコープにある変数がローカルなのかグローバルなのかわからない、という問題は生じない。他にも、スコープがネストした場合の名前解決の方法等は言語によって違いが大きい。</p>
+<p>言語を設計する時、ほとんどの場合は設計と同時にコンパイラなりインタプリタなりといった「言語処理系」が実装される。識別子をどう扱うか、スコープをどうするかはコンパイラやインタプリタの実装に直結するため、名前解決には言語設計者のポリシーの違いが強く出やすい。ある言語で当たり前に受け入れられている方法が、別の言語では禁止されていたり、全く異なる方法で実現されるんだど、ある言語の「常識」が別の言語の「非常識」であることも多い。プログラミング言語を一つしか知らないと、このような違いに目がいかず、「自分が知っているプログラミング言語固有の常識」を「プログラミング言語一般の常識」と思ってしまいがちである。</p>
+<p>「どの言語の設計が良い」「悪い」ではない。使いこなす必要はないが、複数のプログラミング言語に触れ、広い視野を持つようにしてほしい。プログラミング言語設計の歴史や、言語間の差異については「<a href="https://www.amazon.co.jp/dp/477415654X">コーディングを支える技術 (西尾 泰和)</a>に事例が豊富に掲載されているので参考にされたい。</p>
 </article>
 </body>
 </html>
