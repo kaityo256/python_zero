@@ -199,25 +199,19 @@ func()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 
 <span class="kw">def</span> func():
-  <span class="bu">print</span>(a)
   a <span class="op">=</span> <span class="dv">20</span>
+  <span class="bu">print</span>(a)
 
 func()
 <span class="bu">print</span>(a)</code></pre></div>
 <p>このコードは</p>
 <ul>
 <li>最初にグローバル変数<code>a</code>に10が代入され、</li>
-<li>関数<code>func</code>内で変数<code>a</code>を表示し、</li>
-<li>関数<code>func</code>内で変数<code>a</code>に20が代入され、</li>
+<li>内部で変数<code>a</code>に20が代入して表示する関数<code>func</code>を実行し、</li>
 <li>最後に<code>a</code>の変数の値を表示する</li>
 </ul>
 <p>プログラムである。どんな結果になるか想像できるだろうか？</p>
-<p>結果は、</p>
-<ul>
-<li><code>func</code>内で実行されたprint文は10を表示し、</li>
-<li>その後のグローバルスコープで実行されたprint文も10を表示</li>
-</ul>
-<p>する。これは、関数<code>func</code>内で<code>print(a)</code>した時には<code>a</code>はグローバル変数として扱われているが、その後<code>a=20</code>が実行された時に、「新たなローカル変数<code>a</code>が定義され、それに20が代入された」と解釈されるためである。</p>
+<p>実はこのコードでは、関数<code>func</code>を実行しても、グローバル変数の値は変更されない。これは<code>a=20</code>が、関数<code>func</code>内のローカル変数の宣言とみなされるからだ。</p>
 <div class="figure">
 <img src="fig/scope2.png" alt="ローカル変数によるグローバル変数の上書き" />
 <p class="caption">ローカル変数によるグローバル変数の上書き</p>
@@ -227,11 +221,11 @@ func()
 
 <span class="kw">def</span> func():
   <span class="kw">global</span> a <span class="co"># 変数aがグローバル変数であることを宣言する</span>
-  <span class="bu">print</span>(a)
   a <span class="op">=</span> <span class="dv">20</span>
+  <span class="bu">print</span>(a)  <span class="co">#=&gt; 20</span>
 
 func()
-<span class="bu">print</span>(a)</code></pre></div>
+<span class="bu">print</span>(a) <span class="co">#=&gt; 20</span></code></pre></div>
 <p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
 <p>しかし、このようなコードはバグの元であり、推奨されない。一般に、グローバス変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。</p>
 <p>とりあえず「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
