@@ -432,3 +432,15 @@ URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 * 「[学問のすすめ](https://www.aozora.gr.jp/cards/000296/card47061.html)」(福沢 諭吉) [https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip](https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip)
 * 「[走れメロス](https://www.aozora.gr.jp/cards/000035/card1567.html)」(太宰治) [https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip](https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip)
 * 「[吾輩は猫である](https://www.aozora.gr.jp/cards/000148/card789.html)」(夏目 漱石) [https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip](https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip)
+
+## 余談：機械がやるべきこと、やるべきでないこと
+
+今でこそ「面倒な単純作業は人間ではなく機械にやらせるべき」という考えが(たぶん)浸透しているが、昔は計算機は非常に高価であり、その計算時間は貴重な資源であった。アセンブリを機械語、つまり数字の羅列に変換するのを「アセンブル」と呼ぶが、それを人間が手で行うことを「ハンドアセンブル」と言う。計算機が使われ始めた当初は、もちろんアセンブラなどなかったから、みんなハンドアセンブルをしていた。さて、世界で初めてアセンブラを作ったと思われているのはドナルド・ギリース(Donald B. Gillies)である。1950年代、ギリースは、フォン・ノイマンの学生だった時、アセンブリを機械語に自動で翻訳するプログラムを書いていた。ギリースがアセンブラを書いているのをフォン・ノイマンが見つけたときのことを、ダグラス・ジョーンズという人が以下のように[紹介](https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ)している。
+
+> John Von Neumann's reaction was extremely negative.  Gillies quotes his boss as having said "We do not use a valuable scientific computing instrument to do clerical work!" (I wish I could reproduce Gillies' imitation of Von Neumann's Hungarian accent, he was very good at it!)
+
+(適当な訳)
+
+>ノイマンの反応は極めてネガティブだった。ギリースはボス(ノイマンのこと)の口真似をしながらこう言った「我々は貴重な科学計算機をそのようなつまらない仕事に使うべきでない！」 (ギリースの口真似を再現できたらと思う。彼はフォン・ノイマンのハンガリー訛りの英語の真似がすごく上手いんだ)
+
+現在、「AIが人間を超える(シンギュラリティ)」とか「AIにより人間の仕事が奪われる」とかいった、一種の終末思想が盛んに喧伝されている。私はAIの専門家ではないので、将来どうなるかはわからない。しかし、AIは人間が作るものである。自動車ができたら、運転手という職業ができたように、「AIが人間の可能性を奪う」という「引き算の考え」よりは、「AIと人間の組み合わせで新たな可能性が生まれる」と「足し算の考え」でポジティブに考えたい。おそらくそのほうが生産的であろう。
