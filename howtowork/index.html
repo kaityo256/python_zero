@@ -109,7 +109,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">インタプリタの仕事</p>
 </div>
 <p>Pythonは、まずプログラムを抽象構文木に変換する。その後、その構文木からバイトコードを生成する。バイトコードは仮想的な機械語である。機械語は、現実に存在する機械で動作するが、バイトコードは仮想的な機械向けの機械語である。このバイトコードを実行するプログラムを<strong>仮想マシン(Virtual Machine, VM)</strong>と呼ぶ。「エミュレータ」という言葉を聞いたことがあるかもしれない。昔のゲームハード用のゲームを、現在のゲームで実行するのに使われたりする。仮想マシンは、実際には存在しないハードウェアであるが、それを現実の計算機でエミュレートすることでプログラムを実行する。</p>
-<p>本講ではPythonが動く仕組みを理解するため、実際に中小構文木とバイトコードを見てみることにしよう。</p>
+<p>本講ではPythonが動く仕組みを理解するため、実際に抽象構文木とバイトコードを見てみることにしよう。</p>
 <h2 id="抽象構文木">抽象構文木</h2>
 <p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
 <p>まず、1つ目のセルにimport宣言をする。</p>
@@ -127,7 +127,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):
         visit(n, nodes, index, g)</code></pre></div>
 <p>TODO: オペランドの値も表示させるか？</p>
-<p>3つ目のセルには、中小構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
+<p>3つ目のセルには、抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
     graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
     tree <span class="op">=</span> ast.parse(src)
