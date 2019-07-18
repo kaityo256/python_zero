@@ -4,7 +4,6 @@ import numpy as np
 
 # python gs_jit.py  1.91s user 0.16s system 119% cpu 1.736 total
 
-
 @jit
 def laplacian(ix, iy, s):
     ts = 0.0
