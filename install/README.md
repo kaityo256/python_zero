@@ -1,8 +1,5 @@
 # Pythonのインストール
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本稿の目的
 
 * Pythonのインストールと実行方法について学ぶ

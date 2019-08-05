@@ -1,8 +1,5 @@
 # [条件分岐と繰り返し処理1](https://kaityo256.github.io/python_zero/basic/)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本講で学ぶこと
 
 * 変数と型について

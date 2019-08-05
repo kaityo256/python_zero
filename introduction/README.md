@@ -1,8 +1,5 @@
 # [はじめに](https://kaityo256.github.io/python_zero/list/introduction)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 この講義では、Pythonをゼロから学ぶ。しかし、始める前になぜPythonを学ぶべきなのか？Pythonを学んでどうするのか？について少し伝えたいことがある。
 
 この講義の目的は「これまでプログラムを組めなかった人がプログラムを組めるようになること」ではない。また、Pythonを扱うが、「Pythonをマスターすること」を目的とはしない。そもそも全くプログラムを組んだことがない状態から、半期の講義を受けたらPythonをバリバリ組めるようになる、というのは不可能だ。

@@ -1,8 +1,5 @@
 # [条件分岐と繰り返し処理2](https://kaityo256.github.io/python_zero/while/)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本講で学ぶこと
 
 * while文

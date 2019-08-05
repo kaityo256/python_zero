@@ -1,8 +1,5 @@
 # [再帰呼び出し](https://kaityo256.github.io/python_zero/recursion/)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 * 階段の登り方問題
 * 割り箸ゲーム
 * ユニットテスト

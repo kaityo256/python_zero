@@ -1,8 +1,5 @@
 # [動的計画法](https://kaityo256.github.io/python_zero/dp/)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本講で学ぶこと
 
 * 組み合わせ最適化問題

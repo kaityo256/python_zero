@@ -1,8 +1,5 @@
 # [Numpyの使い方](https://kaityo256.github.io/python_zero/numpy/)
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本講の目的
 
 * Numpyの使い方を学ぶ
