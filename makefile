@@ -6,9 +6,12 @@ TARGET=$(INDEX) $(ASSIGNMENT)
 
 all: $(TARGET) index.html
 
-index.html: README.md
-	sed 's/README.md/index.html/' README.md > index.md
-	$(PANDOC) index.md -o $@
+index.md: README.md
+	sed 's/README.md/index.html/' $< > $@
+	gsed -i 's/assignment.md/assignment.html/' $@
+
+index.html: index.md
+	$(PANDOC) $< -o $@
 	rm -f index.md
 
 
