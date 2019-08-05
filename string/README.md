@@ -293,14 +293,13 @@ def load_from_url(url):
 
 ```py
 URL = "https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip"
-load_from_url(URL)
+text = load_from_url(URL)
+text.split()[0]
 ```
 
-以下のような結果が出力されれば成功である。
+以下のようにタイトルが出力されれば成功である。
 
-```txt
-山月記\r\n中島敦 \r\n\r\n\r\n【テキスト中に現れる記号について】\r\n\r\n《》：ルビ\r\n……
-```
+`山月記`
 
 これは、中島敦という作家の「山月記」という小説である。
 
@@ -333,8 +332,8 @@ def show_top10(text):
 
 ```py
 URL = "https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip"
-text = load_from_url(URL) # この行を修正
-show_top10(text) # この行を追加
+text = load_from_url(URL)
+show_top10(text)
 ```
 
 文章に使われている一般名詞の頻度トップ10が、回数とともに出力されたはずである。
@@ -419,17 +418,17 @@ def get_words(text):
 
 ```py
 URL = "https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip"
-download_text = load_from_url(URL)
-download_text
+text = load_from_url(URL)
+text.split()[0]
 ```
 
-「山月記\r\n中島敦 \r\n\r\n」といった文字列が出力されれば、ここまでは正しく実装されている。
+「山月記」という文字列が出力されれば、ここまでは正しく実装されている。
 
 6つ目のセルでワードクラウドを作ろう。
 
 ```py
 fpath='/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf'
-words = get_words(download_text)
+words = get_words(text)
 wc = WordCloud(background_color="white", width=480, height=320, font_path=fpath)
 wc.generate(words)
 wc.to_file("wc.png")
@@ -444,7 +443,7 @@ IPython.display.Image("wc.png")
 URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 ```
 
-として実行し、「名人伝\r\n中島敦\r\n\r\n-」と表示されて正しくデータが取れたことを確認してから、また6つ目のセルを実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。
+として実行し、「名人伝」と表示されて正しくデータが取れたことを確認してから、また6つ目のセルを実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。
 
 ## 課題2-2
 
