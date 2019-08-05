@@ -59,6 +59,8 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 
 ## [文字列処理](string/README.md)
 
+[課題](string/assignment.md)
+
 * 文字列処理
 * 辞書
 * 正規表現
