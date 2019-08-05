@@ -10,7 +10,9 @@ index.html: README.md
 
 
 %/index.html: %/README.md
-	$(PANDOC) $< -o $@
+	gsed '2a [[Up]](../index.html)' $< > index.md
+	gsed -i '3a [[Repository]](https://github.com/kaityo256/python_zero)\n' index.md
+	$(PANDOC) index.md -o $@
 
 clean:
 	rm -f $(TARGET) index.html

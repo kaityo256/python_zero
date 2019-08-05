@@ -122,7 +122,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
 <span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.+?》&#39;</span>,<span class="st">&#39;&#39;</span>,text))</code></pre></div>
 <p>以下が実行結果だ。</p>
-<pre><code>隴西の李徴は博学｜才穎、天宝の末年、若くして名を虎榜に連ね、ついで江南尉に補せられたが、性、狷介、自ら恃むところ頗る厚く、賤吏に甘んずるを潔しとしなかった。</code></pre>
+<blockquote>
+<p>隴西の李徴は博学｜才穎、天宝の末年、若くして名を虎榜に連ね、ついで江南尉に補せられたが、性、狷介、自ら恃むところ&gt; 頗る厚く、賤吏に甘んずるを潔しとしなかった。</p>
+</blockquote>
 <p>これらに出てきた呪文のような文字列「<code>^#</code>」や「<code>《.+?》</code>」が正規表現である。文字列処理をする上で、正規表現は欠かせない。正規表現を使えるとちょっとかっこいい(※個人の感想です)ので、ぜひマスターしよう。</p>
 <p>正規表現は、「マッチ」という概念がある。文字列をパターンとして与え、入力文字列の中でそのパターンにマッチする場所を探す、というのが正規表現の基本動作となる。</p>
 <p>例えば、文字列そのものは、同じ文字列にマッチする。マッチする場所を探すには、<code>re</code>モジュールの<code>search</code>を用いる。</p>
@@ -188,36 +190,43 @@ text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の
 <p>このようにウェブから何か情報を抽出する技術を <strong>ウェブスクレイピング (Web scraping)</strong>と呼ぶ。今回の作業は、ウェブスクレイピングのうちもっとも単純なものである。</p>
 <p><strong>注意</strong>：ウェブスクレイピングは、相手のサーバに負担がかからないように注意しながら行うこと。例えば「指定のパス以下のファイルをすべて取得する」といった作業は厳禁である。また、利用規約によってそもそもウェブスクレイピングが禁止されているサービスもある(例えばTwitterなど)。その場合はサービスが提供しているAPIを通じて情報を取得することが多い。</p>
 <h3 id="課題1-1-mecabのインストール">課題1-1 MeCabのインストール</h3>
+<h4 id="最初のセル">最初のセル</h4>
 <p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。新しいPython3ノートブックを開き、最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt install aptitude</code></pre></div>
 <p>最後に「Processing triggers for libc-bin (2.27-3ubuntu1) ...」などと表示され、実行が終了したら完了である。</p>
 <p>次に、先程インストールしたaptitudeを使ってMeCabと必要なライブラリをインストールする。最後の<code>-y</code>を忘れないように。</p>
+<h4 id="二つ目のセル">二つ目のセル</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y</code></pre></div>
 <p>出力の最後に</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">done</span>!
 <span class="ex">Setting</span> up mecab-jumandic (7.0-20130310-4) <span class="ex">...</span></code></pre></div>
 <p>などと表示されれば完了である。</p>
+<h4 id="三つ目のセル">三つ目のセル</h4>
 <p>最後に、MeCabのPythonバインディングをインストールする。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">!<span class="ex">pip</span> install mecab-python3==0.7</code></pre></div>
 <p>最新版は不具合があるようなので、バージョン0.7を指定してインストールする。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Successfully</span> installed mecab-python3-0.7</code></pre></div>
-<p>と表示されれば完了である。早速importしてみよう。</p>
+<p>と表示されれば完了である。</p>
+<h4 id="四つ目のセル">四つ目のセル</h4>
+<p>先程まででインストールしたライブラリを早速importしてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> MeCab</code></pre></div>
 <p>これを実行してエラーがでなければインストールに成功している。</p>
+<h4 id="五つ目のセル">五つ目のセル</h4>
 <p>次のセルに以下を入力してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m <span class="op">=</span> MeCab.Tagger()
 <span class="bu">print</span>(m.parse (<span class="st">&quot;すもももももももものうち&quot;</span>))</code></pre></div>
 <p>以下のような実行結果が得られるはずである。</p>
-<pre><code>すもも 名詞,一般,*,*,*,*,すもも,スモモ,スモモ
-も   助詞,係助詞,*,*,*,*,も,モ,モ
-もも  名詞,一般,*,*,*,*,もも,モモ,モモ
-も   助詞,係助詞,*,*,*,*,も,モ,モ
-もも  名詞,一般,*,*,*,*,もも,モモ,モモ
-の   助詞,連体化,*,*,*,*,の,ノ,ノ
-うち  名詞,非自立,副詞可能,*,*,*,うち,ウチ,ウチ
+<pre class="txt"><code>すもも   名詞,一般,*,*,*,*,すもも,スモモ,スモモ
+も      助詞,係助詞,*,*,*,*,も,モ,モ
+もも    名詞,一般,*,*,*,*,もも,モモ,モモ
+も      助詞,係助詞,*,*,*,*,も,モ,モ
+もも    名詞,一般,*,*,*,*,もも,モモ,モモ
+の      助詞,連体化,*,*,*,*,の,ノ,ノ
+うち    名詞,非自立,副詞可能,*,*,*,うち,ウチ,ウチ
 EOS</code></pre>
 <h3 id="課題1-2-青空文庫からのデータ取得">課題1-2 青空文庫からのデータ取得</h3>
 <p>ノートブックの上のメニューから「編集」「すべてのセルを選択」を実行し、その後「編集」「選択したセルを削除」を実行することで、全てのセルを削除せよ。この状態でもMeCabはインストールされたままである。</p>
+<h4 id="最初のセル-1">最初のセル</h4>
 <p>「+コード」をクリックして現れた最初のセルに、以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> defaultdict
 <span class="im">import</span> re
@@ -225,6 +234,7 @@ EOS</code></pre>
 <span class="im">import</span> urllib.request
 <span class="im">from</span> zipfile <span class="im">import</span> ZipFile
 <span class="im">import</span> MeCab</code></pre></div>
+<h4 id="二つ目のセル-1">二つ目のセル</h4>
 <p>次のセルに、ウェブからデータを取得する関数<code>load_from_url</code>を以下のように実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> load_from_url(url):
     data <span class="op">=</span> urllib.request.urlopen(url).read()
@@ -235,15 +245,17 @@ EOS</code></pre>
     text <span class="op">=</span> re.sub(<span class="vs">r&#39;《.+?》&#39;</span>, <span class="st">&#39;&#39;</span>, text)
     <span class="cf">return</span> text</code></pre></div>
 <p>ここで、正規表現に入力するカギカッコは、それぞれ<code>［］</code>全角の角カッコと、<code>《》</code>全角の二重山括弧であることに注意。どちらも日本語入力モードで<code>「</code>や<code>」</code>を変換すると候補に出てくると思われる。ここで出てくる正規表現の意味は、「全角の角カッコや二重山括弧に囲まれた文字列を削除せよ」である。それぞれ注釈やルビに対応する。</p>
-<p>このセルを実行後、3つ目のセルに以下を入力、テストせよ。</p>
+<h4 id="三つ目のセル-1">三つ目のセル</h4>
+<p><code>load_from_url</code>を実装して実行したら、以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
 load_from_url(URL)</code></pre></div>
 <p>以下のような結果が出力されれば成功である。</p>
-<pre><code>山月記\r\n中島敦 \r\n\r\n\r\n【テキスト中に現れる記号について】\r\n\r\n《》：ルビ\r\n……</code></pre>
+<pre class="txt"><code>山月記\r\n中島敦 \r\n\r\n\r\n【テキスト中に現れる記号について】\r\n\r\n《》：ルビ\r\n……</code></pre>
 <p>これは、中島敦という作家の「山月記」という小説である。</p>
 <h3 id="課題1-3-形態素解析">課題1-3 形態素解析</h3>
 <p>ではいよいよ形態素解析をしてみよう。といってもMeCabを使えば楽勝である。</p>
-<p>2つ目のセルと3つ目のセルの間に新たにセルを作り、以下を入力せよ。</p>
+<h4 id="四つ目のセル-1">四つ目のセル</h4>
+<p>MeCabを使って、文中に出現する名詞の出現頻度トップ10を抽出してみよう。四つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_top10(text):
     m <span class="op">=</span> MeCab.Tagger()
     node <span class="op">=</span> m.parseToNode(text)
@@ -256,12 +268,14 @@ load_from_url(URL)</code></pre></div>
         node <span class="op">=</span> node.<span class="bu">next</span>
     <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:
         <span class="bu">print</span>(k <span class="op">+</span> <span class="st">&quot;:&quot;</span> <span class="op">+</span> <span class="bu">str</span>(v))</code></pre></div>
-<p><code>URL = &quot;https:...&quot;</code>とある4つ目のセルを、以下のように修正、実行せよ。</p>
+<h4 id="五つ目のセル-1">五つ目のセル</h4>
+<p>テキストをダウンロードし、形態素解析をしてみよう。五つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
-text <span class="op">=</span> load_from_url(URL)
-show_top10(text)</code></pre></div>
+text <span class="op">=</span> load_from_url(URL) <span class="co"># この行を修正</span>
+show_top10(text) <span class="co"># この行を追加</span></code></pre></div>
 <p>文章に使われている一般名詞の頻度トップ10が、回数とともに出力されたはずである。</p>
-<p>別の作品も見てみよう。同じく中島敦の「名人伝」で同様な解析をしてみよう。5つ目のセルに以下を入力、実行せよ。4つ目のセルをコピーすると楽である。</p>
+<h4 id="六つ目のセル">六つ目のセル</h4>
+<p>別の作品も見てみよう。同じく中島敦の「名人伝」で同様な解析をしてみよう。六つ目のセルに以下を入力せよ。五つ目のセルの内容をコピペして、URLのみ修正すると楽である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span>
 text <span class="op">=</span> load_from_url(URL)
 show_top10(text)</code></pre></div>
@@ -312,7 +326,7 @@ show_top10(text)</code></pre></div>
     <span class="cf">return</span> w</code></pre></div>
 <p>5つ目のセルで、ダウンロードがうまくいくことを確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
-download_text <span class="op">=</span> loadfromurl(URL)
+download_text <span class="op">=</span> load_from_url(URL)
 download_text</code></pre></div>
 <p>「山月記」といった文字列が出力されれば、ここまでは正しく実装されている。</p>
 <p>6つ目のセルでワードクラウドを作ろう。</p>

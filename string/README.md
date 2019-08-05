@@ -1,8 +1,5 @@
 # 文字列処理
 
-[[Up]](../index.html)
-[[Repository]](https://github.com/kaityo256/python_zero)
-
 ## 本講で学ぶこと
 
 * 文字列処理
