@@ -1,3 +1,4 @@
+
 # [簡単な機械学習](https://kaityo256.github.io/python_zero/gan/)
 
 ## 本講の目的
@@ -51,11 +52,15 @@ GANはGeneratorとDiscriminatorの二つのモデルを学習させるが、こ�
 
 TODO: Lossの減少について
 
-## GANの実行
+# 簡単な機械学習：課題
+
+## GAN
 
 ではさっそくGANを組んでみよう。それなりにコード量があるので、間違いないように注意して入力すること。以下、番号がセルの番号に対応するので参考にしてほしい。
 
-### 1. import
+### 課題1: GANの実行テスト
+
+#### 1. import
 
 最初のセルで必要なモジュールをimportしよう。ついでにTensorFlowの警告を減らす設定をしておく。
 
@@ -66,7 +71,7 @@ import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.ERROR)
 ```
 
-### 2. 宣言
+#### 2. 宣言
 
 ```py
 tfgan = tf.contrib.gan
@@ -79,7 +84,7 @@ BATCH_SIZE = 32
 
 「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。
 
-### 3. Generatorの宣言
+#### 3. Generatorの宣言
 
 Generator(偽造者)の宣言を行う
 
@@ -104,7 +109,7 @@ def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
         return net
 ```
 
-### 4. Discriminatorの宣言
+#### 4. Discriminatorの宣言
 
 Discriminator(鑑定者)の宣言を行う。
 
@@ -124,7 +129,7 @@ def discriminator_fn(img, _, weight_decay=2.5e-5, is_training=True):
         return layers.linear(net, 1)
 ```
 
-### 5. データセットの準備
+#### 5. データセットの準備
 
 データを受け取って、バッチとして返す関数を作成する。ここでは、「本物」のデータを作成する。
 
@@ -149,7 +154,7 @@ def provide_data(source, batch_size):
     return images
 ```
 
-### 6. データセットのダウンロード
+#### 6. データセットのダウンロード
 
 データセットをダウンロードしよう。データセットは以下の三種類を用意してある。
 
@@ -172,7 +177,7 @@ file=url+TRAIN_DATA
 2019-05-31 08:03:55 (138 MB/s) - ‘mnist.tfrecord’ saved [20852051/20852051]
 ```
 
-### 7. 初期化
+#### 7. 初期化
 
 TensorFlowを初期化し、データをバッチに変換する。
 
@@ -182,7 +187,7 @@ with tf.device('/cpu:0'):
   real_images = provide_data(TRAIN_DATA, BATCH_SIZE)
 ```
 
-### 8. GANの宣言
+#### 8. GANの宣言
 
 これまで宣言した「Generator」と「Discriminator」を競争させるGANを宣言する。
 
@@ -218,7 +223,7 @@ train_step_fn = tfgan.get_sequential_train_steps()
 global_step = tf.train.get_or_create_global_step()
 ```
 
-### 9. GANの実行
+#### 9. GANの実行
 
 それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。
 
@@ -238,4 +243,6 @@ with tf.train.SingularMonitoredSession() as sess:
 
 Generatorが生成する画像は、最初は単なるノイズだが、徐々に「それっぽい」画像になっていくのがわかるであろう。
 
-うまくいったら、他のデータセットも試してみよ。ダウンロードするセルで`TRAIN_DATA`を書き換え、そこから順番にセルを再実行すれば、別のデータセットで学習をするはずである。もしくは，`TOTAL_STEPS`をもう少し長くして、学習結果がどうなるを見ても良い。MNISTやFont Awesomeなら1000ステップもあればそれなりの画像となるが、ひらがなは種類が多いため、学習に苦しむようである。
+### 課題2: 別のデータセットのテスト
+
+うまくいったら、他のデータセットも試してみよ。データをダウンロードするセル(6つ目)で`TRAIN_DATA`を書き換え、そこから順番にセルを再実行すれば、別のデータセットで学習をするはずである。もしくは，`TOTAL_STEPS`をもう少し長くして、学習結果がどうなるを見ても良い。MNISTやFont Awesomeなら1000ステップもあればそれなりの画像となるが、ひらがなは種類が多いため、学習に苦しむようである。その観察結果を報告せよ。
