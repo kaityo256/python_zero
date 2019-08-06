@@ -110,13 +110,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>Pythonは、まずプログラムを抽象構文木に変換する。その後、その構文木からバイトコードを生成する。バイトコードは仮想的な機械語である。機械語は、現実に存在する機械で動作するが、バイトコードは仮想的な機械向けの機械語である。このバイトコードを実行するプログラムを<strong>仮想マシン(Virtual Machine, VM)</strong>と呼ぶ。「エミュレータ」という言葉を聞いたことがあるかもしれない。昔のゲームハード用のゲームを、現在のゲームで実行するのに使われたりする。仮想マシンは、実際には存在しないハードウェアであるが、それを現実の計算機でエミュレートすることでプログラムを実行する。</p>
 <p>本講ではPythonが動く仕組みを理解するため、実際に抽象構文木とバイトコードを見てみることにしよう。</p>
-<h2 id="抽象構文木">抽象構文木</h2>
+<h2 id="バイトコードとスタックマシン">バイトコードとスタックマシン</h2>
+<p>プログラムを抽象構文木に変換したら、それを仮想マシン用のバイトコードに変換する必要がある。</p>
+<p>TODO: スタックマシンの話</p>
+<p>TODO: 中置記法、逆ポーランド記法の説明</p>
+<p>TOOD: Pythonバイトコードが逆ポーランド記法になっていることを確認</p>
+<p>以下の違いを見せる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)
+dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</code></pre></div>
+<h1 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h1>
+<h2 id="課題1抽象構文木">課題1：抽象構文木</h2>
+<h3 id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h3>
 <p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
-<p>まず、1つ目のセルにimport宣言をする。</p>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> ast
 <span class="im">from</span> IPython.display <span class="im">import</span> Image, display_png
 <span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
-<p>2つ目のセルに抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
+<h4 id="抽象構文木をグラフに変換する関数">2. 抽象構文木をグラフに変換する関数</h4>
+<p>抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> visit(node, nodes, pindex, g):
     name <span class="op">=</span> <span class="bu">str</span>(<span class="bu">type</span>(node).<span class="va">__name__</span>)
     index <span class="op">=</span> <span class="bu">len</span>(nodes)
@@ -127,21 +138,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):
         visit(n, nodes, index, g)</code></pre></div>
 <p>TODO: オペランドの値も表示させるか？</p>
-<p>3つ目のセルには、抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
+<h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
+<p>抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
     graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
     tree <span class="op">=</span> ast.parse(src)
     visit(tree, [], <span class="dv">0</span>, graph)
     graph.render(<span class="st">&quot;test&quot;</span>)
     display_png(Image(<span class="st">&quot;test.png&quot;</span>))</code></pre></div>
-<p>4つ目のセルは、解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示する。</p>
+<h4 id="抽象構文木の表示">4. 抽象構文木の表示</h4>
+<p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src<span class="op">=</span><span class="st">&quot;&quot;&quot;</span>
 <span class="st">3+4</span>
 <span class="st">&quot;&quot;&quot;</span>
 show_ast(src)</code></pre></div>
-<p>正しく入力されていれば、4つ目のセルを入力、実行したところで、抽象構文木のグラフが表示されるはずである。</p>
+<p>ここまで正しく入力されていれば、4つ目のセルを入力、実行したところで、抽象構文木のグラフが表示されるはずである。</p>
 <p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的にまたその子ノードを取得する、というのがこのコードの仕組みである。</p>
-<h3 id="課題1">課題1</h3>
+<h3 id="課題1-2様々なプログラムのパース">課題1-2：様々なプログラムのパース</h3>
 <p>4つ目の(入力するプログラムを与えるセル)の文字列を変え、別のプログラムをパースしてみよ。まずは<code>+</code>を<code>-</code>や<code>/</code>、<code>//</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a,b):
@@ -153,8 +166,94 @@ show_ast(src)</code></pre></div>
 <span class="st">a, b = (1,2)</span>
 <span class="st">&quot;&quot;&quot;</span></code></pre></div>
 <p>と入力する。何が作られて、何にアサインされているだろうか？</p>
-<h2 id="バイトコード">バイトコード</h2>
-<p>TODO: バイトコードの表示</p>
+<h2 id="課題2バイトコードの可視化">課題2：バイトコードの可視化</h2>
+<h2 id="課題3スタックマシンの実装">課題3：スタックマシンの実装</h2>
+<p>Pythonは、まずプログラムがバイトコードと呼ばれる(アセンブリに似た)中間言語にコンパイルされ、それが仮想マシン上で実行される。Pythonをはじめとして、多くの仮想マシンが「スタックマシン」という形式を取る。スタックマシンとは、データをスタックを通じてやりとりする方式の機械のことだ。ここでは、最も簡単なスタックマシンの例として、計算機を実装してみよう。</p>
+<h3 id="課題3-1-逆ポーランド記法電卓">課題3-1: 逆ポーランド記法電卓</h3>
+<p>逆ポーランド記法で記述された計算式を評価する計算機を作りたい。逆ポーランド記法とは、「3+4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
+<p>具体的には、以下のような「プログラム」を組む。</p>
+<ul>
+<li>プログラムは、整数、'+'、`-'の三種類の<strong>トークン</strong>で構成される</li>
+<li>プログラムを一つ読み込み、以下の動作をする</li>
+<li>プログラムが演算子なら、スタックから二つデータをポップして、計算し、結果をプッシュする</li>
+<li>整数なら、そのままスタックにプッシュする</li>
+<li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
+</ul>
+<h4 id="計算機の実装">1. 計算機の実装</h4>
+<p>新しいノートブックを開き、最初のセルに以下を入力せよ。これは、逆ポーランド記法で記述された「プログラム」を実行する仮想マシンである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc(code):
+    data <span class="op">=</span> code.split()
+    stack <span class="op">=</span> []
+    <span class="cf">for</span> x <span class="kw">in</span> data:
+        <span class="bu">print</span>(stack, x, end<span class="op">=</span><span class="st">&quot; =&gt; &quot;</span>)
+        <span class="cf">if</span> x <span class="op">==</span> <span class="st">&#39;+&#39;</span>:
+            b <span class="op">=</span> stack.pop()
+            a <span class="op">=</span> stack.pop()
+            stack.append(a<span class="op">+</span>b)
+        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;-&#39;</span>:
+            b <span class="op">=</span> stack.pop()
+            a <span class="op">=</span> stack.pop()
+            stack.append(a<span class="op">-</span>b)
+        <span class="cf">else</span>:
+            stack.append(<span class="bu">int</span>(x))
+        <span class="bu">print</span>(stack)
+    <span class="bu">print</span>(stack.pop())</code></pre></div>
+<h4 id="計算のテスト">2. 計算のテスト</h4>
+<p>実際に計算してみよう。2つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc(<span class="st">&quot;1 2 +&quot;</span>)</code></pre></div>
+<p>以下のような実行結果が得られたはずである。</p>
+<pre class="txt"><code>[] 1 =&gt; [1]
+[1] 2 =&gt; [1, 2]
+[1, 2] + =&gt; [3]
+3</code></pre>
+<p>これは、</p>
+<ul>
+<li>最初はスタックが空<code>[]</code>で、そこに<code>1</code>が来たのでプッシュされて<code>[1]</code>になった</li>
+<li>次に<code>2</code>が来たので、それもプッシュしてスタックの状態が<code>[1,2]</code>になった</li>
+<li>次に<code>+</code>が来たので、スタックから値を二つ取り出し、その和をプッシュして<code>[3]</code>になった</li>
+<li>実行すべきプログラムがなくなったので、スタックの一番上にある数字<code>3</code>を表示して終了</li>
+</ul>
+<p>という順番で実行されている。</p>
+<h3 id="課題3-2-乗算除算の実装">課題3-2: 乗算、除算の実装</h3>
+<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、「プログラム」としては<code>\</code>を入力するが、実際には<code>\\</code>を実行することで、実行結果を整数にすること。</p>
+<p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</code></pre></div>
+<pre class="txt"><code>[] 1 =&gt; [1]
+[1] 2 =&gt; [1, 2]
+[1, 2] + =&gt; [3]
+[3] 3 =&gt; [3, 3]
+[3, 3] * =&gt; [9]
+[9] 4 =&gt; [9, 4]
+[9, 4] / =&gt; [2]
+2</code></pre>
+<h3 id="課題3-3-複雑な計算">課題3-3: 複雑な計算</h3>
+<p>以下の中置記法の計算式を、逆ポーランド記法に「頭で」変換し、先程の計算で実行せよ。演算子の優先順位も考慮すること。</p>
+<ul>
+<li><code>3 + 4 + 5</code></li>
+<li><code>3 + 4 * 5</code></li>
+<li><code>3 + 4 * 5 - 12</code></li>
+<li><code>(1 + 4 * 5) / 7</code></li>
+</ul>
+<h3 id="任意課題">任意課題</h3>
+<p>中置記法の計算式を、逆ポーランド記法に変換するコードを作成せよ。括弧は実装しなくてよいが、乗算や除算は加減算より優先されなくてはならない。例えば、</p>
+<ul>
+<li><code>1 + 2 * 3</code></li>
+</ul>
+<p>という入力が与えられたら、</p>
+<ul>
+<li><code>1 2 3 * +</code></li>
+</ul>
+<p>という文字列を出力しなければならない。</p>
+<p>実装のヒント：</p>
+<p>バッファとスタックを用意する。</p>
+<ul>
+<li>プログラムから一つトークンを取り出す</li>
+<li>もしトークンが数字ならバッファにプッシュする</li>
+<li>もしトークンが<code>*</code>か<code>/</code>ならスタックにプッシュする</li>
+<li>もしトークンが<code>+</code>か<code>-</code>なら、スタックが空になるか、スタックの最上位が<code>+</code>もしくは<code>-</code>になるまで、「スタックからポップしてバッファにプッシュする」を繰り返す</li>
+<li>プログラムからすべてトークンを取りだしたら、スタックが空になるまで「スタックからポップしてバッファにプッシュする」を繰り返す</li>
+</ul>
+<p>以上を実装すると、バッファに逆ポーランド記法の順序でトークンが並ぶので、<code>&quot; &quot;.join(buffer)</code>を実行すれば所望の文字列を得る。</p>
 <h2 id="余談スクリプト言語とコンパイラ言語">余談：スクリプト言語とコンパイラ言語</h2>
 <p>Pythonはスクリプト言語、C++はコンパイラ言語に分類するのが一般的だが、「スクリプト言語」と「コンパイラ言語」の区別は絶対ではない。本講で学んだように、ほとんどのスクリプト言語は一度「中間コード」と呼ばれる言語に「コンパイル」され、中間コードを仮想マシン上で動かすことで動作の高速化を図っている。また、Javaはプログラムをコンパイルしてから実行する形式のためにユーザからは「コンパイル言語」のように見えるが、実際にはPythonと同様にプログラムを中間コードに変換し、それを「Java 仮想マシン (JVM)」上で動作させている。Java仮想マシンは中間コードを実行する際に、インタプリタのように実行する場合と、部分的に機械語に変換しながら実行する場合(JIT方式と呼ばれる)がある。さらに、Javaのプログラムをそのまま機械語に変換する処理系もある。</p>
 <p>また、C言語やC++言語は通常「コンパイラ言語」に分類され、GCCなどの処理系ではプログラムはそのまま機械語に変換されるが、Clangという処理系は一度プログラムをLLVM IR(Intermediate Representation)と呼ばれる中間コードに変換し、それを機械語に変換する方式を採用している。Microsoft .NET Frameworkは、C#やVisual Basic、C++といった言語を、一度「共通中間言語 (Common Intermediate Language, CIL)」に変換し、.NETの仮想マシンである仮想実行システム(Virtual Execution System, VES)上で実行する。</p>
