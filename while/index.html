@@ -247,7 +247,7 @@ func()
 <li>奇数なら3倍して1を足す</li>
 </ul>
 <p>という処理を、その数字が1になるまで繰り返しながら表示する関数<code>コラッツ</code>を作りたい。 以下の空欄を埋めよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">de collatz(i):
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i):
   <span class="bu">print</span>(i)
   <span class="cf">while</span> (条件1):
     <span class="cf">if</span> (条件2):
@@ -286,7 +286,7 @@ func()
     g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)
     edges <span class="op">=</span> <span class="bu">set</span>()
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
-        コラッツ(i, edges)
+        collatz(i, edges)
     <span class="cf">for</span> i, j <span class="kw">in</span> edges:
         g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))
     g.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)

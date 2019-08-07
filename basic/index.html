@@ -197,7 +197,7 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">5</span> <span class="op">&gt;</span> <span class="dv">3</span>:
   <span class="bu">print</span>(<span class="st">&quot;5&gt;3&quot;</span>)</code></pre></div>
 <p>「もし〜ならAをせよ、そうでなければBをせよ」という場合には<code>else:</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">3</span> <span class="op">&lt;</span> <span class="dv">5</span>:
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">5</span> <span class="op">&lt;</span> <span class="dv">3</span>:
   <span class="bu">print</span>(<span class="st">&quot;A&quot;</span>) <span class="co"># 実行されない</span>
 <span class="cf">else</span>:
   <span class="bu">print</span>(<span class="st">&quot;B&quot;</span>) <span class="co"># =&gt; B</span></code></pre></div>
@@ -312,7 +312,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844387j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span>
 <span class="kw">(</span><span class="ex">-0.5-0.8660254037844386j</span><span class="kw">)</span></code></pre></div>
-<p>今度は<span class="math inline">\(x=-1/2 + \sqrt{3}/2 i\)</span>に収束した。</p>
+<p>今度は<span class="math inline">\(x=-1/2 - \sqrt{3}/2 i\)</span>に収束した。</p>
 <h3 id="課題2">課題2</h3>
 <p>先程、ニュートン法が複素数の場合にも機能し、<span class="math inline">\(x^3 - 1 = 0\)</span>の解を三つとも見つけられることを確認した。 ナイーブに考えると、複数の解がある場合、初期値に近い解に収束すると考えられる。では、複素平面のどこからスタートしたらどこに収束するだろうか？単純に三分割になるだろうか？</p>
 <div class="figure">

@@ -283,7 +283,7 @@ print(a) #=> 20
 以下の空欄を埋めよ。
 
 ```py
-de collatz(i):
+def collatz(i):
   print(i)
   while (条件1):
     if (条件2):
@@ -345,7 +345,7 @@ def make_graph(n):
     g = Digraph(format='png')
     edges = set()
     for i in range(1, n+1):
-        コラッツ(i, edges)
+        collatz(i, edges)
     for i, j in edges:
         g.edge(str(i), str(j))
     g.graph_attr.update(size="10,10")
