@@ -72,10 +72,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>コンピュータはどうやって動くのか</li>
-<li>プログラム言語とは</li>
-<li>Pythonが動く仕組み1: 抽象構文木</li>
-<li>Pythonが動く仕組み2: バイトコードと仮想マシン</li>
-<li>仮想マシンハック(やるんですか？)抽象構文木をいじる程度にするかな。</li>
+<li>抽象構文木とバイトコードについて</li>
+<li>仮想マシン</li>
+<li>逆ポーランド記法電卓</li>
 </ul>
 <h2 id="コンピュータはどうやって動くのか">コンピュータはどうやって動くのか</h2>
 <p>車を運転していない人でも、車はガソリンという可燃性の液体を燃料とし、それを噴射して点火、爆発させてピストンを動かし、そのピストンの運動を回転運動に変換してタイヤに伝えて動いている、ということはぼんやりと知っていることだろう。この知識は、車を運転するときにはあまり必要ない。実際、車の運転をする際にエンジンやトランスミッションの仕組みを意識することは(よほど車好きでない限り)稀であろう。しかしそれでも、車の仕組みは簡単に知っておくべきだと思う。冷蔵庫や電子レンジ、これらの家電は、その動作原理を知らずとも使うことは可能だし、おぼろげに原理を知っているからといってあまり役に立つ気はしないが、やはりざっくりとは知っておくべきだと思う。それが教養というものだ。コンピュータの動作についても同様である。</p>
@@ -96,7 +95,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="プログラム言語とコンパイラ">プログラム言語とコンパイラ</h2>
 <p>さて、計算機が解釈できるのは機械語だけである。機械語は難しくはないが、「足し算は0で・・・」と覚えるのは面倒だ。そこで「034」という数字の羅列の代わりに「ADD 3,4」という書き方をしよう。これを「034」に変換するのは簡単だし、人間が見て「3と4を足すんだな」とわかりやすい。このように機械語と一対一対応する言語を「アセンブリ言語(Assembly Language)」と呼ぶ。しかし、アセンブリ言語でもまだ面倒だ。もっと、人間にわかりやすい形式、先ほどの例なら「3+4」と書いて、それを計算機が理解できる形式に変換したい、と思うのは自然であろう。その「人間が理解できる形式」がプログラム言語と呼ばれるものである。</p>
 <p>プログラム言語は人間にわかりやすい形式になっているが、そのままでは機械は理解できない。そこで、プログラムを機械語に「翻訳する」必要がでてくる。この翻訳作業をするのがコンパイラである。</p>
-<p>一口に「翻訳」と言っても、コンパイラがやるべき仕事は多い。まず「3 + 4」というひと続きの文字列が与えられたときに、「3」「+」「4」という文字に分割しなければならない。これを<strong>字句解析</strong>と呼ぶ。さらに、「3と4は整数であり、+という演算子の引数である」と認識する必要がある。これが<strong>構文解析</strong>と<strong>意味解析</strong>である。この構文解析を行うのがパーサ(parser, 構文解析器)である。パーサは、プログラムを「抽象構文木 (Abstract Syntax Tree, AST)」と呼ばれるデータ構造に変換する。</p>
+<p>一口に「翻訳」と言っても、コンパイラがやるべき仕事は多い。まず「3 + 4」というひと続きの文字列が与えられたときに、「3」「+」「4」という文字に分割しなければならない。これを<strong>字句解析</strong>と呼ぶ。さらに、「3と4は整数であり、+という演算子の引数である」と認識する必要がある。これが<strong>構文解析</strong>と<strong>意味解析</strong>である。この構文解析を行うのがパーサ(parser, 構文解析器)である。パーサは、プログラムを<strong>抽象構文木 (Abstract Syntax Tree, AST)</strong>と呼ばれるデータ構造に変換する。</p>
 <div class="figure">
 <img src="fig/compile.png" alt="コンパイラの仕事" />
 <p class="caption">コンパイラの仕事</p>
@@ -111,13 +110,69 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Pythonは、まずプログラムを抽象構文木に変換する。その後、その構文木からバイトコードを生成する。バイトコードは仮想的な機械語である。機械語は、現実に存在する機械で動作するが、バイトコードは仮想的な機械向けの機械語である。このバイトコードを実行するプログラムを<strong>仮想マシン(Virtual Machine, VM)</strong>と呼ぶ。「エミュレータ」という言葉を聞いたことがあるかもしれない。昔のゲームハード用のゲームを、現在のゲームで実行するのに使われたりする。仮想マシンは、実際には存在しないハードウェアであるが、それを現実の計算機でエミュレートすることでプログラムを実行する。</p>
 <p>本講ではPythonが動く仕組みを理解するため、実際に抽象構文木とバイトコードを見てみることにしよう。</p>
 <h2 id="バイトコードとスタックマシン">バイトコードとスタックマシン</h2>
-<p>プログラムを抽象構文木に変換したら、それを仮想マシン用のバイトコードに変換する必要がある。</p>
-<p>TODO: スタックマシンの話</p>
-<p>TODO: 中置記法、逆ポーランド記法の説明</p>
-<p>TOOD: Pythonバイトコードが逆ポーランド記法になっていることを確認</p>
-<p>以下の違いを見せる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)
-dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</code></pre></div>
+<p>Pythonは、与えられたプログラムを、仮想的なアセンブリであるバイトコードに変換し、それを仮想マシン上で実行する。Pythonの仮想マシンは、メモリとしてスタックを用いる。</p>
+<div class="figure">
+<img src="fig/stack.png" alt="スタック" />
+<p class="caption">スタック</p>
+</div>
+<p>スタック(Stack)とは、データ構造の一つである。重い荷物を積み上げたような状態を想像せよ。荷物は重いので、一度に一つしか持ち上げることができない。従って、「手持ちの荷物を一番上に積む」か「一番上の荷物を取り出す」ことしかできず、積み上がった荷物の途中に別の荷物を入れたり、一番上ではない荷物を取り出すこともできない。新しい荷物を一番上に載せることをプッシュ(push)、積み上がった荷物の一番上にあるものを取り出すことをポップ(pop)と呼ぶ。</p>
+<p>スタックでは「入った順番」と「出る順番」が逆になっている。これを「後入れ先出し」の意味で<strong>Last In First Out, LIFO</strong>と呼ぶ。逆に、「最初に入った人が最初に出てくる」ようなデータ構造は「先入れ先出し」の意味で<strong>First In First Out, FIFO</strong>と呼び、このような振る舞いをするデータ構造を<strong>キュー(Queue)</strong>と呼ぶ。</p>
+<p>Pythonはの仮想マシンは、スタックにデータをプッシュしたりポップしたりすることでプログラムを実行する。たとえば<code>3 + 4</code>というプログラムは、</p>
+<pre class="txt"><code>LOAD_CONST 3
+LOAD_CONST 4
+BINARY_ADD</code></pre>
+<p>というバイトコード列に変換される。</p>
+<p><code>LOAD_CONST 3</code>は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば<code>BINARY_ADD</code>は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である<code>7</code>がプッシュされる。</p>
+<div class="figure">
+<img src="fig/binary_add.png" alt="スタックマシン上での加算" />
+<p class="caption">スタックマシン上での加算</p>
+</div>
+<p>このように、メモリとしてスタックを用いるような計算機を<strong>スタックマシン</strong>と呼ぶ。Pythonの仮想マシンはスタックマシンである。</p>
+<p>既にみたように、スタックのデータのやりとりは「一番上」のみ、取り出せるデータも「最後に入れたもの」だけに限られ、途中にデータを挿入することも、任意の場所のデータを取り出すこともできない、いわば「不自由」なデータ構造である。なぜこのような「不自由」なデータ構造をメモリに採用しているかというと、命令セットが簡単になるというメリットがあるからである。</p>
+<p>我々が通常使っている計算機は「レジスタマシン」と呼ばれる方式を採用している。レジスタマシンは、レジスタという計算を行うための小さく高速な作業領域を複数持ち、メモリも任意の場所に読み書きできる。すると、当然のことながら「メモリのどこから、どのレジスタに値をロードし、計算結果をどこに書き込むか」を指定しなければならない。それに対して、スタックマシンはメモリの「入り口」と「出口」が決まっているため、例えば足し算をする命令<code>BINARY_ADD</code>は引数を必要としない。このように、スタックマシンは命令セットが単純になるというメリットがあり、仮想マシンのモデルとして広く採用されている。</p>
+<h2 id="逆ポーランド記法">逆ポーランド記法</h2>
+<p>さて、先程見たように、<code>3 + 4</code>というプログラムは、</p>
+<pre class="txt"><code>LOAD_CONST 3
+LOAD_CONST 4
+BINARY_ADD</code></pre>
+<p>という命令列に変換された。ここで、<code>LOAD_CONST</code>は省略し、かつ<code>BINARY_ADD</code>を<code>+</code>で表記すると、この命令列は<code>3 4 +</code>と表現できる。このように、演算子が、被演算子の後ろに置かれる記法を後置記法、もしくは<strong>逆ポーランド記法(Reverse Polish Notation, RPN)</strong>と呼ぶ。我々が普段目にする<code>3 + 4</code>という記法は、演算子が被演算子の中に置かれるため、中置記法と呼ばれる。</p>
+<p>逆ポーランド記法は、スタックマシンと相性が良い。<code>3 4 +</code>という命令列が来た時、それを一つ一つの区切り(トークンと呼ぶ)に分解して、</p>
+<ul>
+<li>もしトークンが数字ならスタックにプッシュ</li>
+<li>もしトークンが演算子なら、スタックから二つデータを取り出して演算、結果をスタックにプッシュ</li>
+</ul>
+<p>とするだけで計算が実行できる。</p>
+<p>例えば、<code>a * b + c</code>という計算は、逆ポーランド記法なら<code>a b * c +</code>と表記できる。また、<code>a + b * c</code>の場合、先に<code>b * c</code>を実行する必要があるが、逆ポーランド記法なら<code>a b c * +</code>と表記され、演算子の優先順位を気にすることなく順番に処理すれば良い(より正確には、演算子の優先順位を考慮して逆ポーランド記法を構成する)。</p>
+<p>実際にPythonのバイトコードが逆ポーランド記法になっているのを見てみよう。バイトコードを表示するには<code>dis</code>をインポートする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dis</code></pre></div>
+<p>この状態で、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</code></pre></div>
+<p>を実行すると、</p>
+<pre class="txt"><code>  1           0 LOAD_NAME                0 (a)
+              2 LOAD_NAME                1 (b)
+              4 BINARY_MULTIPLY
+              6 LOAD_NAME                2 (c)
+              8 BINARY_ADD
+             10 RETURN_VALUE</code></pre>
+<p>となり、これが<code>a b * c +</code>に対応しているのがわかるであろう。</p>
+<div class="figure">
+<img src="fig/calc1.png" alt="a * b + cの計算" />
+<p class="caption"><code>a * b + c</code>の計算</p>
+</div>
+<p>また、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</code></pre></div>
+<p>を実行すると</p>
+<pre class="txt"><code>  1           0 LOAD_NAME                0 (a)
+              2 LOAD_NAME                1 (b)
+              4 LOAD_NAME                2 (c)
+              6 BINARY_MULTIPLY
+              8 BINARY_ADD
+             10 RETURN_VALUE</code></pre>
+<p>となる。これが<code>a b c * +</code>になっていることは見てわかるであろう。</p>
+<div class="figure">
+<img src="fig/calc2.png" alt="a + b * cの計算" />
+<p class="caption"><code>a + b * c</code>の計算</p>
+</div>
 <h1 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h1>
 <h2 id="課題1抽象構文木">課題1：抽象構文木</h2>
 <h3 id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h3>
@@ -137,7 +192,6 @@ dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</code></pre></div>
         g.edge(<span class="bu">str</span>(index), <span class="bu">str</span>(pindex))
     <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):
         visit(n, nodes, index, g)</code></pre></div>
-<p>TODO: オペランドの値も表示させるか？</p>
 <h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
 <p>抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
@@ -167,10 +221,20 @@ show_ast(src)</code></pre></div>
 <span class="st">&quot;&quot;&quot;</span></code></pre></div>
 <p>と入力する。何が作られて、何にアサインされているだろうか？</p>
 <h2 id="課題2バイトコードの可視化">課題2：バイトコードの可視化</h2>
+<p>以下のプログラムそれぞれについてバイトコードを確認せよ。</p>
+<ul>
+<li><code>a + b</code></li>
+<li><code>a - b</code></li>
+<li><code>a * b + c</code></li>
+<li><code>a + b * c</code></li>
+</ul>
+<p>例えば最初のプログラムのバイトコードは以下で表示することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dis
+dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
 <h2 id="課題3スタックマシンの実装">課題3：スタックマシンの実装</h2>
-<p>Pythonは、まずプログラムがバイトコードと呼ばれる(アセンブリに似た)中間言語にコンパイルされ、それが仮想マシン上で実行される。Pythonをはじめとして、多くの仮想マシンが「スタックマシン」という形式を取る。スタックマシンとは、データをスタックを通じてやりとりする方式の機械のことだ。ここでは、最も簡単なスタックマシンの例として、計算機を実装してみよう。</p>
+<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。</p>
 <h3 id="課題3-1-逆ポーランド記法電卓">課題3-1: 逆ポーランド記法電卓</h3>
-<p>逆ポーランド記法で記述された計算式を評価する計算機を作りたい。逆ポーランド記法とは、「3+4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
+<p>逆ポーランド記法で記述された計算式を評価する計算機を作りたい。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
 <p>具体的には、以下のような「プログラム」を組む。</p>
 <ul>
 <li>プログラムは、整数、'+'、`-'の三種類の<strong>トークン</strong>で構成される</li>
@@ -215,7 +279,7 @@ show_ast(src)</code></pre></div>
 </ul>
 <p>という順番で実行されている。</p>
 <h3 id="課題3-2-乗算除算の実装">課題3-2: 乗算、除算の実装</h3>
-<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、「プログラム」としては<code>\</code>を入力するが、実際には<code>\\</code>を実行することで、実行結果を整数にすること。</p>
+<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、「プログラム」としては<code>\</code>を入力するが、実際の処理では<code>\\</code>を実行することで、実行結果を整数にすること。</p>
 <p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</code></pre></div>
 <pre class="txt"><code>[] 1 =&gt; [1]
