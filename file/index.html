@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+
+<style>
+  .markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+  }
+  img {width: 100%}
+
+  @media (max-width: 767px) {
+    .markdown-body {
+      padding: 15px;
+    }
+  }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<article class="markdown-body">
+<h1 id="ファイル操作"><a href="https://kaityo256.github.io/python_zero/file/">ファイル操作</a></h1>
+<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<ul>
+<li>ファイルシステムについて</li>
+<li>ファイルの読み込み</li>
+<li>CSVファイルの扱い</li>
+<li>データ解析</li>
+</ul>
+<h2 id="ファイルシステム">ファイルシステム</h2>
+<h3 id="ファイルとは何か">ファイルとは何か</h3>
+<p>Pythonなどのスクリプト言語を使えるようになると、使えない場合に比べて飛躍的に作業効率が上がる。特に、大量のファイルを解析、変換したいといったケースで、一つ一つエクセルで開いては作業する人に比べて、Pythonその他スクリプト言語とシェルスクリプト等を組み合わせて処理できる人は、生産性に圧倒的な差が出る。そこで、今回はPythonでCSVファイルを開いて、データの解析を行う。しかし、まずその前に「そもそもファイルとは何か」を知っているだろうか？</p>
+<p>我々がコンピューターを使う際、何気なくファイルを触っている。スマートフォンで以前撮影した写真を見てみたり、ダウンロードした音楽を聞いたりしている時、意識はしていないかもしれないが、裏ではアプリケーションが写真ファイルや音楽ファイルを開いて読み込み、再生している。また、パソコンで、デスクトップにあるファイルをダブルクリックして開いたり、「あのファイルどこにやったかな」とディレクトリを探し回ったりしたことがあるだろう。スマホでもパソコンでも、何かデータにアクセスする際は、ほとんどの場合においてファイルの読み書きという形をとっている。ファイルの実体は、例えばハードディスクやSDカードに記録されたデータであり、両者は物理的には全く異なるアクセスをしているにも関わらず、保存先がハードディスクであってもSDカードであっても、同じようにアクセスすることができ、我々はその裏で何が起きているのかを意識することはほとんどない。それは、オペレーティングシステムが、「ファイルを管理する」という面倒な作業を代わりにやってくれているからだ。このファイルを管理する仕組みを「ファイルシステム」と呼ぶ。</p>
+<p>おそらく、今後の人生でファイルシステムの知識が必要になることはほとんどないであろう。必要になるとしても、せいぜい「SDカードやUSBメモリをフォーマットする時に、ファイルシステムの種類に気を付けないとWindowsとMacで互換性の問題が起きる」といった程度で、ファイルシステムの仕組みや動作について知っていても役に立つことはないと思われる。しかし、役に立つ、立たないは別として、普段使っているパソコンやスマホの裏で、「ファイル」や「フォルダ」がどのような仕組みで管理されているか知っておいても良いであろう。それが教養というものである。</p>
+<h3 id="ファイルシステムとは">ファイルシステムとは</h3>
+<p>我々が普段使うスマホのデータは主にSDカードに保存されている。また、パソコンのデータはハードディスク、もしくはSSDに保存されている。SDカード、ハードディスク、SSDなどを総称してストレージ(storage)と呼ぶ。ストレージは、外部補助記憶装置とも呼ばれ、計算機のデータを長期間保存するためのデバイスである。</p>
+<p>これらストレージは、「ブロック」もしくは「クラスタ」と呼ばれる単位でデータを読み書きする。ブロックのサイズはデバイスによって異なるが、おおむね4KB程度である。ストレージには、ブロック単位で通し番号がつけられており、「12番のブロックからデータを読み込む」「488番と489番のブロックにデータを書き込む」といった形でデータの読み書きを行う。もし、これらのストレージを「生のまま」使うならば、ユーザが「どのブロックに何を書き込んだか」をすべて覚えておかなければならない。これは面倒なので、ブロックに「ラベル」をつけたくなるであろう。例えば「0番のブロックにはtest.txtというラベル」、「1番のブロックにはhoge.cppというラベル」といった具合である。この、ブロックに対するラベルの役割をするのがファイル名である。また、ファイルが増えてくると、それをグループ単位で管理したくなる。これがフォルダである。</p>
+<p>データが大きい時には、1つのブロックには収まりきらない。例えばブロックのサイズが4KBの時、10KBのデータを保存するには3つのブロックが必要となる。この時、いちいち空いているブロックを探して「4,5,6番のブロックに保存」などと指定するのは面倒である。しかも、ブロック単位で書いたり消したりしているうちに、「空いている(使って良い)ブロック」が不連続になってくる。この時に大きなデータを書き込むためには、一つのファイルをバラバラのデータに分けて保存しなければならない。さらに、そのデータの一部を修正するためには、そのデータのその場所がどのブロックに保存されているかを調べる必要がある。これをすべてが覚えておくのは大変だし、計算機側に自動で管理して欲しいと思うであろう。</p>
+<p>このように、ストレージにブロック単位で保存されているデータに、ファイル名やフォルダといった構造を与え、人間にとって扱いやすくするのがファイルシステムである。ファイルシステムには数多くの種類があるが、Linux系ならext4やxfs、WindowsはNTFS、USBメモリなどにはexFATなどがよく使われている。このうち、いま使っているGoogle Colabでも採用されているext4について簡単に説明しよう。なお、WindowsやMacではファイルをまとめて管理する仕組みを「フォルダ」と呼ぶが、Linuxでは「ディレクトリ」と呼ぶため、以後、ディレクトリと呼ぶことにする。細かいことを言い出すときりがないが、とりあえず「フォルダ」と「ディレクトリ」は同じものだと思っておいてよい。また、簡単のため、以下ではかなり説明を省くことに注意(例えばジャーナルの説明や特別なブロックの説明はしない)。</p>
+<h3 id="inode">inode</h3>
+<p>すでに述べたように、ストレージは「ブロック」という単位でデータの読み書きをする。一つもしくは複数のブロックにまたがって保存されているデータにつけた別名が「ファイル」である。「どのブロックが、どのファイルに所属するか」を記録しているのがinodeと呼ばれるデータだ。全てのファイルには一意なinode番号が割り振られる。inodeには、inode番号、どのブロックを使っているか、ファイルサイズはどれくらいか、所有者は誰かなどの情報が保存されている。inode番号には上限があり、もし使い切った場合は、たとえストレージ容量に余裕があっても新たにファイルを作ることはできない。</p>
+<div class="figure">
+<img src="fig/inode.png" alt="inodeによるファイル管理" />
+<p class="caption">inodeによるファイル管理</p>
+</div>
+<p>ディレクトリもinode番号を持っており、inodeデータとして管理されている。実はinodeはファイル名を保持しておらず、ファイル名はディレクトリが管理している。ディレクトリは、自身が管理するファイルとinode番号の対応表を持っている。Linux系のファイルシステムでは、ディレクトリは「.(ドット)」と「..(ドットドット)」という二つの特別なディレクトリを持つ。それぞれ「自分自身」と「親ディレクトリ」を指している。</p>
+<p>なぜファイルを管理するinodeがファイル名を持たず、ディレクトリがファイル名を管理しているのかについては、いくつか理由がある。まず、一つのinodeに複数のファイル名が対応する場合があり、inode番号だけでは、どのファイル名に対応するかがわからない。つまり「ファイル名」から「inode番号」は一意に決まるが、「inode番号」から「ファイル名」は一意には決まらない。この仕組みをハードリンクと呼ぶが、本講義では詳細は扱わない。</p>
+<p>もう一つの理由は、素早い検索のためだ。WindowsでもMacでも、あるフォルダをダブルクリックするとそのフォルダが開き、中にあるファイル一覧を見ることができる。もし、inodeがファイル名を管理していると、まずそのフォルダ(ディレクトリ)の直下にあるinode一覧をリストアップし、そのinodeデータそれぞれについてファイル名を読み込みにいかなければならない。つまり、ファイル数の分だけinodeデータにアクセスしなければならず、レスポンスが極めて遅くなる。もしディレクトリがinode番号とファイル名のリストを持っていれば、ディスクアクセス一発で「現在のディレクトリの直下にあるファイル一覧」を得ることができる。これは、今よりもはるかにディスクアクセスが遅かった時代の工夫の名残である。</p>
+<p>なお、inodeが管理するようなファイル名や所有者情報、ファイルサイズなどは「メタデータ」と呼ばれる。あるディレクトリ以下にあるファイルをすべて再帰的にリストアップする場合や、名前でファイルを検索する場合など、ファイル操作では「ファイルの中身までは見なくても良い」処理が多い。例えばネットサーフしているときに「ネットが重い」と大変不快なのと同様に、フォルダを開いて中身が表示されるまでに時間がかかると大変不快である。普段あまり意識することは少ないが、メタデータの検索速度はパソコンの「使い勝手」に直結する。</p>
+<p>そこで、多くのファイルシステムでは、メタデータを管理する場所とファイルの中身を管理する場所を別々に分け、効率的にメタデータを扱えるように工夫がしてある。スパコンなどで使われるLustreなどの並列ファイルシステムは、メタデータとファイルの中身は別のサーバで管理されており、高速なメタデータアクセスを実現している。</p>
+<h3 id="ファイルのオープンクローズ">ファイルのオープン・クローズ</h3>
+<p>Pythonに限らず、プログラムからファイルを読み書きするには、まずファイルを開く必要がある。「ファイルを開く」とは、「ファイルシステムにファイルの場所を問い合わせて、プロセスからファイルを扱えるように回線をつなぐ」ことである。プログラムは、「プロセス」という形でOSに管理されている。プロセスからOSにファイルへの接続要求があると、OSはファイルシステムにその場所を問い合わせて、プロセスとファイルシステムの間に特別な回線を作って接続する。この回線は「ファイルディスクリプタ」という、内線番号のようなもので管理される。0番から2番までのファイルディスクリプタは特別な回線となっており、それぞれ標準出力、標準出力、標準エラー出力として予約されている。一度ファイルが開かれたら、プロセスはこのファイルディスクリプタを使ってデータを読み書きする。プロセスは同時に複数の回線を保持できるが、回線の数には上限があるため、不要になったら解放する必要がある。そこで、ファイルへの接続が不要になったら、「ファイルを閉じる」必要がある。ファイルを閉じると、回線を破棄し、内線番号(ファイルディスクリプタ)もOSに返却する。その後でファイルを開くと、ファイルディスクリプタは再利用される。</p>
+<div class="figure">
+<img src="fig/fd.png" alt="ファイルオープンの仕組み" />
+<p class="caption">ファイルオープンの仕組み</p>
+</div>
+<p>なお、この図では省略されているが、実際にはファイル名(test.txt)から、対応するinodeを調べ、そのinodeが指しているブロックを調べ、そのブロックの場所を覚えて、以後の読み書きはそのブロックに対して行う、ということが行われている。</p>
+<h2 id="pythonでのファイル操作">Pythonでのファイル操作</h2>
+<h3 id="google-colab上でのファイル操作">Google Colab上でのファイル操作</h3>
+<p>通常、ファイルの読み書きはローカル(操作しているPCの中)にあるファイルについて行う。しかし我々は今Google Colabというクラウドサービスを使っているため、「ファイルがどこにあるか」「どのファイルを操作しているか」がわかりにくい。Pythonでのファイル操作の説明の前に、まずGoogle Colab上でのファイル操作のイメージについて説明しておこう。</p>
+<p>いま、目の前にあるPCはブラウザを実行しており、このブラウザがGoogleのサーバに接続している。</p>
+<h3 id="ファイルを開く閉じる">ファイルを開く、閉じる</h3>
+<p>Pythonでファイルを開くには<code>open</code>関数を用いる。ファイルを開く際、読み込み用として開くのか、書き込み用として開くのか、追記用として開くのかを指示しなければならない。また、扱うのがテキストデータなのか(テキストモード)、それともバイナリデータなのか(バイナリモード)も指定する必要がある。何も指示しない場合にはテキストかつ読み込み用となる。 オプションは以下の文字の組み合わせで指定する。</p>
+<ul>
+<li>'r' 読み込み用に開く(デフォルト)</li>
+<li>'w' 書き込み用に開く</li>
+<li>'a' 追記用に開く</li>
+<li>'t' テキストモード(デフォルト)</li>
+<li>'b' バイナリモード</li>
+</ul>
+<p>以下は例だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;filename&quot;</span>) <span class="co"># テキストモードかつ読み込み用に開く</span>
+f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;filename&quot;</span>,<span class="st">&quot;rt&quot;</span>) <span class="co"># テキストモードかつ読み込み用に開く(オプションを明示的に指定)</span>
+f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;filename&quot;</span>,<span class="st">&quot;w&quot;</span>) <span class="co"># テキストモードかつ書き込み用に開く</span>
+f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;filename&quot;</span>,<span class="st">&quot;a&quot;</span>) <span class="co"># テキストモードかつ追記用に開く</span></code></pre></div>
+<p>とりあえず本講義ではテキストの読み書きしかしないので、バイナリモードについては説明をしない。</p>
+<p><code>open</code>関数はオープンに成功するとファイルオブジェクトを返す。とりあえずこれはファイルディスクリプタを抽象化したものだと思っておけば良い。以後、このファイルオブジェクトを通じてデータの読み書きをするのだが、開いたファイルはいつか閉じる必要がある。開いたファイルを閉じるには、ファイルオブジェクトの<code>close</code>を呼び出せばよい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;filename&quot;</span>) <span class="co"># ファイルを開く</span>
+f.close() <span class="co"># ファイルを閉じる</span></code></pre></div>
+<p>なお、ファイルを明示的に閉じなかった場合、そのファイルオブジェクトが不要になったタイミングでガーベジコレクション(GC)の対象となる。GCの実装にもよるが、多くの場合、プログラムの終了時にファイルが閉じられる。通常はあまり意識しなくても良いが、同時に開くことができるファイル数には上限があり、それにひっかかるとエラーでプログラムが失敗する。ファイル操作に失敗すると想定外の問題(惨事ともいう)が起きることが多いので、ファイルを開いたら閉じる癖をつけておいた方が良い。</p>
+<h3 id="ファイルの書き込み">ファイルの書き込み</h3>
+<p>ファイルに何か書き込むには、ファイルを書き込み用に開いてから、ファイルオブジェクトの<code>write</code>を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>,<span class="st">&quot;w&quot;</span>) <span class="co"># ファイルを開く</span>
+f.write(<span class="st">&quot;Hello World</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="co"># 文字列を書き込む</span>
+f.close()</code></pre></div>
+<p>上記のコードで、「Hello World」と記述された<code>test.txt</code>という名前のテキストファイルが作成される。<code>print</code>と異なり、<code>write</code>は改行が追加されないので、必要な場合は明示的に改行コード<code>\n</code>を追加する必要がある。</p>
+<p>既に存在するファイルにデータを追記したい場合は、追記モードで開く必要がある。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>,<span class="st">&quot;a&quot;</span>) <span class="co"># ファイルを追記用に開く</span>
+f.write(<span class="st">&quot;This is the second line.</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="co"># 文字列を書き込む</span>
+f.close()</code></pre></div>
+<p>上記を実行すると、<code>test.txt</code>の内容は以下のようになる。</p>
+<pre class="txt"><code>Hello World
+This is the second line.</code></pre>
+<p>なお、既に存在するファイルを書き込みモードで開いた場合、その<strong>ファイルを開いただけで内容が消去される</strong>ことに注意。先ほど二行書き込まれたファイルを、ただ書き込みモードで開いて閉じてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>,<span class="st">&quot;w&quot;</span>) <span class="co"># ファイルを書き込み用に開く</span>
+f.close() <span class="co"># 閉じる</span></code></pre></div>
+<p>上記を実行すると、<code>test.txt</code>の内容は消去され、サイズ0のファイルになる。これは実は書き込み用にファイルを開くと、メタデータの処理によってファイルを削除してしまうからなのだが、ここでは詳細には立ち入らない。ただ、「ファイルを書き込み用に開くと、開いた瞬間にファイルの内容が消える」ということだけ覚えておくと良い。</p>
+<h3 id="ファイルの読み込み">ファイルの読み込み</h3>
+<p>既存のテキストファイルを読み込む場合は、オプションなしの<code>open</code>を使えばよい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>)</code></pre></div>
+<p>その後、<code>open</code>が返してきたファイルオブジェクトを使って、ファイル全てを一括して一つの文字列として読み込む<code>read</code>、ファイルを全てを一括して読み込み、一行ごとに分割された文字列のリストとして取得する<code>readlines</code>、呼び出す度に一行ずつ読み込む<code>readline</code>などを使うことでファイルの内容を読むことができるが、各行ごとに何か処理をする場合はファイルオブジェクトに対して<code>for</code>文を回すのが一番てっとりばやい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>)
+<span class="cf">for</span> line <span class="kw">in</span> f: <span class="co"># ファイルから一行ずつlineに読み込む</span>
+    <span class="bu">print</span>(line)</code></pre></div>
+<p>なお、この形で取得した<code>line</code>は、改行コードが含まれているため、それをそのまま<code>print</code>で出力すると改行が二つつながり、出力としては「一行おき」に表示されてしまう。それを防ぐには、<code>line</code>の末尾の改行を含む空白文字を削除する<code>rstrip()</code>を使えばよい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>)
+<span class="cf">for</span> line <span class="kw">in</span> f: <span class="co"># ファイルから一行ずつlineに読み込む</span>
+    <span class="bu">print</span>(line.rstrip())</code></pre></div>
+<h3 id="with構文">with構文</h3>
+<p>ドアを開けたら閉めるように、ファイルを開いたら閉じなければならない。実際には開いたままのファイルはプログラム終了時に閉じてくれるため、ちゃんと閉じなくても問題が起きることは少ないのだが、ファイルを多数開いて、ファイル数の上限に達してしまったり、うっかり開いたままのファイルを別の場所で変にいじっておかしなことになったりと、後々嫌らしい感じの問題を起こすことがあるので、「開いたら閉じる」癖をつけておきたい。といっても、人間のやることなので、ファイルの閉じ忘れを完全に防ぐのは難しい。そこで、Pythonは自動でファイルを閉じてくれる<code>with</code>構文、というものがある。</p>
+<p><code>with</code>は以下のように使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>) <span class="im">as</span> f:
+    <span class="co"># ファイルに関する処理</span></code></pre></div>
+<p><code>with</code>の後にファイルを開き、そのファイルオブジェクトを<code>as</code>の後の変数で受ける。このファイルオブジェクトは、その後のブロックでのみ有効で、ブロックを抜けるときに自動的にファイルは閉じられる。例えば、テキストファイルを開いて、一行ずつ読み込んでただ表示するだけのコードは以下のように書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>) <span class="im">as</span> f:
+    <span class="cf">for</span> line <span class="kw">in</span> f:
+        <span class="bu">print</span>(line.rstrip())</code></pre></div>
+<p>上記のプログラムでは明示的に<code>f.close()</code>は呼び出されていないが、<code>with</code>が作るブロックを抜けるときに自動的に<code>f.close()</code>が呼ばれ、ファイルが閉じられる。</p>
+<p>とりあえず「ファイルを開く時には<code>with</code>構文を使う」癖をつけておけば、ファイルの閉じ忘れを防ぐことができるであろう。</p>
+<p>なお、<code>with</code>構文はファイルだけでなく、例えばデータベースへの接続など「何か定型の前処理や後始末が必要なもの」一般に使うことができる。今後<code>with</code>が出てきたら、「ブロックが始まる前に何か前処理をして、ブロックを抜ける時に何か後始末をしているんだな」と思えばよい。</p>
+<h1 id="ファイル操作課題">ファイル操作：課題</h1>
+<h2 id="課題1ファイルシステムを見てみる">課題1：ファイルシステムを見てみる</h2>
+<h3 id="課題1-1ファイルシステムの確認">課題1-1：ファイルシステムの確認</h3>
+<p>新しいノートブックを開き、実際にGoogle Colabのファイルシステムがどうなっているかを確認しよう。</p>
+<h4 id="ファイルシステムの確認">1. ファイルシステムの確認</h4>
+<p>最初のセルに、以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span> df <span class="op">-</span>T</code></pre></div>
+<p>すると以下のような出力が出てくるはずだ。</p>
+<pre class="txt"><code>Filesystem     Type    1K-blocks     Used Available Use% Mounted on
+overlay        overlay  51343840 26636520  22069496  55% /
+tmpfs          tmpfs     6667636        0   6667636   0% /dev
+...</code></pre>
+<p>ファイルシステム、<code>/dev/sda1</code>の「Type」はどうなっているだろうか？</p>
+<h4 id="ファイルとinodeの確認">2. ファイルとinodeの確認</h4>
+<p>次に、実際にファイルを作成して、そのinode番号を調べてみよう。 2番目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span> touch test.txt
+<span class="op">!</span> stat test.txt</code></pre></div>
+<p>「test.txt」のファイル情報が表示されたはずだ。「Size」や「Inode」の番号がどうなっているか確認せよ。</p>
+<h4 id="ディレクトリとinode一覧">3. ディレクトリとinode一覧</h4>
+<p>現在のディレクトリにあるファイルの一覧とinode番号を確認してみよう。 カレントディレクトリにあるファイル一覧を表示するコマンド<code>ls</code>に、inode番号も表示するオプション<code>-i1</code>(iの後ろはエルではなくて数字の1であることに注意)を指定してみよう。ついでに<code>-F</code>もつけて、ディレクトリであることを明示させる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span> ls <span class="op">-</span>F <span class="op">-</span>i1</code></pre></div>
+<p>先ほど作成した<code>test.txt</code>と、もともと存在するディレクトリ<code>sample_data/</code>が表示され、それぞれの左にinode番号が表示されたはずである。<code>test.txt</code>のinode番号が先ほど<code>stat</code>で調べたinode番号と一致することを確認せよ。</p>
+<h2 id="課題2csvファイルを読み込む">課題2：CSVファイルを読み込む</h2>
+<p>カラーテレビの普及率データは<a href="https://www.esri.cao.go.jp/jp/stat/shouhi/shouhi.html">内閣府の消費動向調査</a>から、平均余命のデータは<a href="https://www.mhlw.go.jp/toukei/saikin/hw/life/life10/sankou02.html">厚生労働省の参考資料２　平均余命の年次推移</a>より取得した。</p>
+<h2 id="余談消えていくアイコンのオリジナルたち">余談：消えていくアイコンのオリジナルたち</h2>
+<p>パソコンを使っていると、ファイルを管理するのにフォルダを使ったことがあるだろう。Windowsであれば、右クリックのメニューで「新規作成」から「フォルダ」を作ることができる。また、iPadやiPhoneなどのスマホでも、アイコン長押しからドラッグでまとめてフォルダを作ることができる。もともと「フォルダ」とは実在する文房具である。</p>
+<p>TODO: ファイルとフォルダ TODO: 図書館とカード目録 (inode)</p>
+</article>
+</body>
+</html>
