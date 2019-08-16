@@ -2,7 +2,7 @@ INDEX=$(shell ls */README.md | sed 's/README.md/index.html/')
 PANDOC_HTMLOPT=--mathjax -t html --template=template
 PANDOC_TEXOPT=--highlight-style breezeDark --latex-engine=lualatex -V documentclass=ltjarticle -V geometry:margin=1in 
 TARGET=$(INDEX)
-ASSIGNMENT=string/assignment.pdf gan/assignment.pdf hello/assignment.pdf
+ASSIGNMENT=basic/assignment.pdf scope/assignment.pdf string/assignment.pdf gan/assignment.pdf hello/assignment.pdf
 
 
 all: $(TARGET) index.html

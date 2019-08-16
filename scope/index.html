@@ -68,7 +68,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="条件分岐と繰り返し処理2"><a href="https://kaityo256.github.io/python_zero/while/">条件分岐と繰り返し処理2</a></h1>
+<h1 id="関数とスコープ"><a href="https://kaityo256.github.io/python_zero/scope/">関数とスコープ</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -141,14 +141,20 @@ money <span class="op">=</span> <span class="dv">5</span>
     <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)
 <span class="cf">else</span>:
     <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</code></pre></div>
-<p><code>money</code>が0から10の間にある場合のみループを実行し、この条件を満たさなくなったら<code>while</code>文を終了するコードである。最終的に<code>money</code>が0になったか<code>10</code>になったかを確認し、「Lose」や「Win」を表示している。先程のコードよりも、このループがどのような条件で実行されるべきかがわかりやすくなっているのがわかるであろう。一般に、等価な制御構造の書き方は複数存在する。<code>while</code>の条件に含めるべきか、<code>break</code>で脱出すべきかはコードによる。こういったコードの書き方に興味のある人は「リーダブルコード」という古典的な名著があるので参照されたい。</p>
+<p><code>money</code>が1から9の間にある場合のみループを実行し、この条件を満たさなくなったら<code>while</code>文を終了するコードである。最終的に<code>money</code>が0になったか<code>10</code>になったかを確認し、「Lose」や「Win」を表示している。先程のコードよりも、このループがどのような条件で実行されるべきかがわかりやすくなっているのがわかるであろう。</p>
+<p>さきほどの例では<code>money</code>が1から9の間にある条件を<code>0 &lt; money &lt; 10</code>と書いたが、よりPythonらしく書くなら<code>range</code>を使って</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">while</span> money <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):
+    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2</span><span class="op">-</span><span class="dv">1</span></code></pre></div>
+<p>と書くこともできる。<code>range(x,y)</code>はx以上y未満の数字の範囲を表す。</p>
+<p>一般に、等価な制御構造の書き方は複数存在する。<code>while</code>の条件に含めるべきか、<code>break</code>で脱出すべきかはコードによる。こういったコードの書き方に興味のある人は「リーダブルコード」という古典的な名著があるので参照されたい。</p>
 <h2 id="関数">関数</h2>
 <p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
   <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
-<p>関数は「def 関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。定義した関数は後で何度でも呼ぶこともできる。</p>
+<p>関数は「def 関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。Pythonはコロンの後にインデントによりブロックを作る言語である。</p>
+<p>定義した関数は後から何度でも呼ぶこともできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></code></pre></div>
-<p>関数にインプットを与えることもできる。このインプットを「引数(ひきすう)」と呼ぶ。</p>
+<p>関数にインプットを与えることもできる。このインプットを<strong>引数(ひきすう)</strong>と呼ぶ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> say(s):
   <span class="bu">print</span>(s)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></code></pre></div>
@@ -165,7 +171,8 @@ money <span class="op">=</span> <span class="dv">5</span>
 
 a, b <span class="op">=</span> func(<span class="dv">5</span>) <span class="co"># a = 5, b = 6が代入される。</span></code></pre></div>
 <h2 id="スコープ">スコープ</h2>
-<p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。</p>
+<p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。この変数の有効範囲のことを<strong>スコープ(scope)</strong>と呼ぶ。</p>
+<p>最初に述べたように、本講義において、プログラムの文法やライブラリの使い方の詳細については覚える必要はなく、「なんとなくそういうものがあったなぁ」と覚えておくだけでよい。なぜなら、やりかたを忘れてしまっても、例えば関数の定義の仕方を忘れてしまっても、「Python 関数」で検索すればすぐにやり方はわかるからだ。しかし、「スコープ」については、ここである程度しっかり理解しておいた方が良い。将来プログラムでスコープなどの「変数の名前解決がらみ」で問題を起こした時、そうと知らなければそもそも「あ、これはスコープの問題だ」と認識することができないため、適切な検索ワードも思いつかず、自力では解決できなくなるからだ。</p>
 <p>例えば以下のようなコードを見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
     a <span class="op">=</span> <span class="dv">10</span>
@@ -174,7 +181,7 @@ a, b <span class="op">=</span> func(<span class="dv">5</span>) <span class="co">
 func()
 <span class="bu">print</span>(a)</code></pre></div>
 <p>関数<code>func</code>内で、変数<code>a</code>に10を代入し、その値を表示されている。その後、関数<code>func</code>を実行すると10が表示され、確かに<code>a</code>に10が入っていることがわかるが、その後で<code>a</code>を表示しようとすると<code>NameError: name 'a' is not defined</code>、つまり「変数<code>a</code>なんて知らないよ」というエラーが出てしまう。</p>
-<p>このように、関数内で宣言された変数は<strong>ローカル変数</strong>と呼ばれ、その有効範囲は関数内に制限される。この「変数が見える範囲」をスコープと呼ぶ。ローカル変数が住むスコープを<strong>ローカルスコープ</strong>と呼ぶ。</p>
+<p>このように、関数内で宣言された変数は<strong>ローカル変数</strong>と呼ばれ、その有効範囲は関数内に制限される。特に、ローカル変数が住むスコープを<strong>ローカルスコープ</strong>と呼ぶ。</p>
 <p>逆に、関数の外で宣言された変数は、関数の中からも見ることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 
@@ -191,8 +198,8 @@ func()</code></pre></div>
 </ul>
 <p>の二点である。</p>
 <div class="figure">
-<img src="fig/scope.png" alt="スコープ" />
-<p class="caption">スコープ</p>
+<img src="fig/scope.png" alt="グローバルスコープとローカルスコープ" />
+<p class="caption">グローバルスコープとローカルスコープ</p>
 </div>
 <p>スコープは意外に難しく、直感に反する振る舞いがいくつかあるのだが、ここでは一つだけ将来ハマりそうなことを紹介しておく。</p>
 <p>ローカル変数からグローバル変数は参照可能だが、値を代入しようとすると問題がおきる。こんなコードを考えよう。</p>
@@ -229,8 +236,9 @@ func()
 <p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
 <p>しかし、このようなコードはバグの元であり、推奨されない。一般に、グローバス変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。</p>
 <p>とりあえず「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
-<p>先に少し触れたように、Pythonは狭い順に「ローカルスコープ」「ネストした外側の関数のスコープ」「グローバルスコープ」「ビルトインスコープ」の四種類のスコープがあり、変数名がぶつかった場合にはどのように扱われるかが決まっている。この変数の名前解決の仕組みを覚える必要は全くないが、Pythonに限らずほとんどのプログラミング言語には「スコープ」という概念があり、中から外の変数を触るとどうなるかは言語によって決まっている、という事実は覚えておいて欲しい。特に、スコープがらみで問題が起きた時に、そもそも「スコープ」という単語を知らないと、ググることもできず、問題解決が難しくなる。</p>
-<h2 id="コラッツ問題">コラッツ問題</h2>
+<p>先に少し触れたように、Pythonは狭い順に「ローカルスコープ」「ネストした外側の関数のスコープ」「グローバルスコープ」「ビルトインスコープ」の四種類のスコープがあり、変数名がぶつかった場合にはどのように扱われるかが決まっている。この変数の名前解決の仕組みを覚える必要は全くないが、Pythonに限らずほとんどのプログラミング言語には「スコープ」という概念があり、中から外の変数を触るとどうなるかは言語によって決まっている、という事実は覚えておいて欲しい。繰り返しになるが、スコープがらみで問題が起きた時に、そもそも「スコープ」という単語を知らないと、問題解決が難しくなるからだ。</p>
+<h1 id="関数とスコープ課題">関数とスコープ：課題</h1>
+<h2 id="課題1コラッツ問題">課題1：コラッツ問題</h2>
 <p>ではさっそくwhile文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
 <ul>
 <li>何か正の整数を考えよ</li>
@@ -240,13 +248,15 @@ func()
 </ul>
 <p>たとえば「5」を考えよう。これは奇数なので3倍して1を足すと「16」になる。 これは偶数だから2で割って「8」、さらに2で割って「4」「2」「１」となる。</p>
 <p>コラッツ問題とは「上記の手続きを繰り返した場合、すべての整数について有限回の手続きで1になるか？」というものであり、現在も解決されていない。もし有限の手続きで1にならないとしたら、どこかに無限に大きくなるか、ループする構造があるはずだが、今の所どちらも見つかっていない。</p>
-<h3 id="課題1">課題1</h3>
+<h3 id="課題1-1コラッツ数列の確認">課題1-1：コラッツ数列の確認</h3>
+<p>新しいノートブックを開き、<code>collatz</code>と名前を付けておこう。</p>
+<h4 id="関数collatzの実装">1. 関数<code>collatz</code>の実装</h4>
 <p>与えられた数字に対して、</p>
 <ul>
 <li>偶数なら2でわる</li>
 <li>奇数なら3倍して1を足す</li>
 </ul>
-<p>という処理を、その数字が1になるまで繰り返しながら表示する関数<code>コラッツ</code>を作りたい。 以下の空欄を埋めよ。</p>
+<p>という処理を、その数字が1になるまで繰り返しながら表示する関数<code>collatz</code>を作りたい。以下の「条件1」「条件2」を埋めて関数を完成させよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i):
   <span class="bu">print</span>(i)
   <span class="cf">while</span> (条件1):
@@ -256,8 +266,9 @@ func()
       i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
     <span class="bu">print</span>(i)</code></pre></div>
 <p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
-<p>完成したら、関数を入力したセルを実行してから、別のセルに以下のように関数呼び出しを入力、実行し、結果が一致することを確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">コラッツ(<span class="dv">3</span>)</code></pre></div>
+<h4 id="関数collatzの動作確認">2. 関数<code>collatz</code>の動作確認</h4>
+<p>二つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">collatz(<span class="dv">3</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">3</span>
 <span class="ex">10</span>
 <span class="ex">5</span>
@@ -266,13 +277,15 @@ func()
 <span class="ex">4</span>
 <span class="ex">2</span>
 <span class="ex">1</span></code></pre></div>
-<p>いろいろな数字を入れて、すべて最終的に1になることを確認せよ。収束するまでの手続きが長い数を探せ。例えば27を入れたらどうなるか。</p>
-<h3 id="課題2">課題2</h3>
-<p>コラッツ問題をグラフで可視化してみよう。新しいノートブックを開き、以下のプログラムを4つのセルにわけて入力せよ。</p>
-<p>1つ目のセル。</p>
+<p>もし正しい結果が得られたら、いろいろな数字を入れて、すべて最終的に1になることを確認せよ。収束するまでの手続きが長い数を探せ。例えば27を入れたらどうなるか。</p>
+<h3 id="課題1-2コラッツ問題の可視化">課題1-2：コラッツ問題の可視化</h3>
+<p>コラッツ問題をグラフで可視化してみよう。新しいノートブックを開き、<code>collatz_graph</code>という名前をつけて、以下のプログラムを4つのセルにわけて入力せよ。</p>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>最初に、一つ目のセルでグラフの可視化をするためのライブラリをインポートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
 <span class="im">import</span> IPython</code></pre></div>
-<p>2つ目のセル。</p>
+<h4 id="関数collatzの実装-1">2. 関数<code>collatz</code>の実装</h4>
+<p>コラッツ数列を作る関数<code>collatz</code>を実装しよう。条件1、条件2は課題1-1と同じであるが、グラフの作画のために<code>edge</code>を受け取り、ノードをつなぐ処理が追加されている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i, edges):
     <span class="cf">while</span> (条件1):
         j <span class="op">=</span> i
@@ -281,7 +294,8 @@ func()
         <span class="cf">else</span>:
             i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
         edges.add((j, i))</code></pre></div>
-<p>3つ目のセル。</p>
+<h4 id="グラフの作成">3. グラフの作成</h4>
+<p>3つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_graph(n):
     g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)
     edges <span class="op">=</span> <span class="bu">set</span>()
@@ -291,11 +305,14 @@ func()
         g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))
     g.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
     g.render(<span class="st">&quot;test&quot;</span>)</code></pre></div>
-<p>4つ目のセル。</p>
+<p>これは、1から<code>n</code>までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。</p>
+<h4 id="グラフの表示">4. グラフの表示</h4>
+<p>実際にコラッツ数列のグラフ表示をさせてみよう。4つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。</p>
 <p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。コラッツ予想とは、このグラフが木構造、つまりループ構造が無いことを主張するものである。</p>
-<h3 id="課題3">課題3</h3>
+<h2 id="任意課題">任意課題</h2>
 <p>コラッツ予想には様々な変種がある。例えば、</p>
 <ul>
 <li>何か正の整数を考えよ</li>
@@ -304,9 +321,9 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 <li>以上の処理を数字が <strong>1か3</strong> になるまでずっと繰り返せ</li>
 </ul>
 <p>というものである。これもやはり有限回の手順で止まるらしい(おそらくこちらも未解決問題)。これを確認してみよう。</p>
-<p>まず、先程課題2で作成した課題に名前をつけて保存しよう。ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「collatz.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
-<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2.ipynb」という名前にしよう。「collatz2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
-<p>「collatz2.ipynb」がGoogle Colabで開かれたら、</p>
+<p>まず、課題1-2で作成したノートブックにまだ名前をつけていない場合は、ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「collatz_graph.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
+<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz_graph.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz_graph.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2_graph.ipynb」という名前にしよう。「collatz2_graph.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
+<p>「collatz2_graph.ipynb」がGoogle Colabで開かれたら、</p>
 <ul>
 <li>数字が1か3になったら終了とする</li>
 <li>奇数だったら3倍して3を足す</li>
