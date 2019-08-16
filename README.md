@@ -23,13 +23,13 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * Anacondaのインストール方法
 * Pythonの実行方法
 
-## [Pythonの概要とGoogle Colabの使い方](hello/README.md) (ほぼ完成)
+## [Pythonの概要とGoogle Colabの使い方](hello/README.md)
 
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 * 余談：タッチタイピングについて
 
-## [条件分岐と繰り返し処理1](basic/README.md) (ほぼ完成)
+## [条件分岐と繰り返し処理](basic/README.md)
 
 * 組み込み型
 * 関数の宣言と利用方法
