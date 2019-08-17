@@ -207,13 +207,16 @@ text[s:e] <span class="co">#=&gt; &#39;moge&#39;</span></code></pre></div>
 <li>「<code>.?bc</code>」：なんでも良いが、何か文字が0個か1個あり、その後「bc」という文字列が続くような文字列。</li>
 <li><code>bc</code> =&gt; <code>bc</code>にマッチ</li>
 <li><code>xxxbc</code> =&gt; <code>xbc</code>にマッチ</li>
-<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> =&gt; <code>xbc</code>にマッチ</li>
 <li>「<code>.+bc</code>」：なんでも良いが、何か文字が1個以上、その後「bc」という文字列が続くような文字列。</li>
 <li><code>bc</code> =&gt; マッチしない</li>
 <li><code>xxxbc</code> =&gt; <code>xxxbc</code>にマッチ</li>
 <li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
 </ul>
-<p>TODO: 上記三つの例を図解すること</p>
+<div class="figure">
+<img src="fig/re.png" alt="正規表現の例" />
+<p class="caption">正規表現の例</p>
+</div>
 <p>他によく使うメタ文字は「行頭」と「行末」を表す<code>^</code>と<code>$</code>である。例を挙げよう。</p>
 <ul>
 <li><code>^#.*</code>: 文頭に「#」があり、それ以後は何があっても良いような文字列。</li>
