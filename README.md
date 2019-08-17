@@ -87,10 +87,12 @@ Pythonをゼロから学び、簡単な機械学習ができるようになる�
 * 割り箸ゲーム
 * 余談：オブジェクト指向プログラミングの意義
 
-## [Numpyの使い方](numpy/README.md)
+## [NumPyとSciPyの使い方](numpy/README.md)
 
-* Numpyとは？
-* SVDを用いた画像圧縮
+* NumPyの使い方
+* SciPyの使い方
+* シュレーディンガー方程式と固有値問題
+* 特異値分解と画像近似
 * 余談：ライブラリについて
 
 ## [Pythonが動く仕組み](howtowork/README.md)

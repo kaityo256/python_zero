@@ -68,19 +68,128 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="numpyの使い方"><a href="https://kaityo256.github.io/python_zero/numpy/">Numpyの使い方</a></h1>
+<h1 id="numpyとscipyの使い方"><a href="https://kaityo256.github.io/python_zero/numpy/">NumPyとSciPyの使い方</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本講の目的">本講の目的</h2>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
-<li>Numpyの使い方を学ぶ</li>
-<li>Numpyを使った行列演算を体験する</li>
+<li>NumPyの使い方</li>
+<li>SciPyの使い方</li>
+<li>シュレーディンガー方程式と固有値問題</li>
+<li>特異値分解と画像近似</li>
 </ul>
-<h2 id="numpyとは">Numpyとは</h2>
-<p>TODO: Numpyの説明</p>
-<h2 id="numpyの使い方-1">Numpyの使い方</h2>
-<p>TODO: Numpyの使い方の説明</p>
-<h2 id="行列の近似による画像処理">行列の近似による画像処理</h2>
-<p>TODO: 行列の近似について</p>
+<h2 id="numpyとscipy">NumPyとSciPy</h2>
+<p>Pythonには強力なライブラリが多数存在し、それらを使いこなすことで、少ない記述で豊富な機能を素早く実装することができる。今回は、数多くのライブラリの中でも、数値計算、特に行列演算を効率的に行うことができるNumPyと、それを用いて様々な科学的な計算を行うことができるライブラリ、SciPyを使ってみる。</p>
+<p>なお、今回の講義でNumPyやSciPyの使い方を覚える必要はない。ただ、PythonにはNumPyやSciPyというライブラリがあり、数行書くだけで行列の固有値問題を解くことができる、ということをぼんやり覚えておいて、将来、必要になった時にそれを思い出して、詳細については本を読むなりウェブで検索するなりすればよい。</p>
+<h2 id="numpyの使い方">Numpyの使い方</h2>
+<h3 id="numpyとは">NumPyとは</h3>
+<p>数値計算では、行列を扱うことが非常に多い。行列がからむ演算の中で特に重要なのが、行列同士の積の計算だ。行列と行列の積を(そのまんまだが)行列行列積と呼ぶ。スーパーコンピュータにはTop500という性能ランキングがあり、年に二回ランキングが更新されるが、そこで行われているベンチマークは巨大な連立一次方程式をどれだけ効率的に解くことができるか、という問題である。そして、その計算の中心は行列行列積である。従って、Top500における「スパコンの性能」は、「いかに行列同士の積を早く計算できるか」に依存している。</p>
+<p>行列の積の定義そのものは簡単だ。普通にかけば三重ループで計算できる。しかし、現代の計算機では行列の乗算の効率的な実装は非常に面倒であり、「普通」に書くとまったく性能がでない。なにしろ行列行列積は数値計算の根幹をなす演算であり、そこが遅いと非常に広範囲の計算が影響を受けてしまう。そこで、Pythonにおいて行列を効率的に扱うためのライブラリが作られた。それがNumPyである。</p>
+<p>NumPyを使うには、まず<code>numpy</code>をインポートする。<code>np</code>という別名をつけるのが慣習である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
+<p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、てっとりばやいのは<code>np.array</code>にリストを与えることだ。例えば以下は二行二列の行列を作る例である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
+<span class="bu">print</span>(a)</code></pre></div>
+<pre class="txt"><code>[[1 2]
+ [3 4]]</code></pre>
+<p>要素が全てゼロの配列を作るには、<code>zeros</code>を使えばよい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">z <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))
+<span class="bu">print</span>(z)</code></pre></div>
+<pre class="txt"><code>[[0. 0.]
+ [0. 0.]]</code></pre>
+<p>NumPy配列のデータには「型」がある。Pythonのリストは複数の型の混在が許されたが、NumPy配列は全て同じ型でなければならない。NumPy配列のデータの型は<code>dtype</code>で調べることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a.dtype) <span class="co">#=&gt; int64</span>
+<span class="bu">print</span>(z.dtype) <span class="co">#=&gt; float64</span></code></pre></div>
+<p><code>np.array</code>で作った場合は、与えたリストから推定された型が使われるが、<code>np.zeros</code>の場合はデフォルトで<code>float64</code>の型になる。明示的に型を指定すれば、その型のゼロ要素行列を得ることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">z2 <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>),dtype<span class="op">=</span>np.int64)
+<span class="bu">print</span>(z2.dtype) <span class="co">#=&gt; int64</span></code></pre></div>
+<h3 id="numpy配列同士の演算">NumPy配列同士の演算</h3>
+<p>NumPy配列は、「形」を保持しており、<code>shape</code>でその形を知ることができる。<code>shape</code>は、タプルの形で返ってくる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a.shape <span class="co">#=&gt; (2,2)</span></code></pre></div>
+<p>形が同じ行列同士は四則演算ができる。ここで<code>*</code>を計算すると、行列積ではなく、「要素ごとの積」を計算することに注意。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> np.array([[<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>]])
+<span class="bu">print</span>(a<span class="op">*</span>b)</code></pre></div>
+<pre class="txt"><code>[[ 5 12]
+ [21 32]]</code></pre>
+<p>行列行列積を計算したい時には<code>dot</code>を用いる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> a.dot(b)
+<span class="bu">print</span>(c)</code></pre></div>
+<pre class="txt"><code>[[19 22]
+ [43 50]]</code></pre>
+<h3 id="numpy配列の中身">NumPy配列の中身</h3>
+<p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある二次元のデータだが、三次元でも四次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも一次元配列として保存されている。NumPy配列は、一次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
+<p>連番の要素を持つ一次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">8</span>)
+<span class="bu">print</span>(a)</code></pre></div>
+<pre class="txt"><code>array([0, 1, 2, 3, 4, 5, 6, 7])</code></pre>
+<p>このデータを「4行2列の行列」として解釈したNumPy配列を得るには、以下のようにすれば良い。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> a.reshape((<span class="dv">4</span>,<span class="dv">2</span>))
+<span class="bu">print</span>(b)</code></pre></div>
+<pre class="txt"><code>[[0 1]
+ [2 3]
+ [4 5]
+ [6 7]]</code></pre>
+<p><code>reshape</code>にはタプルを渡す。総データ数さえ等しければどのような形にもできる。例えば<code>(2,2,2)</code>という形にもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> a.reshape((<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))
+<span class="bu">print</span>(c)</code></pre></div>
+<pre class="txt"><code>[[[0 1]
+  [2 3]]
+
+ [[4 5]
+  [6 7]]]</code></pre>
+<p><code>reshape</code>は、データ数が合わないとエラーとなる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a.reshape((<span class="dv">4</span>,<span class="dv">4</span>)) <span class="co">#=&gt; ValueError: cannot reshape array of size 8 into shape (4,4)</span></code></pre></div>
+<h2 id="scipyについて">SciPyについて</h2>
+<p>SciPyは、NumPyを基礎にした科学計算ライブラリだ。非常に多くのことができるが、それゆえにその全てを説明することはできない。ここでは、行列の固有値と固有ベクトルだけ求めてみよう。</p>
+<p>固有値や固有ベクトルを求めるには<code>scipy.linalg</code>をインポートすればよい。多くの場合、一緒に<code>numpy</code>もインポートするであろう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> scipy <span class="im">import</span> linalg
+<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<p>固有値、固有ベクトルは、<code>linalg.eig</code>で求めることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">2</span>,<span class="dv">1</span>]])
+w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
+<p>これで、<code>w</code>に固有値が、<code>v</code>に固有ベクトルがそれぞれリストの形で返ってくる。</p>
+<p>例えば固有値は</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(w) <span class="co">#=&gt; [ 3.+0.j -1.+0.j]</span></code></pre></div>
+<p>つまり「3」と「-1」である。一般に固有値は複素数となるが、今回のように入力が実対称行列(もしくはエルミート行列)であることがわかっていれば、エルミート行列向けの<code>eigh</code>が使える。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(a)
+<span class="bu">print</span>(w) <span class="co">#=&gt; [-1.  3.]</span></code></pre></div>
+<p>エルミート行列の固有値は常に実数であるから、返り値も実数となる。</p>
+<h2 id="シュレーディンガー方程式">シュレーディンガー方程式</h2>
+<p>TODO: トンネル効果の説明</p>
+<p>TODO: 離散化の説明</p>
+<h2 id="特異値分解による画像圧縮">特異値分解による画像圧縮</h2>
+<p>TODO: 長方形の積でより大きな行列を作ることの図解 TODO: 特異値分解の説明</p>
+<h1 id="numpyとscipyの使い方課題">NumPyとSciPyの使い方：課題</h1>
+<h2 id="課題1シュレーディンガー方程式">課題1：シュレーディンガー方程式</h2>
+<h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">from</span> scipy <span class="im">import</span> linalg
+<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<h3 id="行列の作成">2. 行列の作成</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">32</span>
+V <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">5.0</span> <span class="cf">if</span> i <span class="kw">in</span> <span class="bu">range</span>(N<span class="op">//</span><span class="dv">4</span>, <span class="dv">3</span><span class="op">*</span>N<span class="op">//</span><span class="dv">4</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N)])
+A <span class="op">=</span> np.zeros((N, N))
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
+    i1 <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> N
+    i2 <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> N) <span class="op">%</span> N
+    A[i][i] <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> V[i]
+    A[i][i1] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
+    A[i][i2] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></code></pre></div>
+<h3 id="固有値と最低固有エネルギー">3. 固有値と最低固有エネルギー</h3>
+<p>得られた行列の固有値、固有ベクトルを求め、さらに固有値の中でもっとも値が小さいもののインデックスを求めよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(A)
+i0 <span class="op">=</span> np.argmin(w)
+<span class="bu">print</span>(w[i0])</code></pre></div>
+<p>最小値を求めるだけなら<code>np.min(w)</code>で良いが、後で対応する固有ベクトルを使うのにインデックスが必要なので、<code>np.argmin(w)</code>を利用している。</p>
+<p>実行してみると、-5よりも若干大きな値が表示されたはずである。これが「閉じ込めエネルギー」と呼ばれるものだ。</p>
+<h4 id="波動関数の可視化">4. 波動関数の可視化</h4>
+<p>井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> v.transpose()[i0]
+v <span class="op">=</span> v <span class="op">*</span> v
+plt.plot(v<span class="op">*</span><span class="dv">20</span><span class="op">+</span>w[i0])
+plt.plot(V)</code></pre></div>
+<p>少し確率が井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
+<h2 id="課題2行列の近似による画像処理">課題2：行列の近似による画像処理</h2>
 <h2 id="余談ライブラリについて">余談：ライブラリについて</h2>
 <p>スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
 <p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱ったNumpyはそのような強力なライブラリの一つだ。</p>
