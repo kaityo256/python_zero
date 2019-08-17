@@ -180,7 +180,7 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 X = U \Sigma V^{\dagger}
 \]</span></p>
 <p>ただし、<span class="math inline">\(U\)</span>はm行m列、<span class="math inline">\(V^{\dagger}\)</span>はn行n列のそれぞれ正方行列であり、<span class="math inline">\(\Sigma\)</span>は対角行列である。この<span class="math inline">\(\Sigma\)</span>の対角成分を特異値と呼び、全て非負の実数に取ることができる。</p>
-<p>さて、真ん中の<span class="math inline">\(\Sigma\)</span>を<span class="math inline">\(\sqrt{\Sigma}\)</span>二つにわけて、それぞれ左右にくっつけると、<span class="math inline">\(X = A B\)</span>の形に書くことができる。この<span class="math inline">\(A\)</span>の行列の「右端の帯」と、<span class="math inline">\(B\)</span>の行列の「上端の帯」の積をとってできる行列<span class="math inline">\(\tilda{X}\)</span>は、元の行列<span class="math inline">\(X\)</span>と同じ形であり、かつ良い近似になっている。これを「行列の低ランク近似」と呼ぶが、ここではその詳細は触れない。</p>
+<p>さて、真ん中の<span class="math inline">\(\Sigma\)</span>を<span class="math inline">\(\sqrt{\Sigma}\)</span>二つにわけて、それぞれ左右にくっつけると、<span class="math inline">\(X = A B\)</span>の形に書くことができる。この<span class="math inline">\(A\)</span>の行列の「右端の帯」と、<span class="math inline">\(B\)</span>の行列の「上端の帯」の積をとってできる行列<span class="math inline">\(\tilde{X}\)</span>は、元の行列<span class="math inline">\(X\)</span>と同じ形であり、かつ良い近似になっている。これを「行列の低ランク近似」と呼ぶが、ここではその詳細は触れない。</p>
 <p>本講義では、行列の特異値分解と低ランク近似を利用して、画像圧縮をしてみよう。</p>
 <h1 id="numpyとscipyの使い方課題">NumPyとSciPyの使い方：課題</h1>
 <h2 id="課題1シュレーディンガー方程式">課題1：シュレーディンガー方程式</h2>
