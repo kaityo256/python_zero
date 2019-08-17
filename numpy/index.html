@@ -62,6 +62,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -158,7 +159,29 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 <p>TODO: トンネル効果の説明</p>
 <p>TODO: 離散化の説明</p>
 <h2 id="特異値分解による画像圧縮">特異値分解による画像圧縮</h2>
-<p>TODO: 長方形の積でより大きな行列を作ることの図解 TODO: 特異値分解の説明</p>
+<p>線形代数を学んでいれば、異なる行列の積を定義できることを覚えているだろう。例えばm行n列の行列と、n行k列の行列の積をとると、新たにできる行列はm行k列となる。</p>
+<div class="figure">
+<img src="fig/mprod.png" alt="行列積の定義" />
+<p class="caption">行列積の定義</p>
+</div>
+<p><code>(m,n)</code>の形をした行列と<code>(n,k)</code>の形をした行列から<code>(m,k)</code>の形をした行列ができるのだから、例えば10行2列の行列<span class="math inline">\(A\)</span>と、2行10列の行列<span class="math inline">\(B\)</span>の積は、10行10列の行列<span class="math inline">\(C\)</span>になる。この時、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数はそれぞれ20個、合計40個だが、積をとってできる行列<span class="math inline">\(C\)</span>の要素数は100個となり、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数の合計よりも多い。</p>
+<p>この事実を利用して、<span class="math inline">\(C\)</span>という大きな行列を、<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>という「細長い」行列の積で近似することを考えよう。</p>
+<div class="figure">
+<img src="fig/approximation.png" alt="行列の近似" />
+<p class="caption">行列の近似</p>
+</div>
+<p>つまり、何か行列<span class="math inline">\(X\)</span>が与えられた時、<span class="math inline">\(\tilde{X} = AB\)</span>という行列を作り、<span class="math inline">\(\tilde{X}\)</span>が元の行列<span class="math inline">\(X\)</span>をよく近似するように、なるべく「細長い」行列<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>を探しなさい、という問題である。このような行列は、特異値分解(Singular Value Deconposition, SVD)という方法で作ることができる。</p>
+<div class="figure">
+<img src="fig/svd.png" alt="特異値分解" />
+<p class="caption">特異値分解</p>
+</div>
+<p>いま、<span class="math inline">\(X\)</span>というm行n列の行列が与えれた時、以下のように「分解」ができる。</p>
+<p><span class="math display">\[
+X = U \Sigma V^{\dagger}
+\]</span></p>
+<p>ただし、<span class="math inline">\(U\)</span>はm行m列、<span class="math inline">\(V^{\dagger}\)</span>はn行n列のそれぞれ正方行列であり、<span class="math inline">\(\Sigma\)</span>は対角行列である。この<span class="math inline">\(\Sigma\)</span>の対角成分を特異値と呼び、全て非負の実数に取ることができる。</p>
+<p>さて、真ん中の<span class="math inline">\(\Sigma\)</span>を<span class="math inline">\(\sqrt{\Sigma}\)</span>二つにわけて、それぞれ左右にくっつけると、<span class="math inline">\(X = A B\)</span>の形に書くことができる。この<span class="math inline">\(A\)</span>の行列の「右端の帯」と、<span class="math inline">\(B\)</span>の行列の「上端の帯」の積をとってできる行列<span class="math inline">\(\tilda{X}\)</span>は、元の行列<span class="math inline">\(X\)</span>と同じ形であり、かつ良い近似になっている。これを「行列の低ランク近似」と呼ぶが、ここではその詳細は触れない。</p>
+<p>本講義では、行列の特異値分解と低ランク近似を利用して、画像圧縮をしてみよう。</p>
 <h1 id="numpyとscipyの使い方課題">NumPyとSciPyの使い方：課題</h1>
 <h2 id="課題1シュレーディンガー方程式">課題1：シュレーディンガー方程式</h2>
 <h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
