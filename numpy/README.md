@@ -251,6 +251,59 @@ plt.plot(V)
 
 ## 課題2：行列の近似による画像処理
 
+### 1. ライブラリのインポート
+
+```py
+import IPython
+from PIL import Image
+from matplotlib import pyplot as plt
+import numpy as np
+from scipy import linalg
+```
+
+### 2. 画像のダウンロード
+
+```py
+!wget https://kaityo256.github.io/python_zero/numpy/stop.jpg
+```
+
+### 3. 画像の表示
+
+```py
+IPython.display.Image("stop.jpg")
+```
+
+### 4. モノクロへの変換
+
+```py
+img = Image.open('stop.jpg')
+gray_img = img.convert('L')
+gray_img.save('stop_mono.jpg')
+IPython.display.Image("stop_mono.jpg")
+```
+
+### 5. 特異値分解
+
+```py
+a = np.asarray(gray_img)
+u, s, v = linalg.svd(a)
+```
+
+### 6. 画像の低ランク近似
+
+```py
+rank = 10
+ur = u[:, :rank]
+sr = np.matrix(linalg.diagsvd(s[:rank], rank,rank))
+vr = v[:rank, :]
+b = np.asarray(ur*sr*vr)
+img2 = Image.fromarray(np.uint8(b))
+img2.save('output.jpg')
+IPython.display.Image("output.jpg")
+```
+
+上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。`rank = 10`の数字を増やすと近似精度が高く、減らすと低くなる。`rank = 5`の場合と、`rank=20`の場合にそれぞれ画像がどうなるか見てみよ。
+
 ## 余談：ライブラリについて
 
 スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。
@@ -258,5 +311,3 @@ plt.plot(V)
 通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱ったNumpyはそのような強力なライブラリの一つだ。
 
 よくプログラミング言語の優劣について聞かれるのだが、個人的な印象でいえば文法などはあまり重要でないと感じる。極論すれば、言語の優劣はライブラリの豊富さで決まる。Pythonには強力なライブラリが豊富にある。ある目的のために複数のライブラリを束ねたものをフレームワークと呼ぶ。Pythonには機械学習のフレームワークが多数存在し、機械学習を行うプログラミング言語のデファクトスタンダードとなっている。いずれにせよ、「とりあえずPythonを使って何かしたい」場合、Pythonの細かい文法を気にするより「当面はライブラリの使い方を学ぶ」と割り切った方が生産的だと思う。
-
-TODO: BLASについて追記する

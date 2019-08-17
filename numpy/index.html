@@ -190,11 +190,38 @@ plt.plot(v<span class="op">*</span><span class="dv">20</span><span class="op">+<
 plt.plot(V)</code></pre></div>
 <p>少し確率が井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
 <h2 id="課題2行列の近似による画像処理">課題2：行列の近似による画像処理</h2>
+<h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
+<span class="im">from</span> PIL <span class="im">import</span> Image
+<span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> scipy <span class="im">import</span> linalg</code></pre></div>
+<h3 id="画像のダウンロード">2. 画像のダウンロード</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>numpy<span class="op">/</span>stop.jpg</code></pre></div>
+<h3 id="画像の表示">3. 画像の表示</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">IPython.display.Image(<span class="st">&quot;stop.jpg&quot;</span>)</code></pre></div>
+<h3 id="モノクロへの変換">4. モノクロへの変換</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">&#39;stop.jpg&#39;</span>)
+gray_img <span class="op">=</span> img.convert(<span class="st">&#39;L&#39;</span>)
+gray_img.save(<span class="st">&#39;stop_mono.jpg&#39;</span>)
+IPython.display.Image(<span class="st">&quot;stop_mono.jpg&quot;</span>)</code></pre></div>
+<h3 id="特異値分解">5. 特異値分解</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.asarray(gray_img)
+u, s, v <span class="op">=</span> linalg.svd(a)</code></pre></div>
+<h3 id="画像の低ランク近似">6. 画像の低ランク近似</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rank <span class="op">=</span> <span class="dv">10</span>
+ur <span class="op">=</span> u[:, :rank]
+sr <span class="op">=</span> np.matrix(linalg.diagsvd(s[:rank], rank,rank))
+vr <span class="op">=</span> v[:rank, :]
+b <span class="op">=</span> np.asarray(ur<span class="op">*</span>sr<span class="op">*</span>vr)
+img2 <span class="op">=</span> Image.fromarray(np.uint8(b))
+img2.save(<span class="st">&#39;output.jpg&#39;</span>)
+IPython.display.Image(<span class="st">&quot;output.jpg&quot;</span>)</code></pre></div>
+<p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>rank = 10</code>の数字を増やすと近似精度が高く、減らすと低くなる。<code>rank = 5</code>の場合と、<code>rank=20</code>の場合にそれぞれ画像がどうなるか見てみよ。</p>
 <h2 id="余談ライブラリについて">余談：ライブラリについて</h2>
 <p>スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
 <p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱ったNumpyはそのような強力なライブラリの一つだ。</p>
 <p>よくプログラミング言語の優劣について聞かれるのだが、個人的な印象でいえば文法などはあまり重要でないと感じる。極論すれば、言語の優劣はライブラリの豊富さで決まる。Pythonには強力なライブラリが豊富にある。ある目的のために複数のライブラリを束ねたものをフレームワークと呼ぶ。Pythonには機械学習のフレームワークが多数存在し、機械学習を行うプログラミング言語のデファクトスタンダードとなっている。いずれにせよ、「とりあえずPythonを使って何かしたい」場合、Pythonの細かい文法を気にするより「当面はライブラリの使い方を学ぶ」と割り切った方が生産的だと思う。</p>
-<p>TODO: BLASについて追記する</p>
 </article>
 </body>
 </html>
