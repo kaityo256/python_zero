@@ -100,7 +100,7 @@ n! = 1 \cdot 2 \cdots n-1 \cdot n
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
     a <span class="op">=</span> <span class="dv">1</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
-        a <span class="op">*=</span> <span class="dv">1</span>
+        a <span class="op">*=</span> i
     <span class="cf">return</span> a</code></pre></div>
 <p>しかし、ここでは再帰の考え方を学ぶためにあえて再帰で書いてみよう。</p>
 <p>再帰プログラムの基本は「今解きたい問題よりも小さな問題の答えがすべてわかっている場合、いま解きたい問題の答えはどう記述できるだろうか？」という考え方である。</p>
