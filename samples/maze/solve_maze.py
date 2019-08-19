@@ -1,4 +1,6 @@
 import sys
+from PIL import Image, ImageDraw
+
 
 def find_start(maze):
     for r, row in enumerate(maze):
@@ -71,14 +73,42 @@ def read_maze(filename):
     with open(filename) as f:
         for line in f:
             maze.append(list(line.strip()))
+    return maze
+
+
+def save_image(maze):
+    g = 5
+    h = len(maze)
+    w = len(maze[0])
+    white = (255, 255, 255)
+    red = (255, 0, 0)
+    im = Image.new("RGB", (w*g, h*g), white)
+    draw = ImageDraw.Draw(im)
+    color = white
+    for ix in range(w):
+        for iy in range(h):
+            if maze[iy][ix] == ' ':
+                continue
+            elif maze[iy][ix] == '*':
+                color = red
+            x = ix*g
+            y = iy*g
+            draw.rectangle((x, y, x+g, y+g), fill=red)
+    im.save("test.png")
+
+
+def run(filename):
+    maze = read_maze(filename)
     sr, sc = find_start(maze)
     solve_maze(sr, sc, 0, maze)
     gr, gc = find_goal(maze)
     draw_path(gr, gc, 0, maze)
     erase_numbers(maze)
     show_maze(maze)
+    save_image(maze)
+
 
 if len(sys.argv) == 1:
     print("usage: python solve_maze.py inputfile")
 else:
-    read_maze(sys.argv[1])
+    run(sys.argv[1])
