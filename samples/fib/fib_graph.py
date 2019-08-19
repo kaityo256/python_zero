@@ -1,23 +1,21 @@
 from graphviz import Digraph
 
 
-def fib(n, parent, nodes, g):
-    index = len(nodes)
+def fib(n, g, nodes, parent=None):
+    index = str(len(nodes))
     nodes.append(index)
-    if n == 1:
-        g.node(str(index), str(n), color="red")
-    else:
-        g.node(str(index), str(n))
+    g.node(index, str(n))
 
     if parent is not None:
-        g.edge(str(index), str(parent))
+        g.edge(index, parent)
+
     if n in (0, 1):
         return
-    fib(n-1, index, nodes, g)
-    fib(n-2, index, nodes, g)
+    fib(n-1, g, nodes, index)
+    fib(n-2, g, nodes, index)
 
 
-g = Digraph(format="png")
-fib(6, None, [], g)
-g.graph_attr.update(size="10,10")
-g.render("test")
+graph = Digraph(format="png")
+fib(6, graph, [])
+graph.graph_attr.update(size="10,10")
+graph.render("test")

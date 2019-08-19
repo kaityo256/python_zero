@@ -71,16 +71,78 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="再帰呼び出し"><a href="https://kaityo256.github.io/python_zero/recursion/">再帰呼び出し</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
+<li>再帰呼び出しとは</li>
 <li>階段の登り方問題</li>
-<li>割り箸ゲーム</li>
-<li>ユニットテスト</li>
-<li>状態遷移図の可視化</li>
-<li>木構造の編集</li>
+<li>迷路</li>
 </ul>
+<h2 id="再帰呼び出しとは">再帰呼び出しとは</h2>
+<p>例えばパソコンを使っているとフォルダを扱うであろう。フォルダを開くと、その中にはやはりフォルダとファイルが含まれる。この事実をもって「フォルダ」という言葉を定義しようとすると「フォルダとは、フォルダとファイルを含むものである」となる。「フォルダ」の記述に、定義したい言葉である「フォルダ」が含まれていることがわかる。このように、何かの中に、その何かそのものが現れることを <strong>再帰(Recursion)</strong> と呼び、何かの定義に自分自身が現れることを <strong>再帰的定義(Recursive Definition)</strong> と呼ぶ。</p>
+<div class="figure">
+<img src="fig/folder.png" alt="フォルダの再帰的定義" />
+<p class="caption">フォルダの再帰的定義</p>
+</div>
+<p>プログラムにおける再帰とは、簡単に言ってしまえば「自分自身を呼び出す関数」のことである。プログラムにおいて関数の実装は「この関数が呼び出されたらこのような処理をせよ」という、定義にほかならない。ある関数の定義に、その関数そのものが含まれるので、これは再帰的な記述になっている。このように関数が自分自身を呼び出すことを <strong>再帰呼び出し(Recursive Call)</strong> と呼ぶ。以下、再帰予び出しを用いるアルゴリズムやプログラムを総称して単に「再帰」と呼ぶ。</p>
+<p>再帰は慣れると極めて強力なアルゴリズムであり、中級以上のプログラマになるためには必須のプログラミング技法である。しかし、プログラムの初学者にとって再帰はループ構造や制御構造に比べてその動作ステップをイメージしづらく、「初学者の壁」となっている。今回はそんな「再帰呼出し」を学ぶが、再帰はなんども組んでいるうちにおぼろげに感覚を掴んでくるものであって、たった一回の講義で理解することは難しい。とりあえず、以下の「再帰三カ条」だけを覚えておいて欲しい。</p>
+<p>再帰三カ条</p>
+<ul>
+<li>再帰とは、自分自身を呼び出す関数である</li>
+<li>関数の最初に「終端条件」を記述する</li>
+<li>「解きたい問題より小さな問題」に分解して自分自身を呼び出す</li>
+</ul>
+<p>必ずしも上記の形に当てはまらない再帰もあるが、それはその時に学べばよい。まずは上記三カ条が再帰の基本だと覚えておけばよい。</p>
+<p>簡単な例として、自然数nの階乗を返す関数<code>fact(n)</code>を考えてみよう。これは1からnまでの数の積だ。</p>
+<p><span class="math display">\[
+n! = 1 \cdot 2 \cdots n-1 \cdot n
+\]</span></p>
+<p>これをプログラムで計算したい。もちろん、以下のようにループを回してしまうのが簡単だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
+    a <span class="op">=</span> <span class="dv">1</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
+        a <span class="op">*=</span> <span class="dv">1</span>
+    <span class="cf">return</span> a</code></pre></div>
+<p>しかし、ここでは再帰の考え方を学ぶためにあえて再帰で書いてみよう。</p>
+<p>再帰プログラムの基本は「今解きたい問題よりも小さな問題の答えがすべてわかっている場合、いま解きたい問題の答えはどう記述できるだろうか？」という考え方である。</p>
+<p>nの階乗の値、<code>fact(n)</code>の値を知りたい時、もし(n-1)の階乗の値<code>fact(n-1)</code>がわかっているとしよう。すると、欲しい値はそれにnをかけたものだ。つまり、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fact(n) <span class="op">=</span> n <span class="op">*</span> fact(n<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
+<p>である。関数のある値を得るのに、その関数自身を使っている、再帰的な記述になっているのがわかるであろう。</p>
+<p>さて、<code>fact(n-1)</code>の値は<code>fact(n-2)</code>にn-1をかけたものであり、<code>fact(n-2)</code>は<code>fact(n-3)</code>の値にn-2をかけたもので・・・とどんんどん<code>fact</code>の中身が小さくなり、いつかは<code>fact(1)</code>になるであろう。1の階乗は1であり、ここで終了である。</p>
+<p>以上から、階乗を求めるプログラムを再帰を使って書くとこうなる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
+    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:
+        <span class="cf">return</span> <span class="dv">1</span>
+
+    <span class="cf">return</span> n <span class="op">*</span> fact(n<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
+<p>これが、先ほどの「再帰三カ条」に従っていることを確認しよう。</p>
+<ul>
+<li>再帰とは、自分自身を呼び出す関数である</li>
+<li><code>fact</code>の定義に、<code>fact</code>自身が使われている</li>
+<li>関数の最初に「終端条件」を記述する</li>
+<li>引数<code>n</code>として1が指定されたら1を返して終了</li>
+<li>「解きたい問題より小さな問題」に分解して自分自身を呼び出す</li>
+<li>自分が受け取った引数<code>n</code>に対して、<code>n-1</code>を引数として自身を呼び出している</li>
+</ul>
+<div class="figure">
+<img src="fig/recursion3.png" alt="再帰三カ条" />
+<p class="caption">再帰三カ条</p>
+</div>
+<p>実際にこの関数<code>fact</code>の動作を見てみよう。例えば<code>fact(3)</code>として呼び出すことを考える。</p>
+<ol style="list-style-type: decimal">
+<li>まず3は1ではないので終端条件にはマッチせず、<code>fact(2)</code>が呼ばれる</li>
+<li>同様に<code>fact(1)</code>が呼ばれる</li>
+<li><code>n</code>として1が代入されて呼ばれた<code>fact(1)</code>は、終端条件にマッチして1を返す</li>
+<li><code>fact(1)</code>を呼んだ<code>fact(2)</code>は、<code>fact(1)</code>の返り値1に2をかけた2を返す</li>
+<li><code>fact(2)</code>を呼んだ<code>fact(3)</code>は、<code>fact(2)</code>の返り値2に3をかけた6を返して値が確定</li>
+</ol>
+<div class="figure">
+<img src="fig/roundtrip.png" alt="再帰の動作" />
+<p class="caption">再帰の動作</p>
+</div>
+<p>つまり、再帰関数はどんどん問題を小さくしながら自分自身を呼び出していき、どこかで「終端条件」に達すると、そこから呼び出し履歴を逆にたどりながら帰ってくる。標語的に言えば「再帰は行って返って」くる。この「問題を棚上げしながら単純化していき、どこかで終端条件に達したら、これまで棚上げにした問題を解決しながら戻ってくる」という感覚を身につけることが再帰プログラムの肝である。</p>
 <h2 id="階段の登り方問題">階段の登り方問題</h2>
-<p>再帰呼出し(recursive call)とは、関数などの手続きが、自分自身を呼び出すことである。再帰呼出しは慣れると極めて強力なアルゴリズムであり、中級以上のプログラマになるためには必須のプログラミング技法である。しかし、プログラムの初学者にとって再帰はループ構造や制御構造に比べてその動作ステップを想像することが難しい。今回は、この再帰呼び出しについて学んでみよう。</p>
-<p>突然だが、「階段ののぼり方問題」を考える。いま、目の前に<span class="math inline">\(n\)</span>段の階段があるとする。一度に1段、もしくは2段登るやり方を混ぜて登る時、「登り方の総数」は全部で何通りあるだろうか？</p>
+<p>先程の階乗を求める問題は、あまりに簡単過ぎて再帰を使うメリットが感じられなかったであろう。そこで、もう少し複雑な問題として「階段の登り方問題」を考えよう。</p>
+<p>いま、目の前に<span class="math inline">\(n\)</span>段の階段があるとする。一度に1段、もしくは2段登るやり方を混ぜて登る時、「登り方の総数」は全部で何通りあるだろうか？</p>
 <div class="figure">
 <img src="fig/kaidan.png" alt="階段の登り方問題" />
 <p class="caption">階段の登り方問題</p>
@@ -104,63 +166,71 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \end{aligned}
 \]</span></p>
 <p>の5通りである。さて、これを一般化して、<span class="math inline">\(n\)</span>段の時の登り方<span class="math inline">\(F_n\)</span>はどのように求めればよいだろうか？このような場合に「再帰的」な考え方をする。</p>
-<p>今、<span class="math inline">\(n-1\)</span>段までの登り方、<span class="math inline">\(F_1, F_2, \cdots F_{n-1}\)</span>が全てわかっているとしよう。その知識を使って、<span class="math inline">\(F_n\)</span>の値を求められないだろうか？</p>
-<p>最初のステップを考えよう。眼の前に<span class="math inline">\(n\)</span>段の階段がある。できることは、1段登るか、2段登るかの二通りである。さて、1段登ったら、残りは<span class="math inline">\(n-1\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-1}\)</span>通りである。2段登ったら残りは<span class="math inline">\(n-2\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-2}\)</span>通りである。ここから、漸化式</p>
+<p>再帰プログラムの基本は「今解きたい問題よりも小さな問題の答えがすべてわかっている場合、いま解きたい問題の答えはどう記述できるだろうか？」と考えることであった。今、<span class="math inline">\(n-1\)</span>段までの登り方、<span class="math inline">\(F_1, F_2, \cdots F_{n-1}\)</span>が全てわかっているとしよう。その知識を使って、<span class="math inline">\(F_n\)</span>の値を求められないだろうか？</p>
+<p>最初のステップを考えよう。眼の前に<span class="math inline">\(n\)</span>段の階段がある。できることは、1段登るか、2段登るかの二通りである。さて、1段登ったら、残りは<span class="math inline">\(n-1\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-1}\)</span>通りである。2段登ったら残りは<span class="math inline">\(n-2\)</span>段であるから、その登り方は<span class="math inline">\(F_{n-2}\)</span>通りである。最初のステップでできることはこの二つしかなく、それらは重複しないので、階段の登り方の総数はその二通りの和である。</p>
+<p>ここから、漸化式</p>
 <p><span class="math display">\[
 F_n = F_{n-1} + F_{n-2}
 \]</span></p>
 <p>が成り立つことがわかる。さて、左辺にも右辺にも「登り方<span class="math inline">\(F\)</span>」が登場する。つまり、ある<span class="math inline">\(F\)</span>を、別の引数をもった<span class="math inline">\(F\)</span>自身で、再帰的に表現していることがわかる。さらに、左辺に比べて右辺は問題サイズ<span class="math inline">\(n\)</span>が小さいことがわかるであろう。つまり、ある大きさ<span class="math inline">\(n\)</span>をもつ問題が、それより小さいサイズの<span class="math inline">\(n-1\)</span>と<span class="math inline">\(n-2\)</span>という問題を解くことに帰着された。これが再帰の考え方である。すなわち、再帰アルゴリズムは本質的に<strong>分割統治法</strong>である。</p>
-<p>では、これをプログラムにしてみよう。再帰プログラムは、</p>
-<ul>
-<li>最初に終了条件を書く</li>
-<li>次に「より小さい問題」にして自分自身を呼び出す</li>
-</ul>
-<p>という構造になっている。</p>
-<p>先程の「階段の登り方問題」の場合は、<span class="math inline">\(n=1\)</span>の時には1通り、<span class="math inline">\(n=2\)</span>の時には2通りなので、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
-    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:
-        <span class="cf">return</span> <span class="dv">1</span>
-    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">2</span>:
-        <span class="cf">return</span> <span class="dv">2</span></code></pre></div>
-<p>と書く。なお、タプルと<code>in</code>を使うと</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
-    <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">1</span>,<span class="dv">2</span>):
-        <span class="cf">return</span> n</code></pre></div>
-<p>と書ける。これで<span class="math inline">\(n=1\)</span>の時と<span class="math inline">\(n=2\)</span>の時の処理が書けた。</p>
-<p>次に、それ以上の場合、例えば<span class="math inline">\(n=3\)</span>の場合には、<span class="math inline">\(n=2\)</span>の場合と<span class="math inline">\(n=1\)</span>の場合の登り方の和なのであった。それをそのまま書く。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
-    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:
-        <span class="cf">return</span> <span class="dv">1</span>
-    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">2</span>:
-        <span class="cf">return</span> <span class="dv">2</span>
-    <span class="cf">return</span> kaidan(n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> kaidan(n<span class="op">-</span><span class="dv">2</span>)</code></pre></div>
-<p>以上で終わりである。実際に上記のコードをセルに記入して実行せよ。</p>
-<p>次に、二つ目のセルに</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">kaidan(<span class="dv">3</span>)</code></pre></div>
-<p>と入力し、引数を変えながら実行せよ。例えば<code>kaidan(10)</code>はいくつになるか？</p>
-<h2 id="再帰木">再帰木</h2>
-<p>再帰プログラムの難しさは、「プログラムがどのように実行されるかが分かりづらい」という点にある。繰り返すや条件分岐はそのままたどれば良いのだが、再帰プログラムは何度も自分を呼び出し、そして呼び出し先から返ってくる。この振る舞いを可視化してみよう。</p>
-<p>いま、</p>
-<ul>
-<li>1つ目のセルに<code>kaidan</code>の定義</li>
-<li>2つ目のセルに<code>kaidan</code>の呼び出し</li>
-</ul>
-<p>が書いてあるはずである。この状態から2つ目のセルを削除し、以下のセルを新しく作成せよ。</p>
+<p>後の課題で階段の登り方問題を実装し、それがどうやって「行って帰って」来るかを見てみよう。</p>
+<h2 id="迷路">迷路</h2>
+<p>TODO:迷路の解法を書く</p>
+<h1 id="再帰呼び出し課題">再帰呼び出し：課題</h1>
+<h2 id="課題1階段の登り方問題">課題1：階段の登り方問題</h2>
+<p>新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
+<h3 id="課題1-1再帰の実装">課題1-1：再帰の実装</h3>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>直接再帰には関係ないが、後で再帰木を可視化をするために必要なライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
 <span class="im">import</span> IPython</code></pre></div>
-<p>これは、グラフを描画するための準備である。セルを作成したら、実行した上で「↑」ボタンで一番上に移動し、</p>
+<h4 id="再帰関数kaidanの実装">2. 再帰関数<code>kaidan</code>の実装</h4>
+<p>2つ目のセルに、<code>n</code>段の階段の登り方を返す関数<code>kaidan(n)</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
+    <span class="co"># ここを埋めよ</span></code></pre></div>
+<p>実装すべきは終端条件と再帰部分である。終端条件は以下の二つであった。</p>
 <ul>
-<li>1つ目のセルに<code>import</code>宣言</li>
-<li>2つ目のセルに<code>kaidan</code>の定義</li>
+<li>終端条件：<code>n</code>が1の時には1を返す(<code>kaidan(1)</code>=1)</li>
+<li>終端条件：<code>n</code>が2の時には2を返す(<code>kaidan(2)</code>=2)</li>
 </ul>
-<p>とすること。</p>
-<p>TODO: 速度の測定とメモ化について</p>
+<p>これは「nが1もしくは2ならば、nを返す」と実装すればよい。</p>
+<p>nが1でも2でもない場合は、<code>kaidan(n-1)</code>と<code>kaidan(n-2)</code>の和を返せば良い。</p>
+<h4 id="kaidanの確認">3. <code>kaidan</code>の確認</h4>
+<p>関数<code>kaidan</code>が実装できたら動作確認をしてみよう。3つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">kaidan(<span class="dv">3</span>)</code></pre></div>
+<p>答えが3になっただろうか？また、<code>kaidan(4)</code>が5に、<code>kaidan(5)</code>が8になることを確認せよ。<code>kaidan(10)</code>の値はどうなるだろうか？</p>
+<h3 id="課題1-2再帰木の表示">課題1-2：再帰木の表示</h3>
+<p>再帰プログラムの難しさは、「プログラムがどのように実行されるかが分かりづらい」という点にある。繰り返すや条件分岐はそのままたどれば良いのだが、再帰プログラムは何度も自分を呼び出し、そして呼び出し先から返ってくる。この振る舞いを可視化してみよう。</p>
+<h4 id="再帰木の可視化関数kaidan_gの実装">4. 再帰木の可視化関数<code>kaidan_g</code>の実装</h4>
+<p>4つ目のセルに以下を実装しよう。これはグラフオブジェクト<code>g</code>を受け取り、階段の登り方がどのように呼び出されているかを可視化する関数だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan_g(n, g, nodes, parent<span class="op">=</span><span class="va">None</span>):
+    index <span class="op">=</span> <span class="bu">str</span>(<span class="bu">len</span>(nodes))
+    nodes.append(index)
+    g.node(index, <span class="bu">str</span>(n))
+
+    <span class="cf">if</span> parent <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:
+        g.edge(index, parent)
+
+    <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>):
+        <span class="cf">return</span>
+    kaidan_g(n<span class="op">-</span><span class="dv">1</span>, g, nodes, index)
+    kaidan_g(n<span class="op">-</span><span class="dv">2</span>, g, nodes, index)</code></pre></div>
+<h4 id="再帰木の可視化">5. 再帰木の可視化</h4>
+<p>では、先程実装した<code>kaidan_g</code>を利用して、再帰木を可視化してみよう。5つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
+kaidan_g(<span class="dv">5</span>, graph, [])
+graph.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
+graph.render(<span class="st">&quot;test&quot;</span>)
+IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
+<h2 id="課題2再帰による迷路の解法">課題2：再帰による迷路の解法</h2>
+<p>TODO: 書く</p>
 <h2 id="余談エレファントな解法">余談：エレファントな解法</h2>
 <p>チェス、将棋、囲碁、オセロといった「ゲーム」は、局面によって打てる「手」が決まっており、これを「合法手」と呼ぶ。何か「手」を打つと局面が変化し、また合法手も変化する。今、局面によって平均で4種類の合法手があり、勝負がつくまでに10手程度かかるゲームがあるとする。最終局面の数は4の10乗で、およそ100万通りである。もし勝負がつくまでに40手かかるとすると、4の40乗でおよそ一兆通りになる。このように、ゲームの状態数は、手の数に対して指数関数的に増えていく。このように、問題サイズに対して状態数が指数関数的に増えることを <strong>組み合わせ爆発</strong> と呼ぶ。組み合わせ爆発を題材にした、日本科学未来館の<a href="https://www.youtube.com/watch?v=Q4gTV4r0zRs">フカシギの数え方</a>という動画、通称「フカシギおねえさん」は面白いので是非一度見てみられたい。</p>
-<p>一般に組み合わせ爆発を起こすと計算機を使っても手も足もでないことが多いのだが、うまく「大きいけど有限」に問題を落とすことができると、計算機で「読み切る」ことができる。その有名な例が四色問題であろう。四色問題とは「二次元の地図に対して、隣り合う領域を同じ色に塗らないという条件を満たしつつ全ての領域に色を塗るのに四色あれば足りるか」という命題である。簡単な地図を描くことで三色では足りないことがわかり、また六色あれば足りることの証明は容易である。五色で足りる証明(証明はかなり面倒だ)も提案されたが、四色で足りることの数学的な証明は長らくされなかった。四色問題が提起されてからおよそ100年後の1976年、アッペルとハーケンは、四色問題問題を「大きいが有限」の問題に帰着させ、その上でスパコンで力任せに「四色で足りる」ことを証明した。雑な言い方をすれば「この地図すべてを四色で塗ることができれば、いかなる地図も四色で塗ることができる」という「基礎地図(正確には不可避集合)」をすべてリストアップし、その「基礎地図」がすべて四色で塗り分けられることを示す、という方法である。</p>
+<p>一般に組み合わせ爆発が起きると計算機を使っても手も足もでないことが多いのだが、うまく「大きいけど有限」に問題を落とすことができると計算機で「読み切る」ことができる。その有名な例が四色問題であろう。四色問題とは「二次元の地図に対して、隣り合う領域を同じ色に塗らないという条件を満たしつつ全ての領域に色を塗るのに四色あれば足りるか」という命題である。簡単な地図を描くことで三色では足りないことがわかり、また六色あれば足りることの証明は容易である。五色で足りる証明(証明はかなり面倒だ)も提案されたが、四色で足りることの数学的な証明は長らくされなかった。四色問題が提起されてからおよそ100年後の1976年、アッペルとハーケンは、四色問題問題を「大きいが有限」の問題に帰着させ、その上でスパコンで力任せに「四色で足りる」ことを証明した。雑な言い方をすれば「この地図すべてを四色で塗ることができれば、いかなる地図も四色で塗ることができる」という「基礎地図(正確には不可避集合)」をすべてリストアップし、その「基礎地図」がすべて四色で塗り分けられることを示す、という方法である。</p>
 <p>似たような「証明」に、「9×9の数独について、解が一意であるためには最低ヒントが17個必要である」という定理もある。これも、「すべての可能な数独の問題」に対して、それぞれに「すべての16ヒント問題」を作り、それが全て解が一意でないことをスパコンで力任せに確認することで証明された。このように「大きいが有限」の問題に帰着させて計算機で力任せに解いてしまうことを「エレファントな証明」と呼ぶ。数学の美しい証明を「エレガントな証明」と呼ぶことの対比である。</p>
 <p>果たして「エレファントな証明」は人類を賢くしているのか？というのは難しい問題であり、現在もよく議論になる。例えばオセロも6×6マスまでは完全に解析されており(後手必勝である)、その知識を使えば、後手番なら絶対に負けない思考ルーチンを作ることができるのだが、果たしてそれは「思考」ルーチンといえるのだろうか？このような問題は、例えば<a href="https://ja.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E8%AA%9E%E3%81%AE%E9%83%A8%E5%B1%8B">中国語の部屋</a>という思考実験で問題提起されている。</p>
-<p>私個人の意見としては、「エレファント」であろうと証明は証明だし、人類の知識を増やしたことは間違いないと考えている。ただし、それが「人類を賢くしたか」は別問題である。今後、「計算機が何か答えを出し、なぜかはわからないがそれが正しいように見える」ことが増えるであろう(天気予報が典型例だ)。このような「計算機の知性」と人類はどう向き合うべきか、は難しい問題である。</p>
+<p>私個人の意見としては、「エレファント」であろうと証明は証明だし、人類の知識を増やしたことは間違いないと考えている。ただし、それが「人類を賢くしたか」は別問題である。今後、「計算機が何か答えを出し、なぜかはわからないがそれが正しいように見える」ことが増えるであろう(天気予報が典型例だ)。このような「計算された知性」と人類はどう向き合うべきか、は難しい問題である。</p>
 </article>
 </body>
 </html>
