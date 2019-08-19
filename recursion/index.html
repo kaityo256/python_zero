@@ -223,6 +223,7 @@ graph.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,1
 graph.render(<span class="st">&quot;test&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
+<p>もし正しく表示されたら、2行目を<code>kaidan_g(8, graph, [])</code>などとして、少し大きな再帰木も表示してみよ。</p>
 <h2 id="課題2再帰による迷路の解法">課題2：再帰による迷路の解法</h2>
 <p>TODO: 書く</p>
 <h2 id="余談エレファントな解法">余談：エレファントな解法</h2>
