@@ -78,9 +78,9 @@ def make_maze(m, n):
         if check_finish(cluster_index):
             break
 
-    maze[2*m-1][1] = 'S'
-    maze[1][2*n-1] = 'G'
+    maze[1][1] = 'S'
+    maze[2*m-1][2*n-1] = 'G'
     show_maze(maze)
 
 
-make_maze(10, 20)
+make_maze(20, 10)
