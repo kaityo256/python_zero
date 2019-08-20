@@ -228,6 +228,8 @@ IPython.display.Image("test.png")
 
 #### 1.必要なライブラリのインポート
 
+最初のセルで、必要なライブラリをインポートしておこう。
+
 ```py
 import pickle
 import IPython
@@ -237,18 +239,17 @@ from matplotlib import pyplot as plt
 
 #### 2. 迷路データのダウンロード
 
-```py
-!wget TODO
-```
-
-ローカルからのアップロード。
+次に、迷路データをダウンロードする。
 
 ```py
-from google.colab import files
-uploaded = files.upload()
+!wget https://kaityo256.github.io/python_zero/recursion/maze.pickle
 ```
+
+これは二次元リストをPickle(漬物)という方法で保存したものだ。
 
 #### 3. 迷路データの可視化
+
+迷路の状態を可視化し、ファイルに保存する関数`save_image`を実装しよう。3つ目のセルに以下を実装せよ。
 
 ```py
 def save_image(maze, filename = "test.png"):
@@ -281,13 +282,26 @@ def save_image(maze, filename = "test.png"):
 
 #### 4. 迷路データの読み込み
 
+`save_image`が正しく実装できたか確認しよう。Pickle(漬物)になっている迷路データを読み込み、表示してみる。以下を4番目のセルで実行せよ。
+
 ```py
 with open('maze.pickle', 'rb') as f:
     maze = pickle.load(f)
 save_image(maze)
 ```
 
+左上にスタート地点(青)、右下にゴール地点(緑)がある迷路が表示されたはずだ。
+
 #### 5. 迷路を解くルーチン
+
+ではさっそく迷路を解く関数`solve`を書いてみよう。やるべきことは単純で、
+
+* 迷路データが壁`*`ならそこには行かない
+* すでに足跡が残っている(`maze[x][y]`に数字が入っている)なら、そこには行かない
+
+というのが終端条件だ。
+
+終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索する。以上をそのまま実装すると以下のようになる。
 
 ```py
 def solve(x, y, step, maze):
@@ -304,14 +318,18 @@ def solve(x, y, step, maze):
 
 #### 6. 迷路を解く
 
+6つ目のセルで、迷路を解くルーチンを呼び出してみよう。
+
 ```py
 solve(1, 1, 0, maze)
 save_image(maze)
 ```
 
-探索済みのセルが灰色に表示される。すべてのセルが灰色になったはずである。
+すべてのセルが灰色(探索済み)になったはずである。
 
 #### 7. 経路探索
+
+さて、探索済みの迷路は、全ての部屋に「入り口からの距離」が書いてある。それを逆にゴールからカウントダウンしながらたどっていけば、それが答えだ。7つ目のセルに以下を実装せよ。
 
 ```py
 def draw_path(x, y, count, maze):
@@ -327,7 +345,16 @@ def draw_path(x, y, count, maze):
     draw_path(x, y-1, count, maze)
 ```
 
+やはり再帰で書いてあるが、
+
+* もし足跡のある部屋でなければそこには行かない
+* 現在の部屋よりカウントが減らない部屋には行かない
+
+というのが終端条件で、終端条件に該当しなかった場合は「答え用の足跡」を残してカウントを減らし、やはり上下左右の部屋に探索に行く。
+
 #### 8. 解の確認
+
+では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。
 
 ```py
 draw_path(39, 19, maze[39][19], maze)
@@ -338,7 +365,11 @@ save_image(maze)
 
 ### 任意課題：迷路を解く様子の可視化
 
+せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。
+
 #### 9. アニメーション用ライブラリのロード
+
+まず、アニメーション用のライブラリをインストール、ロードする。以下は上から数えて9つ目のセルになるはずだ。
 
 ```py
 !pip install apng
@@ -346,6 +377,8 @@ from apng import APNG
 ```
 
 #### 10. アニメーション用のソルバ
+
+次に、アニメーション用の探索ルーチンを書く。ほとんど`solve`と同じだが、毎ステップの状態をファイルに保存する処理が追加されている。
 
 ```py
 def solve_anime(x, y, step, maze, files):
@@ -366,6 +399,8 @@ def solve_anime(x, y, step, maze, files):
 
 #### 11. アニメーションの保存
 
+先程読み込んだ迷路データは「探索済み」になっているため、ファイルから読み込み直して、`solve_anime`を使って探索しなおそう。
+
 ```py
 with open('maze.pickle', 'rb') as f:
     maze = pickle.load(f)
@@ -373,12 +408,18 @@ files = []
 solve_anime(1,1,0,maze,files)
 ```
 
+上記を実行することで、探索の様子が連番のファイル(file000.png, file001.png, …)に保存され、そのファイルリストが`files`に帰ってくる。
+
 #### 12. アニメーションの表示
+
+得られたファイルリストを使ってアニメーションを作成しよう。以下を実行せよ。
 
 ```py
 APNG.from_files(files, delay=50).save("animation.png")
 IPython.display.Image("animation.png")
 ```
+
+ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。
 
 ## 余談：エレファントな解法
 
