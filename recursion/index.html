@@ -225,7 +225,132 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 <p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
 <p>もし正しく表示されたら、2行目を<code>kaidan_g(8, graph, [])</code>などとして、少し大きな再帰木も表示してみよ。</p>
 <h2 id="課題2再帰による迷路の解法">課題2：再帰による迷路の解法</h2>
-<p>TODO: 書く</p>
+<h3 id="課題2-1-迷路を解く">課題2-1 迷路を解く</h3>
+<h4 id="必要なライブラリのインポート">1.必要なライブラリのインポート</h4>
+<p>最初のセルで、必要なライブラリをインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> pickle
+<span class="im">import</span> IPython
+<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
+<span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</code></pre></div>
+<h4 id="迷路データのダウンロード">2. 迷路データのダウンロード</h4>
+<p>次に、迷路データをダウンロードする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>maze.pickle</code></pre></div>
+<p>これは二次元リストをPickle(漬物)という方法で保存したものだ。</p>
+<h4 id="迷路データの可視化">3. 迷路データの可視化</h4>
+<p>迷路の状態を可視化し、ファイルに保存する関数<code>save_image</code>を実装しよう。3つ目のセルに以下を実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> save_image(maze, filename <span class="op">=</span> <span class="st">&quot;test.png&quot;</span>):
+    g <span class="op">=</span> <span class="dv">10</span>
+    w <span class="op">=</span> <span class="bu">len</span>(maze)
+    h <span class="op">=</span> <span class="bu">len</span>(maze[<span class="dv">0</span>])
+    white <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>)
+    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (w<span class="op">*</span>g, h<span class="op">*</span>g), white)
+    draw <span class="op">=</span> ImageDraw.Draw(im)
+    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(w):
+        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(h):
+            x <span class="op">=</span> ix<span class="op">*</span>g
+            y <span class="op">=</span> iy <span class="op">*</span> g
+            s <span class="op">=</span> maze[ix][iy]
+            color <span class="op">=</span> white
+            <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
+                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;S&#39;</span>:
+                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
+            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;G&#39;</span>:
+                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
+            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;+&#39;</span>:
+                color <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+            <span class="cf">if</span> <span class="bu">isinstance</span>(maze[ix][iy], <span class="bu">int</span>):
+                color <span class="op">=</span> (<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">128</span>)
+            draw.rectangle((x, y, x<span class="op">+</span>g, y<span class="op">+</span>g), fill<span class="op">=</span>color)
+    im.save(filename)
+    plt.imshow(Image.<span class="bu">open</span>(filename))</code></pre></div>
+<h4 id="迷路データの読み込み">4. 迷路データの読み込み</h4>
+<p><code>save_image</code>が正しく実装できたか確認しよう。Pickle(漬物)になっている迷路データを読み込み、表示してみる。以下を4番目のセルで実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
+    maze <span class="op">=</span> pickle.load(f)
+save_image(maze)</code></pre></div>
+<p>左上にスタート地点(青)、右下にゴール地点(緑)がある迷路が表示されたはずだ。</p>
+<h4 id="迷路を解くルーチン">5. 迷路を解くルーチン</h4>
+<p>ではさっそく迷路を解く関数<code>solve</code>を書いてみよう。やるべきことは単純で、</p>
+<ul>
+<li>迷路データが壁<code>*</code>ならそこには行かない</li>
+<li>すでに足跡が残っている(<code>maze[x][y]</code>に数字が入っている)なら、そこには行かない</li>
+</ul>
+<p>というのが終端条件だ。</p>
+<p>終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索する。以上をそのまま実装すると以下のようになる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve(x, y, step, maze):
+    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
+        <span class="cf">return</span>
+    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
+        <span class="cf">return</span>
+    maze[x][y] <span class="op">=</span> step
+    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
+    solve(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
+    solve(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)
+    solve(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</code></pre></div>
+<h4 id="迷路を解く">6. 迷路を解く</h4>
+<p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
+save_image(maze)</code></pre></div>
+<p>すべてのセルが灰色(探索済み)になったはずである。</p>
+<h4 id="経路探索">7. 経路探索</h4>
+<p>さて、探索済みの迷路は、全ての部屋に「入り口からの距離」が書いてある。それを逆にゴールからカウントダウンしながらたどっていけば、それが答えだ。7つ目のセルに以下を実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_path(x, y, count, maze):
+    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
+        <span class="cf">return</span>
+    <span class="cf">if</span> maze[x][y] <span class="op">!=</span> count:
+        <span class="cf">return</span>
+    maze[x][y] <span class="op">=</span> <span class="st">&#39;+&#39;</span>
+    count <span class="op">-=</span> <span class="dv">1</span>
+    draw_path(x<span class="op">+</span><span class="dv">1</span>, y, count, maze)
+    draw_path(x<span class="op">-</span><span class="dv">1</span>, y, count, maze)
+    draw_path(x, y<span class="op">+</span><span class="dv">1</span>, count, maze)
+    draw_path(x, y<span class="op">-</span><span class="dv">1</span>, count, maze)</code></pre></div>
+<p>やはり再帰で書いてあるが、</p>
+<ul>
+<li>もし足跡のある部屋でなければそこには行かない</li>
+<li>現在の部屋よりカウントが減らない部屋には行かない</li>
+</ul>
+<p>というのが終端条件で、終端条件に該当しなかった場合は「答え用の足跡」を残してカウントを減らし、やはり上下左右の部屋に探索に行く。</p>
+<h4 id="解の確認">8. 解の確認</h4>
+<p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">draw_path(<span class="dv">39</span>, <span class="dv">19</span>, maze[<span class="dv">39</span>][<span class="dv">19</span>], maze)
+save_image(maze)</code></pre></div>
+<p>解答となるパスが赤く表示されたはずだ。</p>
+<h3 id="任意課題迷路を解く様子の可視化">任意課題：迷路を解く様子の可視化</h3>
+<p>せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。</p>
+<h4 id="アニメーション用ライブラリのロード">9. アニメーション用ライブラリのロード</h4>
+<p>まず、アニメーション用のライブラリをインストール、ロードする。以下は上から数えて9つ目のセルになるはずだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng
+<span class="im">from</span> apng <span class="im">import</span> APNG</code></pre></div>
+<h4 id="アニメーション用のソルバ">10. アニメーション用のソルバ</h4>
+<p>次に、アニメーション用の探索ルーチンを書く。ほとんど<code>solve</code>と同じだが、毎ステップの状態をファイルに保存する処理が追加されている。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve_anime(x, y, step, maze, files):
+    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
+        <span class="cf">return</span>
+    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
+        <span class="cf">return</span>
+    maze[x][y] <span class="op">=</span> step
+    index <span class="op">=</span> <span class="bu">len</span>(files)
+    filename <span class="op">=</span> <span class="st">&quot;file</span><span class="sc">%03d</span><span class="st">.png&quot;</span> <span class="op">%</span> index
+    save_image(maze,filename)
+    files.append(filename)
+    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files)
+    solve_anime(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files)
+    solve_anime(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze, files)
+    solve_anime(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze, files)</code></pre></div>
+<h4 id="アニメーションの保存">11. アニメーションの保存</h4>
+<p>先程読み込んだ迷路データは「探索済み」になっているため、ファイルから読み込み直して、<code>solve_anime</code>を使って探索しなおそう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
+    maze <span class="op">=</span> pickle.load(f)
+files <span class="op">=</span> []
+solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</code></pre></div>
+<p>上記を実行することで、探索の様子が連番のファイル(file000.png, file001.png, …)に保存され、そのファイルリストが<code>files</code>に帰ってくる。</p>
+<h4 id="アニメーションの表示">12. アニメーションの表示</h4>
+<p>得られたファイルリストを使ってアニメーションを作成しよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)
+IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<p>ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。</p>
 <h2 id="余談エレファントな解法">余談：エレファントな解法</h2>
 <p>チェス、将棋、囲碁、オセロといった「ゲーム」は、局面によって打てる「手」が決まっており、これを「合法手」と呼ぶ。何か「手」を打つと局面が変化し、また合法手も変化する。今、局面によって平均で4種類の合法手があり、勝負がつくまでに10手程度かかるゲームがあるとする。最終局面の数は4の10乗で、およそ100万通りである。もし勝負がつくまでに40手かかるとすると、4の40乗でおよそ一兆通りになる。このように、ゲームの状態数は、手の数に対して指数関数的に増えていく。このように、問題サイズに対して状態数が指数関数的に増えることを <strong>組み合わせ爆発</strong> と呼ぶ。組み合わせ爆発を題材にした、日本科学未来館の<a href="https://www.youtube.com/watch?v=Q4gTV4r0zRs">フカシギの数え方</a>という動画、通称「フカシギおねえさん」は面白いので是非一度見てみられたい。</p>
 <p>一般に組み合わせ爆発が起きると計算機を使っても手も足もでないことが多いのだが、うまく「大きいけど有限」に問題を落とすことができると計算機で「読み切る」ことができる。その有名な例が四色問題であろう。四色問題とは「二次元の地図に対して、隣り合う領域を同じ色に塗らないという条件を満たしつつ全ての領域に色を塗るのに四色あれば足りるか」という命題である。簡単な地図を描くことで三色では足りないことがわかり、また六色あれば足りることの証明は容易である。五色で足りる証明(証明はかなり面倒だ)も提案されたが、四色で足りることの数学的な証明は長らくされなかった。四色問題が提起されてからおよそ100年後の1976年、アッペルとハーケンは、四色問題問題を「大きいが有限」の問題に帰着させ、その上でスパコンで力任せに「四色で足りる」ことを証明した。雑な言い方をすれば「この地図すべてを四色で塗ることができれば、いかなる地図も四色で塗ることができる」という「基礎地図(正確には不可避集合)」をすべてリストアップし、その「基礎地図」がすべて四色で塗り分けられることを示す、という方法である。</p>
