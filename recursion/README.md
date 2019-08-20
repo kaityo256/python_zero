@@ -224,7 +224,155 @@ IPython.display.Image("test.png")
 
 ## 課題2：再帰による迷路の解法
 
-TODO: 書く
+### 課題2-1 迷路を解く
+
+#### 1.必要なライブラリのインポート
+
+```py
+import pickle
+import IPython
+from PIL import Image, ImageDraw
+from matplotlib import pyplot as plt
+```
+
+#### 2. 迷路データのダウンロード
+
+```py
+!wget TODO
+```
+
+ローカルからのアップロード。
+
+```py
+from google.colab import files
+uploaded = files.upload()
+```
+
+#### 3. 迷路データの可視化
+
+```py
+def save_image(maze, filename = "test.png"):
+    g = 10
+    w = len(maze)
+    h = len(maze[0])
+    white = (255, 255, 255)
+    im = Image.new("RGB", (w*g, h*g), white)
+    draw = ImageDraw.Draw(im)
+    for ix in range(w):
+        for iy in range(h):
+            x = ix*g
+            y = iy * g
+            s = maze[ix][iy]
+            color = white
+            if s == '*':
+                color = (0, 0, 0)
+            elif s == 'S':
+                color = (0, 0, 255)
+            elif s == 'G':
+                color = (0, 255, 0)
+            elif s == '+':
+                color = (255, 0, 0)
+            if isinstance(maze[ix][iy], int):
+                color = (128, 128, 128)
+            draw.rectangle((x, y, x+g, y+g), fill=color)
+    im.save(filename)
+    plt.imshow(Image.open(filename))
+```
+
+#### 4. 迷路データの読み込み
+
+```py
+with open('maze.pickle', 'rb') as f:
+    maze = pickle.load(f)
+save_image(maze)
+```
+
+#### 5. 迷路を解くルーチン
+
+```py
+def solve(x, y, step, maze):
+    if maze[x][y] == '*':
+        return
+    if isinstance(maze[x][y], int):
+        return
+    maze[x][y] = step
+    solve(x+1, y, step+1, maze)
+    solve(x-1, y, step+1, maze)
+    solve(x, y+1, step+1, maze)
+    solve(x, y-1, step+1, maze)
+```
+
+#### 6. 迷路を解く
+
+```py
+solve(1, 1, 0, maze)
+save_image(maze)
+```
+
+探索済みのセルが灰色に表示される。すべてのセルが灰色になったはずである。
+
+#### 7. 経路探索
+
+```py
+def draw_path(x, y, count, maze):
+    if not isinstance(maze[x][y], int):
+        return
+    if maze[x][y] != count:
+        return
+    maze[x][y] = '+'
+    count -= 1
+    draw_path(x+1, y, count, maze)
+    draw_path(x-1, y, count, maze)
+    draw_path(x, y+1, count, maze)
+    draw_path(x, y-1, count, maze)
+```
+
+#### 8. 解の確認
+
+```py
+draw_path(39, 19, maze[39][19], maze)
+save_image(maze)
+```
+
+解答となるパスが赤く表示されたはずだ。
+
+### 任意課題：迷路を解く様子の可視化
+
+#### 9. アニメーション用ライブラリのロード
+
+```py
+!pip install apng
+from apng import APNG
+```
+
+#### 10. アニメーション用のソルバ
+
+```py
+def solve_graph(x, y, step, maze, files):
+    if maze[x][y] == '*':
+        return
+    if isinstance(maze[x][y], int):
+        return
+    maze[x][y] = step
+    index = len(files)
+    filename = "file%03d.png" % index
+    save_image(maze,filename)
+    files.append(filename)
+    solve_graph(x+1, y, step+1, maze, files)
+    solve_graph(x-1, y, step+1, maze, files)
+    solve_graph(x, y+1, step+1, maze, files)
+    solve_graph(x, y-1, step+1, maze, files)
+```
+
+#### 11. アニメーションの表示
+
+```py
+with open('maze.pickle', 'rb') as f:
+    maze = pickle.load(f)
+files = []
+solve_graph(1,1,0,maze,files)
+```
+
 
 ## 余談：エレファントな解法
 
