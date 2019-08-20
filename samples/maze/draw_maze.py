@@ -6,29 +6,51 @@ def save_image(maze):
     g = 10
     w = len(maze)
     h = len(maze[0])
-    color = {}
-    color['*'] = (0, 0, 0)
-    color[' '] = (255, 255, 255)
-    color['+'] = (128, 128, 128)
-    color['S'] = (255, 0, 0)
-    color['G'] = (0, 255, 0)
-    im = Image.new("RGB", (w*g, h*g), (255, 255, 255))
+    white = (255, 255, 255)
+    im = Image.new("RGB", (w*g, h*g), white)
     draw = ImageDraw.Draw(im)
     for ix in range(w):
         for iy in range(h):
             x = ix*g
             y = iy * g
             s = maze[ix][iy]
-            draw.rectangle((x, y, x+g, y+g), fill=color[s])
+            color = white
+            if s == '*':
+                color = (0, 0, 0)
+            elif s == 'S':
+                color = (255, 0, 0)
+            elif s == 'G':
+                color = (0, 255, 0)
+            elif s == '+':
+                color = (0, 0, 255)
+            draw.rectangle((x, y, x+g, y+g), fill=color)
     im.save("test.png")
 
 
-def find_start(maze):
-    for r, row in enumerate(maze):
-        for c, v in enumerate(row):
-            if v == 'S':
-                return r, c
-    return None
+def solve(x, y, step, maze):
+    if maze[x][y] == '*':
+        return
+    if isinstance(maze[x][y], int):
+        return
+
+    maze[x][y] = step
+    solve(x+1, y, step+1, maze)
+    solve(x-1, y, step+1, maze)
+    solve(x, y+1, step+1, maze)
+    solve(x, y-1, step+1, maze)
+
+
+def draw_path(x, y, count, maze):
+    if not isinstance(maze[x][y], int):
+        return
+    if maze[x][y] != count:
+        return
+    maze[x][y] = '+'
+    count -= 1
+    draw_path(x+1, y, count, maze)
+    draw_path(x-1, y, count, maze)
+    draw_path(x, y+1, count, maze)
+    draw_path(x, y-1, count, maze)
 
 
 def load_maze(filename):
@@ -41,6 +63,12 @@ def load_maze(filename):
 
 def run(filename):
     maze = load_maze(filename)
+    solve(1, 1, 0, maze)
+    gx = len(maze) - 2
+    gy = len(maze[0]) - 2
+    count = maze[gx][gy]
+    draw_path(gx, gy, count, maze)
+    maze[gx][gy] = 'G'
     save_image(maze)
 
 
