@@ -77,23 +77,23 @@ def read_maze(filename):
 
 
 def save_image(maze):
-    g = 5
+    g = 10
     h = len(maze)
     w = len(maze[0])
-    white = (255, 255, 255)
-    red = (255, 0, 0)
-    im = Image.new("RGB", (w*g, h*g), white)
+    color = {}
+    color['*'] = (0, 0, 0)
+    color[' '] = (255, 255, 255)
+    color['+'] = (128, 128, 128)
+    color['S'] = (255, 0, 0)
+    color['G'] = (0, 255, 0)
+    im = Image.new("RGB", (w*g, h*g), (255, 255, 255))
     draw = ImageDraw.Draw(im)
-    color = white
     for ix in range(w):
         for iy in range(h):
-            if maze[iy][ix] == ' ':
-                continue
-            elif maze[iy][ix] == '*':
-                color = red
             x = ix*g
-            y = iy*g
-            draw.rectangle((x, y, x+g, y+g), fill=red)
+            y = iy * g
+            s = maze[iy][ix]
+            draw.rectangle((x, y, x+g, y+g), fill=color[s])
     im.save("test.png")
 
 
