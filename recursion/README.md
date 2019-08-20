@@ -364,7 +364,7 @@ def solve_graph(x, y, step, maze, files):
     solve_graph(x, y-1, step+1, maze, files)
 ```
 
-#### 11. アニメーションの表示
+#### 11. アニメーションの保存
 
 ```py
 with open('maze.pickle', 'rb') as f:
@@ -373,6 +373,12 @@ files = []
 solve_graph(1,1,0,maze,files)
 ```
 
+#### 12. アニメーションの表示
+
+```py
+APNG.from_files(files, delay=50).save("animation.png")
+IPython.display.Image("animation.png")
+```
 
 ## 余談：エレファントな解法
 
