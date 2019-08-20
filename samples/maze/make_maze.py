@@ -1,4 +1,7 @@
+import pickle
 import random
+
+random.seed(1)
 
 
 def show_maze_debug(maze, cluster_index):
@@ -81,6 +84,8 @@ def make_maze(m, n):
     maze[1][1] = 'S'
     maze[2*m-1][2*n-1] = 'G'
     show_maze(maze)
+    with open("maze.pickle","wb") as f:
+        pickle.dump(maze, f)
 
 
 make_maze(20, 10)
