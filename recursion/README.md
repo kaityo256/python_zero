@@ -348,7 +348,7 @@ from apng import APNG
 #### 10. アニメーション用のソルバ
 
 ```py
-def solve_graph(x, y, step, maze, files):
+def solve_anime(x, y, step, maze, files):
     if maze[x][y] == '*':
         return
     if isinstance(maze[x][y], int):
@@ -358,10 +358,10 @@ def solve_graph(x, y, step, maze, files):
     filename = "file%03d.png" % index
     save_image(maze,filename)
     files.append(filename)
-    solve_graph(x+1, y, step+1, maze, files)
-    solve_graph(x-1, y, step+1, maze, files)
-    solve_graph(x, y+1, step+1, maze, files)
-    solve_graph(x, y-1, step+1, maze, files)
+    solve_anime(x+1, y, step+1, maze, files)
+    solve_anime(x-1, y, step+1, maze, files)
+    solve_anime(x, y+1, step+1, maze, files)
+    solve_anime(x, y-1, step+1, maze, files)
 ```
 
 #### 11. アニメーションの保存
@@ -370,7 +370,7 @@ def solve_graph(x, y, step, maze, files):
 with open('maze.pickle', 'rb') as f:
     maze = pickle.load(f)
 files = []
-solve_graph(1,1,0,maze,files)
+solve_anime(1,1,0,maze,files)
 ```
 
 #### 12. アニメーションの表示
