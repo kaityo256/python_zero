@@ -183,17 +183,25 @@ F_n = F_{n-1} + F_{n-2}
 <p class="caption">バックトラックアルゴリズム</p>
 </div>
 <p>このような「とりあえずあっちへ進んで、ダメなら戻る」というバックトラックは、再帰を使うときれいに書ける。このバックトラックを使って迷路を解くアルゴリズムを考えよう。</p>
-<p>単にゴールにたどり着くだけなら、「足跡」を残しながら進んでいけば良い。例えばこんなアルゴリズムになる。</p>
+<p>単にゴールにたどり着くだけなら、「矢印」を残しながら進んでいけば良い。例えばこんなアルゴリズムになる。</p>
 <ul>
 <li>自分の進む向きに矢印を書きながら進む</li>
 <li>分かれ道に来たら、とりあえずどちらかを選ぶ</li>
 <li>進んだ先が行き止まりになったら、矢印を逆向きに戻る</li>
 <li>戻っている時に、まだ試していない道があったらそちらを選ぶ</li>
 </ul>
-<p>行き止まりから戻る時に、まだ試してない道を見つけたら必ずそこを試すのがポイントである。これにより、「道の見落としが無い」ということが保証される。要するに「見落としが無いようにしらみつぶしに探しましょう」ということを言っているに過ぎない。</p>
-<p>このように、とりあえず進めるだけ進んで、行き止まりに行き当たったら戻ってくる、という探索を <strong>深さ優先探索(depth-first search)</strong> と呼ぶ。逆に、自分がいまいる地点から徐々に探索範囲を広げながら探索する方法を <strong>幅優先探索(breadth first search)</strong> と呼ぶ。ここでは深入りしないが、「そういう用語がある」ということだけぼんやり覚えておけば良い。</p>
-<p>さて、単にゴールにたどり着くだけなら上記の方法で良いが、ゴールまでの経路を求めるには一工夫が必要だ。</p>
-<p>TODO: ゴールまでの経路探索</p>
+<div class="figure">
+<img src="fig/bt_maze1.png" alt="バックトラックによる迷路探索" />
+<p class="caption">バックトラックによる迷路探索</p>
+</div>
+<p>戻る時、つまり矢印と逆向きに進んでいる時にまだ試してない道を見つけたら必ずそこを試すのがポイントである。これにより、「戻っている時には、その後ろにある経路はすべて探索済みである」つまり、「道の見落としが無い」ということが保証される。バックトラックで迷路探索とは、要するに「見落としが無いようにしらみつぶしに探しましょう」ということを言っているに過ぎない。</p>
+<p>このように、とりあえず進めるだけ進んで、行き止まりに行き当たったら戻ってくる、というような探索アルゴリズムを <strong>深さ優先探索(depth-first search)</strong> と呼ぶ。逆に、自分がいまいる地点から徐々に探索範囲を広げながら探索する方法を <strong>幅優先探索(breadth first search)</strong> と呼ぶ。ここでは深入りしないが、「そういう用語がある」ということだけぼんやり覚えておけば良い。</p>
+<p>さて、単にゴールにたどり着くだけなら上記の方法で良いが、ゴールまでの経路を求めるには少し工夫が必要だ。方針としては、「スタート地点からの距離」を各部屋に記しながら進んで行く。探索が終わったら、全ての場所に「スタート地点からの距離」があるはずである。この状態でゴールから、「数字が減るように」進んでいく。分かれ道では「カウントが減る方」がスタートに至る道であるから、そちらを選び続ければ「ゴールからスタートへの道」が完成する。</p>
+<div class="figure">
+<img src="fig/bt_maze2.png" alt="バックトラックによる迷路探索" />
+<p class="caption">バックトラックによる迷路探索</p>
+</div>
+<p>課題では、指定された迷路について、「スタート地点からの距離地図」の作成、及び「距離地図が完成した後に解の経路作成」のそれぞれの処理を再帰で実装しよう。</p>
 <h1 id="再帰呼び出し課題">再帰呼び出し：課題</h1>
 <h2 id="課題1階段の登り方問題">課題1：階段の登り方問題</h2>
 <p>新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
@@ -289,13 +297,13 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 save_image(maze)</code></pre></div>
 <p>左上にスタート地点(青)、右下にゴール地点(緑)がある迷路が表示されたはずだ。</p>
 <h4 id="迷路を解くルーチン">5. 迷路を解くルーチン</h4>
-<p>ではさっそく迷路を解く関数<code>solve</code>を書いてみよう。やるべきことは単純で、</p>
+<p>ではさっそく迷路を解く(実際には距離地図を作る)関数<code>solve</code>を書いてみよう。やるべきことは単純で、</p>
 <ul>
-<li>迷路データが壁<code>*</code>ならそこには行かない</li>
-<li>すでに足跡が残っている(<code>maze[x][y]</code>に数字が入っている)なら、そこには行かない</li>
+<li>進もうとした方向が壁<code>*</code>ならそこには行かない</li>
+<li>すでに足跡が残っている(<code>maze[x][y]</code>に数字が入っている)なら、そこは探索済みなので行かない</li>
 </ul>
-<p>というのが終端条件だ。</p>
-<p>終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索する。以上をそのまま実装すると以下のようになる。</p>
+<p>というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。</p>
+<p>以上をそのまま実装すると以下のようになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve(x, y, step, maze):
     <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
         <span class="cf">return</span>
@@ -306,8 +314,9 @@ save_image(maze)</code></pre></div>
     solve(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
     solve(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)
     solve(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</code></pre></div>
+<p><code>isinstance</code>は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、<code>isinstance(a, int)</code>などとすると、オブジェクト<code>a</code>が整数であるかどうかを調べる。ここでは、迷路の指定の場所<code>maze[x][y]</code>に整数が入っているかどうかを調べている。</p>
 <h4 id="迷路を解く">6. 迷路を解く</h4>
-<p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。</p>
+<p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
 save_image(maze)</code></pre></div>
 <p>すべてのセルが灰色(探索済み)になったはずである。</p>
@@ -324,14 +333,14 @@ save_image(maze)</code></pre></div>
     draw_path(x<span class="op">-</span><span class="dv">1</span>, y, count, maze)
     draw_path(x, y<span class="op">+</span><span class="dv">1</span>, count, maze)
     draw_path(x, y<span class="op">-</span><span class="dv">1</span>, count, maze)</code></pre></div>
-<p>やはり再帰で書いてあるが、</p>
+<p>やはり再帰で書いてあるが、ゴールから「目標カウント」を減らしながら進むコードであり、</p>
 <ul>
 <li>もし足跡のある部屋でなければそこには行かない</li>
-<li>現在の部屋よりカウントが減らない部屋には行かない</li>
+<li>目標カウントではない部屋には進まない</li>
 </ul>
-<p>というのが終端条件で、終端条件に該当しなかった場合は「答え用の足跡」を残してカウントを減らし、やはり上下左右の部屋に探索に行く。</p>
+<p>というのが終端条件である。終端条件に該当しなかった場合は「目標カウント」を残してカウントを減らし、「答えの経路」となるマーク(<code>+</code>)を残して、上下左右の部屋に探索に行く。</p>
 <h4 id="解の確認">8. 解の確認</h4>
-<p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。</p>
+<p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。ゴールからたどって解の経路をマークする関数<code>draw_path</code>を呼んでから、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">draw_path(<span class="dv">39</span>, <span class="dv">19</span>, maze[<span class="dv">39</span>][<span class="dv">19</span>], maze)
 save_image(maze)</code></pre></div>
 <p>解答となるパスが赤く表示されたはずだ。</p>
