@@ -8,13 +8,9 @@ def find(i, parent):
     return i
 
 
-def union(i, j, p, parent, L):
-    if random.random() > p:
-        return
+def union(i, j, parent):
     i = find(i, parent)
     j = find(j, parent)
-    if j < i:
-        i, j = j, i
     parent[j] = i
 
 
@@ -24,9 +20,11 @@ def make_conf(L, p):
         for ix in range(L-1):
             i = ix + iy * L
             j = ix+1 + iy * L
-            union(i, j, p, parent, L)
+            if random.random() < p:
+                union(i, j, parent)
             j = ix + (iy+1) * L
-            union(i, j, p, parent, L)
+            if random.random() < p:
+                union(i, j, parent)
     return parent
 
 
@@ -51,5 +49,6 @@ def show_image(parent, L):
 
 
 L = 256
-sites = make_conf(L, 0.48)
+p = 0.49
+sites = make_conf(L, p)
 show_image(sites, L)
