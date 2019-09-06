@@ -75,33 +75,132 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="乱数を使ったプログラム"><a href="https://kaityo256.github.io/python_zero/random/">乱数を使ったプログラム</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
-<li>疑似乱数とモンテカルロ法</li>
-<li>余談：疑似乱数とゲーム</li>
+<li>モンテカルロ法</li>
+<li>疑似乱数</li>
 <li>モンティ・ホール問題</li>
 <li>パーコレーション</li>
-<li>余談：確率の難しさ</li>
+<li>余談1：確率の難しさ</li>
+<li>余談2：疑似乱数とゲーム</li>
 </ul>
-<h2 id="疑似乱数とモンテカルロ法">疑似乱数とモンテカルロ法</h2>
-<h3 id="疑似乱数とは">疑似乱数とは</h3>
-<p>乱数とは、ランダムな数のことである。例えばサイコロをふると、1から6までの数字がほぼ等確率で出ると期待される(実際には少しずれるらしい)。 さて、計算機でもランダムな数字が必要になることがある。例えばゲームで低確率で出る「会心の一撃」や「痛恨の一撃」を表現するのに乱数が必要だ。レアなモンスターを出現させるのも乱数が必要である。しかし、計算機において「真の乱数列」を表現するのは難しい。 「真の乱数列」とは、これまでの数列から、次の数字が予想できないような数列のことである。 現在の計算機は決定論的に動作するため、同じ入力を与えると同じ結果を出力する。 このような計算機で用いられる乱数は「疑似乱数」と呼ばれる。疑似乱数とは、一見乱数列のように見えるが実は規則性があり、 これまでの乱数列から次の乱数が予想できてしまうものだ。</p>
-<p>以下のコードを書いて実行してみよう。</p>
+<h2 id="モンテカルロ法">モンテカルロ法</h2>
+<p>大勢で「じゃんけん」をしたとき、なかなか勝負が決まらない経験をしたことがないだろうか。じゃんけんに参加する人数が増えるほど、「あいこ」の確率が増え、勝負が決まらなくなる気がする。それでは、<span class="math inline">\(N\)</span>人が参加するじゃんけんで、「あいこ」になる確率はいったいどれくらいだろうか？</p>
+<p>もちろんこれは理論的に計算できる。しかし、特に確率の問題は、計算した答えが合っているかどうか不安になるだろう。そこで、実際に計算機でシミュレーションして「答え合わせ」をしたくなる。というわけで、このじゃんけん問題をプログラムで表現することを考えてみよう。</p>
+<p>じゃんけんで「あいこ」になるのは、みんなのだした手がすべて同じ(1種類)か、全て異なる(3種類)かなので、出した手の種類の数を数えれば良い。したがって、こんなプログラムになるだろう。</p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline">\(N\)</span>人が「グー」「チョキ」「パー」のどれかを1/3の確率で選ぶ</li>
+<li>選んだ<span class="math inline">\(N\)</span>個の「手」が、1種類か3種類の時には「あいこ」</li>
+<li>1と2を繰り返して確率を求める</li>
+</ol>
+<p>ここで問題となるのは1.の「<span class="math inline">\(N\)</span>人が「グー」「チョキ」「パー」のどれかを1/3の確率で選ぶ」というところだ。そのためには「グー」「チョキ」「パー」から「ランダム」にどれかを選ぶ、という処理が必要になる。このようなランダムな事象を扱うために、Pythonには<code>random</code>というライブラリが用意されている。今回のケースでは、リストの要素をランダムに選ぶ<code>random.choice</code>という関数を使えば簡単に実装できる。</p>
+<p>例えば、「グー」「チョキ」「パー」をそれぞれ<code>G</code>、<code>C</code>、<code>P</code>で表現しよう。この三要素を持つリストは<code>['G','C','P']</code>で表現できる。そして、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>])</code></pre></div>
+<p>とすると、実行するたびに<code>G</code>、<code>C</code>、<code>P</code>のどれかがランダムに選ばれる。先ほどの<code>random.choice</code>とリストの内包表記を使うと、例えば10人のじゃんけんの手のリストは、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">10</span>
+[random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]</code></pre></div>
+<p>で作ることができる。実行結果は例えば</p>
+<pre class="txt"><code>[&#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;P&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;P&#39;]</code></pre>
+<p>などとなる(実行するたびに異なる)。</p>
+<p>さて、<code>set</code>という関数を使うと、リストのうち重複する要素を削除することができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">set</span>([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;P&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="co">#=&gt; {&#39;C&#39;, &#39;G&#39;, &#39;P&#39;}</span></code></pre></div>
+<div class="figure">
+<img src="fig/janken.png" alt="じゃんけんの勝負判定" />
+<p class="caption">じゃんけんの勝負判定</p>
+</div>
+<p>こうして、<span class="math inline">\(N\)</span>人の「手」のリストを作り、重複する要素を削除すれば、それが「手」の種類なので、それが1種類なのか3種類なのか判定すれば良い。以上を愚直にコードに落とすとこんな感じになるだろう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(random.randint(<span class="dv">0</span>,<span class="dv">10</span>))</code></pre></div>
-<p>実行するたびに結果が異なるだろう。しかし、以下のようにしてみよう。</p>
+trial <span class="op">=</span> <span class="dv">100000</span>
+N <span class="op">=</span> <span class="dv">6</span>
+aiko <span class="op">=</span> <span class="dv">0</span>
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
+    a <span class="op">=</span> [random.choice([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]
+    <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">set</span>(a)) <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">3</span>):
+        aiko <span class="op">+=</span> <span class="dv">1</span>
+<span class="bu">print</span>(aiko<span class="op">/</span>trial)</code></pre></div>
+<p>6人で100000回じゃんけんをさせて、あいこになった数をカウントし、その確率を求めるものだ。実行結果は、例えば以下のようになるだろう。</p>
+<pre class="txt"><code>0.74684</code></pre>
+<p>厳密解は</p>
+<p><span class="math display">\[
+1 - \frac{2^N - 2}{3^{N-1}} = \frac{181}{243} \sim 0.745
+\]</span></p>
+<p>なので、「合ってそうだな」ということがわかるだろう(興味がある人はこの厳密解を導出せよ)。</p>
+<p>このように、プログラムで確率的な事象をシミュレーションして、何らかの値を求める手法を <strong>モンテカルロ法 (Monte Carlo Method)</strong> と呼ぶ。ここではモンテカルロ法を厳密な答えがわかっている場合の確率の確認に用いたが、複雑な事象(例えば社会現象)のシミュレーションや、数値積分などに用いることができる。今回はPythonでモンテカルロ法を実装してみよう。</p>
+<h2 id="疑似乱数">疑似乱数</h2>
+<h3 id="疑似乱数とは">疑似乱数とは</h3>
+<p>いま、サイコロを何度もふって、例えば出た目の数の並びが「4, 6, 1, 2, 3, 1, 1, 2, 4, 4」だったとしよう。ここまでの情報で、「次の出目」を予想できるだろうか？「普通」に考えると「4や1が続いてて、まだ5が出ていないからそろそろ5が出るかな」などと考えたくなるが、もしいま使っているのが理想的なサイコロであるならば、次も1から6まで等確率で出現するため、どれが出やすいとか、どれが出にくいなどと予想することはできない。このように「これまでの数列の知識から、次の数を予想できない」ような数列を <strong>乱数列</strong> と呼び、乱数列のそれぞれの要素を <strong>乱数(Random Number)</strong> と呼ぶ。</p>
+<p>計算機において乱数が必要になることは多い。例えばゲームで低確率で出る「会心の一撃」や「痛恨の一撃」を表現するのに乱数が必要だ。レアなモンスターを出現させるのも乱数が必要である。しかし、現在の計算機は決定論的に動作するため「真の乱数列」を表現するのは難しい。「真の乱数列」とは、先程定義した通り「これまでの数列から、次の数字が予想できない」ような数列のことであるのに対し、計算機で実現される乱数は <strong>疑似乱数(Pseudorandom number)</strong> と呼ばれる。疑似乱数列は乱数列のように見えるが、実は規則性があり、これまでの乱数から次の乱数が予想できてしまうものだ。疑似乱数列を作る方法には、線形合同法やM系列など様々な方法があるが、現在広く使われているのはメルセンヌ・ツイスター法という手法である。多くのプログラム言語が乱数生成のデフォルトアルゴリズムとしてメルセンヌ・ツイスター法を採用している。本講義では擬似乱数生成アルゴリズムについては触れないが、興味がある人は調べてみると良い。また、原子核崩壊などの物理現象を用いることで「真の乱数」を作るデバイスも発売されている。</p>
+<h3 id="pythonにおける疑似乱数">Pythonにおける疑似乱数</h3>
+<p>Pythonには擬似乱数用に<code>random</code>というライブラリが用意されており、様々な関数が用意されている。そのうちよく使うものの使い方を紹介しておこう。</p>
+<h4 id="random.randint"><code>random.randint</code></h4>
+<p>例えば1から6までの整数の乱数が欲しければ、<code>random.randint</code>が使える。</p>
+<p>以下のコードを書いて実行してみよう。これは6面サイコロを10回ふることをシミュレーションしたものだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
+<p>これは実行するたびに異なる結果が得られる。例えば以下のような結果が得られる。</p>
+<pre class="txt"><code>4
+3
+1
+4
+1
+4
+4
+4
+1
+6</code></pre>
+<h4 id="random.seed"><code>random.seed</code></h4>
+<p>先程のコードは実行するたびに異なる結果が得られた。しかし、以下のようにすると、何度実行しても同じ乱数列が得られる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 
 random.seed(<span class="dv">1</span>)
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(random.randint(<span class="dv">0</span>,<span class="dv">10</span>))</code></pre></div>
-<p>何度実行しても、同じ乱数列が得られることがわかるであろう。これは乱数の「種」を固定したためだ。 計算機は、漸化式により乱数列を作ることが多い。漸化式は、生成した乱数を入力として次の乱数を作る方法だが、 その一番最初に与える値を乱数の「種(seed)」と呼ぶ。同じ種からは同じ乱数列が生まれる。 これでは乱数としては不都合であるので、「現在時刻」を乱数の種とすることが多い。こうすると実行するたびに 異なる乱数列が得られる。しかし、主にデバッグ目的などで、毎回同じ乱数の種を与えたいときもある。 <code>random.seed</code>は、そのような場合に用いる。乱数列を作る方法には、線形合同法やM系列など様々な方法があるが、 現在広く使われているのはメルセンヌ・ツイスター法という手法である。多くのプログラム言語が乱数生成のデフォルトアルゴリズムとして メルセンヌ・ツイスター法を採用している。ここでは触れないが興味がある人は調べてみよ。</p>
-<h3 id="余談疑似乱数とゲーム">余談：疑似乱数とゲーム</h3>
-<p>ゲームには乱数がつきものである。先に述べたように、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、レアな敵が出たときにセーブしてリセットすると、全く同じ敵が現れてしまう、という仕様(バグ？)があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは「乱数調整」といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
-<p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
-<h2 id="モンテカルロ法">モンテカルロ法</h2>
-<p>乱数を利用してシミュレーションをしたり、何かを計算したりする方法を「モンテカルロ法」と呼ぶ。 例えば金融市場をシミュレーションしたいとする。あるプレイヤーについて、ある状況である株を「買う」か「売る」かは判断できない。 しかし、「これまでの履歴」を調べることで、似たような状況で「買った」か「売った」かは知っているとする。 すると、ある状況で株を「買う確率」と「売る確率」を推定できる。同様に、別のプレイヤーについても「買う確率」と「売る確率」を 推定し、その確率に従って仮想的に株を売り買いさせることで、その株が今後どのような値動きをするかシミュレーションすることができる。 アメリカは軍の作戦を立案する際、相手と自分の様々な「手」をシミュレーションしていたそうである(今もシミュレーションしているかもしれない)。</p>
-<p>モンテカルロ法は、数値積分にも用いられる。モンテカルロ法のによる数値積分で有名なのは、円周率の計算であろう。ダーツの要領でランダムに「矢」を投げ、当たった数で円周率を推定する方法である。n回ダーツを投げて円周率を推定するプログラムはこんな感じに書ける。</p>
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
+<p>これは<code>random.seed</code>により乱数の「種」を固定したためだ。計算機は、漸化式により乱数列を作ることが多い。漸化式は、生成した乱数を入力として次の乱数を作る方法だが、その一番最初に与える値を乱数の「種(seed)」と呼ぶ。同じ種からは同じ乱数列が生まれる。これでは乱数としては不都合であるので、「現在時刻」等を乱数の種とすることが多い。こうすると実行するたびに異なる乱数列が得られる。しかし、主にデバッグ目的などで、毎回同じ乱数の種を与えたいときもあり、<code>random.seed</code>は、そのような場合に用いる。</p>
+<h4 id="random.random"><code>random.random</code></h4>
+<p><code>random.randint</code>を用いると整数の乱数列が得られたが、実数の乱数列が欲しければ<code>random.random</code>を用いる。これは0から1未満のランダムな実数を返してくれる関数だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.random())</code></pre></div>
+<p>例えば実行結果はこんな感じになる。</p>
+<pre class="txt"><code>0.2293093032885165
+0.7225401496925509
+0.4118307989719816
+0.4352123667218194
+0.5182296930788952
+0.6598049756657662
+0.5928754652967204
+0.35716459244689625
+0.7115734931703437
+0.9442876247500515</code></pre>
+<p>出現する可能性のある乱数の、それぞれの出現確率がすべて等しい場合、その乱数を <strong>一様乱数</strong> と呼ぶ。ある分布に従うような非一様な乱数が生成できると便利な場合もあるが、本講義では一様乱数のみを扱うことにする。なお、確率をきちんと定義、議論するのは面倒なので、ここでは確率についてかなりいい加減な定義を使っていることを了解されたい。</p>
+<h4 id="random.choice"><code>random.choice</code></h4>
+<p>リストが与えられた時、そのリストの要素をランダムに選びたいことがある。これはリストのサイズと<code>random.randint</code>を使って書くこともできるが、最初に紹介した<code>random.choice</code>という関数が便利なのでそれを利用しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(random.choice(a))</code></pre></div>
+<p>例えば実行結果は以下のようになる。</p>
+<pre class="txt"><code>A
+A
+B
+A
+C
+B
+C
+C
+C
+B</code></pre>
+<p>ちなみに<code>random.randint</code>を使うとこのようになる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    i <span class="op">=</span> random.randint(<span class="dv">0</span>,<span class="bu">len</span>(a)<span class="op">-</span><span class="dv">1</span>)
+    <span class="bu">print</span>(a[i])</code></pre></div>
+<p>0から<code>len(a)-1</code>の範囲の乱数<code>i</code>を生成し、それをインデックスとして<code>a[i]</code>にアクセスしている。</p>
+<h2 id="モンテカルロ法による数値積分">モンテカルロ法による数値積分</h2>
+<p>今回の講義では詳細は扱わないが、モンテカルロ法は数値積分にも用いられるので、簡単に紹介しておこう。モンテカルロ法による数値積分で有名なのは、円周率の計算であろう。ダーツの要領でランダムに「矢」を投げ、当たった数で円周率を推定する方法である。以下は<span class="math inline">\(n\)</span>回ダーツを投げて円周率を推定するプログラムである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> random
 
 <span class="kw">def</span> calc_pi(n):
@@ -118,12 +217,10 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <p><span class="math display">\[
 \pi \sim 4 \int_0^1 \int_0^1 \Theta(1-x^2-y^2) dx dy
 \]</span></p>
-<p>ただし<span class="math inline">\(\Theta(x)\)</span>はステップ関数で、<span class="math inline">\(x\geq 1\)</span>で1、そうでない場合は0となる関数である。</p>
-<p>このアルゴリズムは簡単で、少ない試行回数でそこそこの精度が出るが、収束が悪いために円周率を高精度に求めるのには向かない。 そもそも単純なモンテカルロ法はあまり使われないので、もし「モンテカルロ法はいい加減」とか「精度が悪い」と思っているのなら モンテカルロ法による円周率の推定については忘れてほしい。</p>
-<p>モンテカルロ法による数値積分では、現在ではほとんど「マルコフ連鎖モンテカルロ法 (Markov-chain Monte Calro method, MCMC)という手法が用いられている。マルコフ連鎖モンテカルロ法は非常に重要な手法であるが、今回は触れない。</p>
-<p>今回は、モンテカルロ法を使って様々なプログラムを組んでみよう。</p>
+<p>ただし<span class="math inline">\(\Theta(x)\)</span>はステップ関数で、<span class="math inline">\(x\geq 1\)</span>で1、そうでない場合は0となる関数である。この積分はこれは単位円の1/4の面積に対応するので、それを4倍すると円周率になるのは当たり前のように見えるが、実際の手続きとしては、0から1の一様乱数二つの二乗和が1を超えるかどうかを判定しているだけなので、それで円周率という超越数を計算できるのは面白い。</p>
+<p>このアルゴリズムは簡単で、少ない試行回数でそこそこの精度が出るが、収束が遅いために円周率を高精度に求めるのには向かない。現在、数値積分目的には単純なモンテカルロ法はほとんど使われておらず、モンテカルロ法というと、ほぼ「マルコフ連鎖モンテカルロ法 (Markov-chain Monte Calro method, MCMC)」のことを指す。ここでは詳細については触れないが、ナイーブなモンテカルロ法に比べてマルコフ連鎖モンテカルロ法は極めて収束が早いため、「ダーツによる円周率」の問題だけを見て「モンテカルロ法は遅い」という印象は持たないで欲しい。</p>
 <h2 id="モンティホール問題">モンティ・ホール問題</h2>
-<p>モンティ・ホール問題とは、アメリカの番組の中で行われた、あるゲームに由来する。そのゲームとはこういうものである。</p>
+<p>さて、モンテカルロ法により、確率的な事象のシミュレーションをして、何かの確率を求めてみよう。その題材として「モンティ・ホール問題」を取りあげる。モンティ・ホール問題とは、アメリカの番組の中で行われた、あるゲームに由来する。そのゲームのルールとはこういうものである。</p>
 <ul>
 <li>三つの箱が用意され、その中に一つだけ商品が入っており、残りの二つは空である。</li>
 <li>プレイヤーは、そのうちの一つを選ぶ</li>
@@ -133,308 +230,203 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 </ul>
 <p><img src="fig/mh1.png" alt="mh1.png" /> <img src="fig/mh2.png" alt="mh2.png" /></p>
 <p>この問題は有名なので、答えを知っている人も多いだろう。しかし、ここは答えを全く知らないとして、シミュレーションをしよう。</p>
-<h3 id="keep派">Keep派</h3>
-<p>まずは、司会者が選ばれなかった箱のうち一つを開け、「選んだ箱を変えてよい」と言った時に「最初に選んだ箱を変えない」戦略を考えよう。 これをKeep派と呼ぶ。この人が当たる確率は自明に1/3だが、それっぽくシミュレーションしてみよう。以下、練習のため、かなり冗長なプログラムを組んでいることに留意されたい。</p>
-<p>箱の中身のリストを渡されたときに、答えの箱と、プレイヤーの選ぶ箱をランダムに選ぶ関数<code>keep</code>を作ってみる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> choice, seed</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    player_choice <span class="op">=</span> choice(boxes)
-    <span class="bu">print</span>(answer, player_choice)</code></pre></div>
-<p><code>random.choice</code>とは、リストを与えられると、その中の要素をランダムに選ぶ関数である。 さて、適当な箱リストを与えて<code>keep</code>を呼んでみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
-boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    keep(boxes)</code></pre></div>
-<p>このような結果が得られるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">A</span> C
-<span class="ex">A</span> B
-<span class="ex">A</span> B
-<span class="ex">B</span> B
-<span class="ex">C</span> B
-<span class="ex">A</span> A
-<span class="ex">B</span> A
-<span class="ex">B</span> B
-<span class="ex">C</span> A
-<span class="ex">C</span> B</code></pre></div>
-<p>左が正解の箱、右がプレイヤーの選んだ箱である。では、正解を選んだ確率を計算してみよう。</p>
-<p>まず、関数<code>keep</code>を、正解を選んだら<code>True</code>を返すように修正する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    player_choice <span class="op">=</span> choice(boxes)
-    <span class="cf">return</span> player_choice <span class="op">==</span> answer</code></pre></div>
-<p>次に、三番目のセルに、正解確率を計算する関数<code>calc_prob</code>を実装しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc_prob(n):
-    seed(<span class="dv">1</span>)
-    boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-    k <span class="op">=</span> <span class="dv">0</span>
-    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
-        <span class="cf">if</span> keep(boxes):
-            k <span class="op">+=</span> <span class="dv">1</span>
-    <span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))</code></pre></div>
-<p>四番目のセルに以下を入力して実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc_prob(<span class="dv">1000</span>)</code></pre></div>
-<p>Keep派の正解確率が出てきたはずである。</p>
-<p>ちなみに、ここでやったように部分的にコードを完成させ、そのたびに<code>print</code>で結果を確認する手法を <strong>print文デバッグ</strong> と呼ぶ。 print文デバッグはかなり古くからある手法であるが、デバッグの基本なので覚えておこう。</p>
-<h3 id="change派">Change派</h3>
-<p>さて、先ほどとは逆に「選んだ箱を変えてよい」と言った時に、必ず箱を変える戦略を考えよう。これをChange派と呼ぶ。 五番目のセルに、<code>change</code>を実装しよう。箱のリストを受け取り、正解と、プレイヤーが最初に選ぶ箱を決めるところまでは同じである。 さて、次に「司会者が開ける箱」を考える必要がある。司会者が開けるのは、プレイヤーが選んだ箱であっても、正解の箱あってもならない。 そこで、「箱リストから、プレイヤーが選んだ箱と、正解の箱を除外したリストを作り、そこからランダムに選ぶ」ことを考える。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    player_choice <span class="op">=</span> choice(boxes)
-    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
-    <span class="bu">print</span>(answer, player_choice, boxes2)</code></pre></div>
-<p>6番目のセルにテストコードを書いて実行しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-  change(boxes)</code></pre></div>
-<p>種を固定していないため、実行するたびに異なるが、例えば以下のような結果が得られるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">A A [<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>]
-C A [<span class="st">&#39;B&#39;</span>]
-B A [<span class="st">&#39;C&#39;</span>]
-B A [<span class="st">&#39;C&#39;</span>]
-B C [<span class="st">&#39;A&#39;</span>]
-C B [<span class="st">&#39;A&#39;</span>]
-A A [<span class="st">&#39;B&#39;</span>, <span class="st">&#39;C&#39;</span>]
-A C [<span class="st">&#39;B&#39;</span>]
-C A [<span class="st">&#39;B&#39;</span>]
-B B [<span class="st">&#39;A&#39;</span>, <span class="st">&#39;C&#39;</span>]</code></pre></div>
-<p>最初が正解の箱、二番目がプレイヤーの選んだ箱、三番目のリストが、司会者が開ける可能性のある箱である。司会者が開ける箱は、プレイヤーが選んだ箱でも、正解の箱でもないことに注意しよう。さて、<code>boxes2</code>から<code>choice</code>すれば、司会者が開ける箱が得られる。それを<code>chair_choice</code>としよう。 プレイヤーは、全部の箱のうち、「最初に自分が選んだ箱」でも、「司会者が開けた箱」でもないものを選ぶ。今回はそれは一つに決まるが、後の拡張のために。その候補リストを作ろう。先ほどの「司会者が開ける可能性の箱リスト」と同様に作ることができる。<code>change</code>を以下のように書き換えよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    player_choice <span class="op">=</span> choice(boxes)
-    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
-    chair_choice <span class="op">=</span> choice(boxes2)
-    boxes3 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, chair_choice), boxes))
-    <span class="bu">print</span>(player_choice, chair_choice, boxes3)</code></pre></div>
-<p>実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
-<span class="ex">B</span> A [<span class="st">&#39;C&#39;</span>]
-<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
-<span class="ex">B</span> A [<span class="st">&#39;C&#39;</span>]
-<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
-<span class="ex">B</span> C [<span class="st">&#39;A&#39;</span>]
-<span class="ex">A</span> B [<span class="st">&#39;C&#39;</span>]
-<span class="ex">A</span> B [<span class="st">&#39;C&#39;</span>]
-<span class="ex">C</span> A [<span class="st">&#39;B&#39;</span>]
-<span class="ex">B</span> C [<span class="st">&#39;A&#39;</span>]</code></pre></div>
-<p>最初がプレイヤーが選んだ箱、次が司会者が開けた箱、最後が「プレイヤーが選択を変える箱の候補リスト」である。 それぞれに重複がないことを確認せよ。この「候補リスト」から<code>choice</code>したものがプレイヤーの最終選択である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    player_choice <span class="op">=</span> choice(boxes)
-    boxes2 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, answer), boxes))
-    chair_choice <span class="op">=</span> choice(boxes2)
-    boxes3 <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: x <span class="kw">not</span> <span class="kw">in</span> (player_choice, chair_choice), boxes))
-    player_choice <span class="op">=</span> choice(boxes3)
-    <span class="cf">return</span> player_choice <span class="op">==</span> answer</code></pre></div>
-<p>先ほど作成した<code>calc_prob</code>を、Change派の確率も計算するように修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc_prob(n):
-    seed(<span class="dv">1</span>)
-    boxes <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-    k <span class="op">=</span> <span class="dv">0</span>
-    c <span class="op">=</span> <span class="dv">0</span>
-    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
-        <span class="cf">if</span> keep(boxes):
-            k <span class="op">+=</span> <span class="dv">1</span>
-        <span class="cf">if</span> change(boxes):
-            c <span class="op">+=</span> <span class="dv">1</span>
-    <span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))
-    <span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
-<p>以下を実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc_prob(<span class="dv">10000</span>)</code></pre></div>
-<p>Keep派とChange派、どちらが正解確率が高いだろうか？</p>
-<h3 id="課題1-箱がつの場合">課題1: 箱が４つの場合</h3>
-<p><code>calc_prob</code>の中で定義している<code>boxes</code>を、<code>boxes = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;, &quot;D&quot;]</code>とすると、箱が4つバージョンのモンティ・ホール問題となる。 この場合は、</p>
-<ul>
-<li>4つ箱が用意され、一つだけ正解の箱がある</li>
-<li>プレイヤーは最初に一つ箱を選ぶ</li>
-<li>司会者は、プレイヤーが選んでいない箱の中から、正解でない箱を一つランダムに開ける</li>
-<li>プレイヤーは最初に選んだ箱から、残りの箱のどれかに選択を変更することができる</li>
-</ul>
-<p>というルールとなる。さて、Keep派とChange派、どちらが得かはもうわかるだろうが、どちらがどれだけ得か、理論計算できるだろうか？ まず理論計算してから、実際にシミュレーションし、予想が当たっていたか考察せよ。</p>
+<p>まずは、司会者が選ばれなかった箱のうち一つを開け、「選んだ箱を変えてよい」と言った時に「最初に選んだ箱を変えない」戦略を考えよう。 これをKeep派と呼ぶ。Keep派は司会者の影響を受けないので、シミュレーションは簡単だ。</p>
+<ol style="list-style-type: decimal">
+<li>三つの箱を用意し、どれが正解かをランダムに決める</li>
+<li>プレイヤーは、三つの箱をランダムに選ぶ</li>
+<li>正解の箱と、プレイヤーが選んだ箱が一致したら、「一致した回数」を+1する。</li>
+</ol>
+<p>以上、1〜3を何度も繰り返して、「一致した回数」を「試行回数」で割ったものがKeep派の正解確率である。</p>
+<p>次に、司会者が「選んだ箱を変えて良い」と言われたら「必ず変える」戦略を考えよう。これをChange派と呼ぶ。Change派のシミュレーションは以下のようになるだろう。</p>
+<ol style="list-style-type: decimal">
+<li>三つの箱を用意し、どれが正解かをランダムに決める</li>
+<li>プレイヤーは、三つの箱をランダムに選ぶ</li>
+<li>司会者は、残った箱のうち「正解で無い方」をランダムに選ぶ</li>
+<li>プレイヤーは「司会者が開けなかった方」を選び、それを最終決定とする</li>
+</ol>
+<p>以上、1〜4を何度も繰り返し、「一致した回数」を「試行回数」で割ったものがChange派の正解確率である。</p>
 <h2 id="パーコレーション">パーコレーション</h2>
+<p>乱数を使うプログラムのもう一つの例としてパーコレーションを取り上げる。</p>
+<h3 id="パーコレーションとは">パーコレーションとは</h3>
 <div class="figure">
-<img src="fig/percolation.png" alt="percolation.png" />
-<p class="caption">percolation.png</p>
+<img src="fig/percolation.png" alt="パーコレーション" />
+<p class="caption">パーコレーション</p>
 </div>
-<p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に渡れる確率(Crossing Probability)<span class="math inline">\(C\)</span>を知りたい。渡れる確率<span class="math inline">\(C\)</span>は確率pの関数となる。当然、<span class="math inline">\(p\)</span>が小さければ渡れる確率は低く、大きければ渡れる確率は高くなると思われるが、どんな関数になるか想像できるだろうか？</p>
-<p>いま、正方格子の「辺」を通ることを考えたが、これはボンド・パーコレーションと呼ばれるモデルとなる。同様に、正方形に区切られたパネルがあるとする。その区画が、確率<span class="math inline">\(p\)</span>で通行可能、<span class="math inline">\(1-p\)</span>で通行不可だとしよう。通行人は、かつ上下左右につながった、通行可能なパネルのみ渡ることができる。「こちら側」から「向こう側」にわたることができる確率は、pに対してどう振る舞うだろうか？こちらはサイト・パーコレーションと呼ばれるモデルである。</p>
-<p>この「向こう岸に渡れる確率」だが、十分大きなシステムでは、「<span class="math inline">\(p\)</span>がある臨界値<span class="math inline">\(p_c\)</span>未満ではほぼ確実に渡ることができず、<span class="math inline">\(p_c\)</span>より大きければほぼ確実に渡ることができる」という振る舞いを見せる。つまり、系の振る舞いがパラメータのある一点を境に大きく変化する。このように、あるパラメータを変化させていったときに、ある点で系の性質が大きく変化することを <strong>相転移(Phase Transigion)</strong> と呼ぶ。パーコレーションは、相転移を示す最も簡単なモデルのひとつだ。身近な相転移としては、水の沸騰などが挙げられる。水を一気圧の条件で温度を徐々に挙げていくと、摂氏100度で沸騰し、水蒸気になる。水も水蒸気も水分子から構成されており、それは全く変化していない。しかし、水分子の集団としての振る舞いが大きく変化するのである。0度以下に冷やすと凍るのも相転移である。</p>
-<p>TODO: 相転移の説明の図</p>
-<p>ここでは、サイト・パーコレーションについてシミュレーションしてみよう。</p>
-<h3 id="状態の生成">状態の生成</h3>
-<p>正方格子上に確立<span class="math inline">\(p\)</span>で「玉」をばらまくプログラムを作ろう。それぞれの要素が確率<span class="math inline">\(p\)</span>で<code>True</code>、そうでない場合は<code>False</code>となるような二次元のリストを作る。</p>
-<p>まずは必要なモジュールをインポートしよう。最初のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-<span class="im">import</span> IPython
-<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
-<p>次に、一辺のサイズ(<code>size</code>)と確率(<code>p</code>)を受け取り、それぞれのサイトに確率<span class="math inline">\(p\)</span>で玉をばらまくような関数<code>make_lattice</code>を作る。以下を二番目のセルに入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_lattice(size, p):
-    lattice <span class="op">=</span> [[<span class="va">False</span>] <span class="op">*</span> size <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(size)]
-    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(size):
-        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(size):
-            lattice[x][y] <span class="op">=</span> random.random() <span class="op">&lt;</span> p
-    <span class="cf">return</span> lattice</code></pre></div>
-<p>動作確認してみよう。三番目のセルに以下を入力、実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_lattice(<span class="dv">2</span>,<span class="fl">0.5</span>)</code></pre></div>
-<p>実行するたびに結果が異なるが、例えばこんな結果が得られるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="va">False</span>, <span class="va">True</span>], [<span class="va">False</span>, <span class="va">True</span>]]</code></pre></div>
-<p>2x2の二次元配列で、各要素が確率0.5で<code>True</code>になっていると思う。ここで安心して次に行かず、 確率を0にしたら必ず<code>False</code>だけに、1にしたらかならず<code>True</code>だけになることも確認しておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_lattice(<span class="dv">4</span>,<span class="dv">0</span>)
-make_lattice(<span class="dv">4</span>,<span class="dv">1</span>)</code></pre></div>
-<p>極端な入力値(ここでは0や1)について振る舞いがよくわかっている場合、そこを確認するのは極めて重要である。ここでテストをおざなりにする人は、ちゃんとテストする人に比べて生産性に桁で違いが出てしまう。プログラムを書いたら、しつこいほどテストをしよう。</p>
-<p>さて、<code>make_lattice</code>のテストが完了したら、三番目のテスト用のセルは削除して良い。</p>
-<h3 id="状態の描画">状態の描画</h3>
-<p>二次元正方格子にランダムに「玉」をばらまいた。ではそれを可視化してみよう。</p>
-<p>三番目、四番目のセルに以下のプログラムを入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_sites(lattice, g, draw):
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    <span class="cf">for</span> x, row <span class="kw">in</span> <span class="bu">enumerate</span>(lattice):
-        <span class="cf">for</span> y, site <span class="kw">in</span> <span class="bu">enumerate</span>(row):
-            <span class="cf">if</span> <span class="kw">not</span> site:
-                <span class="cf">continue</span>
-            ix <span class="op">=</span> x <span class="op">*</span> g
-            iy <span class="op">=</span> y <span class="op">*</span> g
-            pos <span class="op">=</span> (ix<span class="op">+</span><span class="dv">1</span>, iy<span class="op">+</span><span class="dv">1</span>, ix<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>, iy<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>)
-            draw.ellipse(pos, fill<span class="op">=</span>(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_all(lattice):
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    g <span class="op">=</span> <span class="dv">16</span>
-    s <span class="op">=</span> size <span class="op">*</span> g
-    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (s, s), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
-    draw <span class="op">=</span> ImageDraw.Draw(im)
-    black <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-    draw.rectangle((<span class="dv">0</span>, <span class="dv">0</span>, s<span class="op">-</span><span class="dv">1</span>, s<span class="op">-</span><span class="dv">1</span>), outline<span class="op">=</span>black)
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(size):
-        draw.line((<span class="dv">0</span>, i<span class="op">*</span>g, s, i<span class="op">*</span>g), fill<span class="op">=</span>black)
-        draw.line((i<span class="op">*</span>g, <span class="dv">0</span>, i<span class="op">*</span>g, s), fill<span class="op">=</span>black)
-    draw_sites(lattice, g, draw)
-    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>入力できたら、五つ目のセルに以下を入力し、実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
-lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
-draw_all(lattice)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>正しく入力されていれば、32x32の正方格子に、確率0.5で赤い玉がばらまかれたはずである。実行するたびに形が変わるので見てみよう。</p>
-<h3 id="色の描画">色の描画</h3>
-<p>さて、この後「上下左右に隣接したセルは同じグループとして、同じグループは同じ色に塗る」という処理をするのだが、その前に色を塗る処理だけ先に作っておこう。 このグループは「クラスター」と呼ばれる。よくネット上で同じ趣味を持つ仲間を「○○クラスタ」などと言うが、あのクラスターである。 この同じグループは同じクラスターに属すとして、クラスター番号を得る処理を作ろう。</p>
-<p>今、セルは以下のようになっているはず。</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>make_lattice</li>
-<li>draw_sites</li>
-<li>draw_all</li>
-<li>IPython.display.Image</li>
-</ol>
-<p>この状態で、二つ目と三つ目のセルの間に新たにセルを作り、以下のようなコードを入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_cluster_index(i, cluster_index):
-    <span class="cf">while</span> cluster_index[i] <span class="op">!=</span> i:
-        i <span class="op">=</span> cluster_index[i]
-    <span class="cf">return</span> i</code></pre></div>
-<p>これが何をする関数かは後で説明する。これで、セルはこうなった。</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>make_lattice</li>
-<li>get_cluster_index</li>
-<li>draw_sites</li>
-<li>draw_all</li>
-<li>IPython.display.Image</li>
-</ol>
-<p>この状況で、<code>draw_sites</code>に、引数として<code>cluster_index</code>というリストを受け取るように修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_sites(lattice, g, draw, cluster_index): <span class="co"># 引数追加</span>
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    colors <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
-      , (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">255</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">255</span>)] <span class="co"># 追加</span>
-    <span class="cf">for</span> x, row <span class="kw">in</span> <span class="bu">enumerate</span>(lattice):
-        <span class="cf">for</span> y, site <span class="kw">in</span> <span class="bu">enumerate</span>(row):
-            <span class="cf">if</span> <span class="kw">not</span> site:
-                <span class="cf">continue</span>
-            ix <span class="op">=</span> x <span class="op">*</span> g
-            iy <span class="op">=</span> y <span class="op">*</span> g
-            ci <span class="op">=</span> x <span class="op">+</span> y <span class="op">*</span> size   <span class="co"># 追加</span>
-            c <span class="op">=</span> get_cluster_index(ci, cluster_index) <span class="co"># 追加</span>
-            c <span class="op">=</span> c <span class="op">%</span> <span class="dv">6</span> <span class="co"># 追加</span>
-            pos <span class="op">=</span> (ix<span class="op">+</span><span class="dv">1</span>, iy<span class="op">+</span><span class="dv">1</span>, ix<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>, iy<span class="op">+</span>g<span class="op">-</span><span class="dv">1</span>)
-            draw.ellipse(pos, fill<span class="op">=</span>colors[c]) <span class="co"># 修正</span></code></pre></div>
-<p>また、<code>draw_all</code>も、<code>cluster_index</code>を受け取り、それをそのまま<code>draw_sites</code>に渡すように修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_all(lattice, cluster_index): <span class="co"># 引数追加</span>
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    g <span class="op">=</span> <span class="dv">16</span>
-    s <span class="op">=</span> size <span class="op">*</span> g
-    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (s, s), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
-    draw <span class="op">=</span> ImageDraw.Draw(im)
-    black <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-    draw.rectangle((<span class="dv">0</span>, <span class="dv">0</span>, s<span class="op">-</span><span class="dv">1</span>, s<span class="op">-</span><span class="dv">1</span>), outline<span class="op">=</span>black)
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(size):
-        draw.line((<span class="dv">0</span>, i<span class="op">*</span>g, s, i<span class="op">*</span>g), fill<span class="op">=</span>black)
-        draw.line((i<span class="op">*</span>g, <span class="dv">0</span>, i<span class="op">*</span>g, s), fill<span class="op">=</span>black)
-    draw_sites(lattice, g, draw, cluster_index) <span class="co"># 修正</span>
-    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>この状態で、六つ目のセルを以下のように修正、実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
-lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
-cluster_index <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(size<span class="op">*</span>size)) <span class="co"># 追加</span>
-draw_all(lattice, cluster_index) <span class="co"># 修正</span>
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>それぞれの玉に色がついたはずである。</p>
+<p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。いま、道が通行可能な確率をpとしよう。通行可能な道だけを通って「こっち側」から「向こう側」に通過できる確率<span class="math inline">\(C\)</span>を知りたい。確率<span class="math inline">\(C\)</span>は確率<span class="math inline">\(p\)</span>の関数となる。当然、<span class="math inline">\(p\)</span>が小さければ渡れる確率は低く、大きければ渡れる確率は高くなると思われるが、どんな関数になるか想像できるだろうか？</p>
+<p>これは <strong>ボンド・パーコレーション(Bond Percolation)</strong> と呼ばれるモデルとなり、十分大きなシステムでは「<span class="math inline">\(p\)</span>がある値<span class="math inline">\(p_c\)</span>未満ではほぼ確実に渡ることができず、<span class="math inline">\(p_c\)</span>より大きければほぼ確実に渡ることができる」という振る舞いを見せる。つまり、系の振る舞いがパラメータのある一点を境に大きく変化する。このように、あるパラメータを変化させていったときに、ある点で系の性質が大きく変化することを <strong>相転移(Phase Transigion)</strong> と呼び、性質が変わるパラメータの境目<span class="math inline">\(p_c\)</span>を <strong>臨界点(Critical Point)</strong> と呼ぶ。</p>
+<p>パーコレーションは、相転移を示す最も簡単なモデルのひとつだ。身近な相転移としては、水の沸騰などが挙げられる。水を一気圧の条件で温度を徐々に挙げていくと、摂氏100度で沸騰し、水蒸気になる。水も水蒸気も水分子から構成されており、それは全く変化していない。しかし、水分子の集団としての振る舞いが大きく変化するのである。0度以下に冷やすと凍るのも相転移である。</p>
+<p>このパーコレーションをプログラムで解析してみよう。以下、道路の交差点を「サイト」と呼ぶ。各サイトは別のサイトと道でつながっているが、その道は確率<span class="math inline">\(p\)</span>で通行可能、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。あるサイトから別のサイトに通行可能ならば、それらのサイトは「つながっている」と定義し、「つながっているサイト」のまとまりを「クラスター」と呼ぶ。</p>
+<div class="figure">
+<img src="fig/clustering.png" alt="クラスタリング" />
+<p class="caption">クラスタリング</p>
+</div>
+<p>通行可能確率<span class="math inline">\(p=0\)</span>の時には、全ての道が通行止めになっているので、各サイトはすべて孤立している。逆に<span class="math inline">\(p=1\)</span>の時には、全ての道が通行可能なので、全てのサイトが一つのクラスターとなる。その中間の値の時には、各サイトが複数のクラスターに分離するであろう。このように、お互いにつながっているサイトをまとめることを「クラスタリング」と呼ぶ(機械学習などで耳にするクラスタリングとは意味が異なるので注意)。このクラスタリングを行うために、Union-Findアルゴリズムを用いる。</p>
 <h3 id="union-findアルゴリズム">Union-Findアルゴリズム</h3>
-<p>TODO: Union-Findの説明</p>
-<p>現在、セル状況はこうなっている。</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>make_lattice</li>
-<li>get_cluster_index</li>
-<li>draw_sites</li>
-<li>draw_all</li>
-<li>IPython.display.Image</li>
-</ol>
-<p>この三つ目と四つ目のセルの間に、以下を入力しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> <span class="ex">connect</span>(i, j, lattice, cluster_index):
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    (ix, iy) <span class="op">=</span> i
-    (jx, jy) <span class="op">=</span> j
-    <span class="cf">if</span> size <span class="kw">in</span> (ix, iy, jx, jy):
-        <span class="cf">return</span>
-    <span class="cf">if</span> <span class="kw">not</span> lattice[ix][iy]:
-        <span class="cf">return</span>
-    <span class="cf">if</span> <span class="kw">not</span> lattice[jx][jy]:
-        <span class="cf">return</span>
-    ci <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> size
-    cj <span class="op">=</span> jx <span class="op">+</span> jy <span class="op">*</span> size
-    ci <span class="op">=</span> get_cluster_index(ci, cluster_index)
-    cj <span class="op">=</span> get_cluster_index(cj, cluster_index)
-    <span class="cf">if</span> ci <span class="op">&gt;</span> cj:
-        ci, cj <span class="op">=</span> cj, ci
-    cluster_index[cj] <span class="op">=</span> ci</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> clastering(lattice, cluster_index):
-    size <span class="op">=</span> <span class="bu">len</span>(lattice)
-    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(size):
-        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(size):
-            <span class="ex">connect</span>((x, y), (x<span class="op">+</span><span class="dv">1</span>, y), lattice, cluster_index)
-            <span class="ex">connect</span>((x, y), (x, y<span class="op">+</span><span class="dv">1</span>), lattice, cluster_index)</code></pre></div>
-<p>セル状況はこうなったはずである。</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>make_lattice</li>
-<li>get_cluster_index</li>
-<li>connect</li>
-<li>clastering</li>
-<li>draw_sites</li>
-<li>draw_all</li>
-<li>IPython.display.Image</li>
-</ol>
-<p>番号がよくわからなくなったら、「ランタイム」から「再起動してすべてのセルを実行」を実行せよ。</p>
-<p>8番目のセルを以下のように修正せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">32</span>
-lattice <span class="op">=</span> make_lattice(size, <span class="fl">0.5</span>)
-cluster_index <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(size<span class="op">*</span>size))
-clastering(lattice, cluster_index) <span class="co"># 追加</span>
-draw_all(lattice, cluster_index)
+<p>あるサイトAから、あるサイトBに到達可能であったとする。サイトBからサイトCに通行可能であるならば、AからCに到達可能である。今、サイトXからサイトYに到達可能であることを「X 〜 Y」と表記すると、「〜」は同値類を作る。同値類というと難しそうだが、要するに「『友達の友達』は友達である」と定義した時に、お友達グループに分類しましょう、ということである。先程のパーコレーションならば、「お互いに到達可能なサイト」は同値類を作る。</p>
+<p>さて、AとBがつながっており、BとCがつながっていることがわかった時、AとCがつながっている、ということをどうやって知ればよいだろうか？この問題は単純そうに見えて意外に面倒ください。次々とサイトをつなげてクラスターを作っていくとき、大きなクラスター同士が「つながった」時に、それぞれに属すサイトをすべてつなげる、という処理をしなければならない。このような処理に便利なのが「Union-Find」と呼ばれるアルゴリズムだ。</p>
+<p>Union-Findは、Union-Find木と呼ばれる木構造を作るアルゴリズムで、その名の通り「Union」処理と「Find」の二つの処理からなる。Union-Find木は「上司」「部下」の関係を表現するようなデータ構造だ。</p>
+<div class="figure">
+<img src="fig/union-find.png" alt="Union-Find" />
+<p class="caption">Union-Find</p>
+</div>
+<p>まず、Findは、「自分の属す会社の社長」を探す処理である。各サイトは「自分の上司」を覚えている。その上司にはさらに上司がいて・・・とたどっていくと、最終的に「自分自身が上司」となるサイトに到達する。この「自分自身が上司」となるサイトを社長としよう。例えば上の図で、6番の所属する会社の社長を探してみる。6の上司は3、3の上司は1であり、1の上司は自分自身であるため、6の所属する会社の社長は1とわかる。</p>
+<p>次にUnionは「二つの会社の合併処理」をする。いま、先程の図で3の所属する会社と5の所属する会社を合併したいとする。しかし、3も5も平社員だ。そこでそれぞれの所属する会社の社長である1と4に相談する。相談の結果、1の会社が4を吸収合併することに決まった。それまで4の上司は自分自身だったが、新たに1を上司としてつなぎ替える。この状態で「6」の所属する会社の社長を探すと、「6の上司は4」「4の上司は1」となり、直接合併に携わらなかった6も正しく1の会社に所属していることがわかる。</p>
+<p>課題では、このUnion-Findアルゴリズムを用いて、パーコレーションのクラスタリングを行ってみよう。</p>
+<h1 id="乱数を使ったプログラム課題">乱数を使ったプログラム：課題</h1>
+<h2 id="課題1モンティホール問題">課題1：モンティ・ホール問題</h2>
+<p>モンティ・ホール問題において、Keep派、Change派それぞれの「正解確率」を計算し、どちらが得かを考えてみよう。新しいノートブックを開き、<code>monty_hall.ipynb</code>という名前で保存せよ。</p>
+<h3 id="課題1-1keep派">課題1-1：Keep派</h3>
+<p>まずはKeep派のシミュレーションをしよう。</p>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>何はともあれ、まずはライブラリのインポートである。後で使うライブラリをまとめてインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> choice, seed
+<span class="im">from</span> copy <span class="im">import</span> copy</code></pre></div>
+<h4 id="keep派のアルゴリズムkeepを実装">2. Keep派のアルゴリズム<code>keep</code>を実装</h4>
+<p>まずは箱の中身のリストを渡されたときに、正解の箱とプレイヤーの選ぶ箱をランダムに選び、一致するかどうかを返す関数<code>keep</code>を作ってみる。二つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    first_choice <span class="op">=</span> choice(boxes)
+    <span class="cf">return</span> answer <span class="op">==</span> first_choice</code></pre></div>
+<p><code>answer</code>が正解の箱、<code>first_choice</code>がプレイヤーの最初の選択である。Keep派は最初の選択から箱を変えないので、これが最終決定となる。</p>
+<h4 id="keepの動作確認">3. <code>keep</code>の動作確認</h4>
+<p>入力・実行したら、適当な箱リストを与えて<code>keep</code>を呼んでみよう。3つ目のセルに以下を入力し、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
+boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(keep(boxes))</code></pre></div>
+<p>このような結果が得られるはずである。</p>
+<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">False</span>
+<span class="ex">False</span>
+<span class="ex">False</span>
+<span class="ex">True</span>
+<span class="ex">False</span>
+<span class="ex">True</span>
+<span class="ex">False</span>
+<span class="ex">True</span>
+<span class="ex">False</span>
+<span class="ex">False</span></code></pre></div>
+<p>正解の箱とプレイヤーの選んだ箱が一致したら<code>True</code>、そうでなければ<code>False</code>と表示されている。</p>
+<h3 id="課題1-2change派">課題1-2：Change派</h3>
+<p>さて、先ほどとは逆に「選んだ箱を変えてよい」と言われた時に、必ず箱を変える戦略を考えよう。これをChange派と呼ぶ。</p>
+<h4 id="関数changeの実装">4. 関数<code>change</code>の実装</h4>
+<p>4つ目のセルに、<code>change</code>を実装しよう。箱のリストを受け取り、正解<code>answer</code>と、プレイヤーが最初に選ぶ箱<code>first_choice</code>を決めるところまでは同じである。</p>
+<p>さて、次に「司会者が開ける箱」を考える必要がある。司会者が開けるのは、プレイヤーが選んだ箱であっても、正解の箱あってもならない。ここで、最初にプレイヤーが選んだ箱が正解かどうかで処理が変わる。</p>
+<ul>
+<li>もしプレイヤーが最初に選んだ箱が正解ならば、司会者は残りの二箱のどちらを開けても良いので、ランダムに開ける。従って、プレイヤーの二回目の選択は、「残りの二箱」からランダムに選ぶことになる</li>
+<li>もしプレイヤーが最初に選んだ箱が答えでないのなら、残りの二箱には必ず正解が含まれる。司会者は正解ではない箱を開けるため、Change派のプレイヤーの二度目の選択は正解の箱となる</li>
+</ul>
+<p>以上の処理をそのままプログラムに落とすことにしよう。以下の「ここを埋めよ」のところで、プレイヤーが二度目に選択する箱<code>second_choice</code>を決めるコードを書け。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
+    answer <span class="op">=</span> choice(boxes)
+    first_choice <span class="op">=</span> choice(boxes)
+    rest_boxes <span class="op">=</span> boxes.copy()
+    rest_boxes.remove(answer)
+    <span class="co"># ここを埋めよ</span>
+    <span class="cf">return</span> answer <span class="op">==</span> second_choice</code></pre></div>
+<ul>
+<li>ヒント1：<code>first_choice</code>が正解かどうかで条件分岐せよ</li>
+<li>ヒント2：<code>rest_boxes</code>は、「正解を除いた」箱のリストである</li>
+</ul>
+<h4 id="changeの動作確認">5. <code>change</code>の動作確認</h4>
+<p>5つ目のセルで<code>change</code>関数の動作確認しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
+boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+    <span class="bu">print</span>(change(boxes))</code></pre></div>
+<p>実行するとこのような結果が得られるはずである。</p>
+<pre class="txt"><code>True
+True
+True
+False
+False
+True
+True
+True
+False
+True</code></pre>
+<h4 id="確率の計算">6. 確率の計算</h4>
+<p>Keep派、Change派の行動が両方シミュレートできるようになったので、それぞれの「正解確率」を計算してみよう。 6つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
+boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
+k <span class="op">=</span> <span class="dv">0</span>
+c <span class="op">=</span> <span class="dv">0</span>
+n <span class="op">=</span> <span class="dv">10000</span>
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
+    <span class="cf">if</span> keep(boxes):
+        k <span class="op">+=</span> <span class="dv">1</span>
+    <span class="cf">if</span> change(boxes):
+        c <span class="op">+=</span> <span class="dv">1</span>
+<span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))
+<span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
+<p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
+<h2 id="課題2パーコレーション">課題2：パーコレーション</h2>
+<p>乱数を使ったシミュレーションの例として、パーコレーションを考えてみよう。新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
+<h3 id="課題2-1クラスタの可視化">課題2-1：クラスタの可視化</h3>
+<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
+<p>最初のセルでは、いつもどおりライブラリのインポートをする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
+<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
+<span class="im">import</span> IPython</code></pre></div>
+<h4 id="find関数">2. <code>find</code>関数</h4>
+<p>2つ目のセルで、自分が所属するクラスタ番号を調べる<code>find</code>関数を実装しよう。自分の番号が親の番号と一致する<code>i = parent[i]</code>まで、親をたどっていくプログラムである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> find(i, parent):
+    <span class="cf">while</span> i <span class="op">!=</span> parent[i]:
+        i <span class="op">=</span> parent[i]
+    <span class="cf">return</span> i</code></pre></div>
+<h4 id="union関数">3.<code>union</code>関数</h4>
+<p>3つ目のセルで、二つのサイトを確率的につなぐ<code>union</code>関数を実装しよう。サイト<code>i</code>とサイト<code>j</code>のクラスター番号を<code>find</code>で取得し、サイト<code>j</code>の所属するクラスタの親をサイト<code>i</code>が所属するクラスタにすることで、二つのサイトをつなぐことができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> union(i, j, parent):
+    i <span class="op">=</span> find(i, parent)
+    j <span class="op">=</span> find(j, parent)
+    parent[j] <span class="op">=</span> i</code></pre></div>
+<h4 id="状態の作成">4. 状態の作成</h4>
+<p><code>find</code>と<code>union</code>の実装ができたら、サイトの状態を作るのは難しくない。4つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_conf(L, p):
+    parent <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L <span class="op">*</span> L)]
+    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">-</span><span class="dv">1</span>):
+        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">-</span><span class="dv">1</span>):
+            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L
+            j <span class="op">=</span> ix<span class="op">+</span><span class="dv">1</span> <span class="op">+</span> iy <span class="op">*</span> L
+            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:
+                union(i, j, parent)
+            j <span class="op">=</span> ix <span class="op">+</span> (iy<span class="op">+</span><span class="dv">1</span>) <span class="op">*</span> L
+            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:
+                union(i, j, parent)
+    <span class="cf">return</span> parent</code></pre></div>
+<p>最初に「親」の情報<code>parent</code>を作成しておく。最初はすべて<code>parent[i] = i</code>、つまり自分の親が自分自身である状態にしておく。そして、右端と下端を除く全てのサイトについて「右」と「下」のサイトと確率的につなぐ処理を記述している。<code>if random.random() &lt; p:</code>というセンテンスは「確率pでif文の中身が実行される」という処理で、確率的な処理の基本となるので覚えておくと良い。</p>
+<h4 id="状態の可視化関数">5. 状態の可視化関数</h4>
+<p>5つ目のセルに、サイトの親の情報を受け取って可視化する関数<code>show_image</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_image(parent, L):
+    size <span class="op">=</span> <span class="dv">512</span>
+    s <span class="op">=</span> size <span class="op">//</span> L
+    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
+    colors <span class="op">=</span> []
+    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">*</span>L):
+        r <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
+        g <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
+        b <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
+        colors.append((r, g, b))
+    draw <span class="op">=</span> ImageDraw.Draw(im)
+    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L):
+        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L):
+            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L
+            i <span class="op">=</span> find(i, parent)
+            c <span class="op">=</span> colors[i]
+            draw.rectangle((ix<span class="op">*</span>s, iy<span class="op">*</span>s, ix<span class="op">*</span>s<span class="op">+</span>s, iy<span class="op">*</span>s<span class="op">+</span>s), fill<span class="op">=</span>c)
+    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<p>あらかじめ、ランダムにクラスター番号と色の対応表<code>colors</code>を作っておき、それぞれのサイトのクラスター番号で色を塗ることで「同じクラスターは同じ色で塗る」を実現している。</p>
+<h4 id="シミュレーション">6. シミュレーション</h4>
+<p>では、早速シミュレーションをしてみよう。まずは通行確率pが0、つまり全ての区間が孤立している状態を可視化してみる。6つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">L <span class="op">=</span> <span class="dv">256</span>
+p <span class="op">=</span> <span class="fl">0.0</span>
+sites <span class="op">=</span> make_conf(L, p)
+show_image(sites, L)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>ここまで正しく入力できていれば、上下左右に隣接した「玉」が同じ色で塗られたはずである。</p>
-<h3 id="相転移の確認">相転移の確認</h3>
-<p>TODO: Crossing Probabilityの計算</p>
-<h2 id="余談確率の難しさ">余談：確率の難しさ</h2>
-<p>確率が絡んだ問題は、時として直観と合わない結果を生む。そんな問題は(厳密にはパラドックスではないが)パラドックスと呼ばれる。 有名なのは「誕生日のパラドックス」であろう。今、うるう年は考えず、一年が365日だとしよう。また、誕生日は一様であるとする。 さて、30人いるクラスで、誕生日が同じペアが存在する確率はどのくらいだろうか？ ちょっと想像してから、こんなコードを書いて確認してみよう。</p>
+<p>ここまで正しく実装されていれば、ノイズのような画面が表示されたはずである。</p>
+<p>では、次に<code>p = 0.4</code>を試してみよ。お互いに通行可能な区間が同じ色で表示されるため、同じ色で塗られた領域(クラスター)が出現したはずである。</p>
+<p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。同じ色のクラスターだけをたどって「下から上」へ到達できるだろうか？</p>
+<h2 id="余談1確率の難しさ">余談1：確率の難しさ</h2>
+<p>確率が絡んだ問題は、時として直観と合わない結果を生む。そんな問題は(厳密にはパラドックスではないが)パラドックスと呼ばれる。有名なのは「誕生日のパラドックス」であろう。今、うるう年は考えず、一年が365日だとしよう。また、誕生日は一様であるとする。さて、30人いるクラスで、誕生日が同じペアが存在する確率はどのくらいだろうか？ ちょっと想像してから、こんなコードを書いて確認してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
     r <span class="op">=</span> <span class="fl">1.0</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
@@ -442,12 +434,12 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
     <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">-</span> r
 
 p(<span class="dv">30</span>)</code></pre></div>
-<p>思ったより大きかったのではないだろうか？逆に、直観より確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。 これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
+<p>思ったより大きかったのではないだろうか？逆に、直観より確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
 <ul>
 <li>複数種類の絵柄のあるカードがあり、お金を払うとそのどれかがランダムで手に入る</li>
 <li>複数の絵柄をすべて揃えたら、景品が当たる</li>
 </ul>
-<p>というものである。例えば、カードが10種類あり、一枚100円とする。全種類揃えるのに必要な経費の期待値はどのくらいか、すぐにわかるだろうか？ やはり少し想像してから計算してみよう。</p>
+<p>というものである。例えば、カードが10種類あり、一枚100円とする。全種類揃えるのに必要な経費の期待値はどのくらいか、すぐにわかるだろうか？やはり少し想像してから計算してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
     r <span class="op">=</span> <span class="fl">0.0</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
@@ -457,6 +449,9 @@ p(<span class="dv">30</span>)</code></pre></div>
 p(<span class="dv">10</span>)</code></pre></div>
 <p>「10種類ある絵柄が等確率で当たり、10種類揃えたら景品を渡す」という文面に嘘がなく、確率操作などをせずその通りに実施するとしても、これは違法となる。なぜ違法とすべきなのか、考えてみると面白いであろう。</p>
 <p>モンティ・ホール問題でも、直観と乖離した結果に多くの人が騙された。間違った人々の中には数学者もいて、新聞に意見を投書して紹介され、のちに恥をかいたようだ。現在はネット社会であり、何か肩書を持った人が間違ったことを言うと多くの人の目に触れ、昔より炎上しやすい。この問題が教えてくれる本当の教訓は「何か発言するときは気を付けよう」ということかもしれない。</p>
+<h2 id="余談2疑似乱数とゲーム">余談2：疑似乱数とゲーム</h2>
+<p>ゲームには乱数がつきものである。RPGなどでは、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、レアな敵が出たときにセーブしてリセットすると、全く同じ敵が現れてしまう、という仕様(バグ？)があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは「乱数調整」といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
+<p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
 </article>
 </body>
 </html>
