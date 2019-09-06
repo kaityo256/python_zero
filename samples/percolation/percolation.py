@@ -34,20 +34,22 @@ def show_image(parent, L):
     size = 512
     s = size // L
     im = Image.new("RGB", (size, size), (255, 255, 255))
-    colors = [random.randint(1, 8) for _ in range(L*L)]
+    colors = []
+    for _ in range(L*L):
+        r = random.randint(0, 255)
+        g = random.randint(0, 255)
+        b = random.randint(0, 255)
+        colors.append((r, g, b))
     draw = ImageDraw.Draw(im)
     for iy in range(L):
         for ix in range(L):
             i = ix + iy * L
             i = find(i, parent)
             c = colors[i]
-            r = (c % 2)*255
-            g = ((c // 2) % 2)*255
-            b = (c // 4) * 255
-            draw.rectangle((ix*s, iy*s, ix*s+s, iy*s+s), fill=(r, g, b))
+            draw.rectangle((ix*s, iy*s, ix*s+s, iy*s+s), fill=c)
     im.save("test.png")
 
 
 L = 256
-sites = make_conf(L, 0.45)
+sites = make_conf(L, 0.48)
 show_image(sites, L)
