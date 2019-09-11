@@ -1,8 +1,6 @@
 # [ゼロから学ぶPython](https://kaityo256.github.io/python_zero/)
 
-[リポジトリ(kaityo256/python_zero)](https://github.com/kaityo256/python_zero)
-
-[HTML版](https://kaityo256.github.io/python_zero/)
+<a href="https://github.com/kaityo256/python_zero"> <div class="btn-square"><i class="fab fa-github"></i> View on GitHub</div></a>
 
 ## この記事について
 
