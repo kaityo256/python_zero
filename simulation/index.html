@@ -80,7 +80,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>反応拡散方程式(Gray-Scott Model)</li>
 <li>余談：パーソナルスーパーコンピュータ</li>
 </ul>
-<h2 id="はじめに">はじめに</h2>
+<h2 id="数値シミュレーションとは">数値シミュレーションとは</h2>
+<p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている(らしい)。したがって、物理学とは、微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(Governing Equation)</strong> と呼ぶ。この支配方程式を、数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(Numerical Simulation)</strong> と呼ぶ。</p>
+<p>さて、この世界の空間や時間は(たぶん)連続的であるのに対し、コンピュータは原則として離散的な値しか扱うことができない。数値シミュレーションとはこの世界の出来事をコンピュータの中に再現することであるから、計算するにあたって連続的な値を離散的な値に変換する必要がある。例えば、パソコンやスマホで動画を見ることがあるだろう。動画は、我々が目にする世界のように、空間的にも時間的にも連続的に見えるが、実際には時間方向は静止画像を高速にコマ送りすることで連続的に見せており、静止画像も拡大するとピクセル単位で離散化されている。</p>
+<div class="figure">
+<img src="fig/discretization.png" alt="時間と空間の離散化" />
+<p class="caption">時間と空間の離散化</p>
+</div>
+<p>このように、連続的な値をコンピュータで扱うために離散的な値にすることを <strong>離散化(discretization)</strong> と呼ぶ。以下では、時間や空間を離散化することで微分方程式を計算機が扱いやすい形にして、その振る舞いを数値シミュレーションで解析してみよう。</p>
+<h2 id="運動方程式">運動方程式</h2>
 <p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは何か？それは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
 <p><span class="math display">\[
 m \frac{d v}{dt} = F
@@ -92,11 +100,10 @@ m \frac{d v}{dt} = F
 \frac{d r}{dt} &amp;= v
 \end{aligned}
 \]</span></p>
-<p>これが運動方程式である。すなわち、運動方程式とは時間に関する連立常微分方程式である。上記の式は一次元で書いたが、これを三次元の式にして、さらに二つの物質の間に距離の二乗に反比例する力を仮定すると、互いに重力で引き合う二つの星の運動を表す方程式となる。これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。</p>
-<p>物理学とは、この宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている(らしい)。したがって、物理学とは、微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を支配方程式(Governing Equation)と呼ぶ。支配方程式を数値的に解いて、その振る舞いを調べることを数値シミュレーションと呼ぶ。というわけで、今回は数値シミュレーションをやってみよう。</p>
-<h2 id="空気抵抗がない場合の弾道計算">空気抵抗がない場合の弾道計算</h2>
-<p>ものを斜め上に投げると、どの角度で投げると最も遠くに飛ぶだろうか。ただし空気抵抗は無視するものとする。答えが投げる強さ(初速)に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？空気抵抗を無視すれば、二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばす」という設定は、物理としてはかなり簡単な部類に入るが、戦争においては極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気的もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っていた。実際に射出して着弾距離を調べることももちろん行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することが軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
-<p>さて、いま皆さんの目の前にあるのは、ちょっと前のスーパーコンピュータなみの計算能力を持つ計算機である。それを使って、簡単なシミュレーションをしてみよう。まずは空気抵抗がない場合である。二次元の場合を考えよう。運動方程式は以下のようになる。</p>
+<p>これが運動方程式である。すなわち、運動方程式とは時間に関する連立常微分方程式である。上記の式は一次元で書いたが、これを三次元の式にして、さらに二つの物質の間に距離の二乗に反比例する力を仮定すると、宇宙空間内で互いに重力で引き合う二つの星の運動を表す方程式となる。これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。 自然科学において <strong>法則(law)</strong> とは、実験や観測などで再現可能な自然の振る舞いである。物理学とは、より基本的な原理から、観測事実である「法則」を導き、説明しようとする営みである。</p>
+<h3 id="空気抵抗がない場合の弾道計算">空気抵抗がない場合の弾道計算</h3>
+<p>ものを斜め上に投げた時、最も遠くに飛ばすにはどんな角度で投げればよいだろうか。ただし空気抵抗は無視するものとする。答えが投げる強さ(初速)に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？空気抵抗を無視すれば、二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばして目的の場所に落とす」という設定は、戦争においては極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気抵抗もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っていた。実際に射出して着弾距離を調べることももちろん行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することは軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
+<p>さて、いま皆さんの目の前にあるのは、ちょっと前のスーパーコンピュータなみの計算能力を持つ計算機である。それを使って、簡単なシミュレーションをしてみよう。まずは空気抵抗がない場合である。二次元の場合を考えよう。速度ベクトルを<span class="math inline">\(\vec{v} = (v_x, v_y)\)</span>、位置ベクトルを<span class="math inline">\(\vec{r} = (r_x, r_y)\)</span>とし、運動方程式をそれぞれの要素について書き下すと以下のようになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 \dot{v_x} &amp;= 0 \\
@@ -105,20 +112,28 @@ m \frac{d v}{dt} = F
 \dot{r_y} &amp;= v_y
 \end{aligned}
 \]</span></p>
-<p>さて、この式は厳密に解けるのだが、その厳密解を知らないとしよう。そこで、シミュレーションで近似的に解を求めたい。ここで「解」とは、重力下で角度<span class="math inline">\(\theta\)</span>で物体を投げた時の物体の軌道である。まず、数値計算で扱いやすいように、時間を離散化しよう。離散化とは、本来連続である時間や空間を「小さな単位」に分解して近似することだ。例えばテレビは、画像をピクセルに分解して表現しており(空間の離散化)、また1秒間に30フレームを表示している(時間の離散化)。このように、時間も空間も十分小さい単位に区切って表現すれば、もとの連続空間での微分方程式の解の性質を精度よく表現できると考えられる。</p>
-<p>今、時間に依存するある量<span class="math inline">\(f(t)\)</span>の時間微分の表式<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻みを<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。<span class="math inline">\(f(t+h)\)</span>を<span class="math inline">\(t\)</span>の周りでテイラー展開して、一次までとると、</p>
+<p>さて、この式は厳密に解けるのだが、その厳密解を知らないものとし、シミュレーションで近似的に解を求めることにする。求めたいものは重力下で角度<span class="math inline">\(\theta\)</span>で物体を投げた時の物体の軌道である。まず、数値計算で扱いやすいように、時間を離散化しよう。</p>
+<p>今、ある量<span class="math inline">\(f(t)\)</span>の時間微分<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻みを<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。時間微分<span class="math inline">\(f&#39;(t)\)</span>がわかっているので、厳密な表式は積分で与えられる。</p>
+<p><span class="math display">\[
+f(t+h) = f(t) + \int_t^{t+h} f&#39;(t) dt
+\]</span></p>
+<p>この式の意味は時刻<span class="math inline">\(t\)</span>において<span class="math inline">\(f(t)\)</span>の値である時、それに<span class="math inline">\(t\)</span>から<span class="math inline">\(t+h\)</span>までの時間変化<span class="math inline">\(f&#39;(t)\)</span>をすべて積算したものを加えると<span class="math inline">\(f(t+h)\)</span>の値になります、ということであり、なんら難しいことは言っていない。</p>
+<p>さて、一般にはこの積分を求積することはできないので、なんらかの近似をする。最も単純な近似は、時間刻み<span class="math inline">\(h\)</span>が小さいので、その間は<span class="math inline">\(f&#39;(t)\)</span>が時間変化しないものとみなすことだろう。すると、<span class="math inline">\(f&#39;(t)\)</span>を積分の外に出すことができるので、</p>
+<p><span class="math display">\[
+f(t+h) \sim f(t) + h f&#39;(t)
+\]</span></p>
+<p>と近似することができる。<span class="math inline">\(f(t+h)\)</span>を<span class="math inline">\(t\)</span>の周りでテイラー展開して、一次までとると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 f(t + h) &amp;= f(t) + f&#39;(t)h + O(h^2) \\
-&amp;\sim f(t) + f&#39;(t)h
 \end{aligned}
 \]</span></p>
-<p>となる。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる、ということを主張する。このように、時間や空間を離散化し、微分を離散単位で近似することを <strong>差分化</strong> と呼ぶ。</p>
+<p>となることから、先程の近似は<span class="math inline">\(h\)</span>の一次まで正しい。これを一次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる、ということを主張する。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(Finite difference method)</strong> と呼ぶ。特に、一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
 <div class="figure">
 <img src="fig/nextstep.png" alt="時間の差分化" />
 <p class="caption">時間の差分化</p>
 </div>
-<p>先の運動方程式に差分化を適用すると、</p>
+<p>先の運動方程式に一次の差分化を適用すると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 v_x(t+h) &amp;= v_x(t) \\
@@ -127,70 +142,33 @@ r_x(t+h) &amp;= r_x(t) + v_x(t) h \\
 r_y(t+h) &amp;= r_y(t) + v_y(t) h\\
 \end{aligned}
 \]</span></p>
-<p>となる。これを実装してみよう。</p>
-<h3 id="課題1抵抗の無い弾道計算">課題1:抵抗の無い弾道計算</h3>
-<p>以下のプログラムを三つのセルに分けて入力し、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> math <span class="im">import</span> pi, cos, sin</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> run(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  vx, vy <span class="op">=</span> cos(theta), sin(theta)
-  ax, ay <span class="op">=</span> [], []
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.01</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    rx <span class="op">+=</span> vx <span class="op">*</span> h
-    ry <span class="op">+=</span> vy <span class="op">*</span> h
-    <span class="co"># 残りの速度の更新部分を実装せよ</span>
-    ax.append(rx)
-    ay.append(ry)
-  nx <span class="op">=</span> np.array(ax)
-  ny <span class="op">=</span> np.array(ay)
-  <span class="cf">return</span> nx, ny</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;A&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>以下のような放物線が表示されたら成功である。</p>
-<div class="figure">
-<img src="fig/parabola.png" alt="放物線" />
-<p class="caption">放物線</p>
-</div>
-<h3 id="課題2厳密解との比較">課題2:厳密解との比較</h3>
-<p>さて、先程の運動方程式は厳密に解くことができる。</p>
+<p>となる。この計算を一度行うことで、時刻<span class="math inline">\(t\)</span>の物理量から時刻<span class="math inline">\(t+h\)</span>の物理量が得られる。あとはこれを繰り返せば(時間刻み<span class="math inline">\(h\)</span>の精度で)任意の時刻の位置と速度がわかることになる。</p>
+<p>厳密解も求めておこう。</p>
+<p>まず、運動方程式から速度に関する部分を抜き出すと以下のようになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
-v_x(t) &amp;= \cos{\theta} \\
-v_y(t) &amp;= \sin{\theta} - g t\\
-r_x(t) &amp;= t \cos{\theta} \\
-r_y(t) &amp;= t \sin{\theta} - \frac{g t^2}{2}\\
+\dot{v_x} &amp;= 0 \\
+\dot{v_y} &amp;= - g
 \end{aligned}
 \]</span></p>
-<p>数値計算において厳密解がある場合は、必ず厳密解と比較すべきである。厳密解を返す関数を作ってみよう。<code>run</code>を入力したセルの次に新たにセルを作り、以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> exact(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  ax, ay <span class="op">=</span> [], []
-  t <span class="op">=</span> <span class="fl">0.0</span>
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.01</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    t <span class="op">+=</span> h
-    rx <span class="op">=</span> t <span class="op">*</span> cos(theta)
-    ry <span class="op">=</span> t <span class="op">*</span> sin(theta) <span class="op">-</span> g <span class="op">*</span> t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="fl">2.0</span>
-    ax.append(rx)
-    ay.append(ry)
-  <span class="cf">return</span> np.array(ax), np.array(ay)</code></pre></div>
-<p>上記を実行したら、4つ目のセルを以下のように修正し、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
-ex, ey <span class="op">=</span> exact(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(ex,ey, label<span class="op">=</span><span class="st">&quot;Exact&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>ほぼ重なった二つのグラフが表示されたら成功である。次に、<code>run</code>の時間刻み<code>h</code>の値を<code>0.01</code>から<code>0.001</code>にして、結果がどう変わるか比較せよ。</p>
-<h2 id="空気抵抗がある場合の弾道計算">空気抵抗がある場合の弾道計算</h2>
-<p>さて、先程は空気抵抗が無い場合を考えた。次は空気抵抗がある場合を考えよう。一口に空気抵抗と言っても様々な要因があり、その扱いは難しいのだが、ここは単純に「速度に比例して向きと反対向きに『ひっぱられる』力」がかかっていると考えよう。仰角(地面となす角度)<span class="math inline">\(\theta\)</span>で打ち上げて、しばらくしてその角度が<span class="math inline">\(\phi\)</span>になった状況を考える。物体にかかるのは速度の向きに逆方向の抵抗であり、それを<span class="math inline">\(x\)</span>軸、<span class="math inline">\(y\)</span>軸に分解するとこんな感じになる。</p>
+<p>これは簡単に求積できる。初期条件として、仰角<span class="math inline">\(\theta\)</span>、速度<span class="math inline">\(1\)</span>で投げたとすると、<span class="math inline">\(v_x(0) = \cos \theta, v_y(0) = \sin \theta\)</span>であるから、</p>
+<p><span class="math display">\[
+\begin{aligned}
+v_x(t) &amp;= \cos \theta \\
+v_y(t) &amp;= -gt + \sin \theta
+\end{aligned}
+\]</span></p>
+<p>となる。これをさらに時間積分したものが座標であるから、初期位置が <span class="math inline">\(\vec{r}(0) = (0,0)\)</span> であったとすると、</p>
+<p><span class="math display">\[
+\begin{aligned}
+r_x(t) &amp;= t \cos \theta \\
+v_y &amp;= -\frac{g t^2}{2} + t \sin \theta
+\end{aligned}
+\]</span></p>
+<p>これが求めたい軌道であった。</p>
+<h3 id="空気抵抗がある場合の弾道計算">空気抵抗がある場合の弾道計算</h3>
+<p>先程は空気抵抗が無い場合を考えた。次は空気抵抗がある場合を考えよう。一口に空気抵抗と言っても様々な要因があるのだが、ここは単純に「速度に比例して向きと反対向きにひっぱられる力」がかかっていると考えよう。このような力は「ストークス抵抗」と呼ばれ、流体の粘性が極めて高いか、物体の運動が非常に遅い時にしか成り立たないのだが、ここでは深入りしない。</p>
+<p>速度<span class="math inline">\(v\)</span>で運動する物体に対して、その速度とは逆向きに<span class="math inline">\(\gamma v\)</span>の力がかかるとしよう。<span class="math inline">\(\gamma\)</span>は比例係数であり、ここでは速度に依存しない定数とする。物体の速度ベクトルが地面となす角度が<span class="math inline">\(\phi\)</span>である時、物体にかかる力を<span class="math inline">\(x\)</span>軸、<span class="math inline">\(y\)</span>軸に分解するとこんな感じになる。</p>
 <div class="figure">
 <img src="fig/forces.png" alt="物体にかかる力" />
 <p class="caption">物体にかかる力</p>
@@ -198,69 +176,28 @@ plt.show()</code></pre></div>
 <p>この図をもとに、速度に関係する運動方程式を書き下すとこうなる。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\dot{v_x} &amp;= - \gamma v \cos(\phi) \\
-\dot{v_y} &amp;= - \gamma v \sin(\phi) - g \\
+\dot{v_x} &amp;= - \gamma v \cos \phi \\
+\dot{v_y} &amp;= - \gamma v \sin \phi - g \\
 \end{aligned}
 \]</span></p>
 <p>さて、三角関数の定義から</p>
 <p><span class="math display">\[
 \begin{aligned}
-\cos(\phi) &amp;= \frac{v_x}{v}\\
-\sin(\phi) &amp;= \frac{v_y}{v}\\
+\cos \phi &amp;= \frac{v_x}{v}\\
+\sin \phi &amp;= \frac{v_y}{v}\\
 \end{aligned}
 \]</span></p>
 <p>である。これを代入すると、最終的に以下の運動方程式を得る。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\dot{v_x} &amp;= -  \gamma v_x \\
-\dot{v_y} &amp;= -  \gamma v_y - g \\
 \dot{r_x} &amp;= v_x \\
-\dot{r_y} &amp;= v_y
+\dot{r_y} &amp;= v_y \\
+\dot{v_x} &amp;= -  \gamma v_x \\
+\dot{v_y} &amp;= -  \gamma v_y - g
 \end{aligned}
 \]</span></p>
-<p>これを実装してみよう。</p>
-<h3 id="課題3空気抵抗のある運動方程式の差分化">課題3:空気抵抗のある運動方程式の差分化</h3>
-<p>現在、セルの状況は</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>run</li>
-<li>exact</li>
-<li>plot</li>
-</ol>
-<p>となっているはずである。この2つ目と3つ目の間に新たにセルを作り、抵抗がある場合の時間発展を計算するコード<code>run_r</code>を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> run_r(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  vx, vy <span class="op">=</span> cos(theta), sin(theta)
-  ax, ay <span class="op">=</span> [], []
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.01</span>
-  gamma <span class="op">=</span> <span class="fl">0.5</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    rx <span class="op">+=</span> vx <span class="op">*</span> h
-    ry <span class="op">+=</span> vy <span class="op">*</span> h
-    <span class="co"># 残りの速度の更新部分を実装せよ</span>
-    ax.append(rx)
-    ay.append(ry)
-  nx <span class="op">=</span> np.array(ax)
-  ny <span class="op">=</span> np.array(ay)
-  <span class="cf">return</span> nx, ny</code></pre></div>
-<p>入力したら、5つ目のセルを以下のように入力し、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;Without resistance&quot;</span>)
-nx2, ny2 <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx2,ny2, label<span class="op">=</span><span class="st">&quot;With resistance&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>空気抵抗の無い場合と比べて、どのような変化があっただろうか？</p>
-<p>また、空気抵抗がある場合に、最も遠くまで飛ぶ角度はどのあたりか確認せよ。5つ目のセルを以下のように修正し、「A」と「B」のどちらが遠くまで飛ぶかを比較しながら、最も遠くまで飛ぶ角度を探してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;A&quot;</span>)
-nx2, ny2 <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.24</span>)
-plt.plot(nx2,ny2, label<span class="op">=</span><span class="st">&quot;B&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<h3 id="任意課題空気抵抗がある場合の厳密解">任意課題：空気抵抗がある場合の厳密解</h3>
-<p>一般に空気抵抗などがあると運動方程式の厳密解を求めるのは困難であるが、上記の場合は厳密解を求めることができる。</p>
+<p>課題では、この式を実装してみよう。</p>
+<p>なお、空気抵抗がある場合も厳密解を得ることができる。</p>
 <p>まず、速度に関する運動方程式は以下で与えられていた。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -268,50 +205,29 @@ plt.show()</code></pre></div>
 \dot{v_y} &amp;= -  \gamma v_y - g
 \end{aligned}
 \]</span></p>
-<p>これはそのまま求積することができる。<span class="math inline">\(v_x(0) = \cos \theta, v_y(0) = \sin \theta\)</span>であることから、解は以下のように求まる。</p>
+<p>これはそのまま求積することができる。簡単のため、初速を仰角<span class="math inline">\(\theta\)</span>、速度<span class="math inline">\(1\)</span>だったとすると、<span class="math inline">\(v_x(0) = \cos \theta, v_y(0) = \sin \theta\)</span>であることから、解は以下のように求まる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 v_x(t) &amp;= \mathrm{e}^{-\gamma t} \cos{\theta} \\
 v_y(t) &amp;= \mathrm{e}^{-\gamma t} \sin{\theta} - \frac{g}{\gamma}(1 - \mathrm{e}^{-\gamma t} )
 \end{aligned}
 \]</span></p>
-<p>このような式を得たら、必ず<span class="math inline">\(t=0\)</span>や<span class="math inline">\(t\rightarrow \infty\)</span>の場合にどうなるかを確認すること。特に、十分時間が経過した後は<span class="math inline">\(v_x \rightarrow 0, v_y \rightarrow -g/\gamma\)</span>という一定値に収束することがわかる。重力下で抵抗がある場合、最終的に速度が一定に落ち着くが、その落ち着いた速度を <strong>終端速度 (terminal verlocity)</strong> と呼ぶ。</p>
-<p>さて、速度が求まったので、これを積分すれば任意の時刻による位置も求めることができる。</p>
+<p>このような式を得たら、必ず<span class="math inline">\(t=0\)</span>で初期条件と一致するか、<span class="math inline">\(t\rightarrow \infty\)</span>の場合にどうなるかを確認すること。特に、十分時間が経過した後は<span class="math inline">\(v_x \rightarrow 0, v_y \rightarrow -g/\gamma\)</span>という一定値に収束することがわかる。重力下で抵抗がある場合、最終的に速度が一定に落ち着くが、その落ち着いた速度を <strong>終端速度 (terminal verlocity)</strong> と呼ぶ。</p>
+<p>さて、速度が求まったので、これを積分すれば任意の時刻による位置も求めることができる。初期位置が <span class="math inline">\(\vec{r}(0) = (0,0)\)</span> であったとすると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 r_x(t) &amp;=  \frac{(1 - \mathrm{e}^{-\gamma t})\cos{\theta} }{\gamma} \\
 r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g (1 -  \mathrm{e}^{-\gamma t} - \gamma t)}{\gamma^2}
 \end{aligned}
 \]</span></p>
-<p>これにより、空気抵抗がある場合のシミュレーションと厳密解を比較することができる。空気抵抗がある場合の厳密解<code>exact_r</code>を適当なセルに入力して実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> exact_r(theta):
-  ax, ay <span class="op">=</span> [], []
-  x, y <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  dt <span class="op">=</span> <span class="fl">0.01</span>
-  t <span class="op">=</span> <span class="fl">0.0</span>
-  gamma <span class="op">=</span> <span class="fl">0.5</span>
-  <span class="cf">while</span> y <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    t <span class="op">+=</span> dt
-    x <span class="op">=</span>  (<span class="fl">1.0</span> <span class="op">-</span> exp(<span class="op">-</span>gamma<span class="op">*</span>t))<span class="op">*</span>cos(theta)<span class="op">/</span>gamma
-    y <span class="op">=</span>  (<span class="fl">1.0</span> <span class="op">-</span> exp(<span class="op">-</span>gamma<span class="op">*</span>t))<span class="op">*</span>sin(theta)<span class="op">/</span>gamma
-    y <span class="op">+=</span> g<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> exp(<span class="op">-</span>gamma <span class="op">*</span>t) <span class="op">-</span> gamma <span class="op">*</span>t )<span class="op">/</span>(gamma<span class="op">**</span><span class="dv">2</span>)
-    ax.append(x)
-    ay.append(y)
-  nx <span class="op">=</span> np.array(ax)
-  ny <span class="op">=</span> np.array(ay)
-  <span class="cf">return</span> nx, ny</code></pre></div>
-<p>厳密解と数値計算を比較してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx, ny, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
-ex, ey <span class="op">=</span> exact_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(ex, ey, label<span class="op">=</span><span class="st">&quot;Exact&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>誤差の範囲で一致すれば成功である。ずれが気になる場合は、<code>run_r</code>の時間刻みを細かく(例えば<code>h=0.001</code>)にしてみよ。逆に粗く(<code>h = 0.1</code>)したらどれくらいずれるだろうか。</p>
+<p>これが空気抵抗がある場合の位置の厳密な軌道である。</p>
 <h2 id="反応拡散方程式グレイスコット模型">反応拡散方程式(グレイ・スコット模型)</h2>
-<p>先ほどまでは弾道計算を行った。飛翔体の計算は奥が深いのだが、結果がやや地味なのは否めない。せっかくシミュレーションをするので、もう少し結果が派手な計算をしてみよう。そのような例として、反応拡散系(Diffusion-Reaction System)を取り上げる。</p>
-<p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方的であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の二階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
+<p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として反応拡散系(Diffusion-Reaction System)を取り上げる。</p>
+<p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の二階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
+<div class="figure">
+<img src="fig/bz.png" alt="BZ反応" />
+<p class="caption">BZ反応</p>
+</div>
 <p>さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、筆者の趣味でグレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
 <p>グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。</p>
 <p><span class="math display">\[
@@ -320,11 +236,12 @@ plt.show()</code></pre></div>
 \frac{\partial v}{\partial t} &amp;= D_v \Delta v + uv^2 - (F+k)v
 \end{aligned}
 \]</span></p>
-<p>右辺の第一項が拡散項、その後ろにあるのが反応を記述する力学系である。三次元を考えることもできるが、ここでは二次元空間を考える。まず、空間を差分化して扱うことにしよう。本来連続的な空間を、グリッドに分割することで離散的な表現に落とす。</p>
+<p>右辺の第一項が拡散項、その後ろにあるのが反応を記述する力学系である。三次元を考えることもできるが、ここでは二次元空間を考える。</p>
 <div class="figure">
-<img src="fig/discretization.png" alt="空間の離散化" />
-<p class="caption">空間の離散化</p>
+<img src="fig/gs.png" alt="Gray-Scott模型" />
+<p class="caption">Gray-Scott模型</p>
 </div>
+<p>まず、空間を差分化して扱うことにしよう。本来連続的な空間を、グリッドに分割することで離散的な表現に落とす。</p>
 <p><span class="math inline">\(\Delta\)</span>はラプラシアンと呼ばれる二階微分演算子で、二次元なら以下で定義される。</p>
 <p><span class="math display">\[
 \Delta \equiv \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}
@@ -344,25 +261,167 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <p><span class="math display">\[
 \Delta f(x,y) \sim \frac{f(x+h,y)+f(x-h,y)+f(x,y+h)+f(x,y-h)-4f(x,y)}{h^2}
 \]</span></p>
-<p>さて、空間の離散化により<span class="math inline">\(f(mh, nh)\)</span>の場所を、二次元配列<span class="math inline">\(f_{m,n}\)</span>で表現する。さらに簡単のため、<span class="math inline">\(h=1\)</span>としよう。すると、先程のラプラシアンは、</p>
-<p><span class="math display">\[
-\Delta f_{x,y} = f_{x+1,y} + f_{x-1,y} + f_{x,y+1} + f_{x,y-1} - f_{x,y}
-\]</span></p>
-<p>と表現できる。先ほどの微分方程式は、時間に関して一階微分、空間に関して二階微分であったので、これで必要な式がそろった。</p>
+<p>簡単のため、<span class="math inline">\(h=1\)</span>としよう。空間の離散化により<span class="math inline">\(f(m, n)\)</span>の値を二次元配列<code>s[m][n]</code>で表現する。すると、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、この配列<code>s</code>を用いて</p>
+<p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
+<p>と表現できる。これは、前後左右のセルの値の合計から、自分の値の4倍を引いたものであり、自分が「まわりの平均」よりも大きい時に負、小さい時に正となる。このように、ラプラシアンは「なるべくまわりに合わせよう、全体を平均化しよう」という働きをする。</p>
 <div class="figure">
 <img src="fig/procedure.png" alt="差分計算の流れ" />
 <p class="caption">差分計算の流れ</p>
 </div>
-<h3 id="課題4-ラプラシアンの実装">課題4: ラプラシアンの実装</h3>
-<p>では実際にグレイ・スコットモデルのシミュレーションを実装してみよう。新しいノートブックを開き、最初のセルにimport文を描こう。</p>
+<p>もともとの式のうち、時間微分は一次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
+<h1 id="数値シミュレーション課題">数値シミュレーション:課題</h1>
+<h2 id="課題1運動方程式">課題1:運動方程式</h2>
+<p>簡単な数値シミュレーションの例として、ニュートンの運動方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>newton.ipynb</code>という名前で保存せよ。</p>
+<h3 id="課題1-1抵抗の無い弾道計算シミュレーション">課題1-1:抵抗の無い弾道計算(シミュレーション)</h3>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>最初のセルでライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
-<p>次のセルに、二次元配列<code>s</code>の、座標<code>(ix,iy)</code>におけるラプラシアンの値を返す関数<code>laplacian</code>を実装せよ。ただし、空間差分の単位<span class="math inline">\(h\)</span>は1とする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> laplacian(ix, iy, s):
+<span class="im">from</span> math <span class="im">import</span> pi, cos, sin, exp</code></pre></div>
+<h4 id="数値シミュレーションの実装">2. 数値シミュレーションの実装</h4>
+<p>差分化された運動方程式は以下の通りである。</p>
+<p><span class="math display">\[
+\begin{aligned}
+r_x(t+h) &amp;= r_x(t) + v_x(t) h \\
+r_y(t+h) &amp;= r_y(t) + v_y(t) h\\
+v_x(t+h) &amp;= v_x(t) \\
+v_y(t+h) &amp;= v_y(t) - g h\\
+\end{aligned}
+\]</span></p>
+<p>これをもとに、以下のプログラムを完成させよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw(theta):
+  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
+  vx, vy <span class="op">=</span> cos(theta), sin(theta)
+  ax, ay <span class="op">=</span> [], []
+  g <span class="op">=</span> <span class="fl">1.0</span>
+  h <span class="op">=</span> <span class="fl">0.02</span>
+  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+    rx <span class="op">+=</span> vx <span class="op">*</span> h
+    ry <span class="op">+=</span> vy <span class="op">*</span> h
+    <span class="co"># 速度の更新部分を実装せよ</span>
+    ax.append(rx)
+    ay.append(ry)
+  <span class="cf">return</span> ax, ay</code></pre></div>
+<p>これは、ステップごとに位置ベクトルをリストに保存し、最後に返す関数である。</p>
+<h4 id="結果の表示">3. 結果の表示</h4>
+<p>3つ目のセルで、シミュレーションの結果を可視化しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">ax, ay <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(ax,ay, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
+plt.legend()
+plt.show()</code></pre></div>
+<p><code>throw</code>により計算された位置ベクトルをプロットしている。いわゆる「放物線」が表示されたら成功である。</p>
+<h3 id="課題1-2抵抗の無い弾道計算厳密解との比較">課題1-2:抵抗の無い弾道計算(厳密解との比較)</h3>
+<p>先程の運動方程式は厳密に解くことができる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+v_x(t) &amp;= \cos{\theta} \\
+v_y(t) &amp;= \sin{\theta} - g t\\
+r_x(t) &amp;= t \cos{\theta} \\
+r_y(t) &amp;= t \sin{\theta} - \frac{g t^2}{2}
+\end{aligned}
+\]</span></p>
+<p>数値計算において厳密解がある場合は、必ず厳密解と比較すべきである。シミュレーション結果と厳密解を比較してみよう。</p>
+<h4 id="厳密解を返す関数exactの実装">4. 厳密解を返す関数<code>exact</code>の実装</h4>
+<p>厳密解を返す関数を作ってみよう。4つ目のセルに以下を実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> exact(theta):
+  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
+  ex, ey <span class="op">=</span> [], []
+  t <span class="op">=</span> <span class="fl">0.0</span>
+  g <span class="op">=</span> <span class="fl">1.0</span>
+  h <span class="op">=</span> <span class="fl">0.02</span>
+  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+    t <span class="op">+=</span> h
+    rx <span class="op">=</span> t <span class="op">*</span> cos(theta)
+    ry <span class="op">=</span> t <span class="op">*</span> sin(theta) <span class="op">-</span> g <span class="op">*</span> t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="fl">2.0</span>
+    ex.append(rx)
+    ey.append(ry)
+  <span class="cf">return</span> ex, ey  </code></pre></div>
+<p>数値計算で計算した離散的な時刻それぞれにおける厳密解をリストに追加し、最後に関数の返り値として返している。</p>
+<h4 id="厳密解との比較">5. 厳密解との比較</h4>
+<p>シミュレーション結果と厳密解の比較をしてみよう。5つ目のセルに以下を実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
+ex, ey <span class="op">=</span> exact(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(ex,ey, label<span class="op">=</span><span class="st">&quot;Exact&quot;</span>)
+plt.legend()
+plt.show()</code></pre></div>
+<p>二つの線が表示されたはずである。比較してどうなっているだろうか？ 次に、<code>throw</code>の時間刻み<code>h</code>の値を<code>0.02</code>から<code>0.001</code>にして、結果がどう変わるか比較せよ。</p>
+<h3 id="課題1-2空気抵抗がある場合シミュレーション">課題1-2:空気抵抗がある場合(シミュレーション)</h3>
+<h4 id="数値シミュレーションの実装-1">6. 数値シミュレーションの実装</h4>
+<p>空気抵抗がある場合の運動方程式は以下の通りである。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{r_x} &amp;= v_x \\
+\dot{r_y} &amp;= v_y \\
+\dot{v_x} &amp;= -  \gamma v_x \\
+\dot{v_y} &amp;= -  \gamma v_y - g
+\end{aligned}
+\]</span></p>
+<p>これをもとに、6つ目のセルに空気抵抗がある場合の数値シミュレーションのプログラムを書け。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw_r(theta):
+  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
+  vx, vy <span class="op">=</span> cos(theta), sin(theta)
+  bx, by <span class="op">=</span> [], []
+  g <span class="op">=</span> <span class="fl">1.0</span>
+  h <span class="op">=</span> <span class="fl">0.01</span>
+  gamma <span class="op">=</span> <span class="fl">0.5</span>
+  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+    bx <span class="op">+=</span> vx <span class="op">*</span> h
+    by <span class="op">+=</span> vy <span class="op">*</span> h
+    <span class="co"># 残りの速度の更新部分を実装せよ</span>
+    bx.append(rx)
+    by.append(ry)
+  <span class="cf">return</span> bx, by</code></pre></div>
+<h4 id="結果の可視化">7. 結果の可視化</h4>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">ax, ay <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(ax, ay, label<span class="op">=</span><span class="st">&quot;Without resistance&quot;</span>)
+bx, by <span class="op">=</span> throw_r(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(bx, by, label<span class="op">=</span><span class="st">&quot;With resistance&quot;</span>)
+plt.legend()
+plt.show()</code></pre></div>
+<p>空気抵抗の無い場合と比べて、どのような変化があっただろうか？</p>
+<h4 id="空気抵抗がある場合の最適仰角">8. 空気抵抗がある場合の最適仰角</h4>
+<p>空気抵抗がある場合に、最も遠くまで飛ぶ角度はどのあたりか確認せよ。5つ目のセルを以下のように修正し、「A」と「B」のどちらが遠くまで飛ぶかを比較しながら、最も遠くまで飛ぶ角度を探してみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.25</span>)
+plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;A&quot;</span>)
+nx2, ny2 <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.24</span>)
+plt.plot(nx2,ny2, label<span class="op">=</span><span class="st">&quot;B&quot;</span>)
+plt.legend()
+plt.show()</code></pre></div>
+<h3 id="任意課題空気抵抗がある場合の厳密解との比較">任意課題：空気抵抗がある場合の厳密解との比較</h3>
+<p>空気抵抗がある場合の軌道の厳密解は以下の通りである。</p>
+<p><span class="math display">\[
+\begin{aligned}
+r_x(t) &amp;=  \frac{(1 - \mathrm{e}^{-\gamma t})\cos{\theta} }{\gamma} \\
+r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g (1 -  \mathrm{e}^{-\gamma t} - \gamma t)}{\gamma^2}
+\end{aligned}
+\]</span></p>
+<p>これを用いて、数値計算の結果と厳密解を比較せよ。</p>
+<h2 id="課題2反応拡散方程式">課題2:反応拡散方程式</h2>
+<p>反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き<code>gs.ipynb</code>として保存せよ。</p>
+<h3 id="課題2-1-ラプラシアンの実装">課題2-1: ラプラシアンの実装</h3>
+<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
+<p>最初のセルでライブラリのインポートをしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> numba <span class="im">import</span> jit
+<span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</code></pre></div>
+<h4 id="ラプラシアンの実装">2. ラプラシアンの実装</h4>
+<p>二次元配列<code>s[m][n]</code>の、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、</p>
+<p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
+<p>と表現できる。これを用いて、二次元配列<code>s</code>と位置<code>m,n</code>を受け取って、その位置でのラプラシアンの値を返す関数<code>laplacian</code>を実装したい。以下はそれを途中まで実装したものだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> laplacian(m, n, s):
     ts <span class="op">=</span> <span class="fl">0.0</span>
-    <span class="co"># ここを実装せよ</span>
+    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m<span class="op">-</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]
+    ts <span class="op">+=</span> s[m][n<span class="op">-</span><span class="dv">1</span>]
+    <span class="co"># ここを埋めよ</span>
     <span class="cf">return</span> ts</code></pre></div>
-<p>実装したらテストしてみよう。三つ目のセルに<code>laplacian</code>に食わせるテスト用のNumPy二次元配列を作成する。</p>
+<p>上記がラプラシアンの値となるように、未完成の部分を完成させよ。</p>
+<p>なお、関数定義の前に<code>@jit</code>とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。</p>
+<h4 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h4>
+<p><code>laplacian</code>を実装したらテストしてみよう。三つ目のセルに<code>laplacian</code>に食わせるテスト用のNumPy二次元配列を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
 a</code></pre></div>
 <p>実行すると以下のような表示になるはずである。</p>
@@ -371,7 +430,7 @@ a</code></pre></div>
        [<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]])</code></pre></div>
 <p>さて、中央に着目しよう。中央の値は4であり、1,3,5,7に囲まれている。周りの4つの数字の平均は4であり、中央の値と一致するため、この地点でのラプラシアンの値は0になるはずである。確認してみよう。三つ目のセルを以下のように書き換えよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
-laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a) <span class="co"># =&gt; 0.0</span></code></pre></div>
+laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
 <p>これは、<code>a</code>という配列の<code>(1,1)</code>地点におけるラプラシアンの中央差分の値を求めよ、という意味である。実行結果として<code>0.0</code>が返ってくれば正しい。</p>
 <p>これだけではテストとして不安なので、値を少しずらしてみよう。三つ目のテスト用セルを以下のように修正して実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
@@ -381,14 +440,16 @@ a</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">2</span>]
  [<span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>]
  [<span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span>]]</code></pre></div>
-<p>4の上が1であったのが0になった。したがって、中央は平均よりも高い値になっているから、ラプラシアンは負になるはずである。実際に計算してみよう。周りの数字の合計は15であり、中央の値の4倍は16であるから、その差は<code>-1</code>になるはずだ。計算してみよう。</p>
+<p>4の上が1であったのが0になった。したがって、中央は平均よりも高い値になっているから、ラプラシアンは負になるはずである。実際に計算してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
 a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
-laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a) <span class="co"># =&gt; -1.0</span></code></pre></div>
-<p>正しく計算されただろうか？これも正しく計算できていれば、ラプラシアンは正しく実装できているであろう。三つ目のセルは消去してよい。</p>
-<h3 id="シミュレーションコードの実装">シミュレーションコードの実装</h3>
-<p>三つ目、四つ目、のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc(u, v, u2, v2):
+laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
+<p>上記の実行結果が<code>-1</code>になれば正しく計算されている。</p>
+<h3 id="課題2-2-シミュレーションコードの実装">課題2-2: シミュレーションコードの実装</h3>
+<h4 id="ステップ進める関数calcの実装">4. 1ステップ進める関数<code>calc</code>の実装</h4>
+<p>二つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> calc(u, v, u2, v2):
     (L, _) <span class="op">=</span> u.shape
     dt <span class="op">=</span> <span class="fl">0.2</span>
     F <span class="op">=</span> <span class="fl">0.04</span>
@@ -403,91 +464,38 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a) <span class="co
     cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v
     u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
     v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> simulation():
-    L <span class="op">=</span> <span class="dv">32</span>
-    u <span class="op">=</span> np.zeros((L, L))
-    u2 <span class="op">=</span> np.zeros((L, L))
-    v <span class="op">=</span> np.zeros((L, L))
-    v2 <span class="op">=</span> np.zeros((L, L))
-    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
-    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
-    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
-            calc(u, v, u2, v2)
-        <span class="cf">else</span>:
-            calc(u2, v2, u, v)
-    <span class="cf">return</span> v</code></pre></div>
-<p>ここまで入力したら、セルの状況は以下のようになっているはずである。</p>
-<ol style="list-style-type: decimal">
-<li>import</li>
-<li>laplacian</li>
-<li>calc</li>
-<li>simulation</li>
-</ol>
-<p>その状態で、5番目のセルに以下を入力して実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> simulation()
-plt.imshow(v)</code></pre></div>
-<div class="figure">
-<img src="fig/gs_snapshot.png" alt="シミュレーション結果" />
-<p class="caption">シミュレーション結果</p>
-</div>
-<p>こんな図が現れたら成功である。</p>
-<h3 id="jitによる高速化">JITによる高速化</h3>
-<p>これは32x32のグリッドを1000ステップ計算するシミュレーションであるが、実行に少し待たされた気がするであろう。まず時間を測定してみよう。5つ目のセルを以下のようにして実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>time v <span class="op">=</span> simulation()
-plt.imshow(v)</code></pre></div>
-<p>おそらくこんな結果が表示されたものと思う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">CPU times: user <span class="fl">3.25</span> s, sys: <span class="fl">1.11</span> ms, total: <span class="fl">3.25</span> s
-Wall time: <span class="fl">3.26</span> s</code></pre></div>
-<p>これは、計算に3秒ちょっとかかったよ、という意味だ。32x32のグリッドを2二種類、1000ステップなので、計算量としては、おおざっぱに100万ちょっと、つまり「メガ」のオーダーである。今、目の前にある計算機の処理能力はだいたい「ギガ」、つまり一秒間にメガの千倍の計算を処理する能力があるはずで、メガの量の計算に秒単位でかかるのは遅い気がしてくるであろう。そこでJITで高速化しよう。</p>
-<p>TODO: JITの説明</p>
-<p>まず、一つ目のセルを以下のように修正せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> numba <span class="im">import</span> jit <span class="co"># この行を追加</span></code></pre></div>
-<p>次に、<code>laplacian</code>や<code>calc</code>、<code>simulation</code>の関数定義の前に<code>@jit</code>と記述せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> laplacian(ix, iy, s):</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> calc(u, v, u2, v2):</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> simulation():</code></pre></div>
-<p>この状態で、全てのセルを実行してから、5つめのセルを実行しよう。面倒なら「ランタイム」から「再起動してすべてのセルを実行」を選んでもよい。おそらく20～30ms程度の実行時間になったはずである。</p>
-<h3 id="模様の確認">模様の確認</h3>
-<p>さて、それなりの速度になったところで、もう少し大きな系を長時間計算してみよう。まず、システムサイズを64x64にして、時間ステップも10倍の1000にしよう。具体的には、4つ目のセルの<code>simulation</code>を以下のように書き換えよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> simulation():
-    L <span class="op">=</span> <span class="dv">64</span> <span class="co"># ここを32から64に</span>
-    u <span class="op">=</span> np.zeros((L, L))
-    u2 <span class="op">=</span> np.zeros((L, L))
-    v <span class="op">=</span> np.zeros((L, L))
-    v2 <span class="op">=</span> np.zeros((L, L))
-    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
-    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
-    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>): <span class="co"># ここを1000から10000に</span>
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
-            calc(u, v, u2, v2)
-        <span class="cf">else</span>:
-            calc(u2, v2, u, v)
-    <span class="cf">return</span> v</code></pre></div>
-<p>その上で再度5つ目のセルを実行してみよ。不思議な模様が浮かび上がれば成功である。</p>
-<p>matplotlibは、様々な色を指定することができる。5つ目のプロットのところで、カラーマップを指定してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>time v <span class="op">=</span> simulation()
-plt.imshow(v, cmap<span class="op">=</span><span class="st">&quot;inferno&quot;</span>) <span class="co"># ここを修正</span></code></pre></div>
-<p>カラーマップには他にも<code>viridis</code>や、<code>plasma</code>、<code>magma</code>などが用意されているので、興味があれば試してみよ。</p>
-<h3 id="任意課題アニメーション">任意課題：アニメーション</h3>
-<p>せっかくの時間発展シミュレーションなので、時間発展の様子をアニメーションで見てみよう。</p>
-<p>まず、一つ目のセルに以下を追加せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> numba <span class="im">import</span> jit
-<span class="im">from</span> matplotlib <span class="im">import</span> animation, rc <span class="co"># この行を追加</span></code></pre></div>
-<p>次に、<code>simulation</code>で、最後の結果だけではなく、途中の経過もまとめてリストで返すようにしよう。</p>
+<p>最初の<code>@jit</code>デコレータを忘れないこと。</p>
+<h4 id="シミュレーションの実行をする関数simulationの実装">5. シミュレーションの実行をする関数<code>simulation</code>の実装</h4>
+<p>1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
 <span class="kw">def</span> simulation():
     L <span class="op">=</span> <span class="dv">64</span>
+    LOOP <span class="op">=</span> <span class="dv">10000</span>
+    u <span class="op">=</span> np.zeros((L, L))
+    u2 <span class="op">=</span> np.zeros((L, L))
+    v <span class="op">=</span> np.zeros((L, L))
+    v2 <span class="op">=</span> np.zeros((L, L))
+    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
+    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
+    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(LOOP):
+        calc(u, v, u2, v2)
+        u, u2, v, v2 <span class="op">=</span> u2, u, v2, v
+    <span class="cf">return</span> v</code></pre></div>
+<p>これも、最初の行の<code>@jit</code>を忘れないこと。</p>
+<h4 id="結果の可視化-1">6. 結果の可視化</h4>
+<p>6つ目のセルで、シミュレーション結果を可視化しよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> simulation()
+plt.imshow(v)</code></pre></div>
+<p>ここまで正しく入力されていれば、不思議な模様が現れたはずである。</p>
+<h3 id="任意課題アニメーション">任意課題：アニメーション</h3>
+<p>せっかくの時間発展シミュレーションなので、時間発展の様子をアニメーションで見てみよう。</p>
+<h4 id="simulation関数の修正">5. <code>simulation</code>関数の修正</h4>
+<p><code>simulation</code>で、最後の結果だけではなく、途中の経過もまとめてリストで返すようにしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> simulation():
+    L <span class="op">=</span> <span class="dv">64</span>
+    LOOP <span class="op">=</span> <span class="dv">10000</span>
     u <span class="op">=</span> np.zeros((L, L))
     u2 <span class="op">=</span> np.zeros((L, L))
     v <span class="op">=</span> np.zeros((L, L))
@@ -496,27 +504,27 @@ plt.imshow(v, cmap<span class="op">=</span><span class="st">&quot;inferno&quot;<
     u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
     v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
     r <span class="op">=</span> [] <span class="co"># この行を追加</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>):
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
-            calc(u, v, u2, v2)
-        <span class="cf">else</span>:
-            calc(u2, v2, u, v)
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>: <span class="co"># このif文を追加</span>
-          r.append(u.copy())
-    <span class="cf">return</span> r <span class="co"># uでなくrを返すよう修正</span></code></pre></div>
-<p>その上で、5つ目のセルに以下を入力、実行せよ。</p>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(LOOP):
+        calc(u, v, u2, v2)
+        u, u2, v, v2 <span class="op">=</span> u2, u, v2, v
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:     <span class="co"># このif文を追加</span>
+          r.append(v.copy()) <span class="co">#</span>
+    <span class="cf">return</span> r <span class="co"># vでなくrを返すよう修正</span></code></pre></div>
+<h4 id="計算の可視化">6. 計算の可視化</h4>
+<p>6つ目のセルを以下のように書き換え、実行しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation()
 fig <span class="op">=</span> plt.figure()
-im <span class="op">=</span> plt.imshow(imgs[<span class="dv">0</span>], cmap<span class="op">=</span><span class="st">&quot;inferno&quot;</span>)</code></pre></div>
-<p>初期状態が表示されたはずである。この状態で、6つ目のセルに以下を入力、実行せよ。</p>
+im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])</code></pre></div>
+<p>先程と同じ模様が出てくれば正しく計算できている。</p>
+<h4 id="アニメーションの作成">7. アニメーションの作成</h4>
+<p>7つ目のセルに、以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> update(i):
   im.set_array(imgs[i])
-  <span class="cf">return</span> im,
 
-ani <span class="op">=</span> animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>)
+ani <span class="op">=</span> animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))
 rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
 ani</code></pre></div>
-<p>アニメーションが表示されたら成功である。</p>
+<p>アニメーションが表示されたら成功である。時間があれば、サイズ(<code>L</code>)とループ数(<code>LOOP</code>)を二倍にして実行してみよ。</p>
 <h2 id="余談パーソナルスーパーコンピュータ">余談：パーソナルスーパーコンピュータ</h2>
 <p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。東京大学工学部物理工学科の助手、宇宙科学研究所の助教授を経て、自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
 <p>それから紆余曲折あって、計算流体力学研究所はスパコンを手放し、技術コンサルやパソコンの組み立て、販売をする会社となった。私が大学院に進学した際に与えられたパソコンは、この計算流体力学研究所で購入したAlpha21164のマシンであった。指導教員の「せっかくだから組み立てさせてもらったら？」の言葉に甘え、目黒に行ってアルバイトのお兄さんと一緒に自分の研究に使うマシンを組み立てた。そこに社長である桑原氏が様子を見にやってきた。僕が物工の学生と知ると、興味をもっていろいろ聞いてきた。僕はまさか目の前の社長さんが元物工の助手だったなんて知らなかったので「物工のご出身なんですか？どこの研究室ですか？」と的外れな質問をした。彼はただ笑って何も答えなかったのを思い出す。その時は青二才で何もわからなかった私だが、スパコンを使って研究をするようになった今なら、彼からいろいろ興味深い話が聞けたのではないかと残念に思う。桑原氏は2008年、その豪快な生涯を閉じた。「親の遺産をもっとも有効に学術に活かした」と評されている。</p>
