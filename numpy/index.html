@@ -104,9 +104,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3 id="numpyとは">NumPyとは</h3>
 <p>数値計算では、行列を扱うことが非常に多い。行列がからむ演算の中で特に重要なのが、行列同士の積の計算だ。行列と行列の積を(そのまんまだが)行列行列積と呼ぶ。スーパーコンピュータにはTop500という性能ランキングがあり、年に二回ランキングが更新されるが、そこで行われているベンチマークは巨大な連立一次方程式をどれだけ効率的に解くことができるか、という問題である。そして、その計算の中心は行列行列積である。従って、Top500における「スパコンの性能」は、「いかに行列同士の積を早く計算できるか」に依存している。</p>
 <p>行列の積の定義そのものは簡単だ。普通にかけば三重ループで計算できる。しかし、現代の計算機では行列の乗算の効率的な実装は非常に面倒であり、「普通」に書くとまったく性能がでない。なにしろ行列行列積は数値計算の根幹をなす演算であり、そこが遅いと非常に広範囲の計算が影響を受けてしまう。そこで、Pythonにおいて行列を効率的に扱うためのライブラリが作られた。それがNumPyである。</p>
+<h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
 <p>NumPyを使うには、まず<code>numpy</code>をインポートする。<code>np</code>という別名をつけるのが慣習である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
-<h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
 <p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、てっとりばやいのは<code>np.array</code>にリストを与えることだ。例えば以下は二行二列の行列を作る例である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
 <span class="bu">print</span>(a)</code></pre></div>
@@ -175,8 +175,44 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 <span class="bu">print</span>(w) <span class="co">#=&gt; [-1.  3.]</span></code></pre></div>
 <p>エルミート行列の固有値は常に実数であるから、返り値も実数となる。</p>
 <h2 id="シュレーディンガー方程式">シュレーディンガー方程式</h2>
-<p>TODO: トンネル効果の説明</p>
-<p>TODO: 離散化の説明</p>
+<h3 id="トンネル効果">トンネル効果</h3>
+<p>原子スケールのようなミクロの世界では、我々が普段目にする世界とは異なり、不思議なことがおきる。そのうちの一つ、「シュレーディンガーの猫」などは聞いたことがあるだろう。今回は量子力学における不思議の一つ、「トンネル効果」を計算してみよう。</p>
+<div class="figure">
+<img src="fig/tunneling.png" alt="トンネル効果" />
+<p class="caption">トンネル効果</p>
+</div>
+<p>真っ直ぐな道の真ん中に、小さな山があるとしよう。山の高さを<span class="math inline">\(h\)</span>とする。山の麓にボールを置いて、それに初速を与えて山の方に動かす。初速が、ある程度大きい時には山を超えることができるが、それより小さい場合は山を登りきれずに帰ってくることが予想される。摩擦や回転などを無視して、重力加速度を<span class="math inline">\(g\)</span>、物体の質量を<span class="math inline">\(m\)</span>としよう。初速<span class="math inline">\(v\)</span>を与えると、物体は運動エネルギー<span class="math inline">\(mv^2/2\)</span>を得る。山の頂上に行くためには、ポテンシャルエネルギー<span class="math inline">\(mgh\)</span>が必要だ。以上から、山を登り切るためには<span class="math inline">\(mv^2/2 &gt; mgh\)</span>だけのエネルギーが必要であるため、<span class="math inline">\(v &lt; \sqrt{2gh}\)</span>の時には山を登り切ることができない。このように、量子力学が必要ないようなマクロな世界を古典系と呼ぶ。古典系では、初速が足りなければなんどトライしても山を超えることはできない。</p>
+<p>しかし、物体の波動性が効いてくるようなミクロな領域では古典系とは異なることがおきる。初期エネルギーが山を超えるのに必要なエネルギーより小さい場合でも、低確率で山をすり抜けて向こう側に行ってしまう。まるでトンネルを抜けたかのように見えるので、トンネル効果と呼ばれる。トンネル効果は不思議な現象であるが、走査型トンネル顕微鏡(Scanning Tunneling Microscope, STM)などに応用されている。</p>
+<h3 id="シュレーディンガー方程式-1">シュレーディンガー方程式</h3>
+<p>さて、マクロな物体の運動はニュートンの運動方程式で記述されるが、ミクロな現象は量子力学に支配されている。例えば電子の位置などはシュレーディンガー方程式に従う。時間非依存・一体・一次元のシュレーディンガー方程式は以下のように書ける。</p>
+<p><span class="math display">\[
+\left(
+\frac{-\hbar^2}{2m} \frac{d^2 }{d x^2} + V(x)
+\right) \psi(x) = E \psi(x)
+\]</span></p>
+<p>ここで、<span class="math inline">\(\hbar\)</span>はプランク定数、<span class="math inline">\(m\)</span>は質量である。<span class="math inline">\(V(x)\)</span>はポテンシャルで、位置<span class="math inline">\(x\)</span>による「高さ」を表しており、例えば先程の山の高度だと思えば良い。この方程式を解くことで波動関数<span class="math inline">\(\psi(x)\)</span>を求めることができる。波動関数は、その二乗が「その位置に粒子(例えば電子)を見出す確率」となる。したがって、シュレーディンガー方程式を解くとは、どの場所にどれくらいの確率で粒子が存在するかの確率を求めることに対応する。以下、簡単のため、<span class="math inline">\(\hbar^2/2m\)</span>を<span class="math inline">\(1\)</span>とする単位系をとる。</p>
+<p>さて、この方程式を計算機で解くために離散化する。微分方程式の離散化は後の回に説明するので、以下はざっと読み飛ばして良い。先程の式には<span class="math inline">\(x\)</span>に関する二階微分があったが、これを</p>
+<p><span class="math display">\[
+\frac{d^2 \psi}{d x^2} \sim \frac{\psi(x+h) - 2 \psi(x) + \psi(x-h) }{h^2}
+\]</span></p>
+<p>と近似する。離散化により、波動関数<span class="math inline">\(\psi(x)\)</span>は、ベクトル<span class="math inline">\(\vec{v}\)</span>で表すことができる。<span class="math inline">\(h\)</span>を1とし、<span class="math inline">\(\vec{v}\)</span>のi番目の成分を<span class="math inline">\(v_i\)</span>とすると、上記の微分は</p>
+<p><span class="math display">\[
+\frac{d^2 \psi}{d x^2} \sim v_{i+1} - 2 v_i + v_{i-1}
+\]</span></p>
+<p>と表現できる。右辺は配列の要素の加減算なのでプログラムするのは簡単だ。これを先程の微分方程式に代入すると、最終的に</p>
+<p><span class="math display">\[
+-v_{i+1} + 2 v_i - v_{i-1} + V_i v_i = E v_i
+\]</span></p>
+<p>という式が得られる。ただし、<span class="math inline">\(V_i\)</span>は<span class="math inline">\(V(x)\)</span>を離散化してベクトルにした時の<span class="math inline">\(i\)</span>番目の要素だ。これを行列とベクトルで書き表すと、</p>
+<p><span class="math display">\[
+H \vec{v} = E \vec{v}
+\]</span></p>
+<p>という、行列の固有値問題になった。ただし<span class="math inline">\(H\)</span>は以下のような要素を持つ行列である。</p>
+<div class="figure">
+<img src="fig/h_matrix.png" alt="Hの行列要素" />
+<p class="caption">Hの行列要素</p>
+</div>
+<p>長々と書いたが、この式を理解する必要はない。要するに「ミクロな世界はシュレーディンガー方程式で記述され、シュレーディンガー方程式は離散化により行列の固有値問題になる」ということがわかればよい。行列の固有値問題を解くことで、任意のポテンシャル形状<span class="math inline">\(V(x)\)</span>で、電子がどのように分布するかを計算することができる。</p>
 <h2 id="特異値分解による画像圧縮">特異値分解による画像圧縮</h2>
 <p>線形代数を学んでいれば、異なる行列の積を定義できることを覚えているだろう。例えばm行n列の行列と、n行k列の行列の積をとると、新たにできる行列はm行k列となる。</p>
 <div class="figure">
@@ -203,34 +239,37 @@ X = U \Sigma V^{\dagger}
 <p>本講義では、行列の特異値分解と低ランク近似を利用して、画像圧縮をしてみよう。</p>
 <h1 id="numpyとscipyの使い方課題">NumPyとSciPyの使い方：課題</h1>
 <h2 id="課題1シュレーディンガー方程式">課題1：シュレーディンガー方程式</h2>
+<p>シュレーディンガー方程式を離散化することで数値的に解いてみよう。新しいノートブックを開き、<code>tunneling.ipynb</code>という名前で保存せよ。</p>
 <h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
+<p>最初のセルはいつもどおりライブラリのインポートである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">from</span> scipy <span class="im">import</span> linalg
 <span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
 <h3 id="行列の作成">2. 行列の作成</h3>
+<p>次に、ポテンシャル<span class="math inline">\(V(x)\)</span>に対応するベクトル<code>V</code>と、微分方程式を差分化した行列<code>H</code>を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">32</span>
 V <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">5.0</span> <span class="cf">if</span> i <span class="kw">in</span> <span class="bu">range</span>(N<span class="op">//</span><span class="dv">4</span>, <span class="dv">3</span><span class="op">*</span>N<span class="op">//</span><span class="dv">4</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N)])
-A <span class="op">=</span> np.zeros((N, N))
+H <span class="op">=</span> np.zeros((N, N))
 <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
     i1 <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> N
     i2 <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> N) <span class="op">%</span> N
-    A[i][i] <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> V[i]
-    A[i][i1] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
-    A[i][i2] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></code></pre></div>
+    H[i][i] <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> V[i]
+    H[i][i1] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
+    H[i][i2] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></code></pre></div>
 <h3 id="固有値と最低固有エネルギー">3. 固有値と最低固有エネルギー</h3>
-<p>得られた行列の固有値、固有ベクトルを求め、さらに固有値の中でもっとも値が小さいもののインデックスを求めよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(A)
+<p>得られた行列の固有値、固有ベクトルを求め、さらに固有値の中でもっとも値が小さいもののインデックスを求めよう。3つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(H)
 i0 <span class="op">=</span> np.argmin(w)
 <span class="bu">print</span>(w[i0])</code></pre></div>
 <p>最小値を求めるだけなら<code>np.min(w)</code>で良いが、後で対応する固有ベクトルを使うのにインデックスが必要なので、<code>np.argmin(w)</code>を利用している。</p>
-<p>実行してみると、-5よりも若干大きな値が表示されたはずである。これが「閉じ込めエネルギー」と呼ばれるものだ。</p>
+<p>実行してみると、-5よりも若干大きな値が表示されたはずである。これが「閉じ込めエネルギー」と呼ばれるものだ。なぜ「閉じ込め」と呼ばれるかは次のステップで可視化することで明らかとなる。</p>
 <h4 id="波動関数の可視化">4. 波動関数の可視化</h4>
-<p>井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。</p>
+<p>井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> v.transpose()[i0]
 v <span class="op">=</span> v <span class="op">*</span> v
 plt.plot(v<span class="op">*</span><span class="dv">20</span><span class="op">+</span>w[i0])
 plt.plot(V)</code></pre></div>
-<p>少し確率が井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
+<p>波動関数とポテンシャルが同時にプロットされたはずである。波動関数は「そこに電子が存在する確率」である。その存在確率が少しだけ井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
 <h2 id="課題2行列の近似による画像処理">課題2：行列の近似による画像処理</h2>
 <p>特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。</p>
 <p>新しいノートブックを開き、<code>svd.ipynb</code>という名前で保存せよ。</p>
@@ -269,6 +308,10 @@ img2 <span class="op">=</span> Image.fromarray(np.uint8(b))
 img2.save(<span class="st">&#39;output.jpg&#39;</span>)
 IPython.display.Image(<span class="st">&quot;output.jpg&quot;</span>)</code></pre></div>
 <p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>rank</code>は、使う情報の「幅」であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。<code>rank = 5</code>の場合と、<code>rank=20</code>の場合にそれぞれ画像がどうなるか比べてみよ。</p>
+<h3 id="任意課題">任意課題</h3>
+<p>インターネットで適当な画像をダウンロードし、上記の手続きで低ランク近似をせよ。適当な画像を見つけたら、例えば右クリックの「画像のアドレスをコピー」で画像のURLをコピーし、2つ目のセルで</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget ここに画像のURLをペースト <span class="op">-</span>O stop.jpg</code></pre></div>
+<p>として実行すればGoogle Colab上に「stop.jpg」という名前でダウンロードできる。あとは同じプロセスを繰り返すことでダウンロードしたファイルの低ランク近似画像を生成できる。その際、画像の「近似のしやすさ」について気づいたことがあれば記述せよ。</p>
 <h2 id="余談ライブラリについて">余談：ライブラリについて</h2>
 <p>スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
 <p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱ったNumpyはそのような強力なライブラリの一つだ。</p>
