@@ -324,8 +324,8 @@ search(<span class="dv">113</span>,<span class="dv">1000</span>)</code></pre></d
 <p>全探索と同じ結果を、非常に高速に返したはずだ。特筆すべきは、実行時間の予算依存性である。全探索の場合は1000円を1200円にするだけで計算時間が激増した。しかし、メモ化を施した再帰ルーチンなら、10000円でも実行可能だ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 search(<span class="dv">113</span>,<span class="dv">10000</span>)</code></pre></div>
-<p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。また、ここで得たカロリーは次の「任意課題：解の再構成」で使うので覚えておくこと。</p>
-<h3 id="任意課題解の再構成">任意課題：解の再構成</h3>
+<p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。また、ここで得たカロリーは次の「発展課題：解の再構成」で使うので覚えておくこと。</p>
+<h3 id="発展課題解の再構成">発展課題：解の再構成</h3>
 <p>さて、メモ化再帰により、「ある予算内で得られる最大カロリー」はわかったが、「その最大カロリーを与えるメニュー」はわからない。しかし、先ほどメモしたリストと、最大カロリーがわかれば、そのメニューを構成するのは簡単である。</p>
 <p>探索が終わったら、<code>dic[(n, budget)]</code>には、<code>n</code>番目のメニューまでを使って、予算<code>budget</code>内で得られる最大のカロリーがメモされているはずだ。再帰コードをもう一度見ると、この辞書が更新されるのは、メニュー<code>n</code>が注文されるか、されないかの二通りのどちらかだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co"># メニューnが注文される時</span>

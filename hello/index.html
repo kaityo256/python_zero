@@ -219,9 +219,26 @@ Although never is often better than *right* now.
 <p>さて、ここまでで5つのセルができたはずである。これらは自由に編集、再実行することができる。[2]の「a=12345」を修正し、「a=6789」として実行してみよう。その後、4番の「print(a)」や5番の「a」のセルを実行し、出力が変わることを確認せよ。</p>
 <p>不要なセルは削除することができる。セルの右側のメニューから「セルの削除」を選ぶとセルが削除できる。また、上段のメニューの「↑ セル」や「↓ セル」で、セルの順番を入れ替えることもできる。</p>
 <h1 id="pythonの概要とgoogle-colabの使い方課題">Pythonの概要とGoogle Colabの使い方：課題</h1>
-<h2 id="課題1-描画プログラム">課題1: 描画プログラム</h2>
-<h3 id="課題1-1描画の確認">課題1-1：描画の確認</h3>
-<p>Google Colab上で、簡単な描画プログラムを作成、実行してみよう。現在開いているノートブックに上書きしても良いが、現在開いているノートを閉じて、新たに作成しよう。 まず、「ファイル」メニューの「ゴミ箱に移動」をクリックする。「ノートブックをゴミ箱に移動」というダイアログが出てくるので「COLABORATORY に戻る」を選ぶ。するとまたメニュー画面が出てくるので「PYTHON3の新しいノートブック」をクリックしよう。新しいノートブックが開かれるはずである。今後、ノートが混乱してどうにもならなくなったら、この手順で新しいノートブックを作成すること。以下、番号はセルの順番を表している。</p>
+<h2 id="課題1google-colabを使う">課題1：Google Colabを使う</h2>
+<p>まず、Google Colabへのログインと簡単なプログラムの実行、セルの編集のテストをする。</p>
+<h3 id="課題1-1google-colabへのログイン">課題1-1：Google Colabへのログイン</h3>
+<p><code>https://colab.research.google.com/</code>にアクセスし、右上に表示された「ログイン」ボタンを押してログインせよ。</p>
+<h3 id="課題1-2プログラムの動作テスト">課題1-2：プログラムの動作テスト</h3>
+<p>最初のセルに、以下のプログラムを入力し、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello World!&quot;</span>)</code></pre></div>
+<p>セルの左にある再生ボタンを押すか、セル内で「シフト+エンターキー」を押すことでそのセルを実行できる。</p>
+<h3 id="課題1-3プログラムの失敗テスト">課題1-3：プログラムの失敗テスト</h3>
+<p>「＋コード」を押して、2つ目のセルを表示させ、 以下のプログラムを入力し、実行せよ。わざと<code>print</code>を<code>plint</code>と間違って記載している。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plint(<span class="st">&quot;Hello World!&quot;</span>)</code></pre></div>
+<p>実行し、<code>NameError</code>が出ることを確認したら、<code>plint</code>を<code>print</code>と修正して、同じセルを再度実行し、正しく実行されることを確認せよ。</p>
+<h3 id="課題1-4セルの移動削除">課題1-4：セルの移動、削除</h3>
+<p>二つ目のセルを一番上に移動させた後、そのセルを削除せよ。</p>
+<h3 id="課題1-5ファイル名の指定">課題1-5：ファイル名の指定</h3>
+<p>このノートブックに<code>hello.ipynb</code>という名前をつけて保存せよ。保存されたファイルはGoogleドライブに保存される。興味があれば「ファイル」メニューから「ドライブで探す」をクリックして見てみよ。</p>
+<h2 id="課題2-描画プログラム">課題2: 描画プログラム</h2>
+<h3 id="課題2-1描画の確認">課題2-1：描画の確認</h3>
+<p>Google Colab上で、簡単な描画プログラムを作成、実行してみよう。現在開いているノートを閉じて、新たにノートブックを作成する。 「ファイル」メニューから「PYTHON3の新しいノートブック」をクリックせよ。新しいノートブックが開かれたら<code>draw.ipynb</code>という名前に変更せよ。</p>
+<p>以下、番号はセルの順番を表している。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
@@ -240,7 +257,7 @@ draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>これまで正しく入力していれば、黒字に白い丸が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
-<h3 id="課題1-2-セルの修正">課題1-2: セルの修正</h3>
+<h3 id="課題2-2-セルの修正">課題2-2: セルの修正</h3>
 <p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
 <h4 id="インポートの追加">1. インポートの追加</h4>
 <p>一番目のセルを以下のように修正し、実行せよ。</p>
@@ -271,14 +288,14 @@ t <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>
 <p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセルを実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、クリックして三つ目のセルにフォーカスを移してから三角マークをクリックするか、シフト+リターンを入力する。ただしく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
-<h3 id="課題1-3">課題1-3</h3>
+<h3 id="課題2-3">課題2-3</h3>
 <p>先の二つめのセルの<code>n = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>n</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
-<h3 id="任意課題">任意課題</h3>
+<h3 id="発展課題">発展課題</h3>
 <p>先のプログラムを<code>n = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
-<h2 id="課題2-ロジスティック写像">課題2: ロジスティック写像</h2>
+<h2 id="課題3-ロジスティック写像">課題3: ロジスティック写像</h2>
 <p>より実践的な描画プログラムの例として、ロジスティック写像の描画プログラムを作ってみよう。</p>
-<h3 id="課題2-1">課題2-1</h3>
-<p>新しいノートブックに以下のプログラムを入力し、実行せよ。三つのセルに分けて入力し、それぞれ実行すること。</p>
+<h3 id="課題3-1">課題3-1</h3>
+<p>新しいノートブックを開き、<code>logistic.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
@@ -304,7 +321,7 @@ y <span class="op">=</span> []
 ny <span class="op">=</span> np.array(y)
 plt.scatter(nx, ny, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <p>正しく入力できていれば、一本の曲線が表示されたはずである。</p>
-<h3 id="課題2-2">課題2-2</h3>
+<h3 id="課題3-2">課題3-2</h3>
 <p>描画範囲は二つ目のセルの以下の場所で指定されている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">3.0</span></code></pre></div>
 <p>これを、</p>
@@ -312,7 +329,7 @@ plt.scatter(nx, ny, s<span class="op">=</span><span class="fl">0.1</span>)</code
 <p>と修正し、再度実行して何が表示されるか確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">3.5</span>, <span class="fl">4.0</span></code></pre></div>
 <p>ではどうか。</p>
-<h3 id="課題2-3">課題2-3</h3>
+<h3 id="課題3-3">課題3-3</h3>
 <p>matplotlibはプロットのためのライブラリである。表示する領域は<code>plt.ylim([ys,ye])</code>の形で指定できる。</p>
 <p>まずは二番目のセルの領域指定を</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="dv">1</span>, <span class="dv">4</span></code></pre></div>

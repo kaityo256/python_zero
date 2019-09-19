@@ -308,7 +308,7 @@ img2 <span class="op">=</span> Image.fromarray(np.uint8(b))
 img2.save(<span class="st">&#39;output.jpg&#39;</span>)
 IPython.display.Image(<span class="st">&quot;output.jpg&quot;</span>)</code></pre></div>
 <p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>rank</code>は、使う情報の「幅」であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。<code>rank = 5</code>の場合と、<code>rank=20</code>の場合にそれぞれ画像がどうなるか比べてみよ。</p>
-<h3 id="任意課題">任意課題</h3>
+<h3 id="発展課題">発展課題</h3>
 <p>インターネットで適当な画像をダウンロードし、上記の手続きで低ランク近似をせよ。適当な画像を見つけたら、例えば右クリックの「画像のアドレスをコピー」で画像のURLをコピーし、2つ目のセルで</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget ここに画像のURLをペースト <span class="op">-</span>O stop.jpg</code></pre></div>
 <p>として実行すればGoogle Colab上に「stop.jpg」という名前でダウンロードできる。あとは同じプロセスを繰り返すことでダウンロードしたファイルの低ランク近似画像を生成できる。その際、様々な<code>rank</code>の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。</p>
