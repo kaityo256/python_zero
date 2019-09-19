@@ -80,6 +80,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -257,7 +258,7 @@ draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>これまで正しく入力していれば、黒字に白い丸が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
-<h3 id="課題2-2-セルの修正">課題2-2: セルの修正</h3>
+<h3 id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h3>
 <p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
 <h4 id="インポートの追加">1. インポートの追加</h4>
 <p>一番目のセルを以下のように修正し、実行せよ。</p>
@@ -274,9 +275,9 @@ cy <span class="op">=</span> <span class="dv">128</span>
 r <span class="op">=</span> <span class="dv">64</span>
 draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r), outline<span class="op">=</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
 <span class="co"># ↓ここから追加 (このコメントは入力しなくて良い)</span>
-n <span class="op">=</span> <span class="dv">5</span>
-t <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> n <span class="op">*</span> (n <span class="op">//</span> <span class="dv">2</span>)
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
+N <span class="op">=</span> <span class="dv">5</span>
+t <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> N <span class="op">*</span> (N <span class="op">//</span> <span class="dv">2</span>)
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
   s1 <span class="op">=</span> t<span class="op">*</span>i
   s2 <span class="op">=</span> s1<span class="op">+</span>t
   x1 <span class="op">=</span> r<span class="op">*</span>cos(s1)<span class="op">+</span>cx
@@ -284,63 +285,67 @@ t <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span
   x2 <span class="op">=</span> r<span class="op">*</span>cos(s2)<span class="op">+</span>cx
   y2 <span class="op">=</span> r<span class="op">*</span>sin(s2)<span class="op">+</span>cy
   draw.line((x1,y1,x2,y2),fill<span class="op">=</span>(<span class="dv">255</span>,<span class="dv">255</span>,<span class="dv">255</span>))</code></pre></div>
-<p><code>for i in range(n):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。以下、<code>s1 = t*i</code>から<code>draw.line((x1,y1,x2,y2),fill=(255,255,255))</code>までは、同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
+<p><code>for i in range(N):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。以下、<code>s1 = t*i</code>から<code>draw.line((x1,y1,x2,y2),fill=(255,255,255))</code>までは、同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>
 <p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセルを実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、クリックして三つ目のセルにフォーカスを移してから三角マークをクリックするか、シフト+リターンを入力する。ただしく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
-<h3 id="課題2-3">課題2-3</h3>
-<p>先の二つめのセルの<code>n = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>n</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
+<h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
+<p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
 <h3 id="発展課題">発展課題</h3>
-<p>先のプログラムを<code>n = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
+<p>先のプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
 <h2 id="課題3-ロジスティック写像">課題3: ロジスティック写像</h2>
-<p>より実践的な描画プログラムの例として、ロジスティック写像の描画プログラムを作ってみよう。</p>
+<p>より実践的な描画プログラムの例として、ロジスティック写像の描画プログラムを作ってみよう。ロジスティック写像は</p>
+<p><span class="math display">\[
+n_{i+1} = a (1- n_i)
+\]</span></p>
+<p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(a\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
+<p><span class="math display">\[
+n = 1 - \frac{1}{a}
+\]</span></p>
+<p>に落ち着くはずである。この振る舞いを確認してみよう。</p>
 <h3 id="課題3-1">課題3-1</h3>
 <p>新しいノートブックを開き、<code>logistic.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
 <h4 id="ロジスティック写像の描画">2. ロジスティック写像の描画</h4>
 <p>インデントのレベルが3階層あるので入力に注意。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">loop <span class="op">=</span> <span class="dv">1000</span>
 loop2 <span class="op">=</span> <span class="dv">900</span>
-rs, re <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">3.0</span>
-n <span class="op">=</span> <span class="dv">1000</span>
+a_s, a_e <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">3.0</span>
+N <span class="op">=</span> <span class="dv">1000</span>
 x <span class="op">=</span> []
 y <span class="op">=</span> []
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
-    r <span class="op">=</span> (re<span class="op">-</span>rs)<span class="op">*</span>i<span class="op">/</span>n <span class="op">+</span> rs
-    v <span class="op">=</span> <span class="fl">0.1</span>
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
+    a <span class="op">=</span> (a_e <span class="op">-</span> a_s)<span class="op">*</span>i<span class="op">/</span>N <span class="op">+</span> a_s
+    n <span class="op">=</span> <span class="fl">0.1</span>
     <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(loop):
-        v <span class="op">=</span> r<span class="op">*</span>v<span class="op">*</span>(<span class="fl">1.0</span><span class="op">-</span>v)
+        n <span class="op">=</span> a<span class="op">*</span>n<span class="op">*</span>(<span class="fl">1.0</span><span class="op">-</span>n)
         <span class="cf">if</span> j <span class="op">&gt;</span> loop2:
-            x.append(r)
-            y.append(v)</code></pre></div>
+            x.append(a)
+            y.append(n)</code></pre></div>
 <h4 id="プロットの表示">3. プロットの表示</h4>
 <p><code>matplotlib</code>というプロット用のライブラリにより、データを可視化する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx <span class="op">=</span> np.array(x)
-ny <span class="op">=</span> np.array(y)
-plt.scatter(nx, ny, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <p>正しく入力できていれば、一本の曲線が表示されたはずである。</p>
 <h3 id="課題3-2">課題3-2</h3>
 <p>描画範囲は二つ目のセルの以下の場所で指定されている。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">3.0</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a_s, a_e <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">3.0</span></code></pre></div>
+<p>これは、パラメータ<span class="math inline">\(a\)</span>の範囲<span class="math inline">\((a_s, a_e)\)</span>を指定している。</p>
 <p>これを、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">4.0</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a_s, a_e <span class="op">=</span> <span class="fl">1.0</span>, <span class="fl">4.0</span></code></pre></div>
 <p>と修正し、再度実行して何が表示されるか確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">3.5</span>, <span class="fl">4.0</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a_s, a_e <span class="op">=</span> <span class="fl">3.5</span>, <span class="fl">4.0</span></code></pre></div>
 <p>ではどうか。</p>
 <h3 id="課題3-3">課題3-3</h3>
 <p>matplotlibはプロットのためのライブラリである。表示する領域は<code>plt.ylim([ys,ye])</code>の形で指定できる。</p>
 <p>まずは二番目のセルの領域指定を</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="dv">1</span>, <span class="dv">4</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a_s, a_e <span class="op">=</span> <span class="dv">1</span>, <span class="dv">4</span></code></pre></div>
 <p>として実行し、三番目のセルも実行して画像を表示させよ。</p>
 <p>次に、二番目のセルを</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rs, re <span class="op">=</span> <span class="fl">3.54</span>, <span class="fl">3.58</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a_s, a_e <span class="op">=</span> <span class="fl">3.54</span>, <span class="fl">3.58</span></code></pre></div>
 <p>と修正して実行した上で、「+ コード」により四番目のセルを追加し、そこに</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx <span class="op">=</span> np.array(x)
-ny <span class="op">=</span> np.array(y)
-plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])
-plt.scatter(nx, ny, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])
+plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <p>と入力して実行せよ。二つ目の画像が表示されるはずである。二つのグラフを見てどう思うか考えよ。</p>
 <h2 id="余談タッチタイピングについて">余談：タッチタイピングについて</h2>
 <p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インターフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
