@@ -268,8 +268,10 @@ Jupyterノートブックは、すでに入力済みのセルを修正するこ�
 ```py
 from PIL import Image, ImageDraw
 import IPython
-from math import pi, sin, cos
+from math import pi, sin, cos # この行を追加
 ```
+
+コメントの`# この行を追加`という文章は入力しなくて良い。
 
 三行目に、`math`ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。
 
