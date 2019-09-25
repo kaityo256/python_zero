@@ -297,7 +297,7 @@ t <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span
 <h2 id="課題3-ロジスティック写像">課題3: ロジスティック写像</h2>
 <p>より実践的な描画プログラムの例として、ロジスティック写像の描画プログラムを作ってみよう。ロジスティック写像は</p>
 <p><span class="math display">\[
-n_{i+1} = a (1- n_i)
+n_{i+1} = a (1- n_i) n_i
 \]</span></p>
 <p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(a\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
 <p><span class="math display">\[

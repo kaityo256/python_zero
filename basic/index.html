@@ -200,21 +200,30 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 (<span class="dv">1</span><span class="op">+</span>2j)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>2j) <span class="op">=&gt;</span> (<span class="dv">5</span><span class="op">+</span>0j)
 (<span class="dv">1</span><span class="op">+</span>2j).real <span class="co">#=&gt; 1.0</span>
 (<span class="dv">1</span><span class="op">+</span>2j).imag <span class="co">#=&gt; 2.0</span></code></pre></div>
-<h2 id="繰り返し処理">繰り返し処理</h2>
-<h3 id="for文">for文</h3>
+<h2 id="条件分岐と繰り返し">条件分岐と繰り返し</h2>
+<h3 id="forによる繰り返し処理">forによる繰り返し処理</h3>
 <p>繰り返し処理は以下のように書ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
   <span class="bu">print</span>(i)</code></pre></div>
-<p>これは、iの値を0から9まで変化させながら、<code>print(i)</code>を実行しなさい、という意味である。なお、<code>in</code>の前の変数はなんでも良い。例えば以下のようにしても同じ結果となる。</p>
+<p>これは、iの値を0から9まで変化させながら、<code>print(i)</code>を実行しなさい、という意味である。この繰り返し文を「ループ」と呼び、ループ中に値が変わりながら繰り返し実行される変数を「ループカウンタ」と呼ぶ。<code>for</code>がある文の最後に「コロン」があるが、Pythonは「コロン」の後にブロックを伴う。<code>for</code>文では、続くブロックの中身を繰り返し処理する。</p>
+<p>ループで繰り返し処理するブロックは何行でも良い。ただし、同じブロックは同じ幅のインデントをしなければならない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+  j <span class="op">=</span> i <span class="op">*</span> <span class="dv">2</span>
+  <span class="bu">print</span>(j)</code></pre></div>
+<p>ループカウンタに用いる変数はなんでも良い。例えば以下のよう<code>i</code>の代わりに<code>j</code>を用いても同じ結果となる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
   <span class="bu">print</span>(j)</code></pre></div>
+<p>ループカウンタには長い変数名を使っても良い。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">for abracadabra in range(<span class="dv">10</span>):
+    print(abracadabra)</code></pre></div>
 <p>また、単に10回繰り返したいだけで、現在何回目かは不要である場合には<code>_</code>を使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
   <span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>) <span class="co"># Helloが10回表示される</span></code></pre></div>
-<h2 id="条件分岐">条件分岐</h2>
+<h3 id="条件分岐">条件分岐</h3>
 <p>「もし〜なら」という処理を条件分岐と呼び、<code>if</code>文で書く。<code>if</code>の後ろには真偽値を与えるような式を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">5</span> <span class="op">&gt;</span> <span class="dv">3</span>:
   <span class="bu">print</span>(<span class="st">&quot;5&gt;3&quot;</span>)</code></pre></div>
+<p><code>if</code>文に書かれた条件が成立した場合に、後に続くブロックを実行する。</p>
 <p>「もし〜ならAをせよ、そうでなければBをせよ」という場合には<code>else:</code>を使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="dv">5</span> <span class="op">&lt;</span> <span class="dv">3</span>:
   <span class="bu">print</span>(<span class="st">&quot;A&quot;</span>) <span class="co"># 実行されない</span>
@@ -228,15 +237,14 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
   <span class="bu">print</span>(<span class="st">&quot;a &gt; b&quot;</span>)
 <span class="cf">else</span>:
   <span class="bu">print</span>(<span class="st">&quot;a &lt; b&quot;</span>)</code></pre></div>
-<p>if文は入れ子構造にできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b, c <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
-<span class="cf">if</span> a <span class="op">&lt;</span> b:
-  <span class="cf">if</span> b <span class="op">&lt;</span> c:
-    <span class="bu">print</span>(<span class="st">&quot;a &lt; b &lt; c&quot;</span>)
-  <span class="cf">elif</span> c <span class="op">&lt;</span> a:
-    <span class="bu">print</span>(<span class="st">&quot;c &lt; a &lt; b&quot;</span>)
-  <span class="cf">else</span>:
-    <span class="bu">print</span>( <span class="st">&quot;a &lt;= c &lt;= b&quot;</span>)</code></pre></div>
+<p>if文は入れ子構造にできる。例えば、変数<code>a</code>が、「5以下」「5より大きく10未満」「10以上」の3つの領域のどこに存在するか知りたい場合、以下のようなコードを書けばよい。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">if a <span class="op">&gt;</span> <span class="dv">5</span>:
+    if a <span class="op">&lt;</span> <span class="dv">10</span>:
+        print(<span class="st">&quot;5 &lt; a &lt; 10&quot;</span>)
+    else:
+        print(<span class="st">&quot;10 &lt;= a&quot;</span>)
+<span class="cf">else</span>:
+    print(<span class="st">&quot;a &lt;= 5&quot;</span>)</code></pre></div>
 <h2 id="ニュートン法">ニュートン法</h2>
 <p>以上の知識で、何かコードを書いてみよう。ある方程式を解きたいが、その解が厳密にはわからないとする。その場合でも数値計算で必要な精度で解を求めることができる。そのような場合によく用いられるのがニュートン法である。</p>
 <p>いま、</p>
@@ -255,17 +263,29 @@ f(\tilde{x} - \varepsilon) = f(\tilde{x}) - \varepsilon f&#39;(\tilde{x}) + O(\v
 <p><span class="math display">\[
 x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
 \]</span></p>
-<p>という数値列を得る。この数列が収束するということは<span class="math inline">\(x_{n+1} = x_n\)</span>なので、<span class="math inline">\(f(x_n)=0\)</span>が満たされなければならず、それはすなわち<span class="math inline">\(x_n\)</span>が解に収束したことを示す。これを確認してみよう。</p>
+<p>という数値列を得る。これは、</p>
+<ul>
+<li>現在の解候補<span class="math inline">\(x_n\)</span>の場所で接線を引き</li>
+<li>接線と<span class="math inline">\(x\)</span>軸との交点を次の解候補<span class="math inline">\(x_{n+1}\)</span>とする</li>
+</ul>
+<p>という手続きになっている。</p>
+<p>この数列が収束するということは<span class="math inline">\(x_{n+1} = x_n\)</span>なので、<span class="math inline">\(f(x_n)=0\)</span>が満たされなければならず、それはすなわち<span class="math inline">\(x_n\)</span>が解に収束したことを示す。これを確認してみよう。</p>
 <p>いま、<span class="math inline">\(x^3 = 1\)</span>の解を知りたいとする。この時、<span class="math inline">\(f(x) = 0\)</span>の形に書きたいので、<span class="math inline">\(f(x) = x^3 - 1\)</span>である。<span class="math inline">\(f&#39;(x) = 3 x^2\)</span>であるから、対応するニュートン法のアルゴリズムは、</p>
 <p><span class="math display">\[
 x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 \]</span></p>
 <p>である。</p>
+<p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？ナイーブに考えると、複数の解がある場合、初期値に一番近い解に収束すると考えられるが、本当だろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
+<div class="figure">
+<img src="fig/map.png" alt="map.png" />
+<p class="caption">map.png</p>
+</div>
 <h1 id="条件分岐と繰り返し処理課題">条件分岐と繰り返し処理：課題</h1>
 <h2 id="課題1-ニュートン法">課題1 ニュートン法</h2>
 <h3 id="課題1-1-ニュートン法の実装">課題1-1 ニュートン法の実装</h3>
+<p>新しいノートブックを開き、<code>newton.ipynb</code>という名前をつけよ。</p>
 <h4 id="関数newtonの実装">1. 関数<code>newton</code>の実装</h4>
-<p>新しいノートブックを開き、最初のセルに以下のように入力し、実行せよ。</p>
+<p>最初のセルに以下のように入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
   <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">3</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>x<span class="op">**</span><span class="dv">2</span>)
@@ -280,18 +300,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <h4 id="関数newtonの動作確認">2. 関数<code>newton</code>の動作確認</h4>
 <p>初期値として2.0を入れてみよう。2つ目のセルに、以下のように入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="fl">2.0</span>)</code></pre></div>
-<p>以下のような実行結果が出れば成功である。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">1.4166666666666665</span>
-<span class="ex">1.1105344098423684</span>
-<span class="ex">1.0106367684045563</span>
-<span class="ex">1.0001115573039492</span>
-<span class="ex">1.0000000124431812</span>
-<span class="ex">1.0000000000000002</span>
-<span class="ex">1.0</span>
-<span class="ex">1.0</span>
-<span class="ex">1.0</span>
-<span class="ex">1.0</span></code></pre></div>
-<p>急速に真の値である1.0に近づいていくことがわかるだろう。実際、ニュートン法の収束は非常に早く、一度繰り返すごとに精度が倍になっていく。</p>
+<p>実行結果が解である1.0に近づいていくことがわかるだろう。実際、ニュートン法の収束は非常に早く、一度繰り返すごとに精度が倍になっていく。</p>
 <h4 id="複素数の入力実数解">3. 複素数の入力(実数解)</h4>
 <p><span class="math inline">\(x^3 -1 = 0\)</span>の解は、実数の範囲では<span class="math inline">\(x=1\)</span>しかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。複素数の場合にもニュートン法が機能することを確認しよう。 3つ目のセルに、以下の入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">newton(<span class="dv">2</span><span class="op">+</span>0j)</code></pre></div>
@@ -306,10 +315,6 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <p>今度は<span class="math inline">\(x=-1/2 - \sqrt{3}/2 i\)</span>に収束するはずである。</p>
 <h3 id="課題1-2-ニュートン法の収束地図について">課題1-2 ニュートン法の収束地図について</h3>
 <p>先程、ニュートン法が複素数の場合にも機能し、<span class="math inline">\(x^3 - 1 = 0\)</span>の解を三つとも見つけられることを確認した。 ナイーブに考えると、複数の解がある場合、初期値に近い解に収束すると考えられる。では、複素平面のどこからスタートしたらどこに収束するだろうか？単純に三分割になるだろうか？</p>
-<div class="figure">
-<img src="fig/map.png" alt="map.png" />
-<p class="caption">map.png</p>
-</div>
 <p>複素平面の様々な場所を初期として、</p>
 <ul>
 <li><code>1+0j</code>に収束したら赤</li>
@@ -317,7 +322,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <li><code>-0.5-87j</code>に収束したら青</li>
 </ul>
 <p>に塗ることで、「どの場所からスタートしたらどこに収束するか」という「収束地図」を作ってみよう。</p>
-<p>新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
+<p>新しいノートブックを開き、<code>newton3.ipynb</code>という名前をつけて保存してから、以下のプログラムを4つのセルに分けて入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリをインポートしよう。入力したら実行するのを忘れないこと。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
@@ -349,8 +354,20 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <li><code>z</code>の実部が負かつ虚部も負なら<code>c = blue</code></li>
 </ul>
 <p>を実行するようにプログラムを書くこと。</p>
+<p>ヒント1： <code>z</code>の実部は<code>z.real</code>で、虚部は<code>z.imag</code>で得ることができる。</p>
+<p>ヒント2： <code>if</code>文は以下のように書ける</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> 条件:
+  条件が成立した時に実行したいこと
+<span class="cf">else</span>:
+  条件が成立していない時に実行したいこと</code></pre></div>
+<p>例えば、<code>a</code>が正かどうかで処理を分けたいなら、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
+  printf(<span class="st">&quot;aは正です&quot;</span>)
+<span class="cf">else</span>:
+  printf(<span class="st">&quot;aは負か0です&quot;</span>)</code></pre></div>
+<p>と書ける。</p>
 <h4 id="画像の表示">4. 画像の表示</h4>
-<p>ここまで入力したプログラムを用いて、収束地図を作ってみよう。</p>
+<p>ここまで入力したプログラムを用いて、収束地図を作ってみよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
 im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(im)
@@ -358,42 +375,21 @@ plot(draw, size)
 im.save(<span class="st">&quot;test.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>正しく入力できていれば、上記を実行した際に「収束地図」が描けたはずだ。どのような地図になっただろうか？</p>
-<p>エラーが表示されたら、エラー内容をよく見てどこが間違っているかを確認せよ。</p>
-<h3 id="発展課題">発展課題</h3>
-<p>先程は<span class="math inline">\(x^3 - 1 = 0\)</span>の解を考えた。次は<span class="math inline">\(x^4 - 1 = 0\)</span>の解を考えてみよう。この方程式には<span class="math inline">\(x = \pm 1\)</span>、<span class="math inline">\(x \pm i\)</span>の4つの解が存在する。この解をニュートン法で探し、「収束地図」を描こう。</p>
-<p>まず、先程の課題で作成したプログラムに名前をつけて保存し、複製して、そちらを修正することにしよう。ファイルメニューから「名前を変更」をクリック、もしくは上の「Untitled.ipynb」をクリックし、「newton3.ipynb」と名前を変えよう。その後、「ファイル」メニューの「保存」を選ぶと保存される。</p>
-<p>この状態で「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「newton3.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「newton3.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「newton4.ipynb」という名前にしよう。「newton4.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
-<h4 id="関数newtonの修正">2. 関数<code>newton</code>の修正</h4>
-<p>「newton4.ipynb」が開かれたら、まず2つ目のセルにある関数<code>newton</code>を次のように修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
-  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">4</span><span class="op">-</span><span class="dv">1</span>)<span class="op">/</span>(<span class="dv">4</span><span class="op">*</span>x<span class="op">**</span><span class="dv">3</span>)
-  <span class="cf">return</span> x</code></pre></div>
-<p><span class="math inline">\(f(x) = x^4 -1\)</span>とし、<span class="math inline">\(f(x)\)</span>と<span class="math inline">\(f&#39;(x)\)</span>を公式に代入しただけである。</p>
-<h4 id="関数plotの修正">3. 関数<code>plot</code>の修正</h4>
-<p>3つ目のセルにある関数<code>plot</code>を次のように修正しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(draw, s):
-    hs <span class="op">=</span> s<span class="op">/</span><span class="dv">2</span>
-    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
-    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
-    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)  <span class="co"># ここを追加</span>
-    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
-        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
-            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs, y<span class="op">-</span>hs)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> <span class="fl">0.01</span>
-            z <span class="op">=</span> newton(z)
-            <span class="co"># ここを埋めよ</span>
-            draw.rectangle([x, y, x<span class="op">+</span><span class="dv">1</span>, y<span class="op">+</span><span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
-<p>解がそれぞれ1, -1, j, -jなので、</p>
-<ul>
-<li><code>z</code>の実部が正かつ虚部が正なら<code>c = red</code></li>
-<li><code>z</code>の実部が正かつ虚部が負なら<code>c = green</code></li>
-<li><code>z</code>の実部が負かつ虚部が正なら<code>c = blue</code></li>
-<li><code>z</code>の実部が負かつ虚部も負なら<code>c = purple</code></li>
-</ul>
-<p>となるように「# ここを埋めよ」の部分を書け。</p>
-<p>4つ目のセルはそのままで良い。すべてのセルを上から順番に実行、もしくは「ランタイム」メニューから「すべてのセルを実行」を実行せよ。もしおかしなことになったら、「ランタイム」から「再起動してすべてのセルを実行」せよ。</p>
 <p>ニュートン法の繰り返し数が10だと原点付近の収束が甘い。20くらいにして再実行してみよ。逆に5に減らすとどうなるだろうか？</p>
+<h3 id="発展課題四次方程式の収束地図">発展課題：四次方程式の収束地図</h3>
+<p>先程は<span class="math inline">\(x^3 - 1 = 0\)</span>の解を考えた。次は<span class="math inline">\(x^4 - 1 = 0\)</span>の解を考えてみよう。この方程式には<span class="math inline">\(x = \pm 1\)</span>、<span class="math inline">\(x \pm i\)</span>の4つの解が存在する。この解をニュートン法で探し、「収束地図」を描け。</p>
+<p>ヒント1：<span class="math inline">\(x^4-1\)</span>の時のニュートン法の手続きは以下の通り。</p>
+<p><span class="math display">\[
+x_{n+1} = x_n - \frac{x^4-1}{4x^3}
+\]</span></p>
+<p>ヒント2：以下の4つの場合分けが必要になる。</p>
+<ul>
+<li><code>z</code>の実部と虚部の和が正か負か</li>
+<li><code>z</code>の実部と虚部の差が正か負か</li>
+</ul>
+<p>ヒント3：色がもう一色必要になる。何色でも良いが、例えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)</code></pre></div>
+<p>を追加せよ。</p>
 <h2 id="余談バグについて">余談：バグについて</h2>
 <p>プログラムが何か意図しない動作をする場合、その原因となる箇所を「バグ」と呼ぶ。バグの語源については諸説あるようだが、詳しいことはわからない。「i」と「l」と「1」など、似ている文字を誤入力してしまったり、考慮すべきケースを忘れていたり、バグの原因は様々である。単純なバグについては、コンパイラや検査ツールの充実、テスト手法の向上などにより事前に検出できるようになってきた。そんななか、未だによく見かけるバグに「オーバーフローバグ」がある。コンピュータが扱える数字には上限がある。たとえば整数は32ビットで表現されることが多い。符号無し整数の場合、表現できる最大の数は4294967295、つまり43億ちょっとである。符号付きの場合は、符号に1ビット使うので最大の数はその半分になる。この数字を超える、すなわち最大値を取っている変数に1を足すと、またゼロに戻ってしまう。オーバーフローバグは、よくタイマー周りに潜む。最近だと、ボーイング787という飛行機の電源制御システムが、連続して248日動作させると不具合を起こすことが報告された。慣れたプログラマなら、「248日」と聞いた瞬間に「あ、オーバーフローやったな」と気がつく。248日とは21427200秒である。31ビットで表現できる最大の数は2147483647であるから10ミリ秒を単位に動作する31ビットのクロックが、248日でオーバーフローしたと考えられる。同根のバグに「497日問題」とか「49.7日問題」があるので、興味があれば調べられたい。</p>
 <p>値があふれるのとは逆に、値が0になってるのに引き算をすることで値が大きくなるバグもあり、こちらもオーバーフローバグと呼ばれている。有名なのは「突然キレるガンジー」であろう。Cibilizationという、文明を発展させるゲームがある。歴史上の有名人をプレイヤーとして選び、世界制覇などを目指すゲームである。この中のプレイヤーにガンジーがいた。ガンジーは「非暴力、不服従」の提唱者であり、平和主義者なのであるが、文明がある程度発展すると突如として核攻撃をしかけてくるようになる。これはオーバーフローバグであった。Cibilizationでは各プレイヤーには攻撃性が設定されており、文明が民主主義を採用すると攻撃性が2下がる、という仕組みがあった。さて、ガンジーの攻撃性は1なのだが、インド文明が民主主義を採用し2を引くと-1になる。しかし、攻撃性は「符号なし8ビット整数」で表現されていたため、1から2を引くと攻撃性最大の255になってしまった。こうして「突然キレるガンジー」が誕生したのである。</p>
