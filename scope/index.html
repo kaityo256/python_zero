@@ -237,7 +237,7 @@ func()
 <li>最後に<code>a</code>の変数の値を表示する</li>
 </ul>
 <p>プログラムである。どんな結果になるか想像できるだろうか？</p>
-<p>実はこのコードでは、関数<code>func</code>を実行しても、グローバル変数の値は変更されない。これは<code>a=20</code>が、関数<code>func</code>内のローカル変数の宣言とみなされるからだ。このように、ある変数について、その変数がどのスコープに属す変数であるかを調べる仕組みを <strong>名前解決</strong> と呼ぶ。</p>
+<p>実はこのコードでは、関数<code>func</code>を実行しても、グローバル変数の値は変更されない。これは<code>a=20</code>が、関数<code>func</code>内のローカル変数の宣言とみなされるからだ。ここで出てきた<code>func</code>や<code>a</code>といった「関数名」や「変数名」を 識別子 <strong>(identifier)</strong> と呼ぶ。また、ある識別子がどのスコープに属すものであるかを調べる仕組みを <strong>名前解決(Name Resolution)</strong> と呼ぶ。</p>
 <div class="figure">
 <img src="fig/scope2.png" alt="ローカル変数によるグローバル変数の上書き" />
 <p class="caption">ローカル変数によるグローバル変数の上書き</p>
