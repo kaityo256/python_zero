@@ -527,20 +527,20 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
 <p>といった場合、<code>a</code>という変数に<code>10</code>という値が代入されるし、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
     <span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)</code></pre></div>
-<p>といった関数<code>func</code>を定義すると、以後<code>func()</code>を実行するたびに「Hello」と表示される。このような「変数名」や「関数名」を「<strong>識別子 (identifier)</strong>」と呼ぶ。プログラムをコンパイル、評価した時に、「ある識別子が何を指しているのか？」を決めるのが「<strong>名前解決 (name resolution)</strong>」だ。名前解決は言語処理系の処理の根幹に関わってくるため、言語によって差異が出やすい。</p>
+<p>といった関数<code>func</code>を定義すると、以後<code>func()</code>を実行するたびに「Hello」と表示される。このような「変数名」や「関数名」を識別子と呼ぶ。プログラムをコンパイル、評価した時に、「ある識別子が何を指しているのか？」を決める仕組みを名前解決と呼ぶことは前回学んだ。名前解決は言語処理系の処理の根幹に関わってくるため、言語によって差異が出やすい。</p>
 <p>PythonやRubyは値の代入によって変数の宣言を行う言語だが、CやC++、Javaなどの言語は変数の宣言と値の代入は別だ。値の代入が変数宣言を兼ねる場合、それが代入なのか宣言なのかがわかりにくい場合がある。例えば</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">20</span></code></pre></div>
-<p>という文があった場合、これが新たな変数<code>a</code>を宣言しているのか、それとも既存の変数に値が代入されるかは、それまでに<code>a</code>という変数が存在しているかどうかによる。これにより、</p>
+<p>という文があった場合、これが新たな変数<code>a</code>を宣言しているのか、それとも既存の変数に値が代入されるかは、それまでに<code>a</code>という変数が存在しているかどうかによる。これにより、以下のプログラム</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 <span class="kw">def</span> func():
     <span class="bu">print</span>(a)
 func()</code></pre></div>
-<p>がグローバル変数を表示するが、</p>
+<p>ではグローバル変数の値が表示されるが、以下のプログラム</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 <span class="kw">def</span> func():
     a <span class="op">=</span> <span class="dv">20</span>
 func()</code></pre></div>
-<p>が、関数<code>func</code>内で新たなローカル変数が作られるため、グローバル変数に影響を与えないことは既に説明した。</p>
+<p>では関数<code>func</code>内で新たなローカル変数が作られるため、グローバル変数に影響を与えない。</p>
 <p>これがC++の場合は、</p>
 <div class="sourceCode"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span class="dt">int</span> a = <span class="dv">10</span>;
 <span class="dt">void</span> func(){
@@ -549,7 +549,7 @@ func()</code></pre></div>
 }</code></pre></div>
 <p>と、変数は宣言しないと利用できないため、<code>a=20</code>が宣言なのか代入なのかわからない、という問題は生じない。</p>
 <p>Pythonと同様に代入によって変数を宣言する言語であるRubyは、「グローバル変数には<code>$</code>をつける」という言語デザインにしたため、ローカルスコープにある変数がローカルなのかグローバルなのかわからない、という問題は生じない。他にも、スコープがネストした場合の名前解決の方法等は言語によって違いが大きい。</p>
-<p>言語を設計する時、ほとんどの場合は設計と同時にコンパイラなりインタプリタなりといった「言語処理系」が実装される。識別子をどう扱うか、スコープをどうするかはコンパイラやインタプリタの実装に直結するため、名前解決には言語設計者のポリシーの違いが強く出やすい。ある言語で当たり前に受け入れられている方法が、別の言語では禁止されていたり、全く異なる方法で実現されるんだど、ある言語の「常識」が別の言語の「非常識」であることも多い。プログラミング言語を一つしか知らないと、このような違いに目がいかず、「自分が知っているプログラミング言語固有の常識」を「プログラミング言語一般の常識」と思ってしまいがちである。</p>
+<p>言語を設計する時、ほとんどの場合は設計と同時にコンパイラなりインタプリタなりといった「言語処理系」が実装される。識別子をどう扱うか、スコープをどうするかはコンパイラやインタプリタの実装に直結するため、名前解決には言語設計者のポリシーの違いが強く出やすい。ある言語で当たり前に受け入れられている方法が、別の言語では禁止されていたり、全く異なる方法で実現されるなど、ある言語の「常識」が別の言語の「非常識」であることも多い。プログラミング言語を一つしか知らないと、このような違いに目がいかず、「自分が知っているプログラミング言語固有の常識」を「プログラミング言語一般の常識」と思ってしまいがちである。</p>
 <p>「どの言語の設計が良い」「悪い」ではない。使いこなす必要はないが、複数のプログラミング言語に触れ、広い視野を持つようにしてほしい。プログラミング言語設計の歴史や、言語間の差異については「<a href="https://www.amazon.co.jp/dp/477415654X">コーディングを支える技術 (西尾 泰和)</a>に事例が豊富に掲載されているので参考にされたい。</p>
 </article>
 </body>
