@@ -495,9 +495,9 @@ else:
 
 ```py
 if a > 0:
-  printf("aは正です")
+  print("aは正です")
 else:
-  printf("aは負か0です")
+  print("aは負か0です")
 ```
 
 と書ける。
