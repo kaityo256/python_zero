@@ -245,6 +245,17 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
         print(<span class="st">&quot;10 &lt;= a&quot;</span>)
 <span class="cf">else</span>:
     print(<span class="st">&quot;a &lt;= 5&quot;</span>)</code></pre></div>
+<p>条件分岐においては、「どのような入力が来ても、必ずいずれかのブロックが実行されるか」に注意してプログラムを組んで欲しい。例えば、変数<code>a</code>が正か負かで処理を判定したい場合、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
+  <span class="co"># 正の時の処理</span>
+<span class="cf">if</span> a <span class="op">&lt;</span> <span class="dv">0</span>:
+  <span class="co"># 負の時の処理</span></code></pre></div>
+<p>と、２つの<code>if</code>文で書いてしまうと、<code>a</code>がゼロの時にどちらもすり抜けてしまい、見つけづらいバグの原因となる。これを</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
+  <span class="co"># 正の時の処理</span>
+<span class="cf">else</span>:
+  <span class="co"># そうでない場合 (負と0の可能性がある)</span></code></pre></div>
+<p>と<code>else</code>を用いて書けば、<code>a</code>にどのような値が来ても「どちらか」は必ず実行される。複雑な条件分岐を書く場合は、「Xであるか、そうでないか」に分けて<code>if</code>と<code>else</code>で分解していくと、「条件漏れ」がなくなって安全である。</p>
 <h2 id="ニュートン法">ニュートン法</h2>
 <p>以上の知識で、何かコードを書いてみよう。ある方程式を解きたいが、その解が厳密にはわからないとする。その場合でも数値計算で必要な精度で解を求めることができる。そのような場合によく用いられるのがニュートン法である。</p>
 <p>いま、</p>
@@ -281,7 +292,6 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <p class="caption">map.png</p>
 </div>
 <h1 id="条件分岐と繰り返し処理課題">条件分岐と繰り返し処理：課題</h1>
-<p>レポートは<code>report.docx</code>というファイル名のまま提出せよ。</p>
 <h2 id="課題1-ニュートン法">課題1 ニュートン法</h2>
 <h3 id="課題1-1-ニュートン法の実装">課題1-1 ニュートン法の実装</h3>
 <p>新しいノートブックを開き、<code>newton.ipynb</code>という名前をつけよ。</p>
@@ -319,15 +329,15 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <p>複素平面の様々な場所を初期として、</p>
 <ul>
 <li><code>1+0j</code>に収束したら赤</li>
-<li><code>-0.5+87j</code>に収束したら緑</li>
-<li><code>-0.5-87j</code>に収束したら青</li>
+<li><code>-0.5+0.87j</code>に収束したら緑</li>
+<li><code>-0.5-0.s87j</code>に収束したら青</li>
 </ul>
 <p>に塗ることで、「どの場所からスタートしたらどこに収束するか」という「収束地図」を作ってみよう。</p>
 <p>新しいノートブックを開き、<code>newton_map.ipynb</code>という名前をつけて保存してから、以下のプログラムを4つのセルに分けて入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリをインポートしよう。入力したら実行するのを忘れないこと。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">import</span> IPython</code></pre></div>
+<span class="im">from</span> IPython.display <span class="im">import</span> display</code></pre></div>
 <h4 id="関数newtonの実装-1">2. 関数<code>newton</code>の実装</h4>
 <p>2つ目のセルに、関数<code>newton</code>を実装しよう。先ほどと異なり、ニュートン法による反復を10回繰り返したのちに、収束した値を返す。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
@@ -344,7 +354,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
     blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
     <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
         <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
-            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs, y<span class="op">-</span>hs)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span> <span class="op">+</span> <span class="fl">0.01</span>
+            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs<span class="op">+</span><span class="fl">0.5</span>, y<span class="op">-</span>hs<span class="op">+</span><span class="fl">0.5</span>)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span>
             z <span class="op">=</span> newton(z)
             <span class="co"># ここを埋めよ</span>
             draw.rectangle([x, y, x<span class="op">+</span><span class="dv">1</span>, y<span class="op">+</span><span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
@@ -363,9 +373,9 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
   条件が成立していない時に実行したいこと</code></pre></div>
 <p>例えば、<code>a</code>が正かどうかで処理を分けたいなら、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
-  printf(<span class="st">&quot;aは正です&quot;</span>)
+  <span class="bu">print</span>(<span class="st">&quot;aは正です&quot;</span>)
 <span class="cf">else</span>:
-  printf(<span class="st">&quot;aは負か0です&quot;</span>)</code></pre></div>
+  <span class="bu">print</span>(<span class="st">&quot;aは負か0です&quot;</span>)</code></pre></div>
 <p>と書ける。</p>
 <h4 id="画像の表示">4. 画像の表示</h4>
 <p>ここまで入力したプログラムを用いて、収束地図を作ってみよう。4つ目のセルに以下を入力せよ。</p>
@@ -373,8 +383,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(im)
 plot(draw, size)
-im.save(<span class="st">&quot;test.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+display(im)</code></pre></div>
 <p>正しく入力できていれば、上記を実行した際に「収束地図」が描けたはずだ。どのような地図になっただろうか？</p>
 <p>ニュートン法の繰り返し数が10だと原点付近の収束が甘い。20くらいにして再実行してみよ。逆に5に減らすとどうなるだろうか？</p>
 <h3 id="発展課題四次方程式の収束地図">発展課題：四次方程式の収束地図</h3>
