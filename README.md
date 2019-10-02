@@ -8,6 +8,7 @@
 
 ## [はじめに](introduction/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「Pythonの概要とGoogle Colabの使い方」と共通)
 * なぜPythonを学ぶのか。「プログラマ的」発想について。
 
 ## [Pythonのインストールと実行方法](install/README.md)
@@ -19,12 +20,14 @@
 
 ## [Pythonの概要とGoogle Colabの使い方](hello/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「はじめに」と共通)
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 * 余談：タッチタイピングについて
 
 ## [条件分岐と繰り返し処理](basic/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-02)
 * 組み込み型
 * 関数の宣言と利用方法
 * for文による繰り返し処理
