@@ -349,7 +349,7 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
 <p>1つ目のセルでは、必要なライブラリをインポートする。ここでは<code>math</code>ライブラリの平方根<code>sqrt</code>と、描画に必要なライブラリをインポートしている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> sqrt
 <span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">import</span> IPython</code></pre></div>
+<span class="im">from</span> IPython.display <span class="im">import</span> display</code></pre></div>
 <h4 id="ベクトルの和の長さ">2. ベクトルの和の長さ</h4>
 <p>長さの自動調節のため、変換ベクトルのリストが与えられたら、始点と終点を結ぶベクトルの長さを求めよう。変換ベクトルリストは、タプルのリストとして与える。例えば<code>[(1,0),(0,1)]</code>のようなリストが与えられた時に、<span class="math inline">\(\sqrt{2} \sim 1.414\)</span>を返すような関数<code>length</code>を実装したい。</p>
 <p>これは要するにベクトルのリストを受けとって、そのベクトルの和を計算してから、得られたベクトルの長さを返す関数を作ればよい。2つ目のセルに以下を入力せよ。</p>
@@ -363,9 +363,11 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> ai <span class="kw">in</span> a:
   dx, dy <span class="op">=</span> ai</code></pre></div>
 <p>と同じ意味である。</p>
-<p>入力したら、3つ目のセルを使って動作確認をしよう。以下を実行し、正しく<span class="math inline">\(\sqrt{2} \sim 1.414\)</span>の値が出力されれば正しく実装されている。</p>
+<p>入力したら、3つ目のセルを使って動作確認をしよう。以下を実行してみよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>)]
-length(a) <span class="co"># =&gt; 1.4142135623730951</span></code></pre></div>
+length(a)</code></pre></div>
+<p>次のような表示がなされれば正しく入力されている。</p>
+<pre class="txt"><code>1.4142135623730951</code></pre>
 <p>確認が終わったら、3つ目のセルを削除すること。</p>
 <h4 id="タプルからリストを作成">3. タプルからリストを作成</h4>
 <p>次に、入力ベクトルを、変換ベクトルリストに基づいて変換することを考えよう。処理は以下の通りである。</p>
@@ -411,8 +413,8 @@ b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span
 <h4 id="線の描画">5. 線の描画</h4>
 <p>ベクトルのリストが与えられたら、描画するのは難しくない。与えられたベクトルの通りに線を描画すればよい。ただし、線を描画したら、次に描画する始点を、現在の終点に取り直す必要がある。</p>
 <p>以下のプログラムを、5つ目のセルに入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line(draw, a, s <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">0</span>)):
-    x1, y1 <span class="op">=</span> s
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line(draw, a):
+    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>
     <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:
         x2 <span class="op">=</span> x1 <span class="op">+</span> dx
         y2 <span class="op">=</span> y1 <span class="op">+</span> dy
@@ -422,64 +424,48 @@ b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span
 <h4 id="画像の表示">6. 画像の表示</h4>
 <p>では、最後に描画してみよう。以下のコードを7つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
+N <span class="op">=</span> <span class="dv">1</span>
 im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(im)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>):
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):
   a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line(draw, a)
-im.save(<span class="st">&quot;test.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>ここまで正しく入力できていれば、コッホ曲線の一段階目の変換をした画像が表示されるはずである。</p>
-<p>できていたら、<code>range</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
+display(im)</code></pre></div>
+<p>ここまで正しく入力できていれば、下向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
+<p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
 <h3 id="課題1-2オリジナルのフラクタル曲線">課題1-2：オリジナルのフラクタル曲線</h3>
 <p>6つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
-<p>例えば、繰り返し数を<code>range(1)</code>としてから、</p>
+<p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</code></pre></div>
-<p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>range(5)</code>に変えて描画し、想像と合致していたか確認せよ。</p>
-<h3 id="発展課題1">発展課題1</h3>
-<h4 id="入力として三角形を与える">7. 入力として三角形を与える</h4>
-<p>コッホ曲線の入力として正三角形を与えることもできる。7つめのセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
-im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
-draw <span class="op">=</span> ImageDraw.Draw(im)
-sx <span class="op">=</span> size<span class="op">/</span><span class="dv">3</span> <span class="co"># 追加</span>
-sy <span class="op">=</span> sx <span class="op">*</span> sqrt(<span class="dv">3</span>) <span class="co"># 追加</span>
-a <span class="op">=</span> [(sx,sy),(sx,<span class="op">-</span>sy),(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>sx,<span class="dv">0</span>)] <span class="co"># 修正</span>
-b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
-  a <span class="op">=</span> <span class="bu">apply</span>(a, b)
-draw_line(draw, a, (size<span class="op">/</span><span class="dv">6</span>,size<span class="op">/</span><span class="dv">4</span>)) <span class="co"># 修正</span>
-im.save(<span class="st">&quot;test.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>実行前に、どんな図形になるか、想像してから実行せよ。今回は変換を5回繰り返してできる図形を表示したが、変換を無限回繰り返した場合、この図形の周囲の長さと面積がそれぞれどうなるか考えよ。</p>
-<h3 id="発展課題2">発展課題2</h3>
+<p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
+<h3 id="発展課題">発展課題</h3>
 <p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。</p>
-<h4 id="線に色を塗る">8. 線に色を塗る</h4>
-<p>8つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line_color(draw, a, c, s <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">0</span>)):
-    x1, y1 <span class="op">=</span> s
+<h4 id="線に色を塗る">7. 線に色を塗る</h4>
+<p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line_color(draw, a, c):
+    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>
     clen <span class="op">=</span> <span class="bu">len</span>(c)
     <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):
         x2 <span class="op">=</span> x1 <span class="op">+</span> dx
         y2 <span class="op">=</span> y1 <span class="op">+</span> dy
         draw.line((x1, y1, x2, y2), fill<span class="op">=</span>c[i<span class="op">%</span>clen])
         x1, y1 <span class="op">=</span> x2, y2</code></pre></div>
-<h4 id="色付きのフラクタル図形">9. 色付きのフラクタル図形</h4>
-<p>9つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
+<h4 id="色付きのフラクタル図形">8. 色付きのフラクタル図形</h4>
+<p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
+N <span class="op">=</span> <span class="dv">1</span>
 im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(im)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
 c <span class="op">=</span> [(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>),(<span class="dv">0</span>,<span class="dv">255</span>,<span class="dv">0</span>)]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):
     a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line_color(draw, a, c)
-im.save(<span class="st">&quot;test.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
-<p>成功したら、<code>range(2)</code>の数字を一つずつ増やしてみよ。</p>
+display(im)</code></pre></div>
+<p>成功したら、<code>N</code>の数字を一つずつ増やしてみよ。また、変換ベクトルリスト<code>b</code>や、色のリスト<code>c</code>を適当に修正し、オリジナルのフラクタル図形を作成してみよ。</p>
 <h3 id="内包表記">内包表記</h3>
 <p>リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> convert(a, b):
