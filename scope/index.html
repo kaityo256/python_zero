@@ -301,7 +301,10 @@ if True:
       i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
     <span class="bu">print</span>(i)</code></pre></div>
 <p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
-<p>ヒント：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる。</p>
+<ul>
+<li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる。</li>
+<li>ヒント2：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる。</li>
+</ul>
 <h4 id="関数collatzの動作確認">2. 関数<code>collatz</code>の動作確認</h4>
 <p>二つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">collatz(<span class="dv">3</span>)</code></pre></div>
@@ -347,7 +350,10 @@ if True:
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)
 IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
 <p>これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。</p>
-<p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。コラッツ予想とは、このグラフが木構造、つまりループ構造が無いことを主張するものである。</p>
+<p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  g.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,120&quot;</span>)</code></pre></div>
+<p>と、生成するイメージのサイズを大きくすると見やすくなる。</p>
+<p>コラッツ予想とは、このグラフが木構造、つまりループ構造が無いことを主張するものである。</p>
 <h2 id="発展課題">発展課題</h2>
 <p>コラッツ予想には様々な変種がある。例えば、</p>
 <ul>
