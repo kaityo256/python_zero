@@ -37,6 +37,7 @@
 
 ## [関数とスコープ](scope/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-03)
 * while文
 * ループのスキップと脱出
 * 関数
