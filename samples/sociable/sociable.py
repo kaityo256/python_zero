@@ -1,14 +1,12 @@
 import sympy
 
+
 # fastest
-
-
 def f(n):
     return sum(sympy.divisors(n)) - n
 
+
 # O(sqrt(N))
-
-
 def f1(n):
     s = 0
     for i in range(1, int(n**0.5)+1):
@@ -18,9 +16,8 @@ def f1(n):
                 s += n//i
     return s - n
 
+
 # O(N)
-
-
 def f2(n):
     s = 0
     for i in range(1, n//2+1):
@@ -28,10 +25,10 @@ def f2(n):
             s += i
     return s
 
+
 # List up perfect numbers up to n
-
-
 def perfect(n):
+    print("Perfect Numbers")
     for i in range(1, n+1):
         if i == f(i):
             print(i)
@@ -39,6 +36,7 @@ def perfect(n):
 
 # List up amicable numbers up to n
 def amicable(n):
+    print("Amicable Numbers")
     for i in range(1, n + 1):
         if i == f(i):
             continue
@@ -61,13 +59,11 @@ def is_sociable(n):
 
 # List up sociable numbers up to n
 def sociable(n):
+    print("Sociable Numbers")
     for i in range(1, n):
         is_sociable(i)
 
 
-print("Perfect Numbers")
-perfect(100000)
-print("Amicable Numbers")
-amicable(100000)
-print("Sociable Numbers")
-sociable(100000)
+perfect(10000)
+amicable(10000)
+# sociable(100000)
