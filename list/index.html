@@ -220,21 +220,23 @@ b <span class="op">=</span> <span class="dv">20</span></code></pre></div>
 <li><code>b = 20</code> : <code>b</code>の指す値を<code>20</code>に書き換える</li>
 </ul>
 <p>という操作が行われている。</p>
-<p>さて、<code>b = a</code>として他の変数にリストをコピーすると、整数等の場合と同様に、「ラベルの指している場所の値をコピーして、そこにラベルを貼る」という操作が行われる。この時コピーされるのは「リストの先頭の場所」という情報であるから、<code>a</code>と<code>b</code>のラベルは同じリストを指すことになる。したがって、<code>b</code>を通じてリストを修正すると、<code>a</code>が指すリストも修正されることになる。</p>
+<p>次に、リストのコピーを見てみよう。<code>[1, 2, 3]</code>というリストを指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b[1] = 4</code>と、リストを修正する操作を考える。すると、実際にはコピー元の<code>a</code>が指すリストも修正されている。この操作のメモリ上での表現を見てみよう。</p>
+<p>まず、<code>b = a</code>として他の変数にリストをコピーすると、整数等の場合と同様に、「ラベルの指している場所の値をコピーして、そこにラベルを貼る」という操作が行われる。この時コピーされるのは「リストの先頭の場所」という情報であるから、<code>a</code>と<code>b</code>のラベルは同じリストを指すことになる。したがって、<code>b</code>を通じてリストを修正すると、<code>a</code>が指すリストも修正されることになる。</p>
 <div class="figure">
 <img src="fig/copy_list.png" alt="リストのコピー" />
 <p class="caption">リストのコピー</p>
 </div>
-<p>また、同じリストを指している変数<code>a</code>、<code>b</code>がある時、<code>b</code>に異なるリストを代入すると、それぞれ別のリストを指す。</p>
+<p>さて、同じリストを指している変数<code>a</code>、<code>b</code>がある時、<code>b</code>に異なるリストを代入する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]
 b <span class="op">=</span> a
 b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</code></pre></div>
-<p>これは<code>b=a</code>を実行した時点では<code>a</code>と<code>b</code>は同じリストを指しているが、<code>b = [4, 5, 6]</code>を実行すると、まずメモリ上に<code>[4, 5, 6]</code>を表現するデータが作られ、その後<code>b</code>の指す内容が新しく作られたリストの先頭データとなるため、<code>a</code>と<code>b</code>が無関係となるためである。</p>
+<p>以後、<code>a</code>と<code>b</code>は異なるリストを指すようになるため、<code>b</code>を修正しても<code>a</code>は影響を受けなくなる。</p>
+<p>これは<code>b = a</code>を実行した時点では<code>a</code>と<code>b</code>は同じリストを指しているが、<code>b = [4, 5, 6]</code>を実行すると、まずメモリ上に<code>[4, 5, 6]</code>を表現するデータが作られ、その後<code>b</code>の指す内容が新しく作られたリストの先頭の場所となるため、<code>a</code>と<code>b</code>が無関係となるためである。</p>
 <div class="figure">
 <img src="fig/copy_list2.png" alt="コピー後のリストの代入" />
 <p class="caption">コピー後のリストの代入</p>
 </div>
-<p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。 このように、値そのものではなく、「この場所を見よ」というような情報を「参照(reference) 」と呼ぶ。</p>
+<p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。このように、値そのものではなく、「この場所を見よ」というような情報を <strong>参照(reference)</strong> と呼ぶ。</p>
 <h2 id="参照の値渡しについて">参照の値渡しについて</h2>
 <p>前回「関数」を学び、今回「リスト」を学んだ。これにより、関数の引数としてリストを受け渡せるようになった。この時、注意すべきことがある。</p>
 <p>まず、関数の引数は、関数が作るブロック内だけで有効なローカル変数である。グローバル変数と同じ名前をつけても、別の変数として扱われる。</p>
@@ -252,8 +254,8 @@ func(a)
 </div>
 <p>このように、関数の引数としてグローバル変数と同じ名前を使ったり、関数内でグローバル変数と同じ名前のローカル変数を宣言しても、グローバル変数とは別の変数として扱われる(バグの元なのでやってはならない)。また「関数の引数は値がコピーされてから渡される」ことは覚えておいて欲しい。</p>
 <p>次に、関数の引数としてリストを渡してみよう。リストを表す変数は、リストの「先頭」を指していることは既に説明した。それ以外は先程と同じで、関数の引数は、値がコピーされて渡される。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(b):
-    b[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a):
+    a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span>
 
 a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 func(a)
@@ -441,17 +443,18 @@ display(im)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</code></pre></div>
 <p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
 <h3 id="発展課題">発展課題</h3>
-<p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。</p>
+<p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。まずは一色で塗るプログラムを書く。</p>
 <h4 id="線に色を塗る">7. 線に色を塗る</h4>
 <p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line_color(draw, a, c, size):
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_line_color(draw, a, colors, size):
     x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span>
-    clen <span class="op">=</span> <span class="bu">len</span>(c)
     <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):
         x2 <span class="op">=</span> x1 <span class="op">+</span> dx
         y2 <span class="op">=</span> y1 <span class="op">+</span> dy
-        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c[i<span class="op">%</span>clen])
+        c <span class="op">=</span> colors[<span class="dv">0</span>]
+        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c)
         x1, y1 <span class="op">=</span> x2, y2</code></pre></div>
+<p>これは、色のリスト<code>colors</code>を受け取るが、その最初の要素<code>colors[0]</code>だけを使って色を塗るコードになっている。</p>
 <h4 id="色付きのフラクタル図形">8. 色付きのフラクタル図形</h4>
 <p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
@@ -465,7 +468,13 @@ c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</s
     a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line_color(draw, a, c, size)
 display(im)</code></pre></div>
-<p>成功したら、<code>N</code>の数字を一つずつ増やしてみよ。また、変換ベクトルリスト<code>b</code>や、色のリスト<code>c</code>を適当に修正し、オリジナルのフラクタル図形を作成してみよ。</p>
+<p>成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。</p>
+<ul>
+<li>ヒント1： 修正するのは<code>draw_line_color</code>関数である</li>
+<li>ヒント2： リスト<code>colors</code>のサイズは<code>len(colors)</code>で取得できる</li>
+<li>ヒント3： ループカウンタ<code>i</code>を、リスト<code>colors</code>のサイズで割った余りを活用せよ</li>
+</ul>
+<p>完成したら、オリジナルのフラクタル図形も色付きにしてみよ。</p>
 <h3 id="内包表記">内包表記</h3>
 <p>リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> convert(a, b):
