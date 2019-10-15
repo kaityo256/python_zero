@@ -47,6 +47,7 @@
 
 ## [リストやタプルの使い方](list/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-04)
 * リスト
 * タプル
 * 値のコピーとリストのコピーの違い
