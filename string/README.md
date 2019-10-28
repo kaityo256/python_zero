@@ -376,7 +376,7 @@ MeCabをインストールし、実行確認しよう。以下、数字がセル
 
 出力の最後に
 
-```sh
+```txt
 done!
 Setting up mecab-jumandic (7.0-20130310-4) ...
 ```
@@ -393,7 +393,7 @@ Setting up mecab-jumandic (7.0-20130310-4) ...
 
 最新版は不具合があるようなので、バージョン0.7を指定してインストールする。
 
-```sh
+```txt
 Successfully installed mecab-python3-0.7
 ```
 
@@ -479,7 +479,7 @@ def show_top10(text):
     while node:
         a = node.feature.split(",")
         key = node.surface
-        if a[0] == u"名詞" and a[1] == u"一般":
+        if a[0] == u"名詞" and a[1] == u"一般" and key != "":
             dic[key] += 1
         node = node.next
     for k, v in sorted(dic.items(), key=lambda x: -x[1])[0:10]:
@@ -512,7 +512,7 @@ show_top10(text)
 !apt-get -y install fonts-ipafont-gothic
 ```
 
-```sh
+```txt
 Processing triggers for fontconfig (2.12.6-0ubuntu2) ...
 ```
 
@@ -577,9 +577,12 @@ URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 
 どうしても小説が思いつかない場合は、以下から選んで良い。
 
-* 「[学問のすすめ](https://www.aozora.gr.jp/cards/000296/card47061.html)」(福沢 諭吉) [https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip](https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip)
-* 「[走れメロス](https://www.aozora.gr.jp/cards/000035/card1567.html)」(太宰治) [https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip](https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip)
-* 「[吾輩は猫である](https://www.aozora.gr.jp/cards/000148/card789.html)」(夏目 漱石) [https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip](https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip)
+* 「[学問のすすめ](https://www.aozora.gr.jp/cards/000296/card47061.html)」(福沢 諭吉)
+  * [`https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip`](https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip)
+* 「[走れメロス](https://www.aozora.gr.jp/cards/000035/card1567.html)」(太宰治)
+  * [`https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip`](https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip)
+* 「[吾輩は猫である](https://www.aozora.gr.jp/cards/000148/card789.html)」(夏目 漱石)
+  * [`https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip`](https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip)
 
 レポートには、自分が選んだ小説の作者とタイトル、そして出てきたワードクラウドを貼り付け、簡単な感想を書くこと。
 

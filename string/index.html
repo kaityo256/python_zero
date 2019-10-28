@@ -313,14 +313,14 @@ text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>aptitude install git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y
 <span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 <span class="op">-</span>y</code></pre></div>
 <p>出力の最後に</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="kw">done</span>!
-<span class="ex">Setting</span> up mecab-jumandic (7.0-20130310-4) <span class="ex">...</span></code></pre></div>
+<pre class="txt"><code>done!
+Setting up mecab-jumandic (7.0-20130310-4) ...</code></pre>
 <p>などと表示されれば完了である。</p>
 <h4 id="mecabのpythonバインディングのインストール">3. MeCabのPythonバインディングのインストール</h4>
 <p>最後に、MeCabのPythonバインディングをインストールする。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">!<span class="ex">pip</span> install mecab-python3==0.7</code></pre></div>
 <p>最新版は不具合があるようなので、バージョン0.7を指定してインストールする。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Successfully</span> installed mecab-python3-0.7</code></pre></div>
+<pre class="txt"><code>Successfully installed mecab-python3-0.7</code></pre>
 <p>と表示されれば完了である。</p>
 <h4 id="mecabのインポート">4. MeCabのインポート</h4>
 <p>先程まででインストールしたライブラリを早速importしてみよう。</p>
@@ -367,7 +367,7 @@ text.split()[<span class="dv">0</span>]</code></pre></div>
     <span class="cf">while</span> node:
         a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)
         key <span class="op">=</span> node.surface
-        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span>:
+        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span> <span class="kw">and</span> key <span class="op">!=</span> <span class="st">&quot;&quot;</span>:
             dic[key] <span class="op">+=</span> <span class="dv">1</span>
         node <span class="op">=</span> node.<span class="bu">next</span>
     <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:
@@ -384,7 +384,7 @@ show_top10(text)</code></pre></div>
 <h4 id="フォントのインストール">11. フォントのインストール</h4>
 <p>日本語表示に使うフォント(IPAゴシック)をインストールする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt<span class="op">-</span>get <span class="op">-</span>y install fonts<span class="op">-</span>ipafont<span class="op">-</span>gothic</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">Processing</span> triggers for fontconfig (2.12.6-0ubuntu2) <span class="ex">...</span></code></pre></div>
+<pre class="txt"><code>Processing triggers for fontconfig (2.12.6-0ubuntu2) ...</code></pre>
 <p>と表示されれば成功である。</p>
 <h4 id="ライブラリのインポート-1">12. ライブラリのインポート</h4>
 <p>必要な追加ライブラリをインポートする。</p>
@@ -421,9 +421,12 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 <p>として実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。</p>
 <p>どうしても小説が思いつかない場合は、以下から選んで良い。</p>
 <ul>
-<li>「<a href="https://www.aozora.gr.jp/cards/000296/card47061.html">学問のすすめ</a>」(福沢 諭吉) <a href="https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip" class="uri">https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip</a></li>
-<li>「<a href="https://www.aozora.gr.jp/cards/000035/card1567.html">走れメロス</a>」(太宰治) <a href="https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip" class="uri">https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip</a></li>
-<li>「<a href="https://www.aozora.gr.jp/cards/000148/card789.html">吾輩は猫である</a>」(夏目 漱石) <a href="https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip" class="uri">https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip</a></li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000296/card47061.html">学問のすすめ</a>」(福沢 諭吉)</li>
+<li><a href="https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip"><code>https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip</code></a></li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000035/card1567.html">走れメロス</a>」(太宰治)</li>
+<li><a href="https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip"><code>https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip</code></a></li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000148/card789.html">吾輩は猫である</a>」(夏目 漱石)</li>
+<li><a href="https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip"><code>https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip</code></a></li>
 </ul>
 <p>レポートには、自分が選んだ小説の作者とタイトル、そして出てきたワードクラウドを貼り付け、簡単な感想を書くこと。</p>
 <h2 id="余談国際化は難しい">余談：国際化は難しい</h2>
