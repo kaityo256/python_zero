@@ -301,11 +301,11 @@ text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の
 </ul>
 <p>このようにウェブから何か情報を抽出する技術を <strong>ウェブスクレイピング (Web scraping)</strong>と呼ぶ。今回の作業は、ウェブスクレイピングのうちもっとも単純なものである。</p>
 <p><strong>注意</strong>：ウェブスクレイピングは、相手のサーバに負担がかからないように注意しながら行うこと。例えば「指定のパス以下のファイルをすべて取得する」といった作業は厳禁である。また、利用規約によってそもそもウェブスクレイピングが禁止されているサービスもある(例えばTwitterなど)。その場合はサービスが提供しているAPIを通じて情報を取得することが多い。</p>
-<p>新しいノートブックを開き、<code>aozora.ipynb</code>として保存せよ。</p>
+<p>新しいノートブックを開き、<code>aozora.ipynb</code>として保存し、以下の課題を実行せよ。</p>
 <h3 id="課題1-1mecabの動作テスト">課題1-1：MeCabの動作テスト</h3>
 <p>MeCabをインストールし、実行確認しよう。以下、数字がセルの番号に対応している。</p>
 <h4 id="aptitudeのインストール">1. aptitudeのインストール</h4>
-<p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。新しいPython3ノートブックを開き、最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
+<p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt install aptitude</code></pre></div>
 <p>最後に「Processing triggers for libc-bin (2.27-3ubuntu1) ...」などと表示され、実行が終了したら完了である。</p>
 <h4 id="mecabのインストール">2. MeCabのインストール</h4>
