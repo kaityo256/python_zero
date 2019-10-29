@@ -58,6 +58,7 @@
 
 ## [文字列処理](string/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-05)
 * 文字列処理
 * 辞書
 * 正規表現
