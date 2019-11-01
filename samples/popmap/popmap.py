@@ -18,6 +18,7 @@ with open("position.csv") as f:
         code = int(code)
         x, y = float(x), float(y)
         if code in d_pop:
+            print(x,y,d_pop[code])
             data.append((x, y, d_pop[code]))
 
 data = sorted(data, key=lambda x: x[2])
