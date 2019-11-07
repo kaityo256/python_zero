@@ -60,7 +60,7 @@ def check_finish(cluster_index):
     return True
 
 
-def make_maze(m, n):
+def make_maze(m, n, filename):
     """
     迷路の作成ルーチン
     m行n列の迷路を作る
@@ -84,8 +84,9 @@ def make_maze(m, n):
     maze[1][1] = 'S'
     maze[2*m-1][2*n-1] = 'G'
     show_maze(maze)
-    with open("maze.pickle","wb") as f:
+    with open(filename, "wb") as f:
         pickle.dump(maze, f)
 
 
-make_maze(20, 10)
+make_maze(20, 10, 'maze.pickle')
+make_maze(40, 20, 'largemaze.pickle')

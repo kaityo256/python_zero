@@ -187,14 +187,11 @@ import IPython
 
 ```py
 def kaidan(n):
-    # ここを埋めよ
-```
-
-```py
-def kaidan(n):
     # 終端条件
-    if 条件:
-        return 値
+    if 条件1:
+        return 値1
+    if 条件2:
+        return 値2
     # 再帰部分
     return 自分自身を使った式
 ```
@@ -202,9 +199,7 @@ def kaidan(n):
 実装すべきは終端条件と再帰部分である。以下を参考にせよ。
 
 * 階段の段数が1の場合と2の場合が終端条件に該当する。それぞれどんな値を返すべきか？
-* 終端条件に該当しない場合は、`kaidan(n-1)`と`kaidan(n-2)`の和を返す
-
-終端条件が二つあることに注意すること。
+* 終端条件に該当しない場合は、`kaidan(n-1)`と`kaidan(n-2)`の和を返すこと
 
 #### 3. `kaidan`の確認
 
@@ -244,8 +239,9 @@ def kaidan_g(n, g, nodes, parent=None):
 では、先程実装した`kaidan_g`を利用して、再帰木を可視化してみよう。5つ目のセルに以下を入力、実行せよ。
 
 ```py
+n = 5
 graph = Digraph(format="png")
-kaidan_g(5, graph, [])
+kaidan_g(n, graph, [])
 graph.graph_attr.update(size="10,10")
 graph.render("test")
 IPython.display.Image("test.png")
@@ -253,9 +249,11 @@ IPython.display.Image("test.png")
 
 無事に再帰木が表示されただろうか？数字が`kaidan(n)`として呼び出された`n`の値である。`kaidan(5)`は`kaidan(4)`と`kaidan(3)`を呼び出し、`kaidan(4)`は`kaidan(3)`と`kaidan(2)`を呼び出し・・・と、再帰的に呼び出しが続いていき、`n=1`もしくは`n=2`で呼び出しが止まる(終端条件)ことがわかるであろう。
 
-もし正しく表示されたら、2行目を`kaidan_g(8, graph, [])`などとして、少し大きな再帰木も表示してみよ。
+もし正しく表示されたら、1行目を`n=8`などとして、少し大きな再帰木も表示してみよ。
 
 ## 課題2：再帰による迷路の解法
+
+再帰で迷路を解いて、その答えや探索の過程を可視化してみよう。新しいノートブックを開き、`maze.ipynb`として保存せよ。
 
 ### 課題2-1 迷路を解く
 
@@ -286,9 +284,9 @@ from matplotlib import pyplot as plt
 
 ```py
 def save_image(maze, filename = "test.png"):
-    g = 10
     w = len(maze)
     h = len(maze[0])
+    g = int(400 / w)
     white = (255, 255, 255)
     im = Image.new("RGB", (w*g, h*g), white)
     draw = ImageDraw.Draw(im)
