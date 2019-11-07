@@ -368,7 +368,7 @@ save_image(maze)</code></pre></div>
 save_image(maze)</code></pre></div>
 <p>解答となるパスが赤く表示されたはずだ。</p>
 <h3 id="発展課題迷路を解く様子の可視化">発展課題：迷路を解く様子の可視化</h3>
-<p>せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。</p>
+<p>せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。なお、作成されたアニメーションをレポートに添付する必要はない。</p>
 <h4 id="アニメーション用ライブラリのロード">9. アニメーション用ライブラリのロード</h4>
 <p>まず、アニメーション用のライブラリをインストール、ロードする。以下は上から数えて9つ目のセルになるはずだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng
@@ -399,6 +399,19 @@ solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv"
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)
 IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
 <p>ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。</p>
+<h4 id="大きな迷路">13. 大きな迷路</h4>
+<p>もし時間があるなら、もう少し大きな迷路も解いてみよう。以下を順番に実行せよ。</p>
+<p>大きな迷路ファイルのダウンロード。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>largemaze.pickle</code></pre></div>
+<p>大きな迷路のアニメーション用データの作成(数分待たされる)。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;largemaze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
+    maze <span class="op">=</span> pickle.load(f)
+files <span class="op">=</span> []
+solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</code></pre></div>
+<p>大きな迷路のアニメーション作成(これは数秒で終わるはず)。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)
+IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<p>大きな迷路のアニメーションが表示されれば成功である。</p>
 <h2 id="余談エレファントな解法">余談：エレファントな解法</h2>
 <p>チェス、将棋、囲碁、オセロといった「ゲーム」は、局面によって打てる「手」が決まっており、これを「合法手」と呼ぶ。何か「手」を打つと局面が変化し、また合法手も変化する。今、局面によって平均で4種類の合法手があり、勝負がつくまでに10手程度かかるゲームがあるとする。最終局面の数は4の10乗で、およそ100万通りである。もし勝負がつくまでに40手かかるとすると、4の40乗でおよそ一兆通りになる。このように、ゲームの状態数は、手の数に対して指数関数的に増えていく。このように、問題サイズに対して状態数が指数関数的に増えることを <strong>組み合わせ爆発</strong> と呼ぶ。組み合わせ爆発を題材にした、日本科学未来館の<a href="https://www.youtube.com/watch?v=Q4gTV4r0zRs">フカシギの数え方</a>という動画、通称「フカシギおねえさん」は面白いので是非一度見てみられたい。</p>
 <p>一般に組み合わせ爆発が起きると計算機を使っても手も足もでないことが多いのだが、うまく「大きいけど有限」に問題を落とすことができると計算機で「読み切る」ことができる。その有名な例が四色問題であろう。四色問題とは「二次元の地図に対して、隣り合う領域を同じ色に塗らないという条件を満たしつつ全ての領域に色を塗るのに四色あれば足りるか」という命題である。簡単な地図を描くことで三色では足りないことがわかり、また六色あれば足りることの証明は容易である。五色で足りる証明(証明はかなり面倒だ)も提案されたが、四色で足りることの数学的な証明は長らくされなかった。四色問題が提起されてからおよそ100年後の1976年、アッペルとハーケンは、四色問題問題を「大きいが有限」の問題に帰着させ、その上でスパコンで力任せに「四色で足りる」ことを証明した。雑な言い方をすれば「この地図すべてを四色で塗ることができれば、いかなる地図も四色で塗ることができる」という「基礎地図(正確には不可避集合)」をすべてリストアップし、その「基礎地図」がすべて四色で塗り分けられることを示す、という方法である。</p>

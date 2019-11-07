@@ -398,7 +398,7 @@ save_image(maze)
 
 ### 発展課題：迷路を解く様子の可視化
 
-せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。
+せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。なお、作成されたアニメーションをレポートに添付する必要はない。
 
 #### 9. アニメーション用ライブラリのロード
 
@@ -451,6 +451,34 @@ IPython.display.Image("animation.png")
 ```
 
 ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。
+
+#### 13. 大きな迷路
+
+もし時間があるなら、もう少し大きな迷路も解いてみよう。以下を順番に実行せよ。
+
+大きな迷路ファイルのダウンロード。
+
+```py
+!wget https://kaityo256.github.io/python_zero/recursion/largemaze.pickle
+```
+
+大きな迷路のアニメーション用データの作成(数分待たされる)。
+
+```py
+with open('largemaze.pickle', 'rb') as f:
+    maze = pickle.load(f)
+files = []
+solve_anime(1,1,0,maze,files)
+```
+
+大きな迷路のアニメーション作成(これは数秒で終わるはず)。
+
+```py
+APNG.from_files(files, delay=50).save("animation.png")
+IPython.display.Image("animation.png")
+```
+
+大きな迷路のアニメーションが表示されれば成功である。
 
 ## 余談：エレファントな解法
 
