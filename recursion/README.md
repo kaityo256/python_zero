@@ -199,7 +199,6 @@ def kaidan(n):
     return 自分自身を使った式
 ```
 
-
 実装すべきは終端条件と再帰部分である。以下を参考にせよ。
 
 * 階段の段数が1の場合と2の場合が終端条件に該当する。それぞれどんな値を返すべきか？
@@ -345,12 +344,12 @@ def solve(x, y, step, maze):
         return
     maze[x][y] = step
     solve(x+1, y, step+1, maze)
-    solve(x-1, y, step+1, maze)
-    solve(x, y+1, step+1, maze)
-    solve(x, y-1, step+1, maze)
+    # 残りを埋めよ
 ```
 
 `isinstance`は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、`isinstance(a, int)`などとすると、オブジェクト`a`が整数であるかどうかを調べる。ここでは、迷路の指定の場所`maze[x][y]`に整数が入っているかどうかを調べている。
+
+再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。
 
 #### 6. 迷路を解く
 
@@ -428,9 +427,7 @@ def solve_anime(x, y, step, maze, files):
     save_image(maze,filename)
     files.append(filename)
     solve_anime(x+1, y, step+1, maze, files)
-    solve_anime(x-1, y, step+1, maze, files)
-    solve_anime(x, y+1, step+1, maze, files)
-    solve_anime(x, y-1, step+1, maze, files)
+    # 残りを埋めよ
 ```
 
 #### 11. アニメーションの保存

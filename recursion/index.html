@@ -131,7 +131,6 @@ n! = 1 \cdot 2 \cdots n-1 \cdot n
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
     <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:
         <span class="cf">return</span> <span class="dv">1</span>
-
     <span class="cf">return</span> n <span class="op">*</span> fact(n<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
 <p>これが、先ほどの「再帰三カ条」に従っていることを確認しよう。</p>
 <ul>
@@ -223,23 +222,28 @@ F_n = F_{n-1} + F_{n-2}
 <p>課題では、指定された迷路について、「スタート地点からの距離地図」の作成、及び「距離地図が完成した後に解の経路作成」のそれぞれの処理を再帰で実装しよう。</p>
 <h1 id="再帰呼び出し課題">再帰呼び出し：課題</h1>
 <h2 id="課題1階段の登り方問題">課題1：階段の登り方問題</h2>
-<p>新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
+<p>階段を、一度に1段、もしくは2段登るやり方を混ぜて登る時、「<span class="math inline">\(n\)</span>段の階段の登り方の総数」を返す関数<code>kaidan(n)</code>を作り、その動作を可視化してみよう。新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
 <h3 id="課題1-1再帰の実装">課題1-1：再帰の実装</h3>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>直接再帰には関係ないが、後で再帰木を可視化をするために必要なライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
 <span class="im">import</span> IPython</code></pre></div>
 <h4 id="再帰関数kaidanの実装">2. 再帰関数<code>kaidan</code>の実装</h4>
-<p>2つ目のセルに、<code>n</code>段の階段の登り方を返す関数<code>kaidan(n)</code>を実装しよう。</p>
+<p>2つ目のセルに、<code>n</code>段の階段の登り方を返す関数<code>kaidan(n)</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
     <span class="co"># ここを埋めよ</span></code></pre></div>
-<p>実装すべきは終端条件と再帰部分である。終端条件は以下の二つであった。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
+    <span class="co"># 終端条件</span>
+    <span class="cf">if</span> 条件:
+        <span class="cf">return</span> 値
+    <span class="co"># 再帰部分</span>
+    <span class="cf">return</span> 自分自身を使った式</code></pre></div>
+<p>実装すべきは終端条件と再帰部分である。以下を参考にせよ。</p>
 <ul>
-<li>終端条件：<code>n</code>が1の時には1を返す(<code>kaidan(1)</code>=1)</li>
-<li>終端条件：<code>n</code>が2の時には2を返す(<code>kaidan(2)</code>=2)</li>
+<li>階段の段数が1の場合と2の場合が終端条件に該当する。それぞれどんな値を返すべきか？</li>
+<li>終端条件に該当しない場合は、<code>kaidan(n-1)</code>と<code>kaidan(n-2)</code>の和を返す</li>
 </ul>
-<p>これは「nが1もしくは2ならば、nを返す」と実装すればよい。</p>
-<p>nが1でも2でもない場合は、<code>kaidan(n-1)</code>と<code>kaidan(n-2)</code>の和を返せば良い。</p>
+<p>終端条件が二つあることに注意すること。</p>
 <h4 id="kaidanの確認">3. <code>kaidan</code>の確認</h4>
 <p>関数<code>kaidan</code>が実装できたら動作確認をしてみよう。3つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">kaidan(<span class="dv">3</span>)</code></pre></div>
@@ -330,10 +334,9 @@ save_image(maze)</code></pre></div>
         <span class="cf">return</span>
     maze[x][y] <span class="op">=</span> step
     solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
-    solve(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
-    solve(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)
-    solve(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</code></pre></div>
+    <span class="co"># 残りを埋めよ</span></code></pre></div>
 <p><code>isinstance</code>は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、<code>isinstance(a, int)</code>などとすると、オブジェクト<code>a</code>が整数であるかどうかを調べる。ここでは、迷路の指定の場所<code>maze[x][y]</code>に整数が入っているかどうかを調べている。</p>
+<p>再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。</p>
 <h4 id="迷路を解く">6. 迷路を解く</h4>
 <p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
@@ -382,9 +385,7 @@ save_image(maze)</code></pre></div>
     save_image(maze,filename)
     files.append(filename)
     solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files)
-    solve_anime(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files)
-    solve_anime(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze, files)
-    solve_anime(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze, files)</code></pre></div>
+    <span class="co"># 残りを埋めよ</span></code></pre></div>
 <h4 id="アニメーションの保存">11. アニメーションの保存</h4>
 <p>先程読み込んだ迷路データは「探索済み」になっているため、ファイルから読み込み直して、<code>solve_anime</code>を使って探索しなおそう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
