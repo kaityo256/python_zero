@@ -68,6 +68,7 @@
 
 ## [ファイル操作](file/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-06)
 * ファイルシステムについて
 * ファイルの読み込み
 * CSVファイルの扱い
