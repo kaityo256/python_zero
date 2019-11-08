@@ -314,6 +314,7 @@ IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre>
             draw.rectangle((x, y, x<span class="op">+</span>g, y<span class="op">+</span>g), fill<span class="op">=</span>color)
     im.save(filename)
     plt.imshow(Image.<span class="bu">open</span>(filename))</code></pre></div>
+<p>インデントに注意せよ。<code>im.save</code>と<code>plt.imshow</code>の高さは<code>for ix in range(w)</code>の行と同じ高さになる。</p>
 <h4 id="迷路データの読み込み">4. 迷路データの読み込み</h4>
 <p><code>save_image</code>が正しく実装できたか確認しよう。Pickle(漬物)になっている迷路データを読み込み、表示してみる。以下を4番目のセルで実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
@@ -326,18 +327,17 @@ save_image(maze)</code></pre></div>
 <li>進もうとした方向が壁<code>*</code>ならそこには行かない</li>
 <li>すでに足跡が残っている(<code>maze[x][y]</code>に数字が入っている)なら、そこは探索済みなので行かない</li>
 </ul>
-<p>というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。</p>
-<p>以上をそのまま実装すると以下のようになる。</p>
+<p>というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。以上をそのまま実装すると以下のようになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve(x, y, step, maze):
     <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
         <span class="cf">return</span>
     <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
         <span class="cf">return</span>
     maze[x][y] <span class="op">=</span> step
-    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)
+    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze) <span class="co"># 右を探索</span>
     <span class="co"># 残りを埋めよ</span></code></pre></div>
 <p><code>isinstance</code>は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、<code>isinstance(a, int)</code>などとすると、オブジェクト<code>a</code>が整数であるかどうかを調べる。ここでは、迷路の指定の場所<code>maze[x][y]</code>に整数が入っているかどうかを調べている。</p>
-<p>再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。</p>
+<p>再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。<code>solve</code>には現在地<code>(x,y)</code>が渡されている。<code>x+1</code>は右方向である。残りの左と上下の探索を追加せよ。</p>
 <h4 id="迷路を解く">6. 迷路を解く</h4>
 <p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
@@ -363,10 +363,9 @@ save_image(maze)</code></pre></div>
 </ul>
 <p>というのが終端条件である。終端条件に該当しなかった場合は「目標カウント」を残してカウントを減らし、「答えの経路」となるマーク(<code>+</code>)を残して、上下左右の部屋に探索に行く。</p>
 <h4 id="解の確認">8. 解の確認</h4>
-<p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。ゴールからたどって解の経路をマークする関数<code>draw_path</code>を呼んでから、</p>
+<p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。解答となるパスが赤く表示されたはずだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">draw_path(<span class="dv">39</span>, <span class="dv">19</span>, maze[<span class="dv">39</span>][<span class="dv">19</span>], maze)
 save_image(maze)</code></pre></div>
-<p>解答となるパスが赤く表示されたはずだ。</p>
 <h3 id="発展課題迷路を解く様子の可視化">発展課題：迷路を解く様子の可視化</h3>
 <p>せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。なお、作成されたアニメーションをレポートに添付する必要はない。</p>
 <h4 id="アニメーション用ライブラリのロード">9. アニメーション用ライブラリのロード</h4>
@@ -385,7 +384,7 @@ save_image(maze)</code></pre></div>
     filename <span class="op">=</span> <span class="st">&quot;file</span><span class="sc">%03d</span><span class="st">.png&quot;</span> <span class="op">%</span> index
     save_image(maze,filename)
     files.append(filename)
-    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files)
+    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files) <span class="co"># 右を探索</span>
     <span class="co"># 残りを埋めよ</span></code></pre></div>
 <h4 id="アニメーションの保存">11. アニメーションの保存</h4>
 <p>先程読み込んだ迷路データは「探索済み」になっているため、ファイルから読み込み直して、<code>solve_anime</code>を使って探索しなおそう。</p>

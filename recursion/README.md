@@ -311,6 +311,8 @@ def save_image(maze, filename = "test.png"):
     plt.imshow(Image.open(filename))
 ```
 
+インデントに注意せよ。`im.save`と`plt.imshow`の高さは`for ix in range(w)`の行と同じ高さになる。
+
 #### 4. 迷路データの読み込み
 
 `save_image`が正しく実装できたか確認しよう。Pickle(漬物)になっている迷路データを読み込み、表示してみる。以下を4番目のセルで実行せよ。
@@ -330,9 +332,7 @@ save_image(maze)
 * 進もうとした方向が壁`*`ならそこには行かない
 * すでに足跡が残っている(`maze[x][y]`に数字が入っている)なら、そこは探索済みなので行かない
 
-というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。
-
-以上をそのまま実装すると以下のようになる。
+というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。以上をそのまま実装すると以下のようになる。
 
 ```py
 def solve(x, y, step, maze):
@@ -341,13 +341,13 @@ def solve(x, y, step, maze):
     if isinstance(maze[x][y], int):
         return
     maze[x][y] = step
-    solve(x+1, y, step+1, maze)
+    solve(x+1, y, step+1, maze) # 右を探索
     # 残りを埋めよ
 ```
 
 `isinstance`は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、`isinstance(a, int)`などとすると、オブジェクト`a`が整数であるかどうかを調べる。ここでは、迷路の指定の場所`maze[x][y]`に整数が入っているかどうかを調べている。
 
-再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。
+再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。`solve`には現在地`(x,y)`が渡されている。`x+1`は右方向である。残りの左と上下の探索を追加せよ。
 
 #### 6. 迷路を解く
 
@@ -387,14 +387,12 @@ def draw_path(x, y, count, maze):
 
 #### 8. 解の確認
 
-では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。ゴールからたどって解の経路をマークする関数`draw_path`を呼んでから、
+では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。解答となるパスが赤く表示されたはずだ。
 
 ```py
 draw_path(39, 19, maze[39][19], maze)
 save_image(maze)
 ```
-
-解答となるパスが赤く表示されたはずだ。
 
 ### 発展課題：迷路を解く様子の可視化
 
@@ -424,7 +422,7 @@ def solve_anime(x, y, step, maze, files):
     filename = "file%03d.png" % index
     save_image(maze,filename)
     files.append(filename)
-    solve_anime(x+1, y, step+1, maze, files)
+    solve_anime(x+1, y, step+1, maze, files) # 右を探索
     # 残りを埋めよ
 ```
 
