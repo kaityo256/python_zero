@@ -77,6 +77,7 @@
 
 ## [再帰呼び出し](recursion/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-07)
 * 再帰呼び出しとは
 * 階段の登り方問題
 * 再帰による迷路の解法

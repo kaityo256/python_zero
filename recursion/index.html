@@ -339,10 +339,12 @@ save_image(maze)</code></pre></div>
 <p><code>isinstance</code>は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、<code>isinstance(a, int)</code>などとすると、オブジェクト<code>a</code>が整数であるかどうかを調べる。ここでは、迷路の指定の場所<code>maze[x][y]</code>に整数が入っているかどうかを調べている。</p>
 <p>再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。<code>solve</code>には現在地<code>(x,y)</code>が渡されている。<code>x+1</code>は右方向である。残りの左と上下の探索を追加せよ。</p>
 <h4 id="迷路を解く">6. 迷路を解く</h4>
-<p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
+<p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。なお、ここで再度ファイルからデータを読み込んでいるのは、プログラムをミスしたときに<code>maze</code>というリストに余計な情報が残ってしまい、修正後も正しく実行されなくなるのを防ぐためだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
+    maze <span class="op">=</span> pickle.load(f)
+solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
 save_image(maze)</code></pre></div>
-<p>すべてのセルが灰色(探索済み)になったはずである。</p>
+<p>正しく実行できていれば、すべてのセルが灰色(探索済み)になったはずである。</p>
 <h4 id="経路探索">7. 経路探索</h4>
 <p>さて、探索済みの迷路は、全ての部屋に「入り口からの距離」が書いてある。それを逆にゴールからカウントダウンしながらたどっていけば、それが答えだ。7つ目のセルに以下を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_path(x, y, count, maze):

@@ -106,12 +106,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>例えば、呼び出されるたびに、呼び出した回数を返すようなカウンターオブジェクトを作ってみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.num <span class="op">=</span> <span class="dv">0</span>
+        <span class="va">self</span>.__num <span class="op">=</span> <span class="dv">0</span>
 
     <span class="kw">def</span> count(<span class="va">self</span>):
-        <span class="va">self</span>.num <span class="op">+=</span> <span class="dv">1</span>
-        <span class="bu">print</span>(<span class="va">self</span>.num)</code></pre></div>
-<p><code>class</code>というキーワードがクラスを作る宣言である。<code>__init__</code>というのはクラスの初期化のためのメソッドで、<strong>コンストラクタ(constructor)</strong>と呼ばれる。引数に<code>self</code>を指定するのが慣例となっている。ここで<code>self.num</code>という変数を宣言し、0に初期化している。<code>self.</code>をつけることで、このクラスの状態を保持する変数になる。このクラスに何かさせるためには、メッセージを送るためのメソッドが必要だ。ここでは<code>count</code>というメソッドを作った。やはり引数として<code>self</code>を指定し、<code>self.num</code>で呼ばれた回数をインクリメントしてから、その数字を表示している。</p>
+        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span>
+        <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
+<p><code>class</code>というキーワードがクラスを作る宣言である。<code>__init__</code>というのはクラスの初期化のためのメソッドで、<strong>コンストラクタ(constructor)</strong>と呼ばれる。引数に<code>self</code>を指定するのが慣例となっている。ここで<code>self.__num</code>という変数を宣言し、0に初期化している。<code>self.</code>をつけることで、このクラスの状態を保持する変数になる。このクラスに何かさせるためには、メッセージを送るためのメソッドが必要だ。ここでは<code>count</code>というメソッドを作った。やはり引数として<code>self</code>を指定し、<code>self.__num</code>で呼ばれた回数をインクリメントしてから、その数字を表示している。</p>
 <p>このクラスからオブジェクトを作って使ってみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> Counter()</code></pre></div>
 <div class="figure">
@@ -164,6 +164,44 @@ c2.count() <span class="co">#=&gt; 11</span></code></pre></div>
 <p>ひな形であるクラスから作ったオブジェクトをインスタンスと呼び、インスタンスを作る時に呼ばれる特別なメソッドをコンストラクタと呼ぶ。オブジェクトは内部状態を持ち、メソッドというインタフェースを公開している。プログラマはメソッドを呼ぶことでオブジェクトにメッセージを送ることができる</p>
 </blockquote>
 <p>という文章がだいたい理解できていればそれでよい。</p>
+<h2 id="オブジェクトとは">オブジェクトとは</h2>
+<p>オブジェクト指向とは、オブジェクトを中心に考えながらプログラミングを行うパラダイムである。「オブジェクトとは何か」の定義も難しいが、とりあえずは「プログラムにおけるひとつのまとまり」であり、「状態」を持ち、「自分の状態に責任を持つもの」と覚えておけば良い。</p>
+<p>先のカウンターであれば、「カウント」を内部状態として持つが、外部からそれを</p>
+<h2 id="オブジェクト指向プログラミングの実例">オブジェクト指向プログラミングの実例</h2>
+<p>オブジェクト指向プログラミングの意義を短時間で伝えるのは難しい。おそらく講義中に触れることはできないであろう。より学びたい人のために簡単な実例を挙げておこう。</p>
+<p>いま、株式会社「Hoge」があり、その社員の名簿がある。社員は社員IDとメールアドレス(例えば<code>sato@hoge.co.jp</code>)を持っている。プログラマである田中君は、それをリストで実装した。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">name <span class="op">=</span> [<span class="st">&quot;佐藤&quot;</span>,<span class="st">&quot;鈴木&quot;</span>,<span class="st">&quot;高橋&quot;</span>,<span class="st">&quot;田中&quot;</span>]
+address <span class="op">=</span> [<span class="st">&quot;sato&quot;</span>, <span class="st">&quot;suzuki&quot;</span>, <span class="st">&quot;takahashi&quot;</span>,<span class="st">&quot;tanaka&quot;</span>]</code></pre></div>
+<p>メールアドレスの<code>@</code>の右側は全員同じなので、<code>@</code>の左側の部分だけ保存されている。例えば鈴木さんは社員番号1番であり、メールアドレスは</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_address <span class="op">=</span> address[<span class="dv">1</span>] <span class="op">+</span> <span class="st">&#39;@hoge.co.jp&#39;</span></code></pre></div>
+<p>で取得できる。さて、この会社が戦略的な理由により、子会社「Fuga」を作成し、高橋さんが社長としてその会社に移ることになった。田中くんは「メールアドレスの<code>@</code>の右側は全社員同じ」という前提でプログラムを作ってしまっていたので、全プログラムの社員アドレスを取得している箇所を修正しなければならない。</p>
+<p>また、子会社ができたことにより、社員番号の扱いも変えなければならない。高橋さんは子会社<code>Fuga</code>の社員番号0番であるべきだ。どうしよう？別に所属会社と社員番号のリストを作るべきだろうか？今後両方に所属する人が出てきたら？今後何か変更があるたびにプログラムを全部書き直しなければならないだろうか？</p>
+<p>上記のプログラムは、「名前やアドレスを管理したい」という「目的」と、「それをどう実現するか」という「実装」がべったりくっついているところに問題があった。オブジェクト指向プログラミングでは、「目的(振る舞い)」と「実装」を分離する。</p>
+<p>実装はともかく、社員データベース<code>database</code>があり、そこに社員名を問い合わせればアドレスを教えてくれるようになっているとしよう。イメージはこんな感じである。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co">#=&gt; takahashi@fuga.co.jp</span>
+tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co">#=&gt; tanaka@hoge.co.jp</span></code></pre></div>
+<p>こうしておくと、将来子会社が増えた時、<code>database</code>の内部実装は変更する必要があるが、<code>database</code>に問い合わせている上記の部分のプログラムを修正しなくて良い。</p>
+<p>このプログラムは全社員に通し番号で社員番号を付与しているかもしれないし、会社ごとに異なるデータベースを持っているかもしれない。しかし、そんなことはプログラマは気にしなくて良い。</p>
+<p>さて、今度は佐藤さんの役職も知りたいとしよう。こう書きたくなるだろうか？</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_position <span class="op">=</span> database.posotion(<span class="st">&quot;佐藤&quot;</span>) <span class="co">#=&gt; 課長</span></code></pre></div>
+<p>オブジェクト指向に慣れた人なら、上記のプログラムに違和感を感じるだろう。「データベースに聞けばなんでも教えてくれる」ということは、「データベースが全ての情報を把握している」ということである。会社で「とにかくなんでもこの人に聞け」という人がいたら、その人の責任が過大であり、危険信号であることは想像できるであろう。</p>
+<p>そこで、データベースは名前から「社員情報」というオブジェクトを返すことにして、細かい情報はそのオブジェクトに教えてもらおう。総合受付から担当秘書を教えてもらい、詳細は担当秘書に教えてもらうイメージだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>)
+sato_position <span class="op">=</span> sato_info.position() <span class="co"># =&gt; 課長</span></code></pre></div>
+<div class="figure">
+<img src="fig/responsibility.png" alt="オブジェクトの責任の分離" />
+<p class="caption">オブジェクトの責任の分離</p>
+</div>
+<p>一度、社員情報というオブジェクトを挟むことで、</p>
+<ul>
+<li>データベースオブジェクト(総合受付)は、名前から社員情報を返すのが仕事</li>
+<li>社員情報は、担当する社員についての情報を担当(他の社員については知らない)</li>
+</ul>
+<p>と、「誰がどこまで責任をもっているか」が明確になり、かつ「オブジェクト同士の責任が重なる」こともない。</p>
+<p>ちなみに<code>sato_info</code>を消して、メソッド呼び出しをピリオドでつなげることもできる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co">#=&gt; 課長</span></code></pre></div>
+<p>オブジェクト指向に慣れたプログラマは「こういうオブジェクトはこういう振る舞いをして欲しい」とか「このオブジェクト(クラス)の責任が多すぎるな」といった「お気持ち」を持つ。この「お気持ち」に沿ってプログラムを組むと、バグが少なかったり、将来の仕様変更に強いプログラムができる。オブジェクト指向はそういう「プログラミングノウハウ」を形として具現化したものだ。ある程度大きなプログラムを組んでみないと、このあたりの感覚を身につけることは難しい。</p>
+<p>本稿も含めて、巷にあるオブジェクト指向の説明においては「たとえ話」が頻出する。たとえ話はなんとなくイメージを掴むのには有用であるが、オブジェクト指向がプログラミング技法である以上、いくらわかった気になっても実際に使えなければ意味がない。あくまでもプログラムの具体例に数多く触れ、何がうれしいのかを積み重ねていくのが、結局オブジェクト指向の理解の早道であろう。</p>
 <h2 id="割りばしゲーム">割りばしゲーム</h2>
 <p>「割りばし」という二人で行う指遊びがある。地方によって名前やルールは様々だが、基本ルールは以下のようなものだ。</p>
 <ol style="list-style-type: decimal">
@@ -466,7 +504,7 @@ IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre>
 <li>もし削除した結果、子ノードがひとつもなくなったら、自分は「負けにつながる手」なのでTrueを返す</li>
 </ul>
 <p>という処理をしてやれば良い。</p>
-<h4 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h4>
+<h3 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h3>
 <p>7つ目のセルに、枝を刈るための関数<code>prune</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> prune(node):
     <span class="cf">if</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:
@@ -485,7 +523,7 @@ IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre>
             <span class="cf">return</span> <span class="va">True</span>
     <span class="cf">return</span> <span class="va">False</span></code></pre></div>
 <p>先程のアルゴリズムの通りに実装しただけだが、再帰に慣れていないと理解しづらいかもしれない。もしわからなくても「そういうものだ」と思って今はスルーしてかまわない。</p>
-<h4 id="枝刈り後のゲーム木の表示">8. 枝刈り後のゲーム木の表示</h4>
+<h3 id="枝刈り後のゲーム木の表示">8. 枝刈り後のゲーム木の表示</h3>
 <p>8つ目のセルに、枝刈りをした後のゲーム木を表示するプログラムを書こう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
 prune(root)
@@ -496,41 +534,12 @@ IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
 <h2 id="発展課題">発展課題</h2>
 <p>隣の人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
-<h2 id="余談オブジェクト指向プログラミングの意義">余談：オブジェクト指向プログラミングの意義</h2>
-<p>オブジェクト指向プログラミングの意義を短時間で伝えるのは難しい。おそらく講義中に触れることはできないであろう。ここでは「余談」として、より学びたい人のために簡単な実例を挙げておこう。</p>
-<p>いま、株式会社「Hoge」があり、その社員の名簿がある。社員は社員IDとメールアドレス(例えば<code>sato@hoge.co.jp</code>)を持っている。プログラマである田中君は、それをリストで実装した。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">name <span class="op">=</span> [<span class="st">&quot;佐藤&quot;</span>,<span class="st">&quot;鈴木&quot;</span>,<span class="st">&quot;高橋&quot;</span>,<span class="st">&quot;田中&quot;</span>]
-address <span class="op">=</span> [<span class="st">&quot;sato&quot;</span>, <span class="st">&quot;suzuki&quot;</span>, <span class="st">&quot;takahashi&quot;</span>,<span class="st">&quot;tanaka&quot;</span>]</code></pre></div>
-<p>メールアドレスの<code>@</code>の右側は全員同じなので、<code>@</code>の左側の部分だけ保存されている。例えば鈴木さんは社員番号1番であり、メールアドレスは</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_address <span class="op">=</span> address[<span class="dv">1</span>] <span class="op">+</span> <span class="st">&#39;@hoge.co.jp&#39;</span></code></pre></div>
-<p>で取得できる。さて、この会社が戦略的な理由により、子会社「Fuga」を作成し、高橋さんが社長としてその会社に移ることになった。田中くんは「メールアドレスの<code>@</code>の右側は全社員同じ」という前提でプログラムを作ってしまっていたので、全プログラムの社員アドレスを取得している箇所を修正しなければならない。</p>
-<p>また、子会社ができたことにより、社員番号の扱いも変えなければならない。高橋さんは子会社<code>Fuga</code>の社員番号0番であるべきだ。どうしよう？別に所属会社と社員番号のリストを作るべきだろうか？今後両方に所属する人が出てきたら？今後何か変更があるたびにプログラムを全部書き直しなければならないだろうか？</p>
-<p>上記のプログラムは、「名前やアドレスを管理したい」という「目的」と、「それをどう実現するか」という「実装」がべったりくっついているところに問題があった。オブジェクト指向プログラミングでは、「目的(振る舞い)」と「実装」を分離する。</p>
-<p>実装はともかく、社員データベース<code>database</code>があり、そこに社員名を問い合わせればアドレスを教えてくれるようになっているとしよう。イメージはこんな感じである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co">#=&gt; takahashi@fuga.co.jp</span>
-tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co">#=&gt; tanaka@hoge.co.jp</span></code></pre></div>
-<p>こうしておくと、将来子会社が増えた時、<code>database</code>の内部実装は変更する必要があるが、<code>database</code>に問い合わせている上記の部分のプログラムを修正しなくて良い。</p>
-<p>このプログラムは全社員に通し番号で社員番号を付与しているかもしれないし、会社ごとに異なるデータベースを持っているかもしれない。しかし、そんなことはプログラマは気にしなくて良い。</p>
-<p>さて、今度は佐藤さんの役職も知りたいとしよう。こう書きたくなるだろうか？</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_position <span class="op">=</span> database.posotion(<span class="st">&quot;佐藤&quot;</span>) <span class="co">#=&gt; 課長</span></code></pre></div>
-<p>オブジェクト指向に慣れた人なら、上記のプログラムに違和感を感じるだろう。「データベースに聞けばなんでも教えてくれる」ということは、「データベースが全ての情報を把握している」ということである。会社で「とにかくなんでもこの人に聞け」という人がいたら、その人の責任が過大であり、危険信号であることは想像できるであろう。</p>
-<p>そこで、データベースは名前から「社員情報」というオブジェクトを返すことにして、細かい情報はそのオブジェクトに教えてもらおう。総合受付から担当秘書を教えてもらい、詳細は担当秘書に教えてもらうイメージだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>)
-sato_position <span class="op">=</span> sato_info.position() <span class="co"># =&gt; 課長</span></code></pre></div>
-<div class="figure">
-<img src="fig/responsibility.png" alt="オブジェクトの責任の分離" />
-<p class="caption">オブジェクトの責任の分離</p>
-</div>
-<p>一度、社員情報というオブジェクトを挟むことで、</p>
-<ul>
-<li>データベースオブジェクト(総合受付)は、名前から社員情報を返すのが仕事</li>
-<li>社員情報は、担当する社員についての情報を担当(他の社員については知らない)</li>
-</ul>
-<p>と、「誰がどこまで責任をもっているか」が明確になり、かつ「オブジェクト同士の責任が重なる」こともない。</p>
-<p>ちなみに<code>sato_info</code>を消して、メソッド呼び出しをピリオドでつなげることもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co">#=&gt; 課長</span></code></pre></div>
-<p>オブジェクト指向に慣れたプログラマは「こういうオブジェクトはこういう振る舞いをして欲しい」とか「このオブジェクト(クラス)の責任が多すぎるな」といった「お気持ち」を持つ。この「お気持ち」に沿ってプログラムを組むと、バグが少なかったり、将来の仕様変更に強いプログラムができる。オブジェクト指向はそういう「プログラミングノウハウ」を形として具現化したものだ。ある程度大きなプログラムを組んでみないと、このあたりの感覚を身につけることは難しい。</p>
-<p>本稿も含めて、巷にあるオブジェクト指向の説明においては「たとえ話」が頻出する。たとえ話はなんとなくイメージを掴むのには有用であるが、オブジェクト指向がプログラミング技法である以上、いくらわかった気になっても実際に使えなければ意味がない。あくまでもプログラムの具体例に数多く触れ、何がうれしいのかを積み重ねていくのが、結局オブジェクト指向の理解の早道であろう。</p>
+<h2 id="余談osを作ってミュージシャンになった人">余談：OSを作ってミュージシャンになった人</h2>
+<p>普段、Windowsが入っているパソコンを使うことが多いであろう。WindowsとはOS (Operating System)の一種である。OSとは基本ソフトとも言われ、ユーザとハードウェアの仲立ちをする非常に重要なソフトウェアだ。マイクロソフトはMS-DOSというOSの成功から急成長した会社だが、現在はWindows というOSを開発している。さて、Windowsには様々な種類があるが、2006年にリリースされた「Windows Vista」というOSがあった。私はVistaがプリインストールされたノートPCを購入したが、Vistaのあまりのひどさに「これを開発したのは誰だ？」と思って調べてみたら、開発責任者はVistaの発売翌日にマイクロソフトを退職し、ミュージシャンになっていた。彼の名前はジム・オールチン。Windows 95を作るはずの人物であった。</p>
+<p>時はさかのぼり、1994年。マイクロソフトのCEO、ビル・ゲイツは「指先で情報を」という基調講演を行った。当時マイクロソフトはWindows 3.1の後継となり、Appleの洗練されたOSに対抗できるコンシューマ用OSがぜひとも必要だった。マイクロソフトは「指先で情報を」扱える次世代OSのリリースを予告しており、そのために進められていたのが「Cairo」というプロジェクトで、ジム・オールチンはそのリーダーであった。しかし、Cairoの進捗は悪く、別に「Chicago」というプロジェクトも走り出した。最終的にCairoはChicagoに破れ、Chicagoが「Windows 95」としてリリース。Windows 95は大ヒットし、市場におけるマイクロソフトの立場を盤石なものにした。</p>
+<p>マイクロソフトはコンシューマ向けであるWindows 95とは別に、サーバ向けに安定動作するWindows NTの開発も進めていた。そのストーリーは「闘うプログラマ」に詳しいので是非読んでみてほしい。コンシューマ向けに使いやすい95ファミリと、サーバ向けに安定しているNT、その両方の良さを受け継いだOSがWindows XPで、これまたヒット、Windowsユーザを一気に増やすことに成功した。</p>
+<p>2001年、XPのリリースと同時に、ジム・オールチンをリーダーとしてXPの後継となるOS開発プロジェクトが始まった。プロジェクトのコードネームはLonghorn。カナダのスキーリゾート、WhistlerとBlackcombという二つの山の間にあるバーの名前から取られた。Windows XPのコードネームがWhistler、Windows 7のコードネームがBlackcombであることからわかるように、Vistaは二つのOSの中継ぎ役であり、XPのマイナーバージョンアップという位置付けであった。しかし、いつのまにか野心的な機能が次々と追加され、プロジェクトは膨れ上がっていった。もともと2001年にリリースされたXPの後を継いで2003年頃にリリースされるはずだったVistaは風呂敷を広げ始め、リリース延期を重ねていく。そして2005年頃にどうにもならなくなり、プログラムの作り直しを決断する(Longhorn Reset)。そこから一年でなんとかVistaはリリースされたが、約束された先進的な機能はほとんど実装されず、VistaプリインストールマシンはWindows XPへダウングレードができるようにされるなど市場からも不評であり、マイクロソフトはOSのリリース計画を大幅に変更せざるを得なくなった。</p>
+<p>ジム・オールチンは、Cairoで実現できなかった「指先で情報を」というスローガンをVistaで実現しようとしたのだろうか。Vistaで約束され、実装されなかった機能の多くは、Cairoで実現しようとしていたものと重なるものが多い。ジム・オールチンの公式サイトには「私のマイクロソフトでの最大の貢献はサーバービジネスだ」とあり、その経歴には、キャリアのほぼすべてで関わったはずのCairoとVistaの名前はない。</p>
 </article>
 </body>
 </html>
