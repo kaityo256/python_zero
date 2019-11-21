@@ -91,6 +91,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>オブジェクト指向とは？</li>
+<li>クラスとインスタンス</li>
+<li>オブジェクト指向プログラミングの実例</li>
 <li>割り箸ゲーム</li>
 <li>余談：OSを作ってミュージシャンになった人</li>
 </ul>
@@ -313,9 +315,8 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
 <span class="im">import</span> IPython</code></pre></div>
 <h3 id="状態クラスの実装">2. 状態クラスの実装</h3>
-<h4 id="コンストラクタ">コンストラクタ</h4>
-<p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。このプログラムについてはクラスを作る意義はさほどないのだが、クラスの実装及びユニットテストの例としてクラスを作ることにする。余談だが、オブジェクト指向というとすぐにクラスを作ったり、無駄に継承したりさせたがるテキストが多いが、「本当にクラスが必要か」「継承が必要か」は常に考える必要がある。</p>
-<p>割りばしゲームの状態としては、先手番であるか否か、先手番の指の本数、後手番の指の本数がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「すでにこの状態を描画したかどうか」のフラグもつけておこう。2つ目のセルに以下を入力せよ。</p>
+<h4 id="初期化関数">初期化関数</h4>
+<p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。割りばしゲームの状態としては、先手番であるか否か<code>is_first</code>、先手番の指の本数<code>f</code>、後手番の指の本数<code>s</code>がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「遷移可能な状態」<code>siblings</code>、「この状態を描画したかどうか」<code>is_drawn</code>もつけておこう。2つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
         <span class="va">self</span>.is_first <span class="op">=</span> is_first
@@ -343,39 +344,12 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
         <span class="cf">else</span>:
             <span class="cf">return</span> <span class="st">&quot;s</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s</code></pre></div>
 <p>追加したらこのセルを再度実行してから、3つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s)</code></pre></div>
-<p>以下のような出力がされれば正しく実装できている。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">1</span>, <span class="dv">1</span>]</code></pre></div>
-<p>これは以下のように動作している。</p>
-<ol style="list-style-type: decimal">
-<li><code>State</code>オブジェクト<code>s</code>が<code>print</code>に渡されると、<code>print</code>は<code>s</code>を文字列に変換するために<code>str(s)</code>を呼ぶ</li>
-<li><code>str(s)</code>は、内部で<code>s.__str__()</code>を呼んで、その値を返す</li>
-<li><code>s.__str__()</code>の返す値が<code>print</code>に渡され、それが出力される。</li>
-</ol>
-<p>このような、<code>__str__</code>のようにアンダースコアが前後に二つついたメソッドを特殊メソッドと呼ぶ。ほかにはサイズを返す<code>__len__</code>や比較のためのメソッド<code>__eq__</code>などがある。</p>
-<p>さて、実装した単位ごとに動作が意図通りになっているか確認することを「ユニットテスト」と呼ぶ。さて、先ほどの表示だけではテストとしては不十分である。ここまで実装しただけでも、</p>
-<ul>
-<li>先手番なら「f」を、後手番なら「s」を表示する(それぞれfirst, secondの略である)。</li>
-<li>先手番を上段に、後手番を下段に表示する</li>
-<li>指の本数が多いほうを左に、少ないほうを右に寄せている</li>
-</ul>
-<p>という機能がある。これらが正しく動作するか、それぞれチェックしよう。3つ目のセルを以下のように修正せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s)
-s2<span class="op">=</span> State(<span class="va">False</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s2)
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
+s2 <span class="op">=</span> State(<span class="va">False</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
 s3 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">3</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">4</span>])
+<span class="bu">print</span>(s1)
+<span class="bu">print</span>(s2)
 <span class="bu">print</span>(s3)</code></pre></div>
-<p>これは、</p>
-<ul>
-<li><code>s</code>: <code>str(s)</code>が正しく実行されるかどうか</li>
-<li><code>s2</code>: 先手番、後手番の設定と表示が正しいかどうか</li>
-<li><code>s3</code>: 先手番が上段、後手番が下段に表示されているか、また指の本数に関するソートが正しいか</li>
-</ul>
-<p>をそれぞれ確認するテストになっている。本当は複数の項目を同時にテストするのは良くないのだが、ここは大目に見てもらおう。</p>
 <p>以下のように表示されれば成功である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f
 [<span class="dv">1</span>, <span class="dv">1</span>]
@@ -387,38 +361,20 @@ f
 [<span class="dv">3</span>, <span class="dv">1</span>]
 [<span class="dv">4</span>, <span class="dv">2</span>]</code></pre></div>
 <p>上記が正しく表示されたら、3つ目のセルを消しておこう。</p>
-<p>プログラムの初学者にとっては、プログラミングにおいて「プログラムを入力する時間」が大半を占めることだろう。しかし、慣れてくるとプログラミングの時間の大半をデバッグに費やすようになる。プログラムのできる人とできない人の生産性は軽く桁で変わってくるが、その大きな要因の一つが「上級者はバグを入れない、入れてもすぐにとる」ことである。そのためにはテストが欠かせない。最初はどこをどれくらいテストすれば良いかわからないと思うが、とりあえずしつこいくらいにテストを書くとよいだろう。そのうち「自分がどこにバグを入れやすいか」すなわち「どこをテストすべきか」の感覚がつかめてくる。</p>
 <h4 id="比較メソッド">比較メソッド</h4>
-<p>次に、オブジェクトの比較メソッド<code>__eq__</code>を作ってみよう。比較メソッドとは<code>a == b</code>とした際に、<code>a</code>と<code>b</code>が等しいか判定するのにつかわれるメソッドだ。実は比較メソッドがなくても比較ができる。3つ目のセルの中身を以下のように書き換えよう(一度消して、新しいセルを作ってもかまわない)。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s1 <span class="op">==</span> s2</code></pre></div>
-<p>全く同じ状態であるにも関わらず、結果は<code>False</code>になるはずだ。これは、Pythonではオブジェクトの比較が、デフォルトでは中身ではなくオブジェクトIDの比較になるためだ。実際、さきほどの二つは中身は同じだが異なるオブジェクトなので、IDは異なる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(<span class="bu">id</span>(s1))
-<span class="bu">print</span>(<span class="bu">id</span>(s2))</code></pre></div>
-<p>上記を実行すると、2つの異なるIDが表示されたはずである。さて、この「IDは異なるが同じ内容を持つオブジェクト」を「等しい」と判定するために<code>__eq__</code>メソッドを実装しよう。2つ目のセルの<code>State</code>クラスの<code>__str__</code>の後に以下のように追加しよう。</p>
+<p>次に、オブジェクトの比較メソッド<code>__eq__</code>を作ってみよう。比較メソッドとは<code>a == b</code>とした際に、<code>a</code>と<code>b</code>が等しいか判定するのにつかわれるメソッドだ。2つ目のセルの<code>State</code>クラスの<code>__str__</code>の後に以下のように追加しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> params(<span class="va">self</span>):
         <span class="cf">return</span> (<span class="va">self</span>.is_first, <span class="va">self</span>.f, <span class="va">self</span>.s)
 
     <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):
         <span class="cf">return</span> <span class="va">self</span>.params() <span class="op">==</span> other.params()</code></pre></div>
-<p><code>params</code>は、自分の状態をタプルとして返す関数で、<code>__eq__</code>は、二つのオブジェクトの<code>params()</code>の返り値を比較して等しいかどうかを判定している。これを実装後、先ほどの3つ目のセルを再度実行してみよう。</p>
+<p><code>params</code>は、自分の状態をタプルとして返す関数で、<code>__eq__</code>は、二つのオブジェクトの<code>params()</code>の返り値を比較して等しいかどうかを判定している。これを実装後、3つ目のセルで以下を実行してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
 s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
 s1 <span class="op">==</span> s2</code></pre></div>
-<p>実行して、今度は<code>True</code>と出てくれば成功である。また、これにより自動的に<code>in</code>が使えるようになる。3番目のセルを以下のように修正してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s3 <span class="op">=</span> State(<span class="va">False</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-a <span class="op">=</span> [s1]
-<span class="bu">print</span>(s2 <span class="kw">in</span> a) <span class="co"># =&gt; True</span>
-<span class="bu">print</span>(s3 <span class="kw">in</span> a) <span class="co"># =&gt; False</span></code></pre></div>
-<p>「状態」のリストが与えられたとき、そのリストに同じ状態が入っているかどうか<code>in</code>で確認できるようになった。これも後で使う。</p>
-<p>動作確認が終わったら3つ目のセルを消しておくこと。</p>
+<p>結果として<code>True</code>と出てくれば成功である。動作確認が終わったら3つ目のセルを消しておくこと。</p>
 <h4 id="次の状態の生成">次の状態の生成</h4>
-<p>せっかく状態クラスを作ったので、次の状態の生成もこのクラスにやらせよう。現在の状態に対して「先手側の手の左右」と「後手側の手の左右」を選べば、次の状態が決まる。先手側の手を<code>fi</code>、後手側の手を<code>si</code>としよう。それぞれ0と1の値をとる変数で、0が左手、1が右手である。ただし、指の本数が大きいほうを必ず左手にするように入れ替える。例えば現在先手番で、<code>(fi, si)==(0,0)</code>ならば、先手が左手で後手番の左手を攻撃したという意味になり、現在後手番で<code>(fi, si)==(0,1)</code>ならば、後手番が右手で先手番の左手を攻撃した、という意味になる。</p>
+<p>現在の状態から次の状態を生成するメソッドを作ろう。現在の状態に対して「先手側の手の左右」と「後手側の手の左右」を選べば、次の状態が決まる。先手側の手を<code>fi</code>、後手側の手を<code>si</code>としよう。それぞれ0と1の値をとる変数で、0が左手、1が右手である。ただし、指の本数が大きいほうを必ず左手にするように入れ替える。例えば現在先手番で、<code>(fi, si)==(0,0)</code>ならば、先手が左手で後手番の左手を攻撃したという意味になり、現在後手番で<code>(fi, si)==(0,1)</code>ならば、後手番が右手で先手番の左手を攻撃した、という意味になる。</p>
 <p>以上を実装してみよう。2つ目のセルの<code>State</code>クラスに以下のメソッドを追加せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> next_state(<span class="va">self</span>, index):
         fi, si <span class="op">=</span> index
@@ -434,69 +390,30 @@ a <span class="op">=</span> [s1]
         <span class="cf">else</span>:
             f2[fi] <span class="op">=</span> d
         <span class="cf">return</span> State(<span class="kw">not</span> <span class="va">self</span>.is_first, f2, s2)</code></pre></div>
-<p>このメソッドの機能は</p>
-<ul>
-<li>現在の状態に、「先手と後手のどの手が選ばれたか」のタプルを与えたら次の状態を作って返す</li>
-<li>もし選ばれた手の指の本数が0なら(死んでいたら)<code>None</code>を返す</li>
-<li>もし攻撃の結果、指の本数が5本を超えたら0にする(その手が死ぬ)</li>
-</ul>
-<p>である。</p>
-<p>追加したら、正しく実装できたか確認してみよう。3つ目のセルに以下を入力して出力を確認せよ。<code>next_state</code>の引数はタプル<code>(0,0)</code>であるので、<code>s1.next_state((0,0))</code>と内側の括弧が二重になり、さらに<code>print</code>の括弧で三重になることに注意。</p>
+<p>追加したら、正しく実装できたか確認してみよう。3つ目のセルに以下を入力して出力を確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s1.next_state((<span class="dv">0</span>,<span class="dv">0</span>)))</code></pre></div>
-<p>以下のような出力が出てくるはずである。</p>
+s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">3</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">1</span>])
+s3 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
+<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">1</span>)))
+<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))
+<span class="bu">print</span>(s3.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</code></pre></div>
+<p>以下のような出力が出てくれば正しく入力されている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s
 [<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">2</span>, <span class="dv">1</span>]</code></pre></div>
-<p>ついでに、「必ず左手が大きくなるように手を入れ替える」「5を超えると手が死ぬ」ことも確認しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">3</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</code></pre></div>
-<p>先手番が指(3,2)、後手番が(3,1)の状態を作り、先手番の右手で後手番の左手を攻撃した状態が表示されることが期待される。結果は、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s
-[<span class="dv">3</span>, <span class="dv">2</span>]
-[<span class="dv">1</span>, <span class="dv">0</span>]</code></pre></div>
-<p>と、現在後手番であり、先手番の手は変わらず、後手番は左手が死んだため、左右を入れ替えて左手が指一本、右手が死亡、という状態になった。なお、繰り返しとなるが、本当は複数のテストを同時にしてはいけない。AとBという機能がある場合、Aのテスト、Bのテスト、そしてAとBが両方絡むテストをすべきである。そのあたりに興味がある人は「ユニットテスト」「継続的インテグレーション」などのキーワードで調べて欲しい。</p>
-<p>最後に、有効では無い手を入力したら<code>None</code>が変えることも確認する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">1</span>)))</code></pre></div>
-<p>これは先手の右手が死んでいるのに、右手で相手の右手を攻撃しようとしているために合法手ではない。したがって<code>None</code>が返る。</p>
-<p>最終的に2つ目のセルにある<code>State</code>クラスはこんな形になったはずである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
-        <span class="va">self</span>.is_first <span class="op">=</span> is_first
-        <span class="va">self</span>.f <span class="op">=</span> [<span class="bu">max</span>(f), <span class="bu">min</span>(f)]
-        <span class="va">self</span>.s <span class="op">=</span> [<span class="bu">max</span>(s), <span class="bu">min</span>(s)]
-        <span class="va">self</span>.siblings <span class="op">=</span> []
-        <span class="va">self</span>.is_drawn <span class="op">=</span> <span class="va">False</span>
-
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        s <span class="op">=</span> <span class="bu">str</span>(<span class="va">self</span>.f) <span class="op">+</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.s)
-        <span class="cf">if</span> <span class="va">self</span>.is_first:
-            <span class="cf">return</span> <span class="st">&quot;f</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s
-        <span class="cf">else</span>:
-            <span class="cf">return</span> <span class="st">&quot;s</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s
-
-    <span class="kw">def</span> params(<span class="va">self</span>):
-        <span class="cf">return</span> (<span class="va">self</span>.is_first, <span class="va">self</span>.f, <span class="va">self</span>.s)
-
-    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):
-        <span class="cf">return</span> <span class="va">self</span>.params() <span class="op">==</span> other.params()
-
-    <span class="kw">def</span> next_state(<span class="va">self</span>, index):
-        fi, si <span class="op">=</span> index
-        <span class="cf">if</span> <span class="va">self</span>.f[fi] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.s[si] <span class="op">==</span> <span class="dv">0</span>:
-            <span class="cf">return</span> <span class="va">None</span>
-        d <span class="op">=</span> <span class="va">self</span>.f[fi] <span class="op">+</span> <span class="va">self</span>.s[si]
-        f2 <span class="op">=</span> <span class="va">self</span>.f.copy()
-        s2 <span class="op">=</span> <span class="va">self</span>.s.copy()
-        <span class="cf">if</span> d <span class="op">&gt;=</span> <span class="dv">5</span>:
-            d <span class="op">=</span> <span class="dv">0</span>
-        <span class="cf">if</span> <span class="va">self</span>.is_first:
-            s2[si] <span class="op">=</span> d
-        <span class="cf">else</span>:
-            f2[fi] <span class="op">=</span> d
-        <span class="cf">return</span> State(<span class="kw">not</span> <span class="va">self</span>.is_first, f2, s2)</code></pre></div>
-<p>以上で状態クラスは完成である。ここまで正しい動作が確認できていれば、確認のための3つ目のセルは削除して良い。</p>
+[<span class="dv">2</span>, <span class="dv">1</span>]
+s
+[<span class="dv">1</span>, <span class="dv">1</span>]
+[<span class="dv">2</span>, <span class="dv">1</span>]
+<span class="va">None</span></code></pre></div>
+<p>最終的に2つ目のセルにある<code>State</code>クラスには、以下の5つのメソッドが実装されたはずである。</p>
+<ul>
+<li><code>__init__</code></li>
+<li><code>__str__</code></li>
+<li><code>params</code></li>
+<li><code>__eq__</code></li>
+<li><code>next_state</code></li>
+</ul>
+<p>ここまで正しい動作が確認できていれば、確認のための3つ目のセルは削除して良い。</p>
 <h2 id="課題2状態遷移図の可視化">課題2:状態遷移図の可視化</h2>
 <h3 id="ゲーム木の作成">ゲーム木の作成</h3>
 <p>割りばしゲームの状態遷移図(ゲーム木)を作るには、</p>
@@ -580,14 +497,7 @@ IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
 <h2 id="発展課題-枝刈り">発展課題: 枝刈り</h2>
 <p>さて、無事にゲーム木(しつこいが正確には木構造ではなく有向グラフである)が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
-<p>まず、引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈する。</p>
-<p>以上を実装するためには、木をたどっていって、</p>
-<ul>
-<li>もし先手番が勝っていたら<code>True</code>を返す(勝ちが決まっているので、ここは末端ノードである)。</li>
-<li>もし現在後手番で、自分から直接つながる先手番に勝ちがあるなら(Trueが返ってきたら)そのノードを削除する。</li>
-<li>もし削除した結果、子ノードがひとつもなくなったら、自分は「負けにつながる手」なのでTrueを返す</li>
-</ul>
-<p>という処理をしてやれば良い。</p>
+<p>引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈する。こうして後手の負けにつながる枝を全て刈れば、後手必勝の手筋のみが残るはずである。</p>
 <h3 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h3>
 <p>7つ目のセルに、枝を刈るための関数<code>prune</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> prune(node):
