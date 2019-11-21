@@ -96,13 +96,106 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <h2 id="オブジェクト指向とは">オブジェクト指向とは</h2>
 <p>オブジェクト指向とは何か。実は筆者にもよくわからない。この言葉の意味するところはプログラミング言語によって異なるし、人によっても違うイメージを持っているであろう。真面目に考え始めると深い沼にハマり、またうっかり「オブジェクト指向はこういうものだ」みたいなブログ記事を書いてしまうと怖い人々集まってくる。とりあえずここでは「オブジェクト指向とは、プログラミング技法の一種である」と思っておけば良い。</p>
-<p>オブジェクト指向には、「オブジェクト」という概念が出てくる。これは「データ」と「振る舞い」をまとめたものだ。オブジェクト指向プログラミングでは、オブジェクトに何か処理を「依頼」することでなんらかの処理をする。この「依頼」を「メッセージ」と呼ぶ。Pythonでは、次のような形でオブジェクトにメッセージを送る。</p>
+<p>オブジェクト指向には様々なキーワードが出てくる。例えば以下のようなものだ。</p>
+<ul>
+<li>オブジェクト</li>
+<li>クラス</li>
+<li>コンストラクタ</li>
+<li>インスタンス</li>
+<li>メッセージ</li>
+<li>カプセル化</li>
+<li>ポリモーフィズム</li>
+<li>継承と合成</li>
+</ul>
+<p>これらのについて「たとえ話」を使って説明することはできる。それを聞いて「ぼんやりとわかった気」にもなるだろう。しかし、個人的な経験では、オブジェクト指向の用語を「たとえ話」で「わかった気」になってもほとんど意味がない。オブジェクト指向はプログラミング技法であり、プログラムを組みながらその感覚を身につけるものだ。</p>
+<p>そこで、本稿では詳細には触れず、とりあえずクラスを使ったプログラムを組んで、記述の仕方に慣れることを目標にしよう。今回の授業が終わった後に、</p>
+<blockquote>
+<p>ひな形であるクラスから作ったオブジェクトをインスタンスと呼ぶ。オブジェクトは内部状態を持ち、メソッドというインタフェースを公開している。プログラマはメソッドを呼ぶことでオブジェクトにメッセージを送ることができる</p>
+</blockquote>
+<p>という文章がだいたい理解できていればそれでよい。</p>
+<h3 id="オブジェクトとは">オブジェクトとは</h3>
+<p>オブジェクト指向には、「オブジェクト」という概念が出てくる。これは「データ(内部状態)」と「振る舞い」をまとめたものだ。オブジェクト指向プログラミングでは、オブジェクトに何か処理を「依頼」することでなんらかの処理をする。この「依頼」を「メッセージ」と呼ぶ。Pythonでは、次のような形でオブジェクトにメッセージを送る。</p>
 <div class="figure">
 <img src="fig/message.png" alt="オブジェクトとメッセージ" />
 <p class="caption">オブジェクトとメッセージ</p>
 </div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">obj.do_somthing()</code></pre></div>
-<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので「<strong>レシーバ(reciever)</strong>」と呼ばれる。ピリオドの右にある<code>do_something()</code>はメソッドと呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。Pythonでは、「クラス」という雛形からオブジェクトを作る。</p>
+<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので「<strong>レシーバ(reciever)</strong>」と呼ばれる。逆に、メッセージを送る側は「<strong>センダー(Sender)</strong>」と言う。ピリオドの右にある<code>do_something()</code>はメソッドと呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。なぜオブジェクト指向プログラミングをするかというと、それはオブジェクトに責任を移譲するためだ。</p>
+<h3 id="カプセル化">カプセル化</h3>
+<p>例をあげよう。</p>
+<p>ある社員データを考えよう。社員データは以下のデータを持つ。</p>
+<ul>
+<li>名前(文字列)</li>
+<li>年齢(整数)</li>
+<li>所属部署(文字列)</li>
+</ul>
+<p>各データには以下の制約がある。</p>
+<ul>
+<li>名前は20文字以内</li>
+<li>年齢の数値は正</li>
+<li>所属部署は「A課」「B課」「C課」のいずれか</li>
+</ul>
+<p>さらに、データはウェブから入力されたり、ファイルから追加されたりと、複数の新規作成パスがあるとする。</p>
+<p>この状態で、まずウェブルーチンで何かしらチェックをする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:
+  <span class="co"># エラー処理</span>
+<span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:
+  <span class="co"># エラー処理</span>
+<span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span>
+<span class="st">  # エラー処理</span>
+<span class="st">#データ追加処理</span>
+<span class="st">data.add(name, age, group)</span></code></pre></div>
+<p>同様に、ファイルからの入力でもチェックをしなければならない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:
+  <span class="co"># エラー処理</span>
+<span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:
+  <span class="co"># エラー処理</span>
+<span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span>
+<span class="st">  # エラー処理</span>
+<span class="st">#データ追加処理</span>
+<span class="st">data.add(name, age, group)</span></code></pre></div>
+<p>さて、この状態で、将来「D課」が増えた時、両方のルーチンを修正しなければならない。このように似たような処理を複数回記述していたら危険信号である。今はデータはウェブとファイルのみから入力されると思っているが、実はいつのまにか別のパスが増えているかもしれない。そこに気が付かないと修正漏れが生じて、それはそのままバグの原因となる。</p>
+<p>ここで問題だったのは「どこでデータがいじられているかわからない」ということだ。そこで、考え方を変えて「社員データが正しいかどうかは、社員データ自身が知っているべき」と考えよう。後で説明するが、社員データ「オブジェクト」というものを作る。そして、社員データが正当なものであるかの判断は社員データに問い合わせ、問題なければデータを追加する形にしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">person <span class="op">=</span> EmployeeData(name, age, group)
+<span class="cf">if</span> person.is_valid():
+  data.add(person)</code></pre></div>
+<div class="figure">
+<img src="fig/person_isvalid.png" alt="データの正しさをオブジェクト自身に問い合わせる" />
+<p class="caption">データの正しさをオブジェクト自身に問い合わせる</p>
+</div>
+<p>データの正しさは、<code>person.is_valid()</code>という関数(メソッド)の中で行うことにする。もちろんその中身は自分で記述しなければならないが、プログラムを見ると、「データが正しいことを確認する責任が、呼び出し側から、オブジェクト側に移譲されている」ことがわかるであろう。これにより、データが正しいかどうかのチェックは必ず<code>person.is_valid()</code>で行われることが保証されるため、将来、データの整合性の条件が変更されても、修正箇所は一箇所だけでよく、呼び出し側の修正は不要となる。</p>
+<p>このように、「データ」を外から見えないようにして、そのデータの修正や追加のためのインタフェースを作って外に公開することを「カプセル化」と呼ぶ。カプセル化は、オブジェクトの内部状態を外から隠蔽し、修正する「窓口」を一元化することで、知らない間にデータが修正されている、という事態を防ぐ方法論だ。</p>
+<p>今回、カプセル化したのは「各所に散らかっていた似たようなコードを一つにまとめるため」であった。「同じ情報は一箇所にまとめる」という原則を Don't Repeat Yourselfの頭文字をとって「DRY原則」と呼ぶ。DRY原則はプログラムだけでなく、一般的な作業フローにおいても有用な概念なので覚えておくと良い。</p>
+<h3 id="howとwhat">HowとWhat</h3>
+<p>オブジェクト指向プログラミングの例をもう一つ挙げよう。ウェブで、入力ミスのある項目のラベルを赤字にしていたとする。例えばこんなコードになるだろう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.color <span class="op">=</span> red</code></pre></div>
+<p>その後、もっと目立たせるために、さらに太字にすることにした。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.color <span class="op">=</span> red
+label.face <span class="op">=</span> bold</code></pre></div>
+<p>さて、赤太字にしてみたら、あまりに色が強いので、もう少し違う色にすることにした。この時、ラベルの色を変更している場所 <strong>全て</strong> を変更しなければならない。これはDRY原則に反する。</p>
+<p>我々がやりたいこと(What)は、「ラベルを目立たせたい」ということであって、ラベルの色を変えたり太字にしたりするのは、その実現手段(How)であったのだが、もとのコードではWhatとHowが一体化していたのが問題であった。そこで、やりたいこと(What)と、その実現手段(How)がより明確に分かれるようにしよう。</p>
+<p>具体的には、ラベルに<code>alert()</code>というメソッドを作り、ラベルを目立たせたい時には<code>label.alert()</code>を呼ぶ、と約束する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.alert()</code></pre></div>
+<p>そして、目立たせるための実装は、ラベルクラスの<code>alert</code>メソッド内に記述する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Label:
+  <span class="kw">def</span> alert(<span class="va">self</span>):
+    <span class="va">self</span>.color <span class="op">=</span> red
+    <span class="va">self</span>.face <span class="op">=</span> bold</code></pre></div>
+<p>オブジェクト指向であろうかなんであろうが、同じことを実現しているのだから、結局は同じプログラムを書かなければならない。しかし、このような形にすることで、呼び出し側はラベルに「目立ってね」と依頼し、その目立ち方はラベルに任せる、という気持ちでプログラムが組める。こうして置くと、後で「目立たせ方」を変えたい、と思ったときに修正箇所は一箇所で済むため、仕様変更に強いコードになる。</p>
+<p>すなわち、オブジェクト指向プログラミングとは</p>
+<ul>
+<li>オブジェクトに責任を移譲し</li>
+<li>How(実装)ではなくWhat(やりたいこと)に集中することで</li>
+<li>仕様変更に強いプログラムを組む</li>
+</ul>
+<p>ための方法論である。</p>
+<h2 id="クラスとインスタンス">クラスとインスタンス</h2>
+<p>オブジェクト指向プログラミングにおいては、オブジェクトが中心的な役割を果たすが、そのオブジェクトの作り方には大きく分けて「クラスベース」と「プロトタイプベース」の二種類が存在する。</p>
+<p>クラスベースとは、「クラス (Class)」という雛形を作っておき、その雛形からオブジェクトを作る方法である。クラスから作られたオブジェクトを、そのクラスの <strong>インスタンス(instance)</strong> と呼ぶ。C++やJava、Python、Rubyなどがクラスベースのオブジェクト指向言語である。インスタンスを作ることをインスタンス化(instantiation)と呼ぶこともある。</p>
+<p>一方、「プロトタイプ」と呼ばれる別のオブジェクトを複製することで新しいオブジェクトを作る。このタイプではJavaScriptが有名だ。</p>
+<h3 id="クラス定義">クラス定義</h3>
+<p>Pythonはクラスベースの言語であるため、まずクラスを定義し、そのクラスをインスタンス化することでオブジェクトを作る。</p>
+<p>クラスは<code>class クラス名:</code>という形で宣言する。</p>
 <p>例えば、呼び出されるたびに、呼び出した回数を返すようなカウンターオブジェクトを作ってみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
@@ -111,15 +204,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="kw">def</span> count(<span class="va">self</span>):
         <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span>
         <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
-<p><code>class</code>というキーワードがクラスを作る宣言である。<code>__init__</code>というのはクラスの初期化のためのメソッドで、<strong>コンストラクタ(constructor)</strong>と呼ばれる。引数に<code>self</code>を指定するのが慣例となっている。ここで<code>self.__num</code>という変数を宣言し、0に初期化している。<code>self.</code>をつけることで、このクラスの状態を保持する変数になる。このクラスに何かさせるためには、メッセージを送るためのメソッドが必要だ。ここでは<code>count</code>というメソッドを作った。やはり引数として<code>self</code>を指定し、<code>self.__num</code>で呼ばれた回数をインクリメントしてから、その数字を表示している。</p>
-<p>このクラスからオブジェクトを作って使ってみよう。</p>
+<p><code>class</code>というキーワードがクラスを作る宣言である。<code>__init__</code>というのはクラスの初期化のためのメソッドで、<strong>コンストラクタ(constructor)</strong>と呼ばれる(正確には<code>__init__</code>はコンストラクタから呼ばれる初期化関数であるが、ここではコンストラクタと同一視しておいて良い)。第一引数に<code>self</code>を指定するのが慣例となっている。ここで<code>self.__num</code>という変数を宣言し、0に初期化している。<code>self.</code>をつけることで、このクラスの状態を保持する変数になる。このクラスに何かさせるためには、メッセージを送るためのメソッドが必要だ。ここでは<code>count</code>というメソッドを作った。やはり引数として<code>self</code>を指定し、<code>self.__num</code>で呼ばれた回数をインクリメントしてから、その数字を表示している。</p>
+<p>このクラスからオブジェクトを作ってみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> Counter()</code></pre></div>
 <div class="figure">
 <img src="fig/class.png" alt="クラスからのオブジェクトの生成" />
 <p class="caption">クラスからのオブジェクトの生成</p>
 </div>
-<p>クラス名を関数のように呼び出すと、このクラスのオブジェクトが作られ、それが返される。この時、内部的に<code>__init__</code>が呼ばれている。こうして作られたオブジェクトを、元になったクラスの<strong>インスタンス(instance)</strong>と呼ぶ。</p>
-<p><code>c</code>がカウンターオブジェクトだ。このオブジェクトのメソッドを呼ぶことでメッセージを送ることができる。</p>
+<p>クラス名を関数のように呼び出すと、このクラスのオブジェクトが作られ、それが返される。この時、内部的に<code>__init__</code>が呼ばれている。こうして作られたオブジェクトを、元になったクラスのインスタンスと呼ぶ。</p>
+<p>コンストラクタから返された<code>c</code>がカウンターオブジェクトだ。このオブジェクトのメソッドを呼ぶことでメッセージを送ることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c.count() <span class="co">#=&gt; 1</span>
 c.count() <span class="co">#=&gt; 2</span>
 c.count() <span class="co">#=&gt; 3</span></code></pre></div>
@@ -135,39 +228,29 @@ c2.count() <span class="co">#=&gt; 2</span></code></pre></div>
 <p>さて、こうして作ったカウンターの初期値はつねに0だが、任意の初期値を与えたくなったとしよう。この時、<code>__init__</code>に引数を渡すことで、初期値を与えるようにできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ini <span class="op">=</span> <span class="dv">0</span>):
-        <span class="va">self</span>.num <span class="op">=</span> ini
+        <span class="va">self</span>.__num <span class="op">=</span> ini
 
     <span class="kw">def</span> count(<span class="va">self</span>):
-        <span class="va">self</span>.num <span class="op">+=</span> <span class="dv">1</span>
-        <span class="bu">print</span>(<span class="va">self</span>.num)</code></pre></div>
+        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span>
+        <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co"># 何も指定しなかった場合、初期値が0になる</span>
 c <span class="op">=</span> Counter()
 c.count() <span class="co">#=&gt; 1</span>
 <span class="co"># 初期値を指定することもできる</span>
 c2 <span class="op">=</span> Counter(<span class="dv">10</span>)
 c2.count() <span class="co">#=&gt; 11</span></code></pre></div>
-<p>オブジェクト指向プログラミングを行う理由はいくつかあるが、そのうちの大事なものの一つは「実装とインタフェースの分離」である。これは、実際の実装を隠蔽し、必要な部分のみメソッドとして公開することで責任の所在を明らかにし、将来の仕様変更に強くし、かつプログラマの負担を減らす。</p>
-<p>オブジェクト指向には様々なキーワードが出てくる。例えば以下のようなものだ。</p>
-<ul>
-<li>オブジェクト</li>
-<li>クラス</li>
-<li>コンストラクタ</li>
-<li>インスタンス</li>
-<li>メッセージ</li>
-<li>カプセル化</li>
-<li>ポリモーフィズム</li>
-<li>継承と合成</li>
-</ul>
-<p>これらのについて「たとえ話」を使って説明することはできる。それを聞いて「ぼんやりとわかった気」にもなるだろう。しかし、個人的な経験では、オブジェクト指向の用語を「たとえ話」で「わかった気」になってもほとんど意味がない。オブジェクト指向はプログラミング技法であり、プログラムを組みながらその感覚を身につけるものだ。</p>
-<p>そこで、本稿では詳細には触れず、とりあえずクラスを使ったプログラムを組んで、記述の仕方に慣れることを目標にしよう。今回の授業が終わった後に、</p>
-<blockquote>
-<p>ひな形であるクラスから作ったオブジェクトをインスタンスと呼び、インスタンスを作る時に呼ばれる特別なメソッドをコンストラクタと呼ぶ。オブジェクトは内部状態を持ち、メソッドというインタフェースを公開している。プログラマはメソッドを呼ぶことでオブジェクトにメッセージを送ることができる</p>
-</blockquote>
-<p>という文章がだいたい理解できていればそれでよい。</p>
-<h2 id="オブジェクトとは">オブジェクトとは</h2>
-<p>オブジェクト指向とは、オブジェクトを中心に考えながらプログラミングを行うパラダイムである。「オブジェクトとは何か」の定義も難しいが、とりあえずは「プログラムにおけるひとつのまとまり」であり、「状態」を持ち、「自分の状態に責任を持つもの」と覚えておけば良い。</p>
-<p>先のカウンターであれば、「カウント」を内部状態として持つが、外部からそれを</p>
-<p>TODO: オブジェクト、クラス、propertyなどの説明を書くこと。</p>
+<p>オブジェクト.メソッド名(引数)という形で呼ぶと、暗黙に第一引数としてオブジェクト自身が渡され、それを慣習として<code>self</code>という名前で受け取る。</p>
+<p>さて、ここで、カウンタークラスはカウント値を属性として持ち、それを修正するメソッド<code>count()</code>を公開しており、カプセル化の例となっている。ここで、属性<code>__num</code>は外からアクセスできない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(c.__num)
+<span class="co"># =&gt; AttributeError: &#39;Counter&#39; object has no attribute &#39;__num&#39;</span></code></pre></div>
+<p>これは、変数の名前の頭にアンダースコア二つ「<code>__</code>」がついているためだ。アンダースコアがついていない属性は普通にアクセスができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Hoge:
+    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
+        <span class="va">self</span>.value <span class="op">=</span> <span class="dv">123</span>
+
+h <span class="op">=</span> Hoge()
+<span class="bu">print</span>(h.value) <span class="co"># =&gt; 123</span></code></pre></div>
+<p>実は、Pythonではアンダースコアが二つつけられた属性は、名前が<code>_クラス名__属性名</code>に変更される。これをマングリング(難読化)と呼ぶ。マングリングされた名前を直接指定すれば隠し属性にアクセスできるが、バグのもとなのでやらない方が良い。メソッドでも同様なことができる。</p>
 <h2 id="オブジェクト指向プログラミングの実例">オブジェクト指向プログラミングの実例</h2>
 <p>オブジェクト指向プログラミングの意義を短時間で伝えるのは難しい。おそらく講義中に触れることはできないであろう。より学びたい人のために簡単な実例を挙げておこう。</p>
 <p>いま、株式会社「Hoge」があり、その社員の名簿がある。社員は社員IDとメールアドレス(例えば<code>sato@hoge.co.jp</code>)を持っている。プログラマである田中君は、それをリストで実装した。</p>
@@ -223,7 +306,7 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>さて、簡単のため、基本ルールだけを考えよう。死んだ手の指の本数を「5本」と数えると、お互いの指の本数は、ターン毎に必ず増加する。したがって、千日手は存在しない。また、指の本数は20本を超えることはできないため、必ず有限ターンでゲームが終わる。また、勝負が決まるのは相手の最後の手を殺した時だけなので、引き分けは存在しない。ランダム要素もないため、先手か後手のどちらかが必勝であることがわかる。</p>
 <p>実際、このゲームは後手必勝である。このゲームを題材に、クラスを使いつつ、本格的な再帰プログラムを組んでみよう。</p>
 <h1 id="クラスとオブジェクト指向課題">クラスとオブジェクト指向：課題</h1>
-<h2 id="課題1状態クラスの実装とユニットテスト">課題1:状態クラスの実装とユニットテスト</h2>
+<h2 id="課題1割り箸ゲームの状態クラスの実装とテスト">課題1:割り箸ゲームの状態クラスの実装とテスト</h2>
 <p>新しいノートブックを開き、<code>waribashi.ipynb</code>という名前をつけよ。</p>
 <h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
 <p>まず最初のセルに、後で必要となるライブラリをインポートしておこう。</p>
@@ -425,7 +508,7 @@ a <span class="op">=</span> [s1]
 <p>という処理をすれば良い。</p>
 <p>ただし、異なるパスで同じ状態に遷移する可能性があり、それらを「同じノード」としてまとめたいため、それをハッシュで実装する。具体的には、生成された状態の文字列をキーとしてハッシュに登録し、ハッシュに登録済みの状態ならその状態を、そうでなければ登録する、という処理を加える。</p>
 <h4 id="関数moveの実装">3. 関数<code>move</code>の実装</h4>
-<p>「次の合法手」を探索する関数<code>move</code>を3つ目のセルに入力せよ(3つ目のセルが残っていたらまず削除すること)。</p>
+<p>「次の合法手」を探索する関数<code>move</code>を3つ目のセルに入力せよ(3つ目のセルが残っていたらまず削除すること)。<code>State</code>クラスのメソッドではないことに注意。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> move(parent, is_first, nodes):
     <span class="cf">for</span> i <span class="kw">in</span> [(<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>)]:
         child <span class="op">=</span> parent.next_state(i)
@@ -495,7 +578,7 @@ make_graph(root, g)
 g.render(<span class="st">&quot;tree&quot;</span>)
 IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
-<h2 id="課題3-木構造の編集">課題3: 木構造の編集</h2>
+<h2 id="発展課題-枝刈り">発展課題: 枝刈り</h2>
 <p>さて、無事にゲーム木(しつこいが正確には木構造ではなく有向グラフである)が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
 <p>まず、引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈する。</p>
 <p>以上を実装するためには、木をたどっていって、</p>
@@ -533,7 +616,7 @@ make_graph(root, g)
 g.render(<span class="st">&quot;tree&quot;</span>)
 IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
-<h2 id="発展課題">発展課題</h2>
+<h3 id="後手必勝の確認">後手必勝の確認</h3>
 <p>隣の人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
 <h2 id="余談osを作ってミュージシャンになった人">余談：OSを作ってミュージシャンになった人</h2>
 <p>普段、Windowsが入っているパソコンを使うことが多いであろう。WindowsとはOS (Operating System)の一種である。OSとは基本ソフトとも言われ、ユーザとハードウェアの仲立ちをする非常に重要なソフトウェアだ。マイクロソフトはMS-DOSというOSの成功から急成長した会社だが、現在はWindows というOSを開発している。さて、Windowsには様々な種類があるが、2006年にリリースされた「Windows Vista」というOSがあった。私はVistaがプリインストールされたノートPCを購入したが、Vistaのあまりのひどさに「これを開発したのは誰だ？」と思って調べてみたら、開発責任者はVistaの発売翌日にマイクロソフトを退職し、ミュージシャンになっていた。彼の名前はジム・オールチン。Windows 95を作るはずの人物であった。</p>
