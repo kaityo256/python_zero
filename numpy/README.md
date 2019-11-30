@@ -358,8 +358,8 @@ from io import BytesIO
 
 ```py
 def download(url):
-    with urllib.request.urlopen(url) as wf:
-        data = wf.read()
+    with urllib.request.urlopen(url) as f:
+        data = f.read()
         return Image.open(BytesIO(data))
 ```
 
