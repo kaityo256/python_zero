@@ -334,9 +334,9 @@ plt.plot(V)
 
 波動関数とポテンシャルが同時にプロットされたはずである。波動関数は「そこに電子が存在する確率」である。その存在確率が少しだけ井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。
 
-## 課題2：行列の近似による画像処理
+## 課題2：行列の低ランク近似による画像処理
 
-特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。
+特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の行列積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。
 
 新しいノートブックを開き、`svd.ipynb`という名前で保存せよ。
 
@@ -345,77 +345,100 @@ plt.plot(V)
 1つ目のセルにで、必要なライブラリをインポートしよう。
 
 ```py
-import IPython
-from PIL import Image
-from matplotlib import pyplot as plt
+import urllib
 import numpy as np
+from PIL import Image
 from scipy import linalg
+from io import BytesIO
 ```
 
-### 2. 画像のダウンロード
+### 2. 画像のダウンロード関数
 
-圧縮する元の画像をダウンロードしよう。2つ目のセルで以下を実行せよ。
+圧縮する元の画像をダウンロードする関数を実装しよう。2つ目のセルで以下を実行せよ。
 
 ```py
-!wget https://kaityo256.github.io/python_zero/numpy/stop.jpg
+def download(url):
+    with urllib.request.urlopen(url) as wf:
+        data = wf.read()
+        return Image.open(BytesIO(data))
 ```
 
 ### 3. 画像の表示
 
-先ほどダウンロードした画像を確認しよう。3つ目のセルで以下を実行し、画像が表示されることを確認せよ。
+ダウンロード関数のテストをしよう。3つ目のセルで以下を実行せよ。
 
 ```py
-IPython.display.Image("stop.jpg")
+URL = "https://kaityo256.github.io/python_zero/numpy/stop.jpg"
+download(URL)
 ```
+
+カラー画像が表示されれば成功である。
 
 ### 4. モノクロへの変換
 
-先ほどダウンロードした画像はカラー画像であり、各ピクセルにR、G、Bの値が紐づけられている。このままでは行列とみなすことができないので、モノクロ化しよう。4つ目のセルに以下を入力、実行し、画像がモノクロに変換されたことを確認せよ。
+先ほどダウンロードした画像はカラー画像であり、各ピクセルにR、G、Bの値が紐づけられている。このままでは行列とみなすことができないので、モノクロ化する関数を実装しよう。4つ目のセルに以下を実装せよ。
 
 ```py
-img = Image.open('stop.jpg')
-gray_img = img.convert('L')
-gray_img.save('stop_mono.jpg')
-IPython.display.Image("stop_mono.jpg")
+def mono(url):
+    img = download(url)
+    gray_img = img.convert('L')
+    return gray_img
 ```
 
-### 5. 特異値分解
+#### 5. モノクロ変換のテスト
 
-画像がモノクロになったら、いよいよ特異値分解しよう。5つ目のセルに以下を入力せよ。
+モノクロに変換できるか確認しよう。5つ目のセルで以下を実行せよ。
 
 ```py
-a = np.asarray(gray_img)
-u, s, v = linalg.svd(a)
+URL = "https://kaityo256.github.io/python_zero/numpy/stop.jpg"
+mono(URL)
 ```
 
-画像を`asarray`に渡すことでそのままNumPy配列にすることができる。その配列を`linalg.svd`に渡せば特異値分解完了である。
+モノクロ画像が表示されれば成功である。
 
 ### 6. 画像の低ランク近似
 
-特異値分解された行列を利用して、画像の圧縮をしよう。6つ目のセルで以下を実行せよ。
+画像を特異値分解により低ランク近似する関数を実装しよう。6つ目のセルに以下を入力せよ。
 
 ```py
-rank = 10
-ur = u[:, :rank]
-sr = np.matrix(linalg.diagsvd(s[:rank], rank,rank))
-vr = v[:rank, :]
-b = np.asarray(ur*sr*vr)
-img2 = Image.fromarray(np.uint8(b))
-img2.save('output.jpg')
-IPython.display.Image("output.jpg")
+def svd(url, ratio):
+    gray_img = mono(url)
+    a = np.asarray(gray_img)
+    w, _ = a.shape
+    rank = int(w*ratio)
+    u, s, v = linalg.svd(a)
+    ur = u[:, :rank]
+    sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
+    vr = v[:rank, :]
+    b = np.asarray(ur*sr*vr)
+    return Image.fromarray(np.uint8(b))
 ```
 
-上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。`rank`は、使う情報の「幅」であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。`rank = 5`の場合と、`rank=20`の場合にそれぞれ画像がどうなるか比べてみよ。
+画像データを`asarray`に渡すことでそのままNumPy配列にすることができる。その配列を`linalg.svd`に渡せば特異値分解完了である。その後、`ratio`で指定された特異値の数だけ残して画像を再構成している。
+
+### 7. 画像の低ランク近似の確認
+
+先程実装した低ランク近似関数を確認しよう。7つ目のセルで以下を実行せよ。
+
+```py
+URL = "https://kaityo256.github.io/python_zero/numpy/stop.jpg"
+ratio = 0.1
+svd(URL, ratio)
+```
+
+上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。`ratio`は、使う情報の割合であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。`ratio = 0.05`の場合と、`ratio = 2.0`の場合も確認し、画像がどうなるか確認せよ。
 
 ### 発展課題
 
-インターネットで適当な画像をダウンロードし、上記の手続きで低ランク近似をせよ。適当な画像を見つけたら、例えば右クリックの「画像のアドレスをコピー」で画像のURLをコピーし、2つ目のセルで
+インターネットで適当な画像を探し、上記の手続きで低ランク近似をせよ。画像フォーマットはJPG形式とし、あまり大きな画像でない方がよい。適当な画像で右クリックし、「画像アドレスをコピー」等でアドレスを取得できる。そのアドレスを`URL`に指定せよ。
 
 ```py
-!wget ここに画像のURLをペースト -O stop.jpg
+URL = # ここを指定せよ
+ratio = 0.1
+svd(URL, ratio)
 ```
 
-として実行すればGoogle Colab上に「stop.jpg」という名前でダウンロードできる。あとは同じプロセスを繰り返すことでダウンロードしたファイルの低ランク近似画像を生成できる。その際、様々な`rank`の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。
+いくつかの`ratio`の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。
 
 ## 余談：進化するオセロAIを作った話
 

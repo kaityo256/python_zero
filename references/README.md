@@ -45,6 +45,8 @@ Pythonでだいたいプログラムが書けるようになった、もしく�
 * [再帰関数を学ぶと、どんな世界が広がるか](https://qiita.com/drken/items/23a4f604fa3f505dd5ad) 再帰の考え方の参考にした。
 * [典型的な DP (動的計画法) のパターンを整理 Part 1 ～ ナップサック DP 編 ～](https://qiita.com/drken/items/a5e6fe22863b7992efdb) 動的計画法の説明の参考にした。
 * [意外と解説がない！動的計画法で得た最適解を「復元」する一般的な方法](https://qiita.com/drken/items/0c7bab0384438f285f93) 動的計画法で得た答えから、その答えを与える組み合わせを構成する方法の説明の参考にした。
+* [配信講義　計算科学技術特論A](https://www.r-ccs.riken.jp/library/event/tokuronA_2019.html) 特にBLASやLAPACKについて中田真秀さん（理研）の解説を参考にした。
+* [A Visual Intro to NumPy and Data Representation](https://jalammar.github.io/visual-numpy/) NumPyのデータ構造の可視化の参考にした。
 
 ### プロジェクトについて
 
