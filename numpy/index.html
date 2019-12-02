@@ -99,8 +99,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <h2 id="ライブラリについて">ライブラリについて</h2>
 <p>スクリプト言語は同時通訳で、コンパイラ言語は事前翻訳である。なんとなく同時通訳で情報を処理するより、事前に全て翻訳しておいた方が実行が早そうな気がするであろう。スクリプト言語よりもコンパイラ言語の方が「同時通訳」というオーバーヘッドがなく、さらにコードの最適化に時間をかけられることもあって、「一般論としては」同じことをするならコンパイラ言語の方が早い。しかし、現実はさほど単純ではない。</p>
-<p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱うNumpyはそのような強力なライブラリの一つだ。</p>
-<p>よくプログラミング言語の優劣について聞かれるのだが、個人的な印象でいえば文法などはあまり重要でないと感じる。極論すれば、言語の優劣はライブラリの豊富さで決まる。Pythonには強力なライブラリが豊富にある。ある目的のために複数のライブラリを束ねたものをフレームワークと呼ぶ。Pythonには機械学習のフレームワークが多数存在し、機械学習を行うプログラミング言語のデファクトスタンダードとなっている。いずれにせよ、「とりあえずPythonを使って何かしたい」場合、Pythonの細かい文法を気にするより「当面はライブラリの使い方を学ぶ」と割り切った方が生産的だと思う。</p>
+<p>通常、スクリプト言語は豊富なライブラリを持つ。ライブラリとは、よく使う機能をパッケージ化したものだ。ライブラリは、その言語そのもので書かれたものもあるが、時間がかかる処理についてはCやFortranなどの言語で記述され、事前にコンパイルされている。特に数値計算ライブラリは高度に最適化されていることが多く、よほどのことがなければ自分でCやFortranで書くより、Pythonからライブラリを呼び出した方が高速に実行できる。また、速度が不要である場合でも、Pythonからライブラリを呼び出して書いた方が、Cなどのコンパイラ言語で書くより早く開発できることが多い。本講で扱うNumPyはそのような強力なライブラリの一つだ。</p>
 <h2 id="numpyとscipy">NumPyとSciPy</h2>
 <p>Pythonには強力なライブラリが多数存在し、それらを使いこなすことで、少ない記述で豊富な機能を素早く実装することができる。今回は、数多くのライブラリの中でも、数値計算、特に行列演算を効率的に行うことができるNumPyと、それを用いて様々な科学的な計算を行うことができるライブラリ、SciPyを使ってみる。</p>
 <p>なお、今回の講義でNumPyやSciPyの使い方を覚える必要はない。ただ、PythonにはNumPyやSciPyというライブラリがあり、数行書くだけで行列の固有値問題を解くことができる、ということをぼんやり覚えておいて、将来、必要になった時にそれを思い出して、詳細については本を読むなりウェブで検索するなりすればよい。</p>
@@ -111,9 +110,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
 <p>NumPyを使うには、まず<code>numpy</code>をインポートする。<code>np</code>という別名をつけるのが慣習である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
-<p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、てっとりばやいのは<code>np.array</code>にリストを与えることだ。例えば以下は二行二列の行列を作る例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
-<span class="bu">print</span>(a)</code></pre></div>
+<p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、簡単なのは<code>np.array</code>にリストを与えることだ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])
+prit(a)</code></pre></div>
+<pre class="txt"><code>[1 2 3]</code></pre>
+<p>以下は二行二列の行列を作る例である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
+<span class="bu">print</span>(data)</code></pre></div>
 <pre class="txt"><code>[[1 2]
  [3 4]]</code></pre>
 <p>要素が全てゼロの配列を作るには、<code>zeros</code>を使えばよい。</p>
@@ -129,7 +132,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="bu">print</span>(z2.dtype) <span class="co">#=&gt; int64</span></code></pre></div>
 <h3 id="numpy配列同士の演算">NumPy配列同士の演算</h3>
 <p>NumPy配列は、「形」を保持しており、<code>shape</code>でその形を知ることができる。<code>shape</code>は、タプルの形で返ってくる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a.shape <span class="co">#=&gt; (2,2)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data.shape <span class="co">#=&gt; (2,2)</span></code></pre></div>
 <p>形が同じ行列同士は四則演算ができる。ここで<code>*</code>を計算すると、行列積ではなく、「要素ごとの積」を計算することに注意。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> np.array([[<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>]])
 <span class="bu">print</span>(a<span class="op">*</span>b)</code></pre></div>
@@ -274,48 +277,64 @@ v <span class="op">=</span> v <span class="op">*</span> v
 plt.plot(v<span class="op">*</span><span class="dv">20</span><span class="op">+</span>w[i0])
 plt.plot(V)</code></pre></div>
 <p>波動関数とポテンシャルが同時にプロットされたはずである。波動関数は「そこに電子が存在する確率」である。その存在確率が少しだけ井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
-<h2 id="課題2行列の近似による画像処理">課題2：行列の近似による画像処理</h2>
-<p>特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。</p>
+<h2 id="課題2行列の低ランク近似による画像処理">課題2：行列の低ランク近似による画像処理</h2>
+<p>特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の行列積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。</p>
 <p>新しいノートブックを開き、<code>svd.ipynb</code>という名前で保存せよ。</p>
 <h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
 <p>1つ目のセルにで、必要なライブラリをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
-<span class="im">from</span> PIL <span class="im">import</span> Image
-<span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> urllib
 <span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> scipy <span class="im">import</span> linalg</code></pre></div>
-<h3 id="画像のダウンロード">2. 画像のダウンロード</h3>
-<p>圧縮する元の画像をダウンロードしよう。2つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>numpy<span class="op">/</span>stop.jpg</code></pre></div>
+<span class="im">from</span> PIL <span class="im">import</span> Image
+<span class="im">from</span> scipy <span class="im">import</span> linalg
+<span class="im">from</span> io <span class="im">import</span> BytesIO</code></pre></div>
+<h3 id="画像のダウンロード関数">2. 画像のダウンロード関数</h3>
+<p>圧縮する元の画像をダウンロードする関数を実装しよう。2つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> download(url):
+    <span class="cf">with</span> urllib.request.urlopen(url) <span class="im">as</span> f:
+        data <span class="op">=</span> f.read()
+        <span class="cf">return</span> Image.<span class="bu">open</span>(BytesIO(data))</code></pre></div>
 <h3 id="画像の表示">3. 画像の表示</h3>
-<p>先ほどダウンロードした画像を確認しよう。3つ目のセルで以下を実行し、画像が表示されることを確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">IPython.display.Image(<span class="st">&quot;stop.jpg&quot;</span>)</code></pre></div>
+<p>ダウンロード関数のテストをしよう。3つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
+download(URL)</code></pre></div>
+<p>カラー画像が表示されれば成功である。</p>
 <h3 id="モノクロへの変換">4. モノクロへの変換</h3>
-<p>先ほどダウンロードした画像はカラー画像であり、各ピクセルにR、G、Bの値が紐づけられている。このままでは行列とみなすことができないので、モノクロ化しよう。4つ目のセルに以下を入力、実行し、画像がモノクロに変換されたことを確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="st">&#39;stop.jpg&#39;</span>)
-gray_img <span class="op">=</span> img.convert(<span class="st">&#39;L&#39;</span>)
-gray_img.save(<span class="st">&#39;stop_mono.jpg&#39;</span>)
-IPython.display.Image(<span class="st">&quot;stop_mono.jpg&quot;</span>)</code></pre></div>
-<h3 id="特異値分解">5. 特異値分解</h3>
-<p>画像がモノクロになったら、いよいよ特異値分解しよう。5つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.asarray(gray_img)
-u, s, v <span class="op">=</span> linalg.svd(a)</code></pre></div>
-<p>画像を<code>asarray</code>に渡すことでそのままNumPy配列にすることができる。その配列を<code>linalg.svd</code>に渡せば特異値分解完了である。</p>
+<p>先ほどダウンロードした画像はカラー画像であり、各ピクセルにR、G、Bの値が紐づけられている。このままでは行列とみなすことができないので、モノクロ化する関数を実装しよう。4つ目のセルに以下を実装せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> mono(url):
+    img <span class="op">=</span> download(url)
+    gray_img <span class="op">=</span> img.convert(<span class="st">&#39;L&#39;</span>)
+    <span class="cf">return</span> gray_img</code></pre></div>
+<h4 id="モノクロ変換のテスト">5. モノクロ変換のテスト</h4>
+<p>モノクロに変換できるか確認しよう。5つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
+mono(URL)</code></pre></div>
+<p>モノクロ画像が表示されれば成功である。</p>
 <h3 id="画像の低ランク近似">6. 画像の低ランク近似</h3>
-<p>特異値分解された行列を利用して、画像の圧縮をしよう。6つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rank <span class="op">=</span> <span class="dv">10</span>
-ur <span class="op">=</span> u[:, :rank]
-sr <span class="op">=</span> np.matrix(linalg.diagsvd(s[:rank], rank,rank))
-vr <span class="op">=</span> v[:rank, :]
-b <span class="op">=</span> np.asarray(ur<span class="op">*</span>sr<span class="op">*</span>vr)
-img2 <span class="op">=</span> Image.fromarray(np.uint8(b))
-img2.save(<span class="st">&#39;output.jpg&#39;</span>)
-IPython.display.Image(<span class="st">&quot;output.jpg&quot;</span>)</code></pre></div>
-<p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>rank</code>は、使う情報の「幅」であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。<code>rank = 5</code>の場合と、<code>rank=20</code>の場合にそれぞれ画像がどうなるか比べてみよ。</p>
+<p>画像を特異値分解により低ランク近似する関数を実装しよう。6つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> svd(url, ratio):
+    gray_img <span class="op">=</span> mono(url)
+    a <span class="op">=</span> np.asarray(gray_img)
+    w, _ <span class="op">=</span> a.shape
+    rank <span class="op">=</span> <span class="bu">int</span>(w<span class="op">*</span>ratio)
+    u, s, v <span class="op">=</span> linalg.svd(a)
+    ur <span class="op">=</span> u[:, :rank]
+    sr <span class="op">=</span> np.matrix(linalg.diagsvd(s[:rank], rank, rank))
+    vr <span class="op">=</span> v[:rank, :]
+    b <span class="op">=</span> np.asarray(ur<span class="op">*</span>sr<span class="op">*</span>vr)
+    <span class="cf">return</span> Image.fromarray(np.uint8(b))</code></pre></div>
+<p>画像データを<code>asarray</code>に渡すことでそのままNumPy配列にすることができる。その配列を<code>linalg.svd</code>に渡せば特異値分解完了である。その後、<code>ratio</code>で指定された特異値の数だけ残して画像を再構成している。</p>
+<h3 id="画像の低ランク近似の確認">7. 画像の低ランク近似の確認</h3>
+<p>先程実装した低ランク近似関数を確認しよう。7つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
+ratio <span class="op">=</span> <span class="fl">0.1</span>
+svd(URL, ratio)</code></pre></div>
+<p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>ratio</code>は、使う情報の割合であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。<code>ratio = 0.05</code>の場合と、<code>ratio = 2.0</code>の場合も確認し、画像がどうなるか確認せよ。</p>
 <h3 id="発展課題">発展課題</h3>
-<p>インターネットで適当な画像をダウンロードし、上記の手続きで低ランク近似をせよ。適当な画像を見つけたら、例えば右クリックの「画像のアドレスをコピー」で画像のURLをコピーし、2つ目のセルで</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget ここに画像のURLをペースト <span class="op">-</span>O stop.jpg</code></pre></div>
-<p>として実行すればGoogle Colab上に「stop.jpg」という名前でダウンロードできる。あとは同じプロセスを繰り返すことでダウンロードしたファイルの低ランク近似画像を生成できる。その際、様々な<code>rank</code>の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。</p>
+<p>インターネットで適当な画像を探し、上記の手続きで低ランク近似をせよ。画像フォーマットはJPG形式とし、あまり大きな画像でない方がよい。適当な画像で右クリックし、「画像アドレスをコピー」等でアドレスを取得できる。そのアドレスを<code>URL</code>に指定せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="co"># ここを指定せよ</span>
+ratio <span class="op">=</span> <span class="fl">0.1</span>
+svd(URL, ratio)</code></pre></div>
+<p>いくつかの<code>ratio</code>の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。</p>
 <h2 id="余談進化するオセロaiを作った話">余談：進化するオセロAIを作った話</h2>
 <p>僕がプログラミングを始めたのは小学6年生の時だ。叔父からお下がりのPCをもらったのだが、そのPCで動くゲームがあまりなかった。そこで、親にプログラムの本を買ってもらい、そこにあるプログラムリスト(BASICだった)を打ち込んで遊んだ。簡単なゲームのようなものも作ったと思う。中学生だったか高校生だったか、さすがにパソコンが非力でできることが少なくなってきたので、当時の最新のパソコンを買ってもらった。PC-9801 RXというマシンで、結構高かったはず。このマシンでいろいろ遊んだが、特に友人たちとチームを作り、いくつかゲームを作って遊んでいた。さて、高校生の時、僕は再帰プログラムを覚えた。再帰を使えるようになると、例えばパズルを解くプログラムを組むことができる。再帰を覚えた僕は、数独や、イラストロジックを解くプログラムを組んだりして遊んだが、その中に「進化するオセロ」というものがあった。</p>
 <p>オセロでは「なるべく端や角を取りたい」「端や角の隣は取りたくない」という戦略があるのを知っているであろう。これを数値化し、「角に石がおけたら+10点、角の両隣の場所に石をおいたら-5点」といった「得点マップ」を作り、そのマップの値を変化させることで強いオセロAIを作ることを考えた。</p>
