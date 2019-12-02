@@ -62,6 +62,10 @@ print(data)
 要素が全てゼロの配列を作るには、`zeros`を使えばよい。
 
 ```py
+np.zeros((2,2)))
+```
+
+```py
 z = np.zeros((2,2))
 print(z)
 ```
@@ -124,8 +128,8 @@ NumPy配列は、どのような「形」でも作ることができる。通常
 連番の要素を持つ一次元のNumPy配列を作るには、`arange`を使う。
 
 ```py
-a = np.arange(8)
-print(a)
+data = np.arange(8)
+print(data)
 ```
 
 ```txt
