@@ -85,6 +85,7 @@
 
 ## [クラスとオブジェクト指向](class/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-08)
 * オブジェクト指向とは？
 * クラスとインスタンス
 * オブジェクト指向プログラミングの実例
@@ -93,6 +94,7 @@
 
 ## [NumPyとSciPyの使い方](numpy/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-09)
 * NumPyの使い方
 * SciPyの使い方
 * シュレーディンガー方程式と固有値問題
