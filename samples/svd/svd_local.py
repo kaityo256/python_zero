@@ -22,16 +22,21 @@ def svd(filename, ratio):
     sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
     vr = v[:rank, :]
     b = np.asarray(ur*sr*vr)
+    sr = np.vectorize(lambda x: x**0.5)(sr)
+    ur = ur * sr
+    vr = sr * vr 
+    Image.fromarray(np.uint8(ur)).save("ur.jpg")
+    Image.fromarray(np.uint8(vr)).save("vr.jpg")
     return Image.fromarray(np.uint8(b))
 
 
 def main():
-    path = "mac.jpg"
+    path = "stop.jpg"
     img = mono(path)
-    img.save("mac_mono.jpg")
+    img.save("stop_mono.jpg")
     ratio = 0.1
     img = svd(path, ratio)
-    img.save("mac_svd.jpg")
+    img.save("stop_svd.jpg")
 
 
 if __name__ == '__main__':
