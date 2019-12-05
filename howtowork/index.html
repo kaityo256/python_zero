@@ -193,11 +193,13 @@ BINARY_ADD</code></pre>
 <p class="caption"><code>a + b * c</code>の計算</p>
 </div>
 <h1 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h1>
-<h2 id="課題1抽象構文木">課題1：抽象構文木</h2>
+<h2 id="課題1抽象構文木とバイトコード">課題1：抽象構文木とバイトコード</h2>
 <h3 id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h3>
-<p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、以下のプログラムを4つのセルに分けて入力せよ。</p>
+<p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、<code>ast.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>最初のセルで必要なライブラリをインポートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> ast
+<span class="im">import</span> dis
 <span class="im">from</span> IPython.display <span class="im">import</span> Image, display_png
 <span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h4 id="抽象構文木をグラフに変換する関数">2. 抽象構文木をグラフに変換する関数</h4>
@@ -208,9 +210,10 @@ BINARY_ADD</code></pre>
     nodes.append(index)
     g.node(<span class="bu">str</span>(index), name)
     <span class="cf">if</span> index <span class="op">!=</span> pindex:
-        g.edge(<span class="bu">str</span>(index), <span class="bu">str</span>(pindex))
+        g.edge(<span class="bu">str</span>(pindex), <span class="bu">str</span>(index))
     <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):
         visit(n, nodes, index, g)</code></pre></div>
+<p><code>__name__</code>は前後にアンダースコアが二つずつであることに注意。</p>
 <h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
 <p>抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
@@ -219,16 +222,14 @@ BINARY_ADD</code></pre>
     visit(tree, [], <span class="dv">0</span>, graph)
     graph.render(<span class="st">&quot;test&quot;</span>)
     display_png(Image(<span class="st">&quot;test.png&quot;</span>))</code></pre></div>
+<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコードの仕組みである。</p>
 <h4 id="抽象構文木の表示">4. 抽象構文木の表示</h4>
 <p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src<span class="op">=</span><span class="st">&quot;&quot;&quot;</span>
 <span class="st">3+4</span>
 <span class="st">&quot;&quot;&quot;</span>
 show_ast(src)</code></pre></div>
-<p>ここまで正しく入力されていれば、4つ目のセルを入力、実行したところで、抽象構文木のグラフが表示されるはずである。</p>
-<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的にまたその子ノードを取得する、というのがこのコードの仕組みである。</p>
-<h3 id="課題1-2様々なプログラムのパース">課題1-2：様々なプログラムのパース</h3>
-<p>4つ目の(入力するプログラムを与えるセル)の文字列を変え、別のプログラムをパースしてみよ。まずは<code>+</code>を<code>-</code>や<code>/</code>、<code>//</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
+<p>ここまで正しく入力されていれば、抽象構文木のグラフが表示されるはずである。うまくできたら、パースするプログラム文字列を変え、別のプログラムをパースしてみよ。まずは<code>3+4</code>の<code>+</code>を<code>-</code>や<code>/</code>、<code>//</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a,b):
     <span class="cf">return</span> a<span class="op">+</span>b</code></pre></div>
@@ -238,20 +239,20 @@ show_ast(src)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span>
 <span class="st">a, b = (1,2)</span>
 <span class="st">&quot;&quot;&quot;</span></code></pre></div>
-<p>と入力する。何が作られて、何にアサインされているだろうか？</p>
-<h2 id="課題2バイトコードの可視化">課題2：バイトコードの可視化</h2>
-<p>以下のプログラムそれぞれについてバイトコードを確認せよ。</p>
+<p>と入力する。抽象構文木とプログラムの対応がわかるだろうか？</p>
+<h3 id="課題1-2バイトコード">課題1-2：バイトコード</h3>
+<h4 id="バイトコードの表示">5. バイトコードの表示</h4>
+<p>以下のプログラムを実行し、バイトコードが得られることを確認せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
+<p>バイトコードが得られたら、以下のプログラムに対応するバイトコードを出力し、逆ポーランド記法となっていることを確認せよ。</p>
 <ul>
 <li><code>a + b</code></li>
 <li><code>a - b</code></li>
 <li><code>a * b + c</code></li>
 <li><code>a + b * c</code></li>
 </ul>
-<p>例えば最初のプログラムのバイトコードは以下で表示することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dis
-dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
 <h2 id="課題3スタックマシンの実装">課題3：スタックマシンの実装</h2>
-<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。</p>
+<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。新しいPython3ノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
 <h3 id="課題3-1-逆ポーランド記法電卓">課題3-1: 逆ポーランド記法電卓</h3>
 <p>逆ポーランド記法で記述された計算式を評価する計算機を作りたい。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
 <p>具体的には、以下のような「プログラム」を組む。</p>
@@ -262,8 +263,11 @@ dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
 <li>整数なら、そのままスタックにプッシュする</li>
 <li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
 </ul>
-<h4 id="計算機の実装">1. 計算機の実装</h4>
-<p>新しいノートブックを開き、最初のセルに以下を入力せよ。これは、逆ポーランド記法で記述された「プログラム」を実行する仮想マシンである。</p>
+<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
+<p>まずは必要なライブラリをインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dis</code></pre></div>
+<h4 id="計算機の実装">2. 計算機の実装</h4>
+<p>では計算機のプログラムを記述しよう。まずは加減算のみに対応させる。最初のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> calc(code):
     data <span class="op">=</span> code.split()
     stack <span class="op">=</span> []
@@ -298,7 +302,7 @@ dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
 </ul>
 <p>という順番で実行されている。</p>
 <h3 id="課題3-2-乗算除算の実装">課題3-2: 乗算、除算の実装</h3>
-<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、「プログラム」としては<code>\</code>を入力するが、実際の処理では<code>\\</code>を実行することで、実行結果を整数にすること。</p>
+<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、入力プログラムとしては<code>\</code>を入力するが、実際の処理では<code>\\</code>を実行することで、実行結果を整数にすること。</p>
 <p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</code></pre></div>
 <pre class="txt"><code>[] 1 =&gt; [1]
@@ -317,7 +321,11 @@ dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
 <li><code>3 + 4 * 5 - 12</code></li>
 <li><code>(1 + 4 * 5) / 7</code></li>
 </ul>
+<p>ヒント：<code>dis</code>を用いることで、演算順序がわかる。例えば</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</code></pre></div>
+<p>を実行すると、スタックに積む順番と演算を実行する順番がわかる。ここで、<code>dis</code>には数字を入力するのではなく、アルファベットを入力すること(数字を入力すると最適化で計算されてしまうため)。</p>
 <h3 id="発展課題">発展課題</h3>
+<p>注：この課題はかなり難しいので、無理に取り組まなくても良い。</p>
 <p>中置記法の計算式を、逆ポーランド記法に変換するコードを作成せよ。括弧は実装しなくてよいが、乗算や除算は加減算より優先されなくてはならない。例えば、</p>
 <ul>
 <li><code>1 + 2 * 3</code></li>
