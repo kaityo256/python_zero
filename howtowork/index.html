@@ -203,7 +203,7 @@ BINARY_ADD</code></pre>
 <span class="im">from</span> IPython.display <span class="im">import</span> Image, display_png
 <span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h4 id="抽象構文木をグラフに変換する関数">2. 抽象構文木をグラフに変換する関数</h4>
-<p>抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
+<p>２つ目のセルに抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> visit(node, nodes, pindex, g):
     name <span class="op">=</span> <span class="bu">str</span>(<span class="bu">type</span>(node).<span class="va">__name__</span>)
     index <span class="op">=</span> <span class="bu">len</span>(nodes)
@@ -215,26 +215,25 @@ BINARY_ADD</code></pre>
         visit(n, nodes, index, g)</code></pre></div>
 <p><code>__name__</code>は前後にアンダースコアが二つずつであることに注意。</p>
 <h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
-<p>抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
+<p>3つ目のセルに抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
     graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
     tree <span class="op">=</span> ast.parse(src)
     visit(tree, [], <span class="dv">0</span>, graph)
     graph.render(<span class="st">&quot;test&quot;</span>)
     display_png(Image(<span class="st">&quot;test.png&quot;</span>))</code></pre></div>
-<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコードの仕組みである。</p>
+<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコード(<code>visit</code>及び<code>show_ast</code>関数)の仕組みである。</p>
 <h4 id="抽象構文木の表示">4. 抽象構文木の表示</h4>
 <p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src<span class="op">=</span><span class="st">&quot;&quot;&quot;</span>
 <span class="st">3+4</span>
 <span class="st">&quot;&quot;&quot;</span>
 show_ast(src)</code></pre></div>
-<p>ここまで正しく入力されていれば、抽象構文木のグラフが表示されるはずである。うまくできたら、パースするプログラム文字列を変え、別のプログラムをパースしてみよ。まずは<code>3+4</code>の<code>+</code>を<code>-</code>や<code>/</code>、<code>//</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
+<p>ここで<code>src=</code>の後、及び<code>show_ast</code>の前に<code>&quot;</code>(ダブルクォーテーションマーク)が三つ続いていることに注意、</p>
+<p>ここまで正しく入力されていれば、抽象構文木のグラフが表示されるはずである。うまくできたら、パースするプログラム文字列を変え、別のプログラムをパースしてみよ。まずは<code>3+4</code>の<code>+</code>を<code>-</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a,b):
     <span class="cf">return</span> a<span class="op">+</span>b</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]:
-    <span class="bu">print</span>(i)</code></pre></div>
 <p>上記のプログラムを入力するには、<code>&quot;&quot;&quot;</code>で囲まれた領域に入力すること。例えば最初の例なら、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span>
 <span class="st">a, b = (1,2)</span>
@@ -244,17 +243,13 @@ show_ast(src)</code></pre></div>
 <h4 id="バイトコードの表示">5. バイトコードの表示</h4>
 <p>以下のプログラムを実行し、バイトコードが得られることを確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b&quot;</span>)</code></pre></div>
-<p>バイトコードが得られたら、以下のプログラムに対応するバイトコードを出力し、逆ポーランド記法となっていることを確認せよ。</p>
+<p>バイトコードが得られたら、以下のプログラムに対応するバイトコードを出力し、逆ポーランド記法に対応していることを確認せよ。</p>
 <ul>
-<li><code>a + b</code></li>
-<li><code>a - b</code></li>
-<li><code>a * b + c</code></li>
+<li><code>a + b + c</code></li>
 <li><code>a + b * c</code></li>
 </ul>
-<h2 id="課題3スタックマシンの実装">課題3：スタックマシンの実装</h2>
-<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。新しいPython3ノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
-<h3 id="課題3-1-逆ポーランド記法電卓">課題3-1: 逆ポーランド記法電卓</h3>
-<p>逆ポーランド記法で記述された計算式を評価する計算機を作りたい。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
+<h2 id="課題2スタックマシンの実装">課題2：スタックマシンの実装</h2>
+<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
 <p>具体的には、以下のような「プログラム」を組む。</p>
 <ul>
 <li>プログラムは、整数、'+'、`-'の三種類の<strong>トークン</strong>で構成される</li>
@@ -263,6 +258,8 @@ show_ast(src)</code></pre></div>
 <li>整数なら、そのままスタックにプッシュする</li>
 <li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
 </ul>
+<h3 id="課題2-1-逆ポーランド記法電卓">課題2-1: 逆ポーランド記法電卓</h3>
+<p>新しいPython3ノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>まずは必要なライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dis</code></pre></div>
@@ -300,9 +297,10 @@ show_ast(src)</code></pre></div>
 <li>次に<code>+</code>が来たので、スタックから値を二つ取り出し、その和をプッシュして<code>[3]</code>になった</li>
 <li>実行すべきプログラムがなくなったので、スタックの一番上にある数字<code>3</code>を表示して終了</li>
 </ul>
-<p>という順番で実行されている。</p>
-<h3 id="課題3-2-乗算除算の実装">課題3-2: 乗算、除算の実装</h3>
-<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、入力プログラムとしては<code>\</code>を入力するが、実際の処理では<code>\\</code>を実行することで、実行結果を整数にすること。</p>
+<p>という処理内容を表している、</p>
+<h3 id="課題2-2-乗算除算の実装">課題2-2: 乗算、除算の実装</h3>
+<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、入力プログラムとしては<code>/</code>を入力するが、実際の処理(<code>stack.append</code>)では<code>//</code>を実行することで、実行結果を整数にすること。</p>
+<p>ヒント： <code>calc</code>関数に<code>elif</code>文を追加し、<code>x</code>が<code>*</code>や<code>/</code>の場合の処理を追加する。</p>
 <p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</code></pre></div>
 <pre class="txt"><code>[] 1 =&gt; [1]
@@ -313,38 +311,23 @@ show_ast(src)</code></pre></div>
 [9] 4 =&gt; [9, 4]
 [9, 4] / =&gt; [2]
 2</code></pre>
-<h3 id="課題3-3-複雑な計算">課題3-3: 複雑な計算</h3>
-<p>以下の中置記法の計算式を、逆ポーランド記法に「頭で」変換し、先程の計算で実行せよ。演算子の優先順位も考慮すること。</p>
-<ul>
-<li><code>3 + 4 + 5</code></li>
-<li><code>3 + 4 * 5</code></li>
-<li><code>3 + 4 * 5 - 12</code></li>
-<li><code>(1 + 4 * 5) / 7</code></li>
-</ul>
-<p>ヒント：<code>dis</code>を用いることで、演算順序がわかる。例えば</p>
+<h3 id="発展課題-中置記法から逆ポーランド記法への変換">発展課題: 中置記法から逆ポーランド記法への変換</h3>
+<p><code>dis</code>を用いてバイトコードを出力することで、中置記法の計算式を逆ポーランド記法に変換できる。</p>
+<p>例えば、<code>1 + 2 * 3</code>の例なら</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</code></pre></div>
-<p>を実行すると、スタックに積む順番と演算を実行する順番がわかる。ここで、<code>dis</code>には数字を入力するのではなく、アルファベットを入力すること(数字を入力すると最適化で計算されてしまうため)。</p>
-<h3 id="発展課題">発展課題</h3>
-<p>注：この課題はかなり難しいので、無理に取り組まなくても良い。</p>
-<p>中置記法の計算式を、逆ポーランド記法に変換するコードを作成せよ。括弧は実装しなくてよいが、乗算や除算は加減算より優先されなくてはならない。例えば、</p>
+<p>を実行すると、</p>
+<pre class="txt"><code> 0 LOAD_NAME                0 (a)
+ 2 LOAD_NAME                1 (b)
+ 4 LOAD_NAME                2 (c)
+ 6 BINARY_MULTIPLY
+ 8 BINARY_ADD
+ 10 RETURN_VALUE</code></pre>
+<p>という表示が得られる。ここから、<code>a,b,c</code>を<code>1,2,3</code>に変換し、バイトコードの順番どおりに&quot; 1 2 3 * +&quot;と並べれば、<code>1 + 2 * 3</code>の逆ポーランド記法が得られる。なお、<code>dis.dis</code>に数字ではなくアルファベットを入力するのは、最適化により計算されてしまうことを防ぐためだ。</p>
+<p>同様にして、以下の中置記法の計算式を逆ポーランド記法に変換し、先程実装した計算機で実行し答えが合っていることを確かめよ。演算子の優先順位も考慮すること。</p>
 <ul>
-<li><code>1 + 2 * 3</code></li>
+<li><code>1 + 2 * 3 - 4</code></li>
+<li><code>(1 + 2 * 3) / 4</code></li>
 </ul>
-<p>という入力が与えられたら、</p>
-<ul>
-<li><code>1 2 3 * +</code></li>
-</ul>
-<p>という文字列を出力しなければならない。</p>
-<p>実装のヒント：</p>
-<p>バッファとスタックを用意する。</p>
-<ul>
-<li>プログラムから一つトークンを取り出す</li>
-<li>もしトークンが数字ならバッファにプッシュする</li>
-<li>もしトークンが<code>*</code>か<code>/</code>ならスタックにプッシュする</li>
-<li>もしトークンが<code>+</code>か<code>-</code>なら、スタックが空になるか、スタックの最上位が<code>+</code>もしくは<code>-</code>になるまで、「スタックからポップしてバッファにプッシュする」を繰り返す</li>
-<li>プログラムからすべてトークンを取りだしたら、スタックが空になるまで「スタックからポップしてバッファにプッシュする」を繰り返す</li>
-</ul>
-<p>以上を実装すると、バッファに逆ポーランド記法の順序でトークンが並ぶので、<code>&quot; &quot;.join(buffer)</code>を実行すれば所望の文字列を得る。</p>
 <h2 id="aiに悪意はあるか">AIに悪意はあるか</h2>
 <p>AIに意識があるか、という問題は難しい。個人的には「チューリングテストをパスしたAIには意識があるとみなす」という立場であり、究極的には人間の意識とAIの持つ「意識」は区別不可能となる未来が来るだろうと思っているが、現時点ではAIは発展途上であり、「あぁ、まだソフトウェアなんだな」と思う時と「人間と同じ問題を抱えているのでは」と思う時の両方がある。</p>
 <p>「あ、AIはただのソフトウェアなんだな」と思う例の一つは画像認識である。「犬」「猫」「羊」などのラベルがついた画像を事前に学習させておくことで、写真に何が写っているかを認識するAIを作るものだ。一見するとこのAIは写真に写るものを正しく認識しているように見えるが、何もいない草原に「羊がいる」と判断してしまう。「羊」のラベルがついた画像のほとんどが草原であったため、「草原＝羊」と認識してしまったのだ。逆に、子供が牧場で羊を抱きかかえる写真を見て「犬」と判断してしまうこともあった。草原以外にいる羊のデータがなかったためだと思われる。同様な例に「ハスキーと狼問題」がある。シベリアン・ハスキーは狼に似た犬種であるが、そのハスキーと狼を見分けるAIを作ったところ、実は犬ではなく「背景に雪があるかどうか」で判断していることがあった。</p>
@@ -352,7 +335,7 @@ show_ast(src)</code></pre></div>
 <p>Google翻訳がジェンダーバイアスを持つことも知られている。例えば現時点(2019年12月4日現在)では、「<strong>医者</strong> は旅行先でカバンを忘れてきた。」は「The doctor has forgotten <strong>his</strong> bag at the travel destination.」と訳すが、「<strong>看護師</strong> は旅行先で……」とすると「The nurse has forgotten <strong>her</strong> bag when traveling.」と訳す。Google翻訳は多くの翻訳例を通じて学習したモデルを用いているが、そのデータ上で「Docter」が「his」と、「Nurse」が「her」と一緒に用いらていれることが多かったのだと思われる。</p>
 <p>Google Photosの問題は「学習データに白人が多く黒人が少なかったため」に起きたことであり、Google翻訳の問題は学習用データを通じて「医者は男性が多く、看護師は女性が多い」という「偏見」も一緒に学習してしまったために起きたことだ。現時点では「AI」に罪はなく、「AIの学習過程で人間持つの差別や偏見が注入された」と認識されているが、そもそも学習で偏った情報に触れて偏見を身につけてしまうという過程は人間と全く同じである。既に自らの過ちをAIのせいにしている人も出現しており、そのうちAIが高度に発展した場合、我々はAIそのものに悪意や偏見を感じるようになるのかもしれない。</p>
 <ul>
-<li>Notes on AI Bias<a href="https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias" class="uri">https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias</a></li>
+<li>「Notes on AI Bias」<a href="https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias" class="uri">https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias</a></li>
 </ul>
 </article>
 </body>
