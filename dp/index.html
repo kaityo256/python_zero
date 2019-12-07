@@ -196,10 +196,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>これがどのように問題を解くのに使えるか考えてみよう。いま知りたいのは「AからI」までの最短経路である。しかし、それより小さい問題、「AからG」までの最短経路と、「AからH」までの最短経路がわかっているものとしよう。それぞれ「A-G」のコストが13、「A-H」のコストが11である。すると、「GからI」のコストが1、「HからI」のコストが2であることがわかっているので、AからG経由でIに行く最短パスのコストは14、AからH経由でIに行くコストは13となり、A-H-Iの経路が最短であることがわかる。</p>
 <p>こうして、「問題が部分的に解けている」ならば、それを「再利用」することでより大きな問題が解けるでしょう、というのが動的計画法の骨子である。</p>
 <h1 id="動的計画法課題">動的計画法：課題</h1>
-<h2 id="サイゼリヤ問題">サイゼリヤ問題</h2>
+<h2 id="課題1サイゼリヤ問題">課題1：サイゼリヤ問題</h2>
 <p>組み合わせ最適化問題の例として、サイゼリヤ問題を取り上げよう。サイゼリヤ問題とは「N円持ってサイゼリヤに行ったら最大でどれだけのカロリーを摂取できるか」という問題である。ただし、同じメニューを重複して注文してはいけないことにする。これは典型的なナップザック問題である。サイゼリヤのメニューは日々変わっているが、ここではある時点でのメニュー、114品の金額とカロリーのデータを使い、最終的に「サイゼリヤに一万円を握りしめていったら、最大何kcalを摂取できるか」という問題を解く。</p>
 <p>以下、サイゼリヤ問題を貪欲法、全探索、動的計画法の三種類の方法で解くことにする。新しいノートブックを開き、<code>saizeriya.ipynb</code>として保存せよ。</p>
-<h3 id="課題1データの読み込み">課題1：データの読み込み</h3>
+<h3 id="課題1-1データの読み込み">課題1-1：データの読み込み</h3>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>まずはデータを読み込もう。いつも通り最初のセルで必要なものをimportする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> pickle
@@ -215,7 +215,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     names, prices, cals <span class="op">=</span> pickle.load(f)
 names</code></pre></div>
 <p>これは、114種類のメニューそれぞれの、名前、価格、カロリー(kcal)のリストである。読み込めたかどうか確認うるため、セルの最後で<code>names</code>を評価している。<code>「['彩りガーデンサラダ', '小エビのサラダ',,,'コーヒーゼリー','トリフアイスクリーム']</code>と表示されれば正しく読み込めている。</p>
-<h3 id="課題2貪欲法">課題2：貪欲法</h3>
+<h3 id="課題1-2貪欲法">課題1-2：貪欲法</h3>
 <p>読み込んだデータに対して、貪欲法を実装しよう。貪欲法をサイゼリヤ問題に当てはめると「値段あたりのカロリー」が高いものから順番に選び、予算を超えたらそこでストップ、というアルゴリズムとなる。アルゴリズムとしては以下のようになる。</p>
 <ul>
 <li>メニューを「値段あたりのカロリー」で降順にソートする</li>
@@ -234,7 +234,7 @@ names</code></pre></div>
       <span class="cf">continue</span>
     psum <span class="op">+=</span> prices[i]
     csum <span class="op">+=</span> cals[i]
-    <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st">Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
+    <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
   <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen, </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(psum,csum))</code></pre></div>
 <p>ここで、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
@@ -249,19 +249,12 @@ names</code></pre></div>
 <p>早速貪欲法を実行してみよう。5つ目のセルで、以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 greedy(<span class="dv">1000</span>)</code></pre></div>
-<p>さいしょの<code>%%time</code>は「実行時間を計測せよ」という意味だ。 以下のような表示がでるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">ラージライス <span class="ex">219Yen</span> 454 kcal
-アーリオ・オーリオ<span class="kw">(</span><span class="ex">W</span>サイズ<span class="kw">)</span> <span class="ex">574Yen</span> 1120 kcal
-ポテトのグリル <span class="ex">199Yen</span> 366 kcal
-<span class="ex">Total</span> 992 Yen, 1940 kcal
-<span class="ex">CPU</span> times: user 584 µs, sys: 0 ns, total: 584 µs
-<span class="ex">Wall</span> time: 2.58 ms</code></pre></div>
-<p>後にわかるが、これは実は厳密解に一致する。経験的に、よほど条件が込み入ってない限り貪欲法はわりと良い結果を与える。貪欲法の計算量は、メニューの数をNとして、ソートに<span class="math inline">\(O(N \log N)\)</span>、そのあとのチェックに<span class="math inline">\(O(N)\)</span>なので、全体で<span class="math inline">\(O(N \log N)\)</span>である。何か難しそうな最適化問題に直面した場合、動的計画法その他を使う前に、まずは貪欲法を試す、という癖をつけておくとよい。</p>
+<p>さいしょの<code>%%time</code>は「実行時間を計測せよ」という意味だ。1000円で最大のカロリーを得るためのメニューが表示されたはずである。</p>
 <p>さらに「一万円を握りしめてサイゼリヤにいったら、最大何kcalを摂取できるか」も考えてみよう。<code>1000</code>を<code>10000</code>に変えて</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 greedy(<span class="dv">10000</span>)</code></pre></div>
 <p>を実行せよ。結果はどうなるだろうか？出てきたメニューを見た感想を述べよ。</p>
-<h3 id="課題3全探索">課題3：全探索</h3>
+<h3 id="課題1-3全探索">課題1-3：全探索</h3>
 <p>動的計画法を実装する前に、全探索コードを書いてみよう。いま、メニューが114個ある。全てのメニューについて「注文する/しない」を選ぶと、全体で<span class="math inline">\(O(2^N)\)</span>の手間がかかる。ただし、すでに予算を超えている時に、さらに追加でメニューを注文する必要はないので、その部分は枝刈をする。これをナイーブに再帰で書いてみよう。</p>
 <h4 id="全探索関数searchの実装">6. 全探索関数<code>search</code>の実装</h4>
 <p><code>n</code>番目までのメニューを使って、<code>budget</code>円以内で得られる最大のカロリーを返す関数<code>search(n, budget)</code>を実装しよう。6つ目のセルに、以下を入力せよ。</p>
@@ -285,48 +278,47 @@ greedy(<span class="dv">10000</span>)</code></pre></div>
 <h4 id="全探索の実行">7. 全探索の実行</h4>
 <p>実際に全探索を実行してみよう。7つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
-search(<span class="dv">113</span>,<span class="dv">1000</span>)</code></pre></div>
-<p>実行結果はこうなるはずだ(実行時間は揺らぐため、必ずしも同じにはならない)。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">CPU</span> times: user 6.41 s, sys: 0 ns, total: 6.41 s
-<span class="ex">Wall</span> time: 6.42 s
-<span class="ex">1940</span></code></pre></div>
-<p>最大カロリーは1940kcalであり、貪欲法と一致した。これは全探索しているので厳密解だ。ただし、実行時間が6秒と、かなりかかっている。次に<code>search(113,1200)</code>と、予算を「1200円」にして実行してみよ。実行時間が激増し、予算1万円の計算は絶望的であることがわかるはずだ。</p>
+cal <span class="op">=</span> search(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">1000</span>)
+<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
+<p>実行した結果、実行時間と1000円で得られる最大カロリーのみが表示されるはずである(メニューの取得は)。実行時間と結果を貪欲法と比較せよ。結果は貪欲法と一致したか？実行時間はどうであろうか？</p>
+<p>次に<code>search(len(names)-1,1200)</code>と、予算を「1200円」にして実行してみよ。実行時間はどうなったであろうか？予算1万円の探索は実行可能できそうか？</p>
 <p>なお、ここで求められるのは最大カロリーだけである。最大カロリーが求まった時、それを与えるメニューの組み合わせを求める方法は後述する。</p>
-<h3 id="課題3メモ化再帰による動的計画法の実装">課題3：メモ化再帰による動的計画法の実装</h3>
+<h3 id="課題1-4メモ化再帰による動的計画法の実装">課題1-4：メモ化再帰による動的計画法の実装</h3>
 <p>先ほどの全探索コードは、予算が増えるにしたがって指数関数的に時間がかかるので実用的でない。これを改善するのが「メモ化再帰」と呼ばれる方法だ。「メモ化再帰」は、簡単に言えば「再帰で組んだ全探索コードにメモ化というテクニックをつけたもの」だ。</p>
-<p>ポイントは<code>search(n, budget)</code>の返す値は同じ<code>n</code>と<code>budget</code>の組み合わせについては同じ値を返す、ということである。特に<code>n</code>や<code>budget</code>が小さいところでは、同じ組み合わせが何度も呼ばれているため、それを毎回計算するのは無駄だ。そこで、一度計算した<code>(n, budget)</code>の組み合わせは、再利用することにしよう。やり方は簡単で、辞書を使うだけである。</p>
+<p>ポイントは<code>search(n, budget)</code>の返す値は同じ<code>n</code>と<code>budget</code>の組み合わせについては同じ値を返す、という点である。特に<code>n</code>や<code>budget</code>が小さいところでは、同じ組み合わせが何度も呼ばれているため、それを毎回計算するのは無駄だ。そこで、一度計算した<code>(n, budget)</code>の組み合わせは、再利用することにしよう。やり方は簡単で、辞書を使うだけである。</p>
 <h4 id="メモ化再帰の実装">8. メモ化再帰の実装</h4>
-<p>7つ目のセルに書いた<code>search</code>関数を8つ目のセルにコピーし、以下のように修正せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)   <span class="co"># 追加(1)</span>
-<span class="kw">def</span> search(n, budget):
+<p>8つ目のセルに、メモ化機能をつけた全探索ルーチン<code>search_memo</code>を実装しよう。<code># 追加(1)</code>などのコメントは入力しなくて良い。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> search_memo(n, budget):
   <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
     <span class="cf">return</span> <span class="dv">0</span>
-  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(2)</span>
-    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(2)</span>
+  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(1)</span>
+    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(1)</span>
   c1 <span class="op">=</span> <span class="dv">0</span>
   <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
-    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
-  c2 <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)
+    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search_memo(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+  c2 <span class="op">=</span> search_memo(n<span class="op">-</span><span class="dv">1</span>, budget)
   cmax <span class="op">=</span> <span class="bu">max</span>(c1,c2)
-  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(3)</span>
+  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(2)</span>
   <span class="cf">return</span> cmax</code></pre></div>
-<p>先ほどの関数に、4行追加しただけだ。最初の追加(1)は、辞書の定義である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)   <span class="co"># 追加(1)</span></code></pre></div>
-<p>普通に辞書を作ると、存在しないキーを与えるとエラーとなるが、<code>defaultdict</code>は、キーが存在しなかった場合には、デフォルトの値を返すような辞書を作ってくれる。<code>defaultdict(int)</code>は、デフォルトの値として0を返す辞書を作って返してくれる。</p>
-<p>次に、「もしすでに調べた<code>(n, budget)</code>の組み合わせなら、計算済みの値を返す」という再帰の終端条件を追加している。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(2)</span>
-    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(2)</span></code></pre></div>
+<p>先ほどの関数<code>search</code>に、3行追加しただけだ。</p>
+<p>まず、新たな終端条件として「もしすでに調べた<code>(n, budget)</code>の組み合わせなら、計算済みの値を返す」という処理を追加したのが「追加(1)」だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(1)</span>
+    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(1)</span></code></pre></div>
 <p>ここで、<code>n</code>と<code>budget</code>をまとめたタプル<code>(n, budget)</code>を辞書のキーとしている。</p>
-<p>もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(3)</span></code></pre></div>
-<p>これは<code>(n, budget)</code>の組み合わせで得られる最大カロリーを、辞書<code>dict</code>に登録するコードだ。まるでメモを取っているようなので「メモ化 (Memoization)」と呼ぶ。ここでメモした値が、先ほどの「追加(1)」で使われる。メモ化は実装が簡単なわりに極めて効果的な高速化テクニックである。</p>
+<p>もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく(メモしておく)のが「追加(2)」だ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(2)</span></code></pre></div>
+<p>これは<code>(n, budget)</code>の組み合わせで得られる最大カロリーを辞書に登録するコードだ。まるでメモを取って再利用しているようなので「 <strong>メモ化 (Memoization)</strong> 」と呼ぶ。メモ化は実装が簡単なわりに、極めて効果的な高速化テクニックである。</p>
 <h4 id="メモ化再帰の実行">9. メモ化再帰の実行</h4>
 <p>さて、早速実行してみよう。9つ目のセルで以下を実行せよ。まずは予算1000円から。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
-search(<span class="dv">113</span>,<span class="dv">1000</span>)</code></pre></div>
-<p>全探索と同じ結果を、非常に高速に返したはずだ。特筆すべきは、実行時間の予算依存性である。全探索の場合は1000円を1200円にするだけで計算時間が激増した。しかし、メモ化を施した再帰ルーチンなら、10000円でも実行可能だ。</p>
+dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
+cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">1000</span>)
+<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
+<p>メモ化に用いる辞書をここで定義していることに注意。全探索と同じ結果を、非常に高速に返したはずだ。特筆すべきは、実行時間の予算依存性である。全探索の場合は1000円を1200円にするだけで計算時間が激増した。しかし、メモ化を施した再帰ルーチンなら、10000円でも実行可能だ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
-search(<span class="dv">113</span>,<span class="dv">10000</span>)</code></pre></div>
+dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
+cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">10000</span>) <span class="co"># ←ここを10000に修正して再実行せよ</span>
+<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
 <p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。また、ここで得たカロリーは次の「発展課題：解の再構成」で使うので覚えておくこと。</p>
 <h3 id="発展課題解の再構成">発展課題：解の再構成</h3>
 <p>さて、メモ化再帰により、「ある予算内で得られる最大カロリー」はわかったが、「その最大カロリーを与えるメニュー」はわからない。しかし、先ほどメモしたリストと、最大カロリーがわかれば、そのメニューを構成するのは簡単である。</p>
@@ -335,10 +327,9 @@ search(<span class="dv">113</span>,<span class="dv">10000</span>)</code></pre></
 dic[(n, budget)] <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
 
 <span class="co"># メニューnが注文されない時</span>
-dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])</code></pre></div>
-<p>今、<code>n</code>番目のメニューまで使って、予算<code>budget</code>で最大<code>cal</code>カロリーが得られるとわかっているとしよう。このカロリー最大化メニューに<code>n</code>番のメニューが含まれているならば、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">cal <span class="op">=</span> cals[n] <span class="op">+</span> dic[(n<span class="op">-</span><span class="dv">1</span>, budget<span class="op">-</span>prices[n])]</code></pre></div>
-<p>が成立しているはずである。従って、メニューを最後から順番にまわして、上記の条件が成立していたら<code>n</code>をメニューに追加して、予算とカロリーを減らし、そうでなければ次を探す、というループを回せばよい。この処理を実装してみよう。</p>
+dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)</code></pre></div>
+<p>今、<code>n</code>番目のメニューまで使って、予算<code>budget</code>で最大<code>cal</code>カロリーが得られるとわかっているとしよう。このカロリー最大化メニューに<code>n</code>番のメニューが含まれていないならば、<code>dic[(n, budget)]</code>と<code>dic[(n-1, budget)]</code>が等しくなる。</p>
+<p>従って、メニューを最後から順番にまわして、<code>dic[(n, budget)]</code>と<code>dic[(n-1, budget)]</code>が等しくなければ<code>n</code>をメニューに追加して予算とカロリーを減らし、そうでなければ次を探す、というループを回せばよい。この処理を実装してみよう。</p>
 <h4 id="解の再構成get_menuの実装">10. 解の再構成<code>get_menu</code>の実装</h4>
 <p>10個目のセルに、「予算」と「カロリー」から「メニュー」を再構成する関数<code>get_menu</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_menu(budget, cal):
@@ -346,15 +337,11 @@ dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><spa
   <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(<span class="bu">len</span>(names))):
     <span class="cf">if</span> cal <span class="kw">is</span> <span class="dv">0</span>:
       <span class="cf">break</span>
-    <span class="co"># ここを実装せよ</span>
+    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> dic[(n<span class="op">-</span><span class="dv">1</span>, budget)]:
+      cal <span class="op">-=</span> cals[n]
+      budget <span class="op">-=</span> prices[n]
+      menu.append(n)
   <span class="cf">return</span> menu</code></pre></div>
-<p>ただし、上記のコードの「ここを実装せよ」の箇所に、以下を実行するコードを記述せよ。</p>
-<ul>
-<li>もし<code>cal = cals[n] + dic[(n-1, budget-prices[n])]</code>が成立していたら</li>
-<li><code>cal</code>から<code>cal[n]</code>を引き、</li>
-<li><code>budget</code>から<code>prices[n]</code>を引き、</li>
-<li><code>menu</code>に<code>n</code>を追加する</li>
-</ul>
 <p>この関数が、「カロリー最大化メニュー」のインデックスリストを返す。</p>
 <h4 id="メニューの表示関数show_menuの実装">11. メニューの表示関数<code>show_menu</code>の実装</h4>
 <p><code>get_menu</code>が返すンデックスリストを受け取って、名前やカロリーを表示するコードも書こう。11個目のセルに以下を実装せよ。</p>
@@ -368,11 +355,7 @@ dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><spa
 <p>上記二つをまとめて実行してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">1000</span>, <span class="dv">1940</span>)
 show_menu(menu)</code></pre></div>
-<p>以下のような実行結果が得られるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">ラージライス <span class="ex">219</span> Yen 454 kcal
-アーリオ・オーリオ<span class="kw">(</span><span class="ex">W</span>サイズ<span class="kw">)</span> <span class="ex">574</span> Yen 1120 kcal
-ポテトのグリル <span class="ex">199</span> Yen 366 kcal
-<span class="ex">Total</span> 992 Yen 1940 kcal</code></pre></div>
+<p>貪欲法で得られたメニューが得られれば成功である。</p>
 <p>同様に、予算一万円の場合のメニューも調べてみよう。「最大カロリー」のところには、先程動的計画法で求めた「1万円で摂取可能な最大カロリー」を入力すること。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">10000</span>, 最大カロリー)
 show_menu(menu)</code></pre></div>
