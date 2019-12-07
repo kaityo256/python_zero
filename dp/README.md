@@ -182,7 +182,7 @@ def greedy(budget):
       continue
     psum += prices[i]
     csum += cals[i]
-    print("{} {}Yen {} kcal".format(names[i], prices[i], cals[i]))
+    print("{} {} Yen {} kcal".format(names[i], prices[i], cals[i]))
   print("Total {} Yen, {} kcal".format(psum,csum))
 ```
 
@@ -280,7 +280,7 @@ print("{} kcal".format(cal))
 
 実行した結果、実行時間と1000円で得られる最大カロリーのみが表示されるはずである(メニューの取得は)。実行時間と結果を貪欲法と比較せよ。結果は貪欲法と一致したか？実行時間はどうであろうか？
 
-次に`search(113,1200)`と、予算を「1200円」にして実行してみよ。実行時間はどうなったであろうか？予算1万円の探索は実行可能できそうか？
+次に`search(len(names)-1,1200)`と、予算を「1200円」にして実行してみよ。実行時間はどうなったであろうか？予算1万円の探索は実行可能できそうか？
 
 なお、ここで求められるのは最大カロリーだけである。最大カロリーが求まった時、それを与えるメニューの組み合わせを求める方法は後述する。
 
@@ -361,16 +361,12 @@ print("{} kcal".format(cal))
 dic[(n, budget)] = cals[n] + search(n-1, budget - prices[n])
 
 # メニューnが注文されない時
-dic[(n, budget)] = search(n-1, budget - prices[n])
+dic[(n, budget)] = search(n-1, budget)
 ```
 
-今、`n`番目のメニューまで使って、予算`budget`で最大`cal`カロリーが得られるとわかっているとしよう。このカロリー最大化メニューに`n`番のメニューが含まれているならば、
+今、`n`番目のメニューまで使って、予算`budget`で最大`cal`カロリーが得られるとわかっているとしよう。このカロリー最大化メニューに`n`番のメニューが含まれていないならば、`dic[(n, budget)]`と`dic[(n-1, budget)]`が等しくなる。
 
-```py
-cal = cals[n] + dic[(n-1, budget-prices[n])]
-```
-
-が成立しているはずである。従って、メニューを最後から順番にまわして、上記の条件が成立していたら`n`をメニューに追加して、予算とカロリーを減らし、そうでなければ次を探す、というループを回せばよい。この処理を実装してみよう。
+従って、メニューを最後から順番にまわして、`dic[(n, budget)]`と`dic[(n-1, budget)]`が等しくなければ`n`をメニューに追加して予算とカロリーを減らし、そうでなければ次を探す、というループを回せばよい。この処理を実装してみよう。
 
 #### 10. 解の再構成`get_menu`の実装
 
@@ -382,7 +378,7 @@ def get_menu(budget, cal):
   for n in reversed(range(len(names))):
     if cal is 0:
       break
-    if cal == cals[n] + dic[(n-1, budget-prices[n])]:
+    if dic[(n, budget)] is not dic[(n-1, budget)]:
       cal -= cals[n]
       budget -= prices[n]
       menu.append(n)
