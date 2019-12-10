@@ -103,6 +103,7 @@
 
 ## [Pythonが動く仕組み](howtowork/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-10)
 * コンピュータはなぜ動くのか？
 * Pythonが動く仕組み
 * 抽象構文木

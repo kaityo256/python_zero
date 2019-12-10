@@ -118,7 +118,9 @@ random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;<
 <pre class="txt"><code>[&#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;P&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;P&#39;]</code></pre>
 <p>などとなる(実行するたびに異なる)。</p>
 <p>さて、<code>set</code>という関数を使うと、リストのうち重複する要素を削除することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">set</span>([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;P&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="co">#=&gt; {&#39;C&#39;, &#39;G&#39;, &#39;P&#39;}</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">set</span>([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;P&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>])</code></pre></div>
+<p>上記の実行結果は以下の通り。</p>
+<pre class="txt"><code>{&#39;C&#39;, &#39;G&#39;, &#39;P&#39;}</code></pre>
 <div class="figure">
 <img src="fig/janken.png" alt="じゃんけんの勝負判定" />
 <p class="caption">じゃんけんの勝負判定</p>
