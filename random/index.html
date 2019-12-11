@@ -386,7 +386,8 @@ n <span class="op">=</span> <span class="dv">10000</span>
 <span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
 <p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
 <h2 id="課題2パーコレーション">課題2：パーコレーション</h2>
-<p>乱数を使ったシミュレーションの例として、パーコレーションを考えてみよう。新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
+<p>乱数を使ったシミュレーションの例として、パーコレーションを考える。<code>L</code>x<code>L</code>の碁盤の目上の道が、確率<span class="math inline">\(p\)</span>で通行できて、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。この時、通行可能な道を通過してお互いに行き来できる場所を色分けしてみよう。</p>
+<p>新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
 <h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
 <p>最初のセルでは、いつもどおりライブラリのインポートをする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
@@ -447,7 +448,7 @@ sites <span class="op">=</span> make_conf(L, p)
 show_image(sites, L)</code></pre></div>
 <p>ここまで正しく実装されていれば、ノイズのような画面が表示されたはずである。</p>
 <p>では、次に<code>p = 0.4</code>を試してみよ。お互いに通行可能な区間が同じ色で表示されるため、同じ色で塗られた領域(クラスター)が出現したはずである。</p>
-<p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。同じ色のクラスターだけをたどって「下から上」へ到達できるだろうか？</p>
+<p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。例えば、同じ色のクラスターだけをたどって「左から右」へ到達できるだろうか？無事な道のみを通って「左から右」に通過できる確率を<span class="math inline">\(P\)</span>は、通過可能確率<span class="math inline">\(p\)</span>の関数であるはずだが、<span class="math inline">\(P(p)\)</span>はどのような関数となるか考察せよ。</p>
 <h2 id="発展課題コンプガチャの確率">発展課題：コンプガチャの確率</h2>
 <p>確率の難しさは、時に「正しい」確率が人の直感に反して大きかったり小さかったりする点にある。人の直感より確率が大きい例としては「誕生日のパラドックス」が知られている。誕生日が365日均等に分布しているとして、30人のクラスで誕生日が重なる人がいる確率はどれだけだろうか？直感的には365日に対して30人なので、10%も無いように思えるが、実際には約70.6%の確率で誕生日が同じ人がいる。</p>
 <p>逆に、人の直観より実際の確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
