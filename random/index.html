@@ -125,7 +125,7 @@ random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;<
 <img src="fig/janken.png" alt="じゃんけんの勝負判定" />
 <p class="caption">じゃんけんの勝負判定</p>
 </div>
-<p>こうして、<span class="math inline">\(N\)</span>人の「手」のリストを作り、重複する要素を削除すれば、それが「手」の種類なので、それが1種類なのか3種類なのか判定すれば良い。以上を愚直にコードに落とすとこんな感じになるだろう。</p>
+<p>こうして、<span class="math inline">\(N\)</span>人の「手」のリストを作り、重複する要素を削除すれば、それが「手」の種類であり、勝負がつくのは「手が2種類」の時のみなので、それ以外は「あいこ」としてカウントすれば良い。以上を愚直にコードに落とすとこんな感じになるだろう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 
 trial <span class="op">=</span> <span class="dv">100000</span>
@@ -133,7 +133,7 @@ N <span class="op">=</span> <span class="dv">6</span>
 aiko <span class="op">=</span> <span class="dv">0</span>
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
     a <span class="op">=</span> [random.choice([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]
-    <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">set</span>(a)) <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">3</span>):
+    <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">set</span>(a)) <span class="kw">is</span> <span class="kw">not</span> <span class="dv">2</span>:
         aiko <span class="op">+=</span> <span class="dv">1</span>
 <span class="bu">print</span>(aiko<span class="op">/</span>trial)</code></pre></div>
 <p>6人で100000回じゃんけんをさせて、あいこになった数をカウントし、その確率を求めるものだ。実行結果は、例えば以下のようになるだろう。</p>
@@ -147,7 +147,7 @@ aiko <span class="op">=</span> <span class="dv">0</span>
 <h2 id="疑似乱数">疑似乱数</h2>
 <h3 id="疑似乱数とは">疑似乱数とは</h3>
 <p>いま、サイコロを何度もふって、例えば出た目の数の並びが「4, 6, 1, 2, 3, 1, 1, 2, 4, 4」だったとしよう。ここまでの情報で、「次の出目」を予想できるだろうか？「普通」に考えると「4や1が続いてて、まだ5が出ていないからそろそろ5が出るかな」などと考えたくなるが、もしいま使っているのが理想的なサイコロであるならば、次も1から6まで等確率で出現するため、どれが出やすいとか、どれが出にくいなどと予想することはできない。このように「これまでの数列の知識から、次の数を予想できない」ような数列を <strong>乱数列</strong> と呼び、乱数列のそれぞれの要素を <strong>乱数(Random Number)</strong> と呼ぶ。</p>
-<p>計算機において乱数が必要になることは多い。例えばゲームで低確率で出る「会心の一撃」や「痛恨の一撃」を表現するのに乱数が必要だ。レアなモンスターを出現させるのも乱数が必要である。しかし、現在の計算機は決定論的に動作するため「真の乱数列」を表現するのは難しい。「真の乱数列」とは、先程定義した通り「これまでの数列から、次の数字が予想できない」ような数列のことであるのに対し、計算機で実現される乱数は <strong>疑似乱数(Pseudorandom number)</strong> と呼ばれる。疑似乱数列は乱数列のように見えるが、実は規則性があり、これまでの乱数から次の乱数が予想できてしまうものだ。疑似乱数列を作る方法には、線形合同法やM系列など様々な方法があるが、現在広く使われているのはメルセンヌ・ツイスター法という手法である。多くのプログラム言語が乱数生成のデフォルトアルゴリズムとしてメルセンヌ・ツイスター法を採用している。本講義では擬似乱数生成アルゴリズムについては触れないが、興味がある人は調べてみると良い。また、原子核崩壊などの物理現象を用いることで「真の乱数」を作るデバイスも発売されている。</p>
+<p>計算機において乱数が必要になることは多い。例えばゲームで低確率で出る「会心の一撃」や「痛恨の一撃」を表現するのに乱数が必要だ。レアなモンスターを出現させるのも乱数が必要である。しかし、現在の計算機は決定論的に動作するため「真の乱数列」を表現するのは難しい。「真の乱数列」とは、先程定義した通り「これまでの数列から、次の数字が予想できない」ような数列のことであるのに対し、計算機で実現される乱数は <strong>疑似乱数(Pseudorandom number)</strong> と呼ばれる。疑似乱数列は乱数列のように見えるが、実は規則性があり、これまでの乱数から次の乱数が予想できてしまうものだ。疑似乱数列を作る方法には、線形合同法やM系列など様々な方法があるが、現在広く使われているのはメルセンヌ・ツイスター法という手法である。多くのプログラム言語が乱数生成のデフォルトアルゴリズムとしてメルセンヌ・ツイスター法を採用している。本講義では擬似乱数生成アルゴリズムについては触れないが、興味がある人は調べてみると良い。また、原子核崩壊などの物理現象を用いることで「真の乱数」を作るデバイスも発売されている。また、Xorshift法という、極めて高速かつ乱数の性質も(メルセンヌ・ツイスタほどではないものの)非常に良い手法も提案され、例えばブラウザのJavaScriptの乱数生成エンジン等で採用されている。</p>
 <h3 id="pythonにおける疑似乱数">Pythonにおける疑似乱数</h3>
 <p>Pythonには擬似乱数用に<code>random</code>というライブラリが用意されており、様々な関数が用意されている。そのうちよく使うものの使い方を紹介しておこう。</p>
 <h4 id="random.randint"><code>random.randint</code></h4>
@@ -155,26 +155,34 @@ aiko <span class="op">=</span> <span class="dv">0</span>
 <p>以下のコードを書いて実行してみよう。これは6面サイコロを10回ふることをシミュレーションしたものだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
     <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
 <p>これは実行するたびに異なる結果が得られる。例えば以下のような結果が得られる。</p>
-<pre class="txt"><code>4
+<p>一回目の実行結果。</p>
+<pre class="txt"><code>2
+6
+6
 3
-1
-4
-1
-4
-4
-4
-1
 6</code></pre>
+<p>二回目の実行結果。</p>
+<pre class="txt"><code>5
+1
+1
+3
+5</code></pre>
 <h4 id="random.seed"><code>random.seed</code></h4>
 <p>先程のコードは実行するたびに異なる結果が得られた。しかし、以下のようにすると、何度実行しても同じ乱数列が得られる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 
 random.seed(<span class="dv">1</span>)
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
     <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
+<p>このコードは何度実行しても以下の結果になる。</p>
+<pre class="txt"><code>2
+5
+1
+3
+1</code></pre>
 <p>これは<code>random.seed</code>により乱数の「種」を固定したためだ。計算機は、漸化式により乱数列を作ることが多い。漸化式は、生成した乱数を入力として次の乱数を作る方法だが、その一番最初に与える値を乱数の「種(seed)」と呼ぶ。同じ種からは同じ乱数列が生まれる。これでは乱数としては不都合であるので、「現在時刻」等を乱数の種とすることが多い。こうすると実行するたびに異なる乱数列が得られる。しかし、主にデバッグ目的などで、毎回同じ乱数の種を与えたいときもあり、<code>random.seed</code>は、そのような場合に用いる。</p>
 <h4 id="random.random"><code>random.random</code></h4>
 <p><code>random.randint</code>を用いると整数の乱数列が得られたが、実数の乱数列が欲しければ<code>random.random</code>を用いる。これは0から1未満のランダムな実数を返してくれる関数だ。</p>
@@ -379,25 +387,23 @@ n <span class="op">=</span> <span class="dv">10000</span>
 <p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
 <h2 id="課題2パーコレーション">課題2：パーコレーション</h2>
 <p>乱数を使ったシミュレーションの例として、パーコレーションを考えてみよう。新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
-<h3 id="課題2-1クラスタの可視化">課題2-1：クラスタの可視化</h3>
-<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
+<h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
 <p>最初のセルでは、いつもどおりライブラリのインポートをする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">import</span> IPython</code></pre></div>
-<h4 id="find関数">2. <code>find</code>関数</h4>
+<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
+<h3 id="find関数">2. <code>find</code>関数</h3>
 <p>2つ目のセルで、自分が所属するクラスタ番号を調べる<code>find</code>関数を実装しよう。自分の番号が親の番号と一致する<code>i = parent[i]</code>まで、親をたどっていくプログラムである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> find(i, parent):
     <span class="cf">while</span> i <span class="op">!=</span> parent[i]:
         i <span class="op">=</span> parent[i]
     <span class="cf">return</span> i</code></pre></div>
-<h4 id="union関数">3.<code>union</code>関数</h4>
+<h3 id="union関数">3.<code>union</code>関数</h3>
 <p>3つ目のセルで、二つのサイトを確率的につなぐ<code>union</code>関数を実装しよう。サイト<code>i</code>とサイト<code>j</code>のクラスター番号を<code>find</code>で取得し、サイト<code>j</code>の所属するクラスタの親をサイト<code>i</code>が所属するクラスタにすることで、二つのサイトをつなぐことができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> union(i, j, parent):
     i <span class="op">=</span> find(i, parent)
     j <span class="op">=</span> find(j, parent)
     parent[j] <span class="op">=</span> i</code></pre></div>
-<h4 id="状態の作成">4. 状態の作成</h4>
+<h3 id="状態の作成">4. 状態の作成</h3>
 <p><code>find</code>と<code>union</code>の実装ができたら、サイトの状態を作るのは難しくない。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_conf(L, p):
     parent <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L <span class="op">*</span> L)]
@@ -412,7 +418,7 @@ n <span class="op">=</span> <span class="dv">10000</span>
                 union(i, j, parent)
     <span class="cf">return</span> parent</code></pre></div>
 <p>最初に「親」の情報<code>parent</code>を作成しておく。最初はすべて<code>parent[i] = i</code>、つまり自分の親が自分自身である状態にしておく。そして、右端と下端を除く全てのサイトについて「右」と「下」のサイトと確率的につなぐ処理を記述している。<code>if random.random() &lt; p:</code>というセンテンスは「確率pでif文の中身が実行される」という処理で、確率的な処理の基本となるので覚えておくと良い。</p>
-<h4 id="状態の可視化関数">5. 状態の可視化関数</h4>
+<h3 id="状態の可視化関数">5. 状態の可視化関数</h3>
 <p>5つ目のセルに、サイトの親の情報を受け取って可視化する関数<code>show_image</code>を実装しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_image(parent, L):
     size <span class="op">=</span> <span class="dv">512</span>
@@ -431,45 +437,66 @@ n <span class="op">=</span> <span class="dv">10000</span>
             i <span class="op">=</span> find(i, parent)
             c <span class="op">=</span> colors[i]
             draw.rectangle((ix<span class="op">*</span>s, iy<span class="op">*</span>s, ix<span class="op">*</span>s<span class="op">+</span>s, iy<span class="op">*</span>s<span class="op">+</span>s), fill<span class="op">=</span>c)
-    im.save(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+    <span class="cf">return</span> im</code></pre></div>
 <p>あらかじめ、ランダムにクラスター番号と色の対応表<code>colors</code>を作っておき、それぞれのサイトのクラスター番号で色を塗ることで「同じクラスターは同じ色で塗る」を実現している。</p>
-<h4 id="シミュレーション">6. シミュレーション</h4>
+<h3 id="シミュレーション">6. シミュレーション</h3>
 <p>では、早速シミュレーションをしてみよう。まずは通行確率pが0、つまり全ての区間が孤立している状態を可視化してみる。6つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">L <span class="op">=</span> <span class="dv">256</span>
 p <span class="op">=</span> <span class="fl">0.0</span>
 sites <span class="op">=</span> make_conf(L, p)
-show_image(sites, L)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+show_image(sites, L)</code></pre></div>
 <p>ここまで正しく実装されていれば、ノイズのような画面が表示されたはずである。</p>
 <p>では、次に<code>p = 0.4</code>を試してみよ。お互いに通行可能な区間が同じ色で表示されるため、同じ色で塗られた領域(クラスター)が出現したはずである。</p>
 <p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。同じ色のクラスターだけをたどって「下から上」へ到達できるだろうか？</p>
-<h2 id="余談1確率の難しさ">余談1：確率の難しさ</h2>
-<p>確率が絡んだ問題は、時として直観と合わない結果を生む。そんな問題は(厳密にはパラドックスではないが)パラドックスと呼ばれる。有名なのは「誕生日のパラドックス」であろう。今、うるう年は考えず、一年が365日だとしよう。また、誕生日は一様であるとする。さて、30人いるクラスで、誕生日が同じペアが存在する確率はどのくらいだろうか？ ちょっと想像してから、こんなコードを書いて確認してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
-    r <span class="op">=</span> <span class="fl">1.0</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
-        r <span class="op">*=</span> (<span class="dv">365</span><span class="op">-</span>i)<span class="op">/</span><span class="dv">365</span>
-    <span class="cf">return</span> <span class="fl">1.0</span> <span class="op">-</span> r
-
-p(<span class="dv">30</span>)</code></pre></div>
-<p>思ったより大きかったのではないだろうか？逆に、直観より確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
+<h2 id="発展課題コンプガチャの確率">発展課題：コンプガチャの確率</h2>
+<p>確率の難しさは、時に「正しい」確率が人の直感に反して大きかったり小さかったりする点にある。人の直感より確率が大きい例としては「誕生日のパラドックス」が知られている。誕生日が365日均等に分布しているとして、30人のクラスで誕生日が重なる人がいる確率はどれだけだろうか？直感的には365日に対して30人なので、10%も無いように思えるが、実際には約70.6%の確率で誕生日が同じ人がいる。</p>
+<p>逆に、人の直観より実際の確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
 <ul>
 <li>複数種類の絵柄のあるカードがあり、お金を払うとそのどれかがランダムで手に入る</li>
 <li>複数の絵柄をすべて揃えたら、景品が当たる</li>
 </ul>
-<p>というものである。例えば、カードが10種類あり、一枚100円とする。全種類揃えるのに必要な経費の期待値はどのくらいか、すぐにわかるだろうか？やはり少し想像してから計算してみよう。</p>
+<p>というものである。例えば、あるアーティストのCDを購入すると、44種類あるポスターのうちどれかがランダムにあたる特典があり、44種類のポスター全てをコンプリートしたらイベントに招待する、という事例があったとしよう。全種類揃えるのに平均で何枚CDを購入する必要があるか、すぐにわかるだろうか？これを計算してみよう。新しいPython3 ノートブックを開き、<code>gacha.ipynb</code>という名前で保存せよ。</p>
+<h3 id="インポート">1. インポート</h3>
+<p>まずは<code>random</code>をインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random</code></pre></div>
+<h3 id="シミュレーション-1">2. シミュレーション</h3>
+<p>n種類のポスターを揃えるのに何枚CDが必要になるかを試してみる関数<code>gacha</code>を実装しよう。以下の「条件」と「ポスター追加処理」を埋めてコードを完成させよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> gacha(n):
+  cd <span class="op">=</span> <span class="dv">0</span>
+  posters <span class="op">=</span> []
+  <span class="cf">while</span> 条件 <span class="op">&lt;</span> n:
+    <span class="co"># ポスター追加処理</span>
+    cd <span class="op">+=</span> <span class="dv">1</span>
+  <span class="cf">return</span> cd</code></pre></div>
+<p><code>cd</code>は購入したCDの枚数、<code>posters</code>は、当たったポスターのリストであり、このコードでは<code>n</code>種類のポスターを揃えるまでCDを購入し続け、揃った段階で購入したCDの枚数を返す関数である。</p>
+<p>ヒント1：</p>
+<p>1からnまでのランダムな数を<code>posters</code>に追加することでn種類のポスターがランダムに当たる処理を表現する。</p>
+<p>ヒント2：</p>
+<p>1からnまでのランダムな数は<code>random.randint(1, n)</code>で得られる。リストへの追加は<code>posters.append</code>を使う。</p>
+<p>ヒント3：</p>
+<p>得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる</p>
+<h3 id="実行">3. 実行</h3>
+<p><code>gacha</code>が完成したら、それをなんども実行して「購入CD枚数の期待値」を計算しよう。3つ目のセルに以下を入力、実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">trial <span class="op">=</span> <span class="dv">100</span>
+cd <span class="op">=</span> <span class="dv">0</span>
+N <span class="op">=</span> <span class="dv">44</span>
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(TRIAL):
+  cd <span class="op">+=</span> gacha(N)
+<span class="bu">print</span>(cd<span class="op">/</span>TRIAL)</code></pre></div>
+<p>CDの平均購入枚数はどれくらいであっただろうか？</p>
+<h3 id="厳密解">4. 厳密解</h3>
+<p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションと結果が合っているか確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
     r <span class="op">=</span> <span class="fl">0.0</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
         r <span class="op">+=</span> n<span class="op">/</span>(i<span class="op">+</span><span class="dv">1</span>)
     <span class="cf">return</span> r
 
-p(<span class="dv">10</span>)</code></pre></div>
-<p>「10種類ある絵柄が等確率で当たり、10種類揃えたら景品を渡す」という文面に嘘がなく、確率操作などをせずその通りに実施するとしても、これは違法となる。なぜ違法とすべきなのか、考えてみると面白いであろう。</p>
-<p>モンティ・ホール問題でも、直観と乖離した結果に多くの人が騙された。間違った人々の中には数学者もいて、新聞に意見を投書して紹介され、のちに恥をかいたようだ。現在はネット社会であり、何か肩書を持った人が間違ったことを言うと多くの人の目に触れ、昔より炎上しやすい。この問題が教えてくれる本当の教訓は「何か発言するときは気を付けよう」ということかもしれない。</p>
-<h2 id="余談2疑似乱数とゲーム">余談2：疑似乱数とゲーム</h2>
-<p>ゲームには乱数がつきものである。RPGなどでは、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、レアな敵が出たときにセーブしてリセットすると、全く同じ敵が現れてしまう、という仕様(バグ？)があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは「乱数調整」といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
-<p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
+p(<span class="dv">44</span>)</code></pre></div>
+<p>「44種類ある絵柄が等確率で当たり、44種類揃えたら景品を渡す」という文面に嘘がなく、確率操作などをせず全くその通りに実施するとしても、これは違法となる可能性がある。これは違法とすべきか、そうでないのか、その理由を考えよ。</p>
+<h2 id="余談疑似乱数とゲーム">余談：疑似乱数とゲーム</h2>
+<p>ゲームには乱数がつきものである。RPGなどでは、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、ゲーム機の電源を落とすと敵の出現テーブルがリセットされたり、レアな敵が出たときにセーブしてリセットすると、また同じ敵が現れてしまうなどの仕様があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった(古い例で恐縮だが、例えば初代ゲームボーイのRPG「Sa・Ga2 秘宝伝説」の「はにわ狩り」等)。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは「乱数調整」といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
+<p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。例えば「他のプレイヤーがサイコロで偶数の目を出すまで行動不能」という呪いがあるのだが、うまく行動することでずっと奇数の目を出し続け、相手の行動不能状態を維持し続けることができたようだ(後にパッチにより改善された)。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
 </article>
 </body>
 </html>
