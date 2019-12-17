@@ -352,12 +352,18 @@ dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><spa
   total_cal <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: cals[x], menu))
   <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(total_price, total_cal))</code></pre></div>
 <h4 id="解の再構成">12. 解の再構成</h4>
-<p>上記二つをまとめて実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">1000</span>, <span class="dv">1940</span>)
+<p>上記二つをまとめて実行してみよう。まずは1000円で得られる最大カロリーのメニューを見てみる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">budget <span class="op">=</span> <span class="dv">1000</span>
+dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
+cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,budget)
+menu <span class="op">=</span> get_menu(budget, cal)
 show_menu(menu)</code></pre></div>
 <p>貪欲法で得られたメニューが得られれば成功である。</p>
-<p>同様に、予算一万円の場合のメニューも調べてみよう。「最大カロリー」のところには、先程動的計画法で求めた「1万円で摂取可能な最大カロリー」を入力すること。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">menu <span class="op">=</span> get_menu(<span class="dv">10000</span>, 最大カロリー)
+<p>同様に、予算一万円の場合のメニューも調べてみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">budget <span class="op">=</span> <span class="dv">10000</span> <span class="co"># ここを10000にして再実行しよう</span>
+dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
+cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,budget)
+menu <span class="op">=</span> get_menu(budget, cal)
 show_menu(menu)</code></pre></div>
 <p>実行結果は是非自分の目で確認して欲しい。なお、成人男性が一日に摂取するカロリーが2000 kcalだそうである。カロリーと値段の関係を見てどう思ったか？</p>
 <h2 id="余談人外について">余談：人外について</h2>
