@@ -113,6 +113,7 @@
 
 ## [動的計画法](dp/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-11-866f2256-14b6-46ae-b145-478c21cb50fb)
 * 組み合わせ最適化問題
 * 貪欲法
 * 全探索
