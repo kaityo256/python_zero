@@ -403,19 +403,25 @@ def show_menu(menu):
 
 #### 12. 解の再構成
 
-上記二つをまとめて実行してみよう。
+上記二つをまとめて実行してみよう。まずは1000円で得られる最大カロリーのメニューを見てみる。
 
 ```py
-menu = get_menu(1000, 1940)
+budget = 1000
+dic = defaultdict(int)
+cal = search_memo(len(names)-1,budget)
+menu = get_menu(budget, cal)
 show_menu(menu)
 ```
 
 貪欲法で得られたメニューが得られれば成功である。
 
-同様に、予算一万円の場合のメニューも調べてみよう。「最大カロリー」のところには、先程動的計画法で求めた「1万円で摂取可能な最大カロリー」を入力すること。
+同様に、予算一万円の場合のメニューも調べてみよう。
 
 ```py
-menu = get_menu(10000, 最大カロリー)
+budget = 10000 # ここを10000にして再実行しよう
+dic = defaultdict(int)
+cal = search_memo(len(names)-1,budget)
+menu = get_menu(budget, cal)
 show_menu(menu)
 ```
 
