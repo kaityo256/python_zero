@@ -616,9 +616,9 @@ def gacha(n):
 trial = 100
 cd = 0
 N = 44
-for _ in range(TRIAL):
+for _ in range(trial):
   cd += gacha(N)
-print(cd/TRIAL)
+print(cd/trial)
 ```
 
 CDの平均購入枚数はどれくらいであっただろうか？
