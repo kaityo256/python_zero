@@ -481,9 +481,9 @@ show_image(sites, L)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">trial <span class="op">=</span> <span class="dv">100</span>
 cd <span class="op">=</span> <span class="dv">0</span>
 N <span class="op">=</span> <span class="dv">44</span>
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(TRIAL):
+<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
   cd <span class="op">+=</span> gacha(N)
-<span class="bu">print</span>(cd<span class="op">/</span>TRIAL)</code></pre></div>
+<span class="bu">print</span>(cd<span class="op">/</span>trial)</code></pre></div>
 <p>CDの平均購入枚数はどれくらいであっただろうか？</p>
 <h3 id="厳密解">4. 厳密解</h3>
 <p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションと結果が合っているか確認せよ。</p>
