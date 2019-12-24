@@ -122,6 +122,7 @@
 
 ## [乱数を使ったプログラム](random/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/python-12)
 * モンテカルロ法
 * 疑似乱数
 * モンティ・ホール問題
