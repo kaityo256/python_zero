@@ -1,7 +1,7 @@
 
 # [数値シミュレーション](https://kaityo256.github.io/python_zero/simulation/)
 
-* ニュートンの運動方程式
+* 拡散方程式
 * 反応拡散方程式(Gray-Scott Model)
 * 余談：パーソナルスーパーコンピュータ
 
@@ -201,7 +201,7 @@ $$
 
 ![BZ反応](fig/bz.png)
 
-さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、筆者の趣味でグレイ・スコットモデル(Gray-Scott model)を取り上げる。
+さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、そのうちの一つ、グレイ・スコットモデル(Gray-Scott model)を取り上げる。
 
 グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。
 
@@ -257,202 +257,13 @@ $$
 
 # 数値シミュレーション:課題
 
-## 課題1:ニュートンの運動方程式
+## 課題1:拡散方程式
 
-簡単な数値シミュレーションの例として、ニュートンの運動方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、`newton.ipynb`という名前で保存せよ。
+拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、`diffusion.ipynb`という名前で保存せよ。
 
-### 課題1-1:抵抗の無い弾道計算(シミュレーション)
+### 1. ライブラリのインポート
 
-#### 1. ライブラリのインポート
-
-最初のセルでライブラリのインポートをしよう。
-
-```py
-import matplotlib.pyplot as plt
-from math import pi, cos, sin, exp
-```
-
-#### 2. 数値シミュレーションの実装
-
-差分化された運動方程式は以下の通りである。
-
-$$
-\begin{aligned}
-r_x(t+h) &= r_x(t) + v_x(t) h \\
-r_y(t+h) &= r_y(t) + v_y(t) h\\
-v_x(t+h) &= v_x(t) \\
-v_y(t+h) &= v_y(t) - g h\\
-\end{aligned}
-$$
-
-これをもとに、以下のプログラムを完成させよ。
-
-```py
-def throw(theta):
-  rx, ry = 0.0, 0.0
-  vx, vy = cos(theta), sin(theta)
-  ax, ay = [], []
-  g = 1.0
-  h = 0.02
-  while ry >= 0.0:
-    rx += vx * h
-    ry += vy * h
-    # 速度の更新部分を実装せよ
-    ax.append(rx)
-    ay.append(ry)
-  return ax, ay
-```
-
-これは、ステップごとに位置ベクトルをリストに保存し、最後に返す関数である。
-
-#### 3. 結果の表示
-
-3つ目のセルで、シミュレーションの結果を可視化しよう。
-
-```py
-ax, ay = throw(pi*0.25)
-plt.plot(ax,ay, label="Simulation")
-plt.legend()
-plt.show()
-```
-
-`throw`により計算された位置ベクトルをプロットしている。いわゆる「放物線」が表示されたら成功である。
-
-### 課題1-2:抵抗の無い弾道計算(厳密解との比較)
-
-先程の運動方程式は厳密に解くことができる。
-
-$$
-\begin{aligned}
-v_x(t) &= \cos{\theta} \\
-v_y(t) &= \sin{\theta} - g t\\
-r_x(t) &= t \cos{\theta} \\
-r_y(t) &= t \sin{\theta} - \frac{g t^2}{2}
-\end{aligned}
-$$
-
-数値計算において厳密解がある場合は、必ず厳密解と比較すべきである。シミュレーション結果と厳密解を比較してみよう。
-
-#### 4. 厳密解を返す関数`exact`の実装
-
-厳密解を返す関数を作ってみよう。4つ目のセルに以下を実装せよ。
-
-```py
-def exact(theta):
-  rx, ry = 0.0, 0.0
-  ex, ey = [], []
-  t = 0.0
-  g = 1.0
-  h = 0.02
-  while ry >= 0.0:
-    t += h
-    rx = t * cos(theta)
-    ry = t * sin(theta) - g * t**2/2.0
-    ex.append(rx)
-    ey.append(ry)
-  return ex, ey  
-```
-
-数値計算で計算した離散的な時刻それぞれにおける厳密解をリストに追加し、最後に関数の返り値として返している。
-
-#### 5. 厳密解との比較
-
-シミュレーション結果と厳密解の比較をしてみよう。5つ目のセルに以下を実装せよ。
-
-```py
-nx, ny = throw(pi*0.25)
-plt.plot(nx,ny, label="Simulation")
-ex, ey = exact(pi*0.25)
-plt.plot(ex,ey, label="Exact")
-plt.legend()
-plt.show()
-```
-
-二つの線が表示されたはずである。比較してどうなっているだろうか？
-次に、`throw`の時間刻み`h`の値を`0.02`から`0.001`にして、結果がどう変わるか比較せよ。
-
-### 課題1-2:空気抵抗がある場合(シミュレーション)
-
-#### 6. 数値シミュレーションの実装
-
-空気抵抗がある場合の運動方程式は以下の通りである。
-
-$$
-\begin{aligned}
-\dot{r_x} &= v_x \\
-\dot{r_y} &= v_y \\
-\dot{v_x} &= -  \gamma v_x \\
-\dot{v_y} &= -  \gamma v_y - g
-\end{aligned}
-$$
-
-これをもとに、6つ目のセルに空気抵抗がある場合の数値シミュレーションのプログラムを書け。
-
-```py
-def throw_r(theta):
-  rx, ry = 0.0, 0.0
-  vx, vy = cos(theta), sin(theta)
-  bx, by = [], []
-  g = 1.0
-  h = 0.01
-  gamma = 0.5
-  while ry >= 0.0:
-    bx += vx * h
-    by += vy * h
-    # 残りの速度の更新部分を実装せよ
-    bx.append(rx)
-    by.append(ry)
-  return bx, by
-```
-
-#### 7. 結果の可視化
-
-```py
-ax, ay = throw(pi*0.25)
-plt.plot(ax, ay, label="Without resistance")
-bx, by = throw_r(pi*0.25)
-plt.plot(bx, by, label="With resistance")
-plt.legend()
-plt.show()
-```
-
-空気抵抗の無い場合と比べて、どのような変化があっただろうか？
-
-#### 8. 空気抵抗がある場合の最適仰角
-
-空気抵抗がある場合に、最も遠くまで飛ぶ角度はどのあたりか確認せよ。5つ目のセルを以下のように修正し、「A」と「B」のどちらが遠くまで飛ぶかを比較しながら、最も遠くまで飛ぶ角度を探してみよ。
-
-```py
-nx, ny = run_r(pi*0.25)
-plt.plot(nx,ny, label="A")
-nx2, ny2 = run_r(pi*0.24)
-plt.plot(nx2,ny2, label="B")
-plt.legend()
-plt.show()
-```
-
-### 発展課題：空気抵抗がある場合の厳密解との比較
-
-空気抵抗がある場合の軌道の厳密解は以下の通りである。
-
-$$
-\begin{aligned}
-r_x(t) &=  \frac{(1 - \mathrm{e}^{-\gamma t})\cos{\theta} }{\gamma} \\
-r_y(t) &= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g (1 -  \mathrm{e}^{-\gamma t} - \gamma t)}{\gamma^2}
-\end{aligned}
-$$
-
-これを用いて、数値計算の結果と厳密解を比較せよ。
-
-## 課題2:反応拡散方程式
-
-反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き`gs.ipynb`として保存せよ。
-
-### 課題2-1: ラプラシアンの実装
-
-#### 1. ライブラリのインポート
-
-最初のセルでライブラリのインポートをしよう。
+最初のセルで、必要なライブラリのインポートをしよう。
 
 ```py
 import matplotlib.pyplot as plt
@@ -461,7 +272,7 @@ from numba import jit
 from matplotlib import animation, rc
 ```
 
-#### 2. ラプラシアンの実装
+### 2. ラプラシアンの実装
 
 二次元配列`s[m][n]`の、位置$(m,n)$におけるラプラシアンは、
 
@@ -485,7 +296,7 @@ def laplacian(m, n, s):
 
 なお、関数定義の前に`@jit`とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。
 
-#### 3. ラプラシアンのテスト
+### 3. ラプラシアンのテスト
 
 `laplacian`を実装したらテストしてみよう。三つ目のセルに`laplacian`に食わせるテスト用のNumPy二次元配列を作成する。
 
@@ -535,11 +346,108 @@ a[0,1] = 0
 laplacian(1,1,a)
 ```
 
-上記の実行結果が`-1`になれば正しく計算されている。
+上記の実行結果が`-1.0`になれば正しく計算されている。
 
-### 課題2-2: シミュレーションコードの実装
+### 4. 時間発展
 
-#### 4. 1ステップ進める関数`calc`の実装
+4つ目のセルに時間発展をさせる関数`calc`を実装しよう。一つ前の配列`u`を受け取り、次の配列`u2`を返す。
+
+```py
+@jit
+def calc(u, u2):
+    (L, _) = u.shape
+    dt = 0.01
+    for ix in range(1, L-1):
+        for iy in range(1, L-1):
+            u2[ix, iy] = u[ix][iy] + laplacian(ix, iy, u)*dt
+```
+
+### 5. シミュレーション
+
+5つ目のセルでシミュレーションループを回そう。
+
+```py
+@jit
+def simulation(L, loop):
+    h = L//2
+    u = np.zeros((L, L))
+    u2 = np.zeros((L, L))
+    u[h-6:h+6, h-6:h+6] = 1.0
+    r = []
+    for i in range(loop):
+      calc(u, u2)
+      u, u2 = u2, u
+      if i % 100 == 0:
+        r.append(u.copy())
+    return r
+```
+
+### 6. シミュレーションの実行と結果の確認
+
+シミュレーションを実行し、途中経過を可視化してみよう。
+
+```py
+imgs = simulation(64, 10000)
+n = len(imgs)
+for i in range(4):
+  im = plt.imshow(imgs[n//4*i])
+  plt.show()
+```
+
+4つの画像が現れ、最初に現れた四角が徐々にぼやけていっていれば正しく計算できている。
+
+### 7. アニメーション
+
+計算結果をアニメーションしてみよう。まずはアニメーションの準備を行う。
+
+```py
+fig = plt.figure()
+im = plt.imshow(imgs[-1])
+def update(i):
+  im.set_array(imgs[i])
+```
+
+### 8. アニメーションの表示
+
+ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。
+
+```py
+rc('animation', html='jshtml')
+animation.FuncAnimation(fig, update, interval=50, frames=len(imgs))
+```
+
+## 課題2:反応拡散方程式
+
+反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き`gs.ipynb`として保存せよ。
+
+### 1. ライブラリのインポート
+
+最初のセルでライブラリのインポートをしよう。`diffusion.ipynb`と同じなので、コピペしてもかまわない。
+
+```py
+import matplotlib.pyplot as plt
+import numpy as np
+from numba import jit
+from matplotlib import animation, rc
+```
+
+### 2. ラプラシアンの実装
+
+`diffusion.ipynb`の時と同様に、ラプラシアンを実装する。これもコピペしてかまわない。
+
+```py
+@jit
+def laplacian(m, n, s):
+    ts = 0.0
+    ts += s[m+1][n]
+    ts += s[m-1][n]
+    ts += s[m][n+1]
+    ts += s[m][n-1]
+    # ここを埋めよ
+    return ts
+```
+
+### 3. 時間発展
 
 二つの配列を受け取り、1ステップだけ時間を進める関数`calc`を実装しよう。以下を4つ目のセルに入力せよ。
 
@@ -550,29 +458,28 @@ def calc(u, v, u2, v2):
     dt = 0.2
     F = 0.04
     k = 0.06075
+    Du = 0.1
+    Dv = 0.05
     lu = np.zeros((L, L))
     lv = np.zeros((L, L))
     for ix in range(1, L-1):
         for iy in range(1, L-1):
-            lu[ix, iy] = 0.1 * laplacian(ix, iy, u)
-            lv[ix, iy] = 0.05 * laplacian(ix, iy, v)
+            lu[ix, iy] = Du * laplacian(ix, iy, u)
+            lv[ix, iy] = Dv * laplacian(ix, iy, v)
     cu = -v*v*u + F*(1.0 - u)
     cv = v*v*u - (F+k)*v
     u2[:] = u + (lu+cu) * dt
-    v2[:] = v + (lv+cv) * dt
-```
+    v2[:] = v + (lv+cv) * dt```
 
 最初の`@jit`デコレータを忘れないこと。
 
-#### 5. シミュレーションの実行をする関数`simulation`の実装
+### 4. シミュレーション
 
 1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。
 
 ```py
 @jit
-def simulation():
-    L = 64
-    LOOP = 10000
+def simulation(L, loop):
     u = np.zeros((L, L))
     u2 = np.zeros((L, L))
     v = np.zeros((L, L))
@@ -580,80 +487,48 @@ def simulation():
     h = L//2
     u[h-6:h+6, h-6:h+6] = 0.9
     v[h-3:h+3, h-3:h+3] = 0.7
-    for i in range(LOOP):
+    r = []
+    for i in range(loop):
         calc(u, v, u2, v2)
         u, u2, v, v2 = u2, u, v2, v
-    return v
+        if i % 100 == 0:
+          r.append(v.copy())
+    return r
 ```
 
 これも、最初の行の`@jit`を忘れないこと。
 
-#### 6. 結果の可視化
-
-6つ目のセルで、シミュレーション結果を可視化しよう。以下を実行せよ。
+### 5. シミュレーションの実行
 
 ```py
-v = simulation()
-plt.imshow(v)
+imgs = simulation(64, 10000)
+n = len(imgs)
+for i in range(4):
+  im = plt.imshow(imgs[n//4*i])
+  plt.show()
 ```
 
-ここまで正しく入力されていれば、不思議な模様が現れたはずである。
+ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。
 
-### 発展課題：アニメーション
+### 6. アニメーション
 
-せっかくの時間発展シミュレーションなので、時間発展の様子をアニメーションで見てみよう。
-
-#### 5. `simulation`関数の修正
-
-`simulation`で、最後の結果だけではなく、途中の経過もまとめてリストで返すようにしよう。
+先ほどと同様にアニメーションの準備をしよう。`diffusion.ipynb`と同じなので、コピペしてもかまわない。
 
 ```py
-@jit
-def simulation():
-    L = 64
-    LOOP = 10000
-    u = np.zeros((L, L))
-    u2 = np.zeros((L, L))
-    v = np.zeros((L, L))
-    v2 = np.zeros((L, L))
-    h = L//2
-    u[h-6:h+6, h-6:h+6] = 0.9
-    v[h-3:h+3, h-3:h+3] = 0.7
-    r = [] # この行を追加
-    for i in range(LOOP):
-        calc(u, v, u2, v2)
-        u, u2, v, v2 = u2, u, v2, v
-        if i % 100 == 0:     # このif文を追加
-          r.append(v.copy()) #
-    return r # vでなくrを返すよう修正
-```
-
-#### 6. 計算の可視化
-
-6つ目のセルを以下のように書き換え、実行しよう。
-
-```py
-imgs = simulation()
 fig = plt.figure()
 im = plt.imshow(imgs[-1])
-```
-
-先程と同じ模様が出てくれば正しく計算できている。
-
-#### 7. アニメーションの作成
-
-7つ目のセルに、以下を入力、実行せよ。
-
-```py
 def update(i):
   im.set_array(imgs[i])
-
-ani = animation.FuncAnimation(fig, update, interval=50, frames=len(imgs))
-rc('animation', html='jshtml')
-ani
 ```
 
-アニメーションが表示されたら成功である。時間があれば、サイズ(`L`)とループ数(`LOOP`)を二倍にして実行してみよ。
+### 7. アニメーションの表示
+
+アニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。
+
+```py
+rc('animation', html='jshtml')
+animation.FuncAnimation(fig, update, interval=50, frames=len(imgs))
+```
 
 ## 余談：パーソナルスーパーコンピュータ
 

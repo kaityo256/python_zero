@@ -91,7 +91,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="数値シミュレーション"><a href="https://kaityo256.github.io/python_zero/simulation/">数値シミュレーション</a></h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
-<li>ニュートンの運動方程式</li>
+<li>拡散方程式</li>
 <li>反応拡散方程式(Gray-Scott Model)</li>
 <li>余談：パーソナルスーパーコンピュータ</li>
 </ul>
@@ -243,7 +243,7 @@ r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g
 <img src="fig/bz.png" alt="BZ反応" />
 <p class="caption">BZ反応</p>
 </div>
-<p>さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、筆者の趣味でグレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
+<p>さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、そのうちの一つ、グレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
 <p>グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -285,142 +285,15 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 </div>
 <p>もともとの式のうち、時間微分は一次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
 <h1 id="数値シミュレーション課題">数値シミュレーション:課題</h1>
-<h2 id="課題1ニュートンの運動方程式">課題1:ニュートンの運動方程式</h2>
-<p>簡単な数値シミュレーションの例として、ニュートンの運動方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>newton.ipynb</code>という名前で保存せよ。</p>
-<h3 id="課題1-1抵抗の無い弾道計算シミュレーション">課題1-1:抵抗の無い弾道計算(シミュレーション)</h3>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
-<p>最初のセルでライブラリのインポートをしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">from</span> math <span class="im">import</span> pi, cos, sin, exp</code></pre></div>
-<h4 id="数値シミュレーションの実装">2. 数値シミュレーションの実装</h4>
-<p>差分化された運動方程式は以下の通りである。</p>
-<p><span class="math display">\[
-\begin{aligned}
-r_x(t+h) &amp;= r_x(t) + v_x(t) h \\
-r_y(t+h) &amp;= r_y(t) + v_y(t) h\\
-v_x(t+h) &amp;= v_x(t) \\
-v_y(t+h) &amp;= v_y(t) - g h\\
-\end{aligned}
-\]</span></p>
-<p>これをもとに、以下のプログラムを完成させよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  vx, vy <span class="op">=</span> cos(theta), sin(theta)
-  ax, ay <span class="op">=</span> [], []
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.02</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    rx <span class="op">+=</span> vx <span class="op">*</span> h
-    ry <span class="op">+=</span> vy <span class="op">*</span> h
-    <span class="co"># 速度の更新部分を実装せよ</span>
-    ax.append(rx)
-    ay.append(ry)
-  <span class="cf">return</span> ax, ay</code></pre></div>
-<p>これは、ステップごとに位置ベクトルをリストに保存し、最後に返す関数である。</p>
-<h4 id="結果の表示">3. 結果の表示</h4>
-<p>3つ目のセルで、シミュレーションの結果を可視化しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">ax, ay <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(ax,ay, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p><code>throw</code>により計算された位置ベクトルをプロットしている。いわゆる「放物線」が表示されたら成功である。</p>
-<h3 id="課題1-2抵抗の無い弾道計算厳密解との比較">課題1-2:抵抗の無い弾道計算(厳密解との比較)</h3>
-<p>先程の運動方程式は厳密に解くことができる。</p>
-<p><span class="math display">\[
-\begin{aligned}
-v_x(t) &amp;= \cos{\theta} \\
-v_y(t) &amp;= \sin{\theta} - g t\\
-r_x(t) &amp;= t \cos{\theta} \\
-r_y(t) &amp;= t \sin{\theta} - \frac{g t^2}{2}
-\end{aligned}
-\]</span></p>
-<p>数値計算において厳密解がある場合は、必ず厳密解と比較すべきである。シミュレーション結果と厳密解を比較してみよう。</p>
-<h4 id="厳密解を返す関数exactの実装">4. 厳密解を返す関数<code>exact</code>の実装</h4>
-<p>厳密解を返す関数を作ってみよう。4つ目のセルに以下を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> exact(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  ex, ey <span class="op">=</span> [], []
-  t <span class="op">=</span> <span class="fl">0.0</span>
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.02</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    t <span class="op">+=</span> h
-    rx <span class="op">=</span> t <span class="op">*</span> cos(theta)
-    ry <span class="op">=</span> t <span class="op">*</span> sin(theta) <span class="op">-</span> g <span class="op">*</span> t<span class="op">**</span><span class="dv">2</span><span class="op">/</span><span class="fl">2.0</span>
-    ex.append(rx)
-    ey.append(ry)
-  <span class="cf">return</span> ex, ey  </code></pre></div>
-<p>数値計算で計算した離散的な時刻それぞれにおける厳密解をリストに追加し、最後に関数の返り値として返している。</p>
-<h4 id="厳密解との比較">5. 厳密解との比較</h4>
-<p>シミュレーション結果と厳密解の比較をしてみよう。5つ目のセルに以下を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;Simulation&quot;</span>)
-ex, ey <span class="op">=</span> exact(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(ex,ey, label<span class="op">=</span><span class="st">&quot;Exact&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>二つの線が表示されたはずである。比較してどうなっているだろうか？ 次に、<code>throw</code>の時間刻み<code>h</code>の値を<code>0.02</code>から<code>0.001</code>にして、結果がどう変わるか比較せよ。</p>
-<h3 id="課題1-2空気抵抗がある場合シミュレーション">課題1-2:空気抵抗がある場合(シミュレーション)</h3>
-<h4 id="数値シミュレーションの実装-1">6. 数値シミュレーションの実装</h4>
-<p>空気抵抗がある場合の運動方程式は以下の通りである。</p>
-<p><span class="math display">\[
-\begin{aligned}
-\dot{r_x} &amp;= v_x \\
-\dot{r_y} &amp;= v_y \\
-\dot{v_x} &amp;= -  \gamma v_x \\
-\dot{v_y} &amp;= -  \gamma v_y - g
-\end{aligned}
-\]</span></p>
-<p>これをもとに、6つ目のセルに空気抵抗がある場合の数値シミュレーションのプログラムを書け。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw_r(theta):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, <span class="fl">0.0</span>
-  vx, vy <span class="op">=</span> cos(theta), sin(theta)
-  bx, by <span class="op">=</span> [], []
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.01</span>
-  gamma <span class="op">=</span> <span class="fl">0.5</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    bx <span class="op">+=</span> vx <span class="op">*</span> h
-    by <span class="op">+=</span> vy <span class="op">*</span> h
-    <span class="co"># 残りの速度の更新部分を実装せよ</span>
-    bx.append(rx)
-    by.append(ry)
-  <span class="cf">return</span> bx, by</code></pre></div>
-<h4 id="結果の可視化">7. 結果の可視化</h4>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">ax, ay <span class="op">=</span> throw(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(ax, ay, label<span class="op">=</span><span class="st">&quot;Without resistance&quot;</span>)
-bx, by <span class="op">=</span> throw_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(bx, by, label<span class="op">=</span><span class="st">&quot;With resistance&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<p>空気抵抗の無い場合と比べて、どのような変化があっただろうか？</p>
-<h4 id="空気抵抗がある場合の最適仰角">8. 空気抵抗がある場合の最適仰角</h4>
-<p>空気抵抗がある場合に、最も遠くまで飛ぶ角度はどのあたりか確認せよ。5つ目のセルを以下のように修正し、「A」と「B」のどちらが遠くまで飛ぶかを比較しながら、最も遠くまで飛ぶ角度を探してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.25</span>)
-plt.plot(nx,ny, label<span class="op">=</span><span class="st">&quot;A&quot;</span>)
-nx2, ny2 <span class="op">=</span> run_r(pi<span class="op">*</span><span class="fl">0.24</span>)
-plt.plot(nx2,ny2, label<span class="op">=</span><span class="st">&quot;B&quot;</span>)
-plt.legend()
-plt.show()</code></pre></div>
-<h3 id="発展課題空気抵抗がある場合の厳密解との比較">発展課題：空気抵抗がある場合の厳密解との比較</h3>
-<p>空気抵抗がある場合の軌道の厳密解は以下の通りである。</p>
-<p><span class="math display">\[
-\begin{aligned}
-r_x(t) &amp;=  \frac{(1 - \mathrm{e}^{-\gamma t})\cos{\theta} }{\gamma} \\
-r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g (1 -  \mathrm{e}^{-\gamma t} - \gamma t)}{\gamma^2}
-\end{aligned}
-\]</span></p>
-<p>これを用いて、数値計算の結果と厳密解を比較せよ。</p>
-<h2 id="課題2反応拡散方程式">課題2:反応拡散方程式</h2>
-<p>反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き<code>gs.ipynb</code>として保存せよ。</p>
-<h3 id="課題2-1-ラプラシアンの実装">課題2-1: ラプラシアンの実装</h3>
-<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
-<p>最初のセルでライブラリのインポートをしよう。</p>
+<h2 id="課題1拡散方程式">課題1:拡散方程式</h2>
+<p>拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>diffusion.ipynb</code>という名前で保存せよ。</p>
+<h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
+<p>最初のセルで、必要なライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">from</span> numba <span class="im">import</span> jit
 <span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</code></pre></div>
-<h4 id="ラプラシアンの実装">2. ラプラシアンの実装</h4>
+<h3 id="ラプラシアンの実装">2. ラプラシアンの実装</h3>
 <p>二次元配列<code>s[m][n]</code>の、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、</p>
 <p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
 <p>と表現できる。これを用いて、二次元配列<code>s</code>と位置<code>m,n</code>を受け取って、その位置でのラプラシアンの値を返す関数<code>laplacian</code>を実装したい。以下はそれを途中まで実装したものだ。</p>
@@ -435,7 +308,7 @@ r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g
     <span class="cf">return</span> ts</code></pre></div>
 <p>上記がラプラシアンの値となるように、未完成の部分を完成させよ。</p>
 <p>なお、関数定義の前に<code>@jit</code>とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。</p>
-<h4 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h4>
+<h3 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h3>
 <p><code>laplacian</code>を実装したらテストしてみよう。三つ目のセルに<code>laplacian</code>に食わせるテスト用のNumPy二次元配列を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
 a</code></pre></div>
@@ -459,33 +332,76 @@ a</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
 a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
 laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
-<p>上記の実行結果が<code>-1</code>になれば正しく計算されている。</p>
-<h3 id="課題2-2-シミュレーションコードの実装">課題2-2: シミュレーションコードの実装</h3>
-<h4 id="ステップ進める関数calcの実装">4. 1ステップ進める関数<code>calc</code>の実装</h4>
-<p>二つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
+<p>上記の実行結果が<code>-1.0</code>になれば正しく計算されている。</p>
+<h3 id="時間発展">4. 時間発展</h3>
+<p>4つ目のセルに時間発展をさせる関数<code>calc</code>を実装しよう。一つ前の配列<code>u</code>を受け取り、次の配列<code>u2</code>を返す。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> calc(u, v, u2, v2):
+<span class="kw">def</span> calc(u, u2):
     (L, _) <span class="op">=</span> u.shape
-    dt <span class="op">=</span> <span class="fl">0.2</span>
-    F <span class="op">=</span> <span class="fl">0.04</span>
-    k <span class="op">=</span> <span class="fl">0.06075</span>
-    lu <span class="op">=</span> np.zeros((L, L))
-    lv <span class="op">=</span> np.zeros((L, L))
+    dt <span class="op">=</span> <span class="fl">0.01</span>
     <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
         <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
-            lu[ix, iy] <span class="op">=</span> <span class="fl">0.1</span> <span class="op">*</span> laplacian(ix, iy, u)
-            lv[ix, iy] <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> laplacian(ix, iy, v)
-    cu <span class="op">=</span> <span class="op">-</span>v<span class="op">*</span>v<span class="op">*</span>u <span class="op">+</span> F<span class="op">*</span>(<span class="fl">1.0</span> <span class="op">-</span> u)
-    cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v
-    u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
-    v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
+            u2[ix, iy] <span class="op">=</span> u[ix][iy] <span class="op">+</span> laplacian(ix, iy, u)<span class="op">*</span>dt</code></pre></div>
+<h3 id="シミュレーション">5. シミュレーション</h3>
+<p>5つ目のセルでシミュレーションループを回そう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> simulation(L, loop):
+    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
+    u <span class="op">=</span> np.zeros((L, L))
+    u2 <span class="op">=</span> np.zeros((L, L))
+    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">1.0</span>
+    r <span class="op">=</span> []
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(loop):
+      calc(u, u2)
+      u, u2 <span class="op">=</span> u2, u
+      <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:
+        r.append(u.copy())
+    <span class="cf">return</span> r</code></pre></div>
+<h3 id="シミュレーションの実行と結果の確認">6. シミュレーションの実行と結果の確認</h3>
+<p>シミュレーションを実行し、途中経過を可視化してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)
+n <span class="op">=</span> <span class="bu">len</span>(imgs)
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):
+  im <span class="op">=</span> plt.imshow(imgs[n<span class="op">//</span><span class="dv">4</span><span class="op">*</span>i])
+  plt.show()</code></pre></div>
+<p>4つの画像が現れ、最初に現れた四角が徐々にぼやけていっていれば正しく計算できている。</p>
+<h3 id="アニメーション">7. アニメーション</h3>
+<p>計算結果をアニメーションしてみよう。まずはアニメーションの準備を行う。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fig <span class="op">=</span> plt.figure()
+im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])
+<span class="kw">def</span> update(i):
+  im.set_array(imgs[i])</code></pre></div>
+<h3 id="アニメーションの表示">8. アニメーションの表示</h3>
+<p>ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
+animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))</code></pre></div>
+<h2 id="課題2反応拡散方程式">課題2:反応拡散方程式</h2>
+<p>反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き<code>gs.ipynb</code>として保存せよ。</p>
+<h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
+<p>最初のセルでライブラリのインポートをしよう。<code>diffusion.ipynb</code>と同じなので、コピペしてもかまわない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> numba <span class="im">import</span> jit
+<span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</code></pre></div>
+<h3 id="ラプラシアンの実装-1">2. ラプラシアンの実装</h3>
+<p><code>diffusion.ipynb</code>の時と同様に、ラプラシアンを実装する。これもコピペしてかまわない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> laplacian(m, n, s):
+    ts <span class="op">=</span> <span class="fl">0.0</span>
+    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m<span class="op">-</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]
+    ts <span class="op">+=</span> s[m][n<span class="op">-</span><span class="dv">1</span>]
+    <span class="co"># ここを埋めよ</span>
+    <span class="cf">return</span> ts</code></pre></div>
+<h3 id="時間発展-1">3. 時間発展</h3>
+<p>二つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
+<p><code>py @jit def calc(u, v, u2, v2):     (L, _) = u.shape     dt = 0.2     F = 0.04     k = 0.06075     Du = 0.1     Dv = 0.05     lu = np.zeros((L, L))     lv = np.zeros((L, L))     for ix in range(1, L-1):         for iy in range(1, L-1):             lu[ix, iy] = Du * laplacian(ix, iy, u)             lv[ix, iy] = Dv * laplacian(ix, iy, v)     cu = -v*v*u + F*(1.0 - u)     cv = v*v*u - (F+k)*v     u2[:] = u + (lu+cu) * dt     v2[:] = v + (lv+cv) * dt</code></p>
 <p>最初の<code>@jit</code>デコレータを忘れないこと。</p>
-<h4 id="シミュレーションの実行をする関数simulationの実装">5. シミュレーションの実行をする関数<code>simulation</code>の実装</h4>
+<h3 id="シミュレーション-1">4. シミュレーション</h3>
 <p>1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> simulation():
-    L <span class="op">=</span> <span class="dv">64</span>
-    LOOP <span class="op">=</span> <span class="dv">10000</span>
+<span class="kw">def</span> simulation(L, loop):
     u <span class="op">=</span> np.zeros((L, L))
     u2 <span class="op">=</span> np.zeros((L, L))
     v <span class="op">=</span> np.zeros((L, L))
@@ -493,53 +409,31 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
     h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
     u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
     v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(LOOP):
+    r <span class="op">=</span> []
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(loop):
         calc(u, v, u2, v2)
         u, u2, v, v2 <span class="op">=</span> u2, u, v2, v
-    <span class="cf">return</span> v</code></pre></div>
+        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:
+          r.append(v.copy())
+    <span class="cf">return</span> r</code></pre></div>
 <p>これも、最初の行の<code>@jit</code>を忘れないこと。</p>
-<h4 id="結果の可視化-1">6. 結果の可視化</h4>
-<p>6つ目のセルで、シミュレーション結果を可視化しよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> simulation()
-plt.imshow(v)</code></pre></div>
-<p>ここまで正しく入力されていれば、不思議な模様が現れたはずである。</p>
-<h3 id="発展課題アニメーション">発展課題：アニメーション</h3>
-<p>せっかくの時間発展シミュレーションなので、時間発展の様子をアニメーションで見てみよう。</p>
-<h4 id="simulation関数の修正">5. <code>simulation</code>関数の修正</h4>
-<p><code>simulation</code>で、最後の結果だけではなく、途中の経過もまとめてリストで返すようにしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> simulation():
-    L <span class="op">=</span> <span class="dv">64</span>
-    LOOP <span class="op">=</span> <span class="dv">10000</span>
-    u <span class="op">=</span> np.zeros((L, L))
-    u2 <span class="op">=</span> np.zeros((L, L))
-    v <span class="op">=</span> np.zeros((L, L))
-    v2 <span class="op">=</span> np.zeros((L, L))
-    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
-    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
-    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
-    r <span class="op">=</span> [] <span class="co"># この行を追加</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(LOOP):
-        calc(u, v, u2, v2)
-        u, u2, v, v2 <span class="op">=</span> u2, u, v2, v
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:     <span class="co"># このif文を追加</span>
-          r.append(v.copy()) <span class="co">#</span>
-    <span class="cf">return</span> r <span class="co"># vでなくrを返すよう修正</span></code></pre></div>
-<h4 id="計算の可視化">6. 計算の可視化</h4>
-<p>6つ目のセルを以下のように書き換え、実行しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation()
-fig <span class="op">=</span> plt.figure()
-im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])</code></pre></div>
-<p>先程と同じ模様が出てくれば正しく計算できている。</p>
-<h4 id="アニメーションの作成">7. アニメーションの作成</h4>
-<p>7つ目のセルに、以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> update(i):
-  im.set_array(imgs[i])
-
-ani <span class="op">=</span> animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))
-rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
-ani</code></pre></div>
-<p>アニメーションが表示されたら成功である。時間があれば、サイズ(<code>L</code>)とループ数(<code>LOOP</code>)を二倍にして実行してみよ。</p>
+<h3 id="シミュレーションの実行">5. シミュレーションの実行</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)
+n <span class="op">=</span> <span class="bu">len</span>(imgs)
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):
+  im <span class="op">=</span> plt.imshow(imgs[n<span class="op">//</span><span class="dv">4</span><span class="op">*</span>i])
+  plt.show()</code></pre></div>
+<p>ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。</p>
+<h3 id="アニメーション-1">6. アニメーション</h3>
+<p>先ほどと同様にアニメーションの準備をしよう。<code>diffusion.ipynb</code>と同じなので、コピペしてもかまわない。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fig <span class="op">=</span> plt.figure()
+im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])
+<span class="kw">def</span> update(i):
+  im.set_array(imgs[i])</code></pre></div>
+<h3 id="アニメーションの表示-1">7. アニメーションの表示</h3>
+<p>アニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
+animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))</code></pre></div>
 <h2 id="余談パーソナルスーパーコンピュータ">余談：パーソナルスーパーコンピュータ</h2>
 <p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。東京大学工学部物理工学科の助手、宇宙科学研究所の助教授を経て、自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
 <p>それから紆余曲折あって、計算流体力学研究所はスパコンを手放し、技術コンサルやパソコンの組み立て、販売をする会社となった。私が大学院に進学した際に与えられたパソコンは、この計算流体力学研究所で購入したAlpha21164のマシンであった。指導教員の「せっかくだから組み立てさせてもらったら？」の言葉に甘え、目黒に行ってアルバイトのお兄さんと一緒に自分の研究に使うマシンを組み立てた。そこに社長である桑原氏が様子を見にやってきた。僕が物工の学生と知ると、興味をもっていろいろ聞いてきた。僕はまさか目の前の社長さんが元物工の助手だったなんて知らなかったので「物工のご出身なんですか？どこの研究室ですか？」と的外れな質問をした。彼はただ笑って何も答えなかったのを思い出す。その時は青二才で何もわからなかった私だが、スパコンを使って研究をするようになった今なら、彼からいろいろ興味深い話が聞けたのではないかと残念に思う。桑原氏は2008年、その豪快な生涯を閉じた。「親の遺産をもっとも有効に学術に活かした」と評されている。</p>
