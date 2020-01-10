@@ -95,9 +95,18 @@ Googleによる機械学習のライブラリ、Tensorflowを使ってGAN (Gener
 
 新しいノートブックを開き、`gan.ipynb`という名前で保存せよ。
 
-#### 1. import
+#### 1. TensorFlowのダウングレード
 
-最初のセルで必要なモジュールをimportしよう。ついでにTensorFlowの警告を減らす設定をしておく。
+以下のコードは最新のTensorFlowでは動作しない。まずバージョンを落とそう。
+
+```py
+%tensorflow_version 1.x
+!pip install tensorflow==1.13.1
+```
+
+#### 2. import
+
+二つ目のセルで必要なモジュールをインポートする。
 
 ```py
 import matplotlib.pyplot as plt
@@ -106,9 +115,9 @@ import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.ERROR)
 ```
 
-#### 2. 宣言
+#### 3. 宣言
 
-2つ目のセルで今後使うオブジェクトやパラメータの宣言を行う。
+今後使うオブジェクトやパラメータの宣言を行う。
 
 ```py
 tfgan = tf.contrib.gan
@@ -121,7 +130,7 @@ BATCH_SIZE = 32
 
 「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。
 
-#### 3. Generatorの宣言
+#### 4. Generatorの宣言
 
 Generator(偽造者)の宣言を行う。
 
@@ -146,7 +155,7 @@ def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
         return net
 ```
 
-#### 4. Discriminatorの宣言
+#### 5. Discriminatorの宣言
 
 Discriminator(鑑定者)の宣言を行う。
 
@@ -166,7 +175,7 @@ def discriminator_fn(img, _, weight_decay=2.5e-5, is_training=True):
         return layers.linear(net, 1)
 ```
 
-#### 5. データセットの準備
+#### 6. データセットの準備
 
 「本物」のデータを供給する関数を定義する。
 
@@ -191,7 +200,7 @@ def provide_data(source, batch_size):
     return images
 ```
 
-#### 6. データセットのダウンロード
+#### 7. データセットのダウンロード
 
 学習に用いるデータセットをダウンロードしよう。データセットは以下の三種類を用意してある。
 
@@ -214,7 +223,7 @@ file=url+TRAIN_DATA
 2019-05-31 08:03:55 (138 MB/s) - ‘mnist.tfrecord’ saved [20852051/20852051]
 ```
 
-#### 7. 初期化
+#### 8. 初期化
 
 TensorFlowを初期化し、データをバッチに変換する。
 
@@ -224,7 +233,7 @@ with tf.device('/cpu:0'):
     real_images = provide_data(TRAIN_DATA, BATCH_SIZE)
 ```
 
-#### 8. GANの宣言
+#### 9. GANの宣言
 
 これまで宣言した「偽造者(Generator)」と「鑑定者(Discriminator)」を競争させるGANを宣言する。
 
@@ -260,7 +269,7 @@ train_step_fn = tfgan.get_sequential_train_steps()
 global_step = tf.train.get_or_create_global_step()
 ```
 
-#### 9. GANの実行
+#### 10. GANの実行
 
 それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。
 
