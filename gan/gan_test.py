@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-
+tf.logging.set_verbosity(tf.logging.ERROR)
 
 def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
     layers = tf.contrib.layers
