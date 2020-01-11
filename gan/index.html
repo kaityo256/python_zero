@@ -158,14 +158,18 @@ a = \frac{\sum_i^N x_i y_i}{\sum_i^N x_i^2}
 <p>Googleによる機械学習のライブラリ、Tensorflowを使ってGAN (Generative Adversarial Networks)を組んでみよう。それなりにコード量があるので、間違いないように注意して入力すること。</p>
 <h3 id="課題1-ganの実行テスト">課題1: GANの実行テスト</h3>
 <p>新しいノートブックを開き、<code>gan.ipynb</code>という名前で保存せよ。</p>
-<h4 id="import">1. import</h4>
-<p>最初のセルで必要なモジュールをimportしよう。ついでにTensorFlowの警告を減らす設定をしておく。</p>
+<h4 id="tensorflowのダウングレード">1. TensorFlowのダウングレード</h4>
+<p>以下のコードは最新のTensorFlowでは動作しない。まずバージョンを落とそう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>tensorflow_version <span class="fl">1.</span>x
+<span class="op">!</span>pip install tensorflow<span class="op">==</span><span class="fl">1.13</span>.<span class="dv">1</span></code></pre></div>
+<h4 id="import">2. import</h4>
+<p>二つ目のセルで必要なモジュールをインポートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">import</span> tensorflow <span class="im">as</span> tf
 tf.logging.set_verbosity(tf.logging.ERROR)</code></pre></div>
-<h4 id="宣言">2. 宣言</h4>
-<p>2つ目のセルで今後使うオブジェクトやパラメータの宣言を行う。</p>
+<h4 id="宣言">3. 宣言</h4>
+<p>今後使うオブジェクトやパラメータの宣言を行う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tfgan <span class="op">=</span> tf.contrib.gan
 layers <span class="op">=</span> tf.contrib.layers
 framework <span class="op">=</span> tf.contrib.framework
@@ -173,7 +177,7 @@ slim <span class="op">=</span> tf.contrib.slim
 dataprovider <span class="op">=</span> slim.dataset_data_provider.DatasetDataProvider
 BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></div>
 <p>「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。</p>
-<h4 id="generatorの宣言">3. Generatorの宣言</h4>
+<h4 id="generatorの宣言">4. Generatorの宣言</h4>
 <p>Generator(偽造者)の宣言を行う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> generator_fn(noise, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
     f1 <span class="op">=</span> framework.arg_scope(
@@ -193,7 +197,7 @@ BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></di
         net <span class="op">=</span> layers.conv2d_transpose(net, <span class="dv">32</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
         net <span class="op">=</span> layers.conv2d(net, <span class="dv">1</span>, <span class="dv">4</span>, activation_fn<span class="op">=</span>tf.tanh)
         <span class="cf">return</span> net</code></pre></div>
-<h4 id="discriminatorの宣言">4. Discriminatorの宣言</h4>
+<h4 id="discriminatorの宣言">5. Discriminatorの宣言</h4>
 <p>Discriminator(鑑定者)の宣言を行う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> discriminator_fn(img, _, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
     <span class="cf">with</span> framework.arg_scope(
@@ -208,7 +212,7 @@ BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></di
             net <span class="op">=</span> layers.fully_connected(
                 net, <span class="dv">1024</span>, normalizer_fn<span class="op">=</span>layers.batch_norm)
         <span class="cf">return</span> layers.linear(net, <span class="dv">1</span>)</code></pre></div>
-<h4 id="データセットの準備">5. データセットの準備</h4>
+<h4 id="データセットの準備">6. データセットの準備</h4>
 <p>「本物」のデータを供給する関数を定義する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> provide_data(source, batch_size):
     keys_to_features <span class="op">=</span> {
@@ -228,7 +232,7 @@ BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></di
     image <span class="op">=</span> (tf.cast(image, tf.float32) <span class="op">-</span> <span class="fl">128.0</span>) <span class="op">/</span> <span class="fl">128.0</span>
     images <span class="op">=</span> tf.train.batch([image], batch_size<span class="op">=</span>batch_size)
     <span class="cf">return</span> images</code></pre></div>
-<h4 id="データセットのダウンロード">6. データセットのダウンロード</h4>
+<h4 id="データセットのダウンロード">7. データセットのダウンロード</h4>
 <p>学習に用いるデータセットをダウンロードしよう。データセットは以下の三種類を用意してある。</p>
 <ul>
 <li><code>mnist.tfrecord</code> 手書きの数字(MNIST)</li>
@@ -242,12 +246,12 @@ url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/s
 <span class="op">!</span>wget $file</code></pre></div>
 <p>上記を実行すると、ファイルがダウンロードされる。最後に以下のような表示がされたら成功である。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">2019-05-31</span> 08:03:55 (138 MB/s) <span class="ex">-</span> ‘mnist.tfrecord’ saved [20852051/20852051]</code></pre></div>
-<h4 id="初期化">7. 初期化</h4>
+<h4 id="初期化">8. 初期化</h4>
 <p>TensorFlowを初期化し、データをバッチに変換する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tf.reset_default_graph()
 <span class="cf">with</span> tf.device(<span class="st">&#39;/cpu:0&#39;</span>):
     real_images <span class="op">=</span> provide_data(TRAIN_DATA, BATCH_SIZE)</code></pre></div>
-<h4 id="ganの宣言">8. GANの宣言</h4>
+<h4 id="ganの宣言">9. GANの宣言</h4>
 <p>これまで宣言した「偽造者(Generator)」と「鑑定者(Discriminator)」を競争させるGANを宣言する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_model <span class="op">=</span> tfgan.gan_model(
     generator_fn,
@@ -278,7 +282,7 @@ visualizer <span class="op">=</span> tfgan.<span class="bu">eval</span>.image_re
 
 train_step_fn <span class="op">=</span> tfgan.get_sequential_train_steps()
 global_step <span class="op">=</span> tf.train.get_or_create_global_step()</code></pre></div>
-<h4 id="ganの実行">9. GANの実行</h4>
+<h4 id="ganの実行">10. GANの実行</h4>
 <p>それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TOTAL_STEPS <span class="op">=</span> <span class="dv">201</span>
 INTERVAL <span class="op">=</span> <span class="dv">25</span>
