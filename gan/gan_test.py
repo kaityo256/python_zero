@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+
 tf.logging.set_verbosity(tf.logging.ERROR)
+
 
 def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
     layers = tf.contrib.layers
@@ -64,7 +66,9 @@ def provide_data(source, batch_size):
     return images
 
 
-def run_gan(TRAIN_DATA, BATCH_SIZE=32):
+def run_gan(TRAIN_DATA, TOTAL_STEPS=400):
+    BATCH_SIZE = 32
+    TOTAL_STEPS += 1
     tfgan = tf.contrib.gan
     tf.reset_default_graph()
     with tf.device('/cpu:0'):
@@ -100,7 +104,6 @@ def run_gan(TRAIN_DATA, BATCH_SIZE=32):
     train_step_fn = tfgan.get_sequential_train_steps()
     global_step = tf.train.get_or_create_global_step()
 
-    TOTAL_STEPS = 201
     INTERVAL = 25
     with tf.train.SingularMonitoredSession() as sess:
         for i in range(TOTAL_STEPS):
