@@ -212,7 +212,7 @@ def provide_data(source, batch_size):
 
 ```py
 TRAIN_DATA = "mnist.tfrecord"
-url="https://kaityo256.github.io/simple_tfgan/dataset/"
+url="https://kaityo256.github.io/python_zero/gan/"
 file=url+TRAIN_DATA
 !wget $file
 ```
