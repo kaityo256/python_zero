@@ -257,9 +257,9 @@ $$
 
 # 数値シミュレーション:課題
 
-## 課題1:拡散方程式
+## 課題1:反応拡散方程式
 
-拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、`diffusion.ipynb`という名前で保存せよ。
+反応拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、`gs.ipynb`という名前で保存せよ。
 
 ### 1. ライブラリのインポート
 
@@ -298,7 +298,9 @@ def laplacian(m, n, s):
 
 ### 3. ラプラシアンのテスト
 
-`laplacian`を実装したらテストしてみよう。三つ目のセルに`laplacian`に食わせるテスト用のNumPy二次元配列を作成する。
+`laplacian`を実装したらテストしてみよう。以下はすべて三つ目のセルで実行せよ。
+
+まず、`laplacian`に食わせるテスト用のNumPy二次元配列を作成する。
 
 ```py
 a = np.arange(9).reshape(3,3)
@@ -350,105 +352,6 @@ laplacian(1,1,a)
 
 ### 4. 時間発展
 
-4つ目のセルに時間発展をさせる関数`calc`を実装しよう。一つ前の配列`u`を受け取り、次の配列`u2`を返す。
-
-```py
-@jit
-def calc(u, u2):
-    (L, _) = u.shape
-    dt = 0.01
-    for ix in range(1, L-1):
-        for iy in range(1, L-1):
-            u2[ix, iy] = u[ix][iy] + laplacian(ix, iy, u)*dt
-```
-
-### 5. シミュレーション
-
-5つ目のセルでシミュレーションループを回そう。
-
-```py
-@jit
-def simulation(L, loop):
-    h = L//2
-    u = np.zeros((L, L))
-    u2 = np.zeros((L, L))
-    u[h-6:h+6, h-6:h+6] = 1.0
-    r = []
-    for i in range(loop):
-      calc(u, u2)
-      u, u2 = u2, u
-      if i % 100 == 0:
-        r.append(u.copy())
-    return r
-```
-
-### 6. シミュレーションの実行と結果の確認
-
-シミュレーションを実行し、途中経過を可視化してみよう。
-
-```py
-imgs = simulation(64, 10000)
-n = len(imgs)
-for i in range(4):
-  im = plt.imshow(imgs[n//4*i])
-  plt.show()
-```
-
-4つの画像が現れ、最初に現れた四角が徐々にぼやけていっていれば正しく計算できている。
-
-### 7. アニメーション
-
-計算結果をアニメーションしてみよう。まずはアニメーションの準備を行う。
-
-```py
-fig = plt.figure()
-im = plt.imshow(imgs[-1])
-def update(i):
-  im.set_array(imgs[i])
-```
-
-### 8. アニメーションの表示
-
-ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。
-
-```py
-rc('animation', html='jshtml')
-animation.FuncAnimation(fig, update, interval=50, frames=len(imgs))
-```
-
-## 課題2:反応拡散方程式
-
-反応拡散方程式の一つである、グレイ・スコットモデルのシミュレーションをしてみよう。新しいノートブックを開き`gs.ipynb`として保存せよ。
-
-### 1. ライブラリのインポート
-
-最初のセルでライブラリのインポートをしよう。`diffusion.ipynb`と同じなので、コピペしてもかまわない。
-
-```py
-import matplotlib.pyplot as plt
-import numpy as np
-from numba import jit
-from matplotlib import animation, rc
-```
-
-### 2. ラプラシアンの実装
-
-`diffusion.ipynb`の時と同様に、ラプラシアンを実装する。これもコピペしてかまわない。
-
-```py
-@jit
-def laplacian(m, n, s):
-    ts = 0.0
-    ts += s[m+1][n]
-    ts += s[m-1][n]
-    ts += s[m][n+1]
-    ts += s[m][n-1]
-    # ここを埋めよ
-    return ts
-```
-
-### 3. 時間発展
-
 二つの配列を受け取り、1ステップだけ時間を進める関数`calc`を実装しよう。以下を4つ目のセルに入力せよ。
 
 ```py
@@ -469,11 +372,12 @@ def calc(u, v, u2, v2):
     cu = -v*v*u + F*(1.0 - u)
     cv = v*v*u - (F+k)*v
     u2[:] = u + (lu+cu) * dt
-    v2[:] = v + (lv+cv) * dt```
+    v2[:] = v + (lv+cv) * dt
+```
 
 最初の`@jit`デコレータを忘れないこと。
 
-### 4. シミュレーション
+### 5. シミュレーションループ
 
 1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。
 
@@ -498,7 +402,7 @@ def simulation(L, loop):
 
 これも、最初の行の`@jit`を忘れないこと。
 
-### 5. シミュレーションの実行
+### 6. シミュレーションの実行
 
 ```py
 imgs = simulation(64, 10000)
@@ -510,9 +414,9 @@ for i in range(4):
 
 ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。
 
-### 6. アニメーション
+### 7. アニメーション
 
-先ほどと同様にアニメーションの準備をしよう。`diffusion.ipynb`と同じなので、コピペしてもかまわない。
+せっかくシミュレーションしたので、アニメーションを表示させよう。そのための準備をする。
 
 ```py
 fig = plt.figure()
@@ -521,14 +425,96 @@ def update(i):
   im.set_array(imgs[i])
 ```
 
-### 7. アニメーションの表示
+実行後、不思議な模様が出力されるはずである。
 
-アニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。
+### 8. アニメーションの表示
+
+ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。
 
 ```py
 rc('animation', html='jshtml')
 animation.FuncAnimation(fig, update, interval=50, frames=len(imgs))
 ```
+
+## 発展課題：機械学習
+
+せっかくなので、簡単な機械学習を経験してみよう。題材として敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を取り上げる。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。
+
+新しいノートブックを開き`gan.ipynb`として保存せよ。
+
+### 1. TensorFlowのインストール
+
+Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。
+
+```py
+%tensorflow_version 1.x
+!pip install tensorflow==1.13.1
+```
+
+最初の`%`から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。
+
+```txt
+Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0
+```
+
+と表示されれば正しくインストールされている。
+
+### 2. サンプルプログラムのダウンロード
+
+GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。
+
+```py
+!wget https://kaityo256.github.io/python_zero/gan/gan_test.py
+```
+
+`‘gan_test.py’ saved [4500/4500]`と表示されればダウンロード完了です。
+
+### 3. インポート
+
+先程ダウンロードしたプログラムをインポートしよう。
+
+```py
+import gan_test
+```
+
+実行時に多数の`FutureWarning`が出るが、気にしなくて良い。これでGANが使えるようになった。
+
+### 4. データのダウンロード
+
+GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。
+
+* `mnist.tfrecord` 手書きの数字(MNIST)
+* `fontawesome.tfrecord` Font Awesomeというフォントのシンボルアイコン10種類
+* `hiragana.tfrecord` ひらがなすべて(IPAゴシックフォント)
+
+上記のうち、好きなものを一つ選んで`TRAIN_DATA`とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。
+
+以下は手書きの数字(MNIST)を選んだ場合の例である。
+
+```py
+TRAIN_DATA = "mnist.tfrecord"
+url="https://kaityo256.github.io/python_zero/gan/"
+file=url+TRAIN_DATA
+!wget $file
+```
+
+### 5. GANの実行
+
+ではいよいよGANの実行をしてみよう。以下を実行せよ。
+
+```py
+gan_test.run_gan(TRAIN_DATA)
+```
+
+最初に
+
+```txt
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+```
+
+といった警告が出るが、気にしないで良い。
+
+画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。
 
 ## 余談：パーソナルスーパーコンピュータ
 
