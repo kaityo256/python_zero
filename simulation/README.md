@@ -467,7 +467,7 @@ GANのプログラムは、簡単なものでもそれなりに長いコード�
 !wget https://kaityo256.github.io/python_zero/gan/gan_test.py
 ```
 
-`‘gan_test.py’ saved [4500/4500]`と表示されればダウンロード完了です。
+`‘gan_test.py’ saved`と表示されればダウンロード完了である。
 
 ### 3. インポート
 
@@ -497,6 +497,8 @@ url="https://kaityo256.github.io/python_zero/gan/"
 file=url+TRAIN_DATA
 !wget $file
 ```
+
+`‘mnist.tfrecord’ saved`など、自分が選んだファイル名が表示されればダウンロード完了である。
 
 ### 5. GANの実行
 
