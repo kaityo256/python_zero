@@ -115,7 +115,7 @@ $$
 $$
 \begin{aligned}
 r_x(t) &= t \cos \theta \\
-v_y &= -\frac{g t^2}{2} + t \sin \theta
+r_y(t) &= -\frac{g t^2}{2} + t \sin \theta
 \end{aligned}
 $$
 
