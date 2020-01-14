@@ -131,13 +131,14 @@
 
 ## [数値シミュレーション](simulation/README.md)
 
-* ニュートンの運動方程式
+* [講義スライド](https://speakerdeck.com/kaityo256/python-13)
 * 反応拡散方程式(Gray-Scott Model)
 * 余談：パーソナルスーパーコンピュータ
 
 ## [簡単な機械学習](gan/README.md)
 
-* 機械学習の概要について学ぶ
+* [講義スライド](https://speakerdeck.com/kaityo256/python-14)
+* 機械学習の概要( **コードが古く、obsoleteです** )
 * GANを体験する
 * 余談：心理的安全性について
 
