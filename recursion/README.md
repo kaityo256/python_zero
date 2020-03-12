@@ -178,7 +178,6 @@ $$
 
 ```py
 from graphviz import Digraph
-import IPython
 ```
 
 #### 2. 再帰関数`kaidan`の実装
@@ -240,11 +239,10 @@ def kaidan_g(n, g, nodes, parent=None):
 
 ```py
 n = 5
-graph = Digraph(format="png")
+graph = Digraph()
+graph.attr(size="10,10")
 kaidan_g(n, graph, [])
-graph.graph_attr.update(size="10,10")
-graph.render("test")
-IPython.display.Image("test.png")
+graph
 ```
 
 無事に再帰木が表示されただろうか？数字が`kaidan(n)`として呼び出された`n`の値である。`kaidan(5)`は`kaidan(4)`と`kaidan(3)`を呼び出し、`kaidan(4)`は`kaidan(3)`と`kaidan(2)`を呼び出し・・・と、再帰的に呼び出しが続いていき、`n=1`もしくは`n=2`で呼び出しが止まる(終端条件)ことがわかるであろう。
@@ -360,7 +358,7 @@ solve(1, 1, 0, maze)
 save_image(maze)
 ```
 
-正しく実行できていれば、すべてのセルが灰色(探索済み)になったはずである。
+正しく実行できていれば、すべてのセルが灰色(探索済み)になったはずである。逆に、全てのセルが灰色になっていなければ、何か間違っているのでコードを確認すること。
 
 #### 7. 経路探索
 
@@ -450,7 +448,7 @@ APNG.from_files(files, delay=50).save("animation.png")
 IPython.display.Image("animation.png")
 ```
 
-ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。
+ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。アニメーションの様子を見て、この迷路をどのように探索しているか考察せよ。特に、探索が最後まで後回しになるパスがあるが、これはなぜか？そのような場所はどのように決まっているだろうか？
 
 #### 13. 大きな迷路
 

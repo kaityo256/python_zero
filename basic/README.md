@@ -456,7 +456,6 @@ newton(-1-1j)
 
 ```py
 from PIL import Image, ImageDraw
-from IPython.display import display
 ```
 
 #### 2. 関数`newton`の実装
@@ -520,16 +519,30 @@ else:
 
 と書ける。
 
+ヒント3： `if`文は多段にできる。
+
+例えば、条件Aと条件Bがあった場合、以下のように書ける。
+
+```py
+if A:
+  print("条件Aが成立")
+else:
+  if B:
+    print("条件Aが不成立かつ条件Bが成立")
+  else:
+    print("条件Aが不成立かつ条件Bも不成立)
+```
+
 #### 4. 画像の表示
 
 ここまで入力したプログラムを用いて、収束地図を作ってみよう。4つ目のセルに以下を入力せよ。
 
 ```py
 size = 512
-im = Image.new("RGB", (size, size))
-draw = ImageDraw.Draw(im)
+img = Image.new("RGB", (size, size))
+draw = ImageDraw.Draw(img)
 plot(draw, size)
-display(im)
+img
 ```
 
 正しく入力できていれば、上記を実行した際に「収束地図」が描けたはずだ。どのような地図になっただろうか？

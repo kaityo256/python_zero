@@ -443,7 +443,6 @@ result = [2*i for i in range(3)]
 ```py
 from math import sqrt
 from PIL import Image, ImageDraw
-from IPython.display import display
 ```
 
 #### 2. ベクトルの和の長さ
@@ -582,14 +581,14 @@ def draw_line(draw, a, size):
 ```py
 size = 512
 N = 1
-im = Image.new("RGB", (size, size))
-draw = ImageDraw.Draw(im)
+img = Image.new("RGB", (size, size))
+draw = ImageDraw.Draw(img)
 a = [(size, 0)]
 b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
 for _ in range(N):
   a = apply(a, b)
 draw_line(draw, a, size)
-display(im)
+img
 ```
 
 ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。
@@ -636,15 +635,15 @@ def draw_line_color(draw, a, colors, size):
 ```py
 size = 512
 N = 1
-im = Image.new("RGB", (size, size))
-draw = ImageDraw.Draw(im)
+img = Image.new("RGB", (size, size))
+draw = ImageDraw.Draw(img)
 a = [(size, 0)]
 b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
 c = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
 for _ in range(N):
     a = apply(a, b)
 draw_line_color(draw, a, c, size)
-display(im)
+img
 ```
 
 成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。
@@ -652,6 +651,7 @@ display(im)
 * ヒント1： 修正するのは`draw_line_color`関数である
 * ヒント2： リスト`colors`のサイズは`len(colors)`で取得できる
 * ヒント3： ループカウンタ`i`を、リスト`colors`のサイズで割った余りを活用せよ
+* ヒント4： ある数`i`を3で割ったあまりは`i % 3`で得ることができる
 
 完成したら、オリジナルのフラクタル図形も色付きにしてみよ。
 
