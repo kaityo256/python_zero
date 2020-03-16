@@ -88,32 +88,32 @@ print("Hello")
 
 Pythonに限らず、どのプログラミング言語にも、開発者の設計思想が強く表れる。Pythonの哲学は、例えば[The Zen of Python](https://www.python.org/dev/peps/pep-0020/)にまとまっている。全部で19あるが、そのうちいくつかを引用してみよう(和訳は筆者による)。
 
-    Beautiful is better than ugly.
-    美しいことはよいことだ。
-
-    Simple is better than complex.
-    単純であることはよいことだ。
-
-    Complex is better than complicated.
-    しかし、ややこしいよりは複雑であるほうが良い。
-
-    Flat is better than nested.
-    ネストは浅い方が良い。
-
-    Readability counts.
-    読みやすさが正義。
-
-    Special cases aren't special enough to break the rules.
-    特別な場合を許さない。
-
-    Although practicality beats purity.
-    純粋さよりは実用を重視せよ。
-
-    Now is better than never.
-    「いつか」より「今」
-
-    Although never is often better than *right* now.
-    しかし、あわてて今やるよりはやらない方が良いこともある。
+> Beautiful is better than ugly.
+> 美しいことはよいことだ。
+>
+> Simple is better than complex.
+> 単純であることはよいことだ。
+>
+> Complex is better than complicated.
+> しかし、ややこしいよりは複雑であるほうが良い。
+>
+> Flat is better than nested.
+> ネストは浅い方が良い。
+>
+> Readability counts.
+> 読みやすさが正義。
+>
+> Special cases aren't special enough to break the rules.
+> 特別な場合を許さない。
+>
+> Although practicality beats purity.
+> 純粋さよりは実用を重視せよ。
+>
+> Now is better than never.
+> 「いつか」より「今」
+>
+> Although never is often better than *right* now.
+> しかし、あわてて今やるよりはやらない方が良いこともある。
 
 この文章はPython Enhancement Proposals、通称PEPの20番として登録されたものだ。PEPとはPython開発コミュニティやユーザが参照するドキュメントのことで、様々な種類があり、多くのドキュメントが登録されているが、よく参照されるのが「Pythonのコーディング規約」を定めた[PEP8](https://www.python.org/dev/peps/pep-0008/)である。コーディング規約とは、コードを書く際の決まりごと、いわばマナーである。Pythonを貫く哲学の一つに、「誰が書いても同じようになるべし」というものがある。PEP8に従って書くことで、例えば「人によってインデントの深さや変数名の付け方が異なるので、大きなプロジェクトで流儀が混ざって読みづらくなる」といったことを防ぐことができる。また、バグの発生源となりやすい表記方法を禁止することで、バグの混入を防ぐ、という目的もある。
 
@@ -228,7 +228,6 @@ Google Colab上で、簡単な描画プログラムを作成、実行してみ�
 
 ```py
 from PIL import Image, ImageDraw
-from IPython.display import display
 ```
 
 これは、イメージ描画ライブラリを利用するよ、という宣言である。`import`文については後で学ぶので、今は気にしなくて良い。
@@ -236,8 +235,8 @@ from IPython.display import display
 #### 2. 描画
 
 ```py
-im = Image.new("L", (256, 256), 255)
-draw = ImageDraw.Draw(im)
+img = Image.new("L", (256, 256), 255)
+draw = ImageDraw.Draw(img)
 cx = 128
 cy = 128
 r = 96
@@ -251,7 +250,7 @@ draw.ellipse((cx - r, cy - r, cx + r, cy + r))
 ３つ目のセルに以下を入力し、実行せよ。
 
 ```py
-display(im)
+img
 ```
 
 これまで正しく入力していれば、白地に黒い線で円が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。
@@ -266,7 +265,6 @@ Jupyterノートブックは、すでに入力済みのセルを修正するこ�
 
 ```py
 from PIL import Image, ImageDraw
-from IPython.display import display
 from math import pi, sin, cos # この行を追加
 ```
 
@@ -305,7 +303,13 @@ for i in range(N):
 
 #### 3. イメージの表示
 
-さて、一つめのセルの`import`文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセルを実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、クリックして三つ目のセルにフォーカスを移してから三角マークをクリックするか、シフト+リターンを入力する。ただしく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。
+さて、一つめのセルの`import`文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル
+
+```python
+img
+```
+
+を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力すれば良い。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。
 
 ### 課題2-3：N芒星の描画
 

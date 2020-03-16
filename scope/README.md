@@ -374,7 +374,6 @@ collatz(3)
 
 ```py
 from graphviz import Digraph
-import IPython
 ```
 
 #### 2. 関数`collatz`の実装
@@ -398,14 +397,14 @@ def collatz(i, edges):
 
 ```py
 def make_graph(n):
-    g = Digraph(format='png')
+    g = Digraph()
     edges = set()
     for i in range(1, n+1):
         collatz(i, edges)
     for i, j in edges:
         g.edge(str(i), str(j))
-    g.graph_attr.update(size="10,10")
-    g.render("test")
+    g.attr(size="10,10")
+    return g
 ```
 
 これは、1から`n`までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。
@@ -416,7 +415,6 @@ def make_graph(n):
 
 ```py
 make_graph(3)
-IPython.display.Image("test.png")
 ```
 
 これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。
@@ -424,7 +422,7 @@ IPython.display.Image("test.png")
 成功したら、いろんな数字を`make_graph`に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、
 
 ```py
-  g.graph_attr.update(size="10,120")
+  g.attr(size="10,10")
 ```
 
 と、生成するイメージのサイズを大きくすると見やすくなる。
