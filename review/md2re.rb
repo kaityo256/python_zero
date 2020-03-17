@@ -43,6 +43,7 @@ def in_math
 end
 
 lines = ""
+yodan = false
 while (line=gets)
   if line=~/```(.*)$/
     print convert2re(lines, mk)
@@ -54,8 +55,15 @@ while (line=gets)
     lines = ""
     puts "//texequation{"
     in_math
+  elsif line=~/^## 余談：(.*)/
+    print convert2re(lines, mk)
+    lines = ""
+    yodan = true
+    puts "//memo[#{$1}]{"
   else
     lines += line
   end
 end
 print mk.render(lines)
+
+puts "//}" if yodan

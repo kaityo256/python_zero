@@ -1,10 +1,9 @@
 # Pythonの概要とGoogle Colabの使い方
 
-## 本講の目的
+## 本講で学ぶこと
 
-* Pythonの概要を知る
-* Google Colabの使い方を覚える
-* Google Colabを通してPythonに触れてみる
+* Pythonの概要
+* Google Colabの使い方
 
 ## Pythonの特徴
 
