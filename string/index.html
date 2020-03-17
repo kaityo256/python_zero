@@ -429,7 +429,7 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 </ul>
 <p>レポートには、自分が選んだ小説の作者とタイトル、そして出てきたワードクラウドを貼り付け、簡単な感想を書くこと。</p>
 <h2 id="余談国際化は難しい">余談：国際化は難しい</h2>
-<p>あたながなにかスマホアプリを作って公開してみたら、とても人気が出たとしよう。せっかくだから全世界に展開したい。その時に直面するのが国際化対応である。英語でInternationalizationと呼ぶが、20文字と長いので中間の18文字を略して「I18N」と呼ぶ。少しでも経験のある人は「I18Nは悪夢だ」と思うであろう。まず、文字コードはどうするのか？日本語だけでも文字コードは何種類もあるのだ。面倒だからUnicodeしかサポートしない？よろしい。でも地獄はここからだ。</p>
+<p>スマホアプリを作って公開したら人気が出たとしよう。せっかくだから全世界に展開したい。その時に直面するのが国際化対応である。英語でInternationalizationと呼ぶが、20文字と長いので中間の18文字を略して「I18N」と呼ぶ。少しでも経験のある人は「I18Nは悪夢だ」と思うであろう。まず、文字コードはどうするのか？日本語だけでも文字コードは何種類もあるのだ。面倒だからUnicodeしかサポートしない？よろしい。でも地獄はここからだ。</p>
 <p>有名なところでは、アラビア語は「右から左」に文字を書く。メニューなどが左寄せになっている場合、アラビア語に対応するためには「右寄せ」にしなければならない。Twitterにアカウントを持っている人は<code>https://twitter.com/home?lang=ar</code>にアクセスしてみよ。左右が反転するのがわかるだろう。</p>
 <p>数詞も頭が痛い問題だ。英語には単数、複数の区別があることは知っているであろう。例えばある検索条件で何個ファイルを見つけたかを表示したい場合、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:
@@ -448,10 +448,9 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 5 plików.
 22 pliki.
 25 plików.</code></pre>
-<p>となるはずだ。ここから規則性を見いだせるだろうか？「31 files.」や「32 files.」はどうなるか予想できるだろうか？101や102は？</p>
+<p>となるはずだ。ここから「31 files.」や「32 files.」はどうなるか予想できるだろうか？101や102は？</p>
 <p>今コンピュータで日本語が使えるのも先人たちの血のにじむような努力あってのことだ。「○○はおかしい」「○○は非合理的だ」などと思ってはならない。国際化とは、まず世界の多様性を認めることからスタートしなければならない。</p>
-<p>参考：「ぼくたちのかんがえたさいきょうのi18n国家」</p>
-<p><a href="https://qiita.com/yugui/items/55f2529c5a731badeff7" class="uri">https://qiita.com/yugui/items/55f2529c5a731badeff7</a></p>
+<p>参考：<a href="https://qiita.com/yugui/items/55f2529c5a731badeff7">ぼくたちのかんがえたさいきょうのi18n国家</a></p>
 </article>
 </body>
 </html>
