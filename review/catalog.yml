@@ -1,0 +1,38 @@
+PREDEF:
+  - introduction.re
+  - install.re
+
+CHAPS:
+  - hello.re
+  - basic.re
+  - scope.re
+  - list.re
+  - string.re
+  - file.re
+  - recursion.re
+  - class.re
+  - numpy.re
+  - howtowork.re
+  - dp.re
+  - random.re
+  - simulation.re
+  - gan.re
+
+APPENDIX:
+
+POSTDEF:
+
+##
+## ■Tips
+## 第I部、第II部、…のように「部」を使うには、「CHAPS:」を次のようにする。
+##
+##   CHAPS:
+##     - 部タイトル:
+##         - chap01.re
+##         - chap02.re
+##     - 部タイトル:
+##         - chap03.re
+##         - chap04.re
+##
+## 「部タイトル」の最後に半角の「:」をつけることに注意。
+##

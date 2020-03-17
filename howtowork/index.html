@@ -87,7 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="pythonはどうやって動くのか"><a href="https://kaityo256.github.io/python_zero/howtowork/">Pythonはどうやって動くのか</a></h1>
+<h1 id="pythonはどうやって動くのか">Pythonはどうやって動くのか</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>コンピュータはどうやって動くのか</li>
@@ -192,8 +192,7 @@ BINARY_ADD</code></pre>
 <img src="fig/calc2.png" alt="a + b * cの計算" />
 <p class="caption"><code>a + b * c</code>の計算</p>
 </div>
-<h1 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h1>
-<h2 id="課題1抽象構文木とバイトコード">課題1：抽象構文木とバイトコード</h2>
+<h2 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h2>
 <h3 id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h3>
 <p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、<code>ast.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
@@ -246,7 +245,7 @@ show_ast(src)</code></pre></div>
 <li><code>a + b + c</code></li>
 <li><code>a + b * c</code></li>
 </ul>
-<h2 id="課題2スタックマシンの実装">課題2：スタックマシンの実装</h2>
+<h3 id="課題2-1逆ポーランド記法電卓">課題2-1：逆ポーランド記法電卓</h3>
 <p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
 <p>具体的には、以下のような「プログラム」を組む。</p>
 <ul>
@@ -256,7 +255,6 @@ show_ast(src)</code></pre></div>
 <li>整数なら、そのままスタックにプッシュする</li>
 <li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
 </ul>
-<h3 id="課題2-1-逆ポーランド記法電卓">課題2-1: 逆ポーランド記法電卓</h3>
 <p>新しいPython3ノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>まずは必要なライブラリをインポートしておこう。</p>

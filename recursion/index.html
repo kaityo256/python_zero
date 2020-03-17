@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="再帰呼び出し"><a href="https://kaityo256.github.io/python_zero/recursion/">再帰呼び出し</a></h1>
+<h1 id="再帰呼び出し">再帰呼び出し</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -220,10 +220,9 @@ F_n = F_{n-1} + F_{n-2}
 <p class="caption">バックトラックによる迷路探索</p>
 </div>
 <p>課題では、指定された迷路について、「スタート地点からの距離地図」の作成、及び「距離地図が完成した後に解の経路作成」のそれぞれの処理を再帰で実装しよう。</p>
-<h1 id="再帰呼び出し課題">再帰呼び出し：課題</h1>
-<h2 id="課題1階段の登り方問題">課題1：階段の登り方問題</h2>
+<h2 id="再帰呼び出し課題">再帰呼び出し：課題</h2>
+<h3 id="課題1-1階段の登り方問題">課題1-1：階段の登り方問題</h3>
 <p>階段を、一度に1段、もしくは2段登るやり方を混ぜて登る時、「<span class="math inline">\(n\)</span>段の階段の登り方の総数」を返す関数<code>kaidan(n)</code>を作り、その動作を可視化してみよう。新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
-<h3 id="課題1-1再帰の実装">課題1-1：再帰の実装</h3>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>直接再帰には関係ないが、後で再帰木を可視化をするために必要なライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
@@ -271,9 +270,8 @@ kaidan_g(n, graph, [])
 graph</code></pre></div>
 <p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
 <p>もし正しく表示されたら、1行目を<code>n=8</code>などとして、少し大きな再帰木も表示してみよ。</p>
-<h2 id="課題2再帰による迷路の解法">課題2：再帰による迷路の解法</h2>
+<h3 id="課題2-1-迷路探索">課題2-1 迷路探索</h3>
 <p>再帰で迷路を解いて、その答えや探索の過程を可視化してみよう。新しいノートブックを開き、<code>maze.ipynb</code>として保存せよ。</p>
-<h3 id="課題2-1-迷路を解く">課題2-1 迷路を解く</h3>
 <h4 id="必要なライブラリのインポート">1.必要なライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> pickle

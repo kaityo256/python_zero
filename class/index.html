@@ -87,7 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="クラスとオブジェクト指向"><a href="https://kaityo256.github.io/python_zero/class/">クラスとオブジェクト指向</a></h1>
+<h1 id="クラスとオブジェクト指向">クラスとオブジェクト指向</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>オブジェクト指向とは？</li>
@@ -307,14 +307,14 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>特にmodルールはかなり広い範囲で採用されているようだ。うちの地域では「割りばし」と呼ばれているものの、これが決定的な名前ではないらしく、Wikipediaでは<a href="https://ja.wikipedia.org/wiki/%E6%89%8B%E3%82%92%E7%94%A8%E3%81%84%E3%81%9F%E9%81%8A%E3%81%B3#%E6%95%B0%E5%AD%97%E3%82%92%E5%A2%97%E3%82%84%E3%81%99%E9%81%8A%E3%81%B3">数字を増やす遊び</a>と紹介されている。</p>
 <p>さて、簡単のため、基本ルールだけを考えよう。死んだ手の指の本数を「5本」と数えると、お互いの指の本数は、ターン毎に必ず増加する。したがって、千日手は存在しない。また、指の本数は20本を超えることはできないため、必ず有限ターンでゲームが終わる。また、勝負が決まるのは相手の最後の手を殺した時だけなので、引き分けは存在しない。ランダム要素もないため、先手か後手のどちらかが必勝であることがわかる。</p>
 <p>実際、このゲームは後手必勝である。このゲームを題材に、クラスを使いつつ、本格的な再帰プログラムを組んでみよう。</p>
-<h1 id="クラスとオブジェクト指向課題">クラスとオブジェクト指向：課題</h1>
-<h2 id="課題1割り箸ゲームの状態クラスの実装とテスト">課題1:割り箸ゲームの状態クラスの実装とテスト</h2>
+<h2 id="クラスとオブジェクト指向課題">クラスとオブジェクト指向：課題</h2>
+<h3 id="課題1割り箸ゲームの状態クラスの実装とテスト">課題1:割り箸ゲームの状態クラスの実装とテスト</h3>
 <p>新しいノートブックを開き、<code>waribashi.ipynb</code>という名前をつけよ。</p>
-<h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>まず最初のセルに、後で必要となるライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
-<h3 id="状態クラスの実装">2. 状態クラスの実装</h3>
-<h4 id="初期化関数">初期化関数</h4>
+<h4 id="状態クラスの実装">2. 状態クラスの実装</h4>
+<h5 id="初期化関数">初期化関数</h5>
 <p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。割りばしゲームの状態としては、先手番であるか否か<code>is_first</code>、先手番の指の本数<code>f</code>、後手番の指の本数<code>s</code>がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「遷移可能な状態」<code>siblings</code>、「この状態を描画したかどうか」<code>is_drawn</code>もつけておこう。2つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
@@ -326,7 +326,7 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>入力したら、インスタンスを作れることを確認しよう。3つ目のセルに以下のように入力、実行し、エラーが出なければ成功である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</code></pre></div>
 <p>確認が終わったら、3つ目のセルを削除しておくこと。</p>
-<h4 id="文字列変換メソッド">文字列変換メソッド</h4>
+<h5 id="文字列変換メソッド">文字列変換メソッド</h5>
 <p>次に、状態を文字列に変換するメソッドを追加しよう。2つ目セルの<code>State</code>クラスの<code>__init__</code>メソッドの後に<code>__str__</code>というメソッドを追加する。この時、<code>__init__</code>と同じインデントにすること。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
     <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
@@ -360,7 +360,7 @@ f
 [<span class="dv">3</span>, <span class="dv">1</span>]
 [<span class="dv">4</span>, <span class="dv">2</span>]</code></pre></div>
 <p>上記が正しく表示されたら、3つ目のセルを消しておこう。</p>
-<h4 id="比較メソッド">比較メソッド</h4>
+<h5 id="比較メソッド">比較メソッド</h5>
 <p>次に、オブジェクトの比較メソッド<code>__eq__</code>を作ってみよう。比較メソッドとは<code>a == b</code>とした際に、<code>a</code>と<code>b</code>が等しいか判定するのにつかわれるメソッドだ。2つ目のセルの<code>State</code>クラスの<code>__str__</code>の後に以下のように追加しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> params(<span class="va">self</span>):
         <span class="cf">return</span> (<span class="va">self</span>.is_first, <span class="va">self</span>.f, <span class="va">self</span>.s)
@@ -372,7 +372,7 @@ f
 s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
 s1 <span class="op">==</span> s2</code></pre></div>
 <p>結果として<code>True</code>と出てくれば成功である。動作確認が終わったら3つ目のセルを消しておくこと。</p>
-<h4 id="次の状態の生成">次の状態の生成</h4>
+<h5 id="次の状態の生成">次の状態の生成</h5>
 <p>現在の状態から次の状態を生成するメソッドを作ろう。現在の状態に対して「先手側の手の左右」と「後手側の手の左右」を選べば、次の状態が決まる。先手側の手を<code>fi</code>、後手側の手を<code>si</code>としよう。それぞれ0と1の値をとる変数で、0が左手、1が右手である。ただし、指の本数が大きいほうを必ず左手にするように入れ替える。例えば現在先手番で、<code>(fi, si)==(0,0)</code>ならば、先手が左手で後手番の左手を攻撃したという意味になり、現在後手番で<code>(fi, si)==(0,1)</code>ならば、後手番が右手で先手番の左手を攻撃した、という意味になる。</p>
 <p>以上を実装してみよう。2つ目のセルの<code>State</code>クラスに以下のメソッドを追加せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> next_state(<span class="va">self</span>, index):
@@ -413,8 +413,7 @@ s
 <li><code>next_state</code></li>
 </ul>
 <p>ここまで正しい動作が確認できていれば、確認のための3つ目のセルは削除して良い。</p>
-<h2 id="課題2状態遷移図の可視化">課題2:状態遷移図の可視化</h2>
-<h3 id="ゲーム木の作成">ゲーム木の作成</h3>
+<h3 id="課題2状態遷移図の可視化">課題2:状態遷移図の可視化</h3>
 <p>割りばしゲームの状態遷移図(ゲーム木)を作るには、</p>
 <ol style="list-style-type: decimal">
 <li>まず状態が与えられた時、その状態から遷移可能な状態を生成する</li>
@@ -493,10 +492,10 @@ s
 g <span class="op">=</span> Digraph()
 make_graph(root, g)</code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
-<h2 id="発展課題-枝刈り">発展課題: 枝刈り</h2>
+<h3 id="発展課題-枝刈り">発展課題: 枝刈り</h3>
 <p>さて、無事にゲーム木(しつこいが正確には木構造ではなく有向グラフである)が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
 <p>引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈する。こうして後手の負けにつながる枝を全て刈れば、後手必勝の手筋のみが残るはずである。</p>
-<h3 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h3>
+<h4 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h4>
 <p>7つ目のセルに、枝を刈るための関数<code>prune</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> prune(node):
     <span class="cf">if</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:
@@ -515,14 +514,14 @@ make_graph(root, g)</code></pre></div>
             <span class="cf">return</span> <span class="va">True</span>
     <span class="cf">return</span> <span class="va">False</span></code></pre></div>
 <p>先程のアルゴリズムの通りに実装しただけだが、再帰に慣れていないと理解しづらいかもしれない。もしわからなくても「そういうものだ」と思って今はスルーしてかまわない。</p>
-<h3 id="枝刈り後のゲーム木の表示">8. 枝刈り後のゲーム木の表示</h3>
+<h4 id="枝刈り後のゲーム木の表示">8. 枝刈り後のゲーム木の表示</h4>
 <p>8つ目のセルに、枝刈りをした後のゲーム木を表示するプログラムを書こう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
 prune(root)
 g <span class="op">=</span> Digraph()
 make_graph(root, g)</code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
-<h3 id="後手必勝の確認">後手必勝の確認</h3>
+<h4 id="後手必勝の確認">後手必勝の確認</h4>
 <p>隣の人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
 <h2 id="余談心理的安全性について">余談：心理的安全性について</h2>
 <p>例えば子育てをしている人が、ブログなりSNSなりで子育ての経験を書いているとしよう。子育てをしていると、たまに「ヒヤッ」とすることがある。いつの間にか子供が危険なもので遊んでいた、危険なものの近くにいた、ふと目を離しスキにいなくなった……そんな「ヒヤッ」としたり「ハッ」としたりする、重大事故一歩手前の状態を俗に「ヒヤリハット」と呼ぶ。そんな「ヒヤリハット」をネットに流した時の、まわりの人の反応を想像してみてほしい。「そんな危険な目に合わせるなんて子供がかわいそう」「○○に気をつけないなんて親として失格」という非難のコメントが付きそうな気がするであろう。実際、子供がらみの事件のニュースサイトのコメント欄で親を責める声はよく見かける。さて、「ヒヤリハット」を公開し、非難された親はどうするか。もちろん「次回は気をつけよう」と思うであろうが、それ以上に「子育てのヒヤリハットはネットに公開してはいけない」と学ぶであろう。そして、そのブログなりSNSの読者が「うちも気をつけよう」と思うような情報の共有機会が失われることになる。</p>

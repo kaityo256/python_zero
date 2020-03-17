@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="リストとタプル"><a href="https://kaityo256.github.io/python_zero/list/">リストとタプル</a></h1>
+<h1 id="リストとタプル">リストとタプル</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -342,9 +342,8 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
 </div>
 <p>コッホ曲線では、最初にx方向に伸びた長さ1の線分がある。これを二次元ベクトル<span class="math inline">\((1,0)\)</span>で表現する。これを入力したら<span class="math inline">\((1/3, 0), (1/6, \sqrt{3}/6), (1/6, -\sqrt{3}/6), (1/3,0)\)</span>の4つのベクトルに変換したい。ここで、最初に与えたベクトルと、変換で与えたベクトルの始点から終点の長さが等しいことに注意せよ。ただ、変換リストを、長さを考えながら与えるのは面倒だ。変換リストとして<span class="math inline">\((1, 0), (1/2, \sqrt{3}/2), (1/2, -\sqrt{3}/2), (1,0)\)</span>を与えたら、長さを自動調節するようにしよう。 また、傾いたベクトルを入力したら、傾いた4つのベクトルにする。</p>
 <p>このような変換プログラムを書いたら、最初にタプルのリスト<code>[(1,0)]</code>を入力すると、それを変換した4つのタプルのリストに変換され、さらにそれを変換したら16個のタプルのリストに変換され・・・と、この処理を繰り返すことでコッホ曲線を表現するベクトルのリストを作ることができる。以下、そのプログラムを少しずつ作っていこう。</p>
-<h1 id="リストとタプル課題">リストとタプル：課題</h1>
-<h2 id="課題1コッホ曲線">課題1：コッホ曲線</h2>
-<h3 id="課題1-1コッホ曲線の描画">課題1-1：コッホ曲線の描画</h3>
+<h2 id="リストとタプル課題">リストとタプル：課題</h2>
+<h3 id="課題1コッホ曲線の描画">課題1：コッホ曲線の描画</h3>
 <p>新しいノートブックを開き、<code>koch.ipynb</code>という名前にせよ。</p>
 <p>最初と次のセルに以下を入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
@@ -436,12 +435,12 @@ draw_line(draw, a, size)
 img</code></pre></div>
 <p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
 <p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
-<h3 id="課題1-2オリジナルのフラクタル曲線">課題1-2：オリジナルのフラクタル曲線</h3>
+<h3 id="課題2オリジナルのフラクタル曲線">課題2：オリジナルのフラクタル曲線</h3>
 <p>6つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
 <p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</code></pre></div>
 <p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
-<h3 id="発展課題">発展課題</h3>
+<h3 id="発展課題色付きフラクタル曲線">発展課題：色付きフラクタル曲線</h3>
 <p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。まずは一色で塗るプログラムを書く。</p>
 <h4 id="線に色を塗る">7. 線に色を塗る</h4>
 <p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>

@@ -1,0 +1,11 @@
+.DS_Store
+*~
+*.bak
+*.yml.orig
+*.erb.orig
+tmp/*
+python_zero-pdf/*
+images
+*.pre
+*.post
+*.re
