@@ -350,8 +350,7 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>1つ目のセルでは、必要なライブラリをインポートする。ここでは<code>math</code>ライブラリの平方根<code>sqrt</code>と、描画に必要なライブラリをインポートしている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> sqrt
-<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">from</span> IPython.display <span class="im">import</span> display</code></pre></div>
+<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
 <h4 id="ベクトルの和の長さ">2. ベクトルの和の長さ</h4>
 <p>長さの自動調節のため、変換ベクトルのリストが与えられたら、始点と終点を結ぶベクトルの長さを求めよう。変換ベクトルリストは、タプルのリストとして与える。例えば<code>[(1,0),(0,1)]</code>のようなリストが与えられた時に、<span class="math inline">\(\sqrt{2} \sim 1.414\)</span>を返すような関数<code>length</code>を実装したい。</p>
 <p>これは要するにベクトルのリストを受けとって、そのベクトルの和を計算してから、得られたベクトルの長さを返す関数を作ればよい。2つ目のセルに以下を入力せよ。</p>
@@ -427,14 +426,14 @@ b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span
 <p>では、最後に描画してみよう。以下のコードを7つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
 N <span class="op">=</span> <span class="dv">1</span>
-im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
-draw <span class="op">=</span> ImageDraw.Draw(im)
+img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
+draw <span class="op">=</span> ImageDraw.Draw(img)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):
   a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line(draw, a, size)
-display(im)</code></pre></div>
+img</code></pre></div>
 <p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
 <p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
 <h3 id="課題1-2オリジナルのフラクタル曲線">課題1-2：オリジナルのフラクタル曲線</h3>
@@ -459,20 +458,21 @@ display(im)</code></pre></div>
 <p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
 N <span class="op">=</span> <span class="dv">1</span>
-im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
-draw <span class="op">=</span> ImageDraw.Draw(im)
+img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
+draw <span class="op">=</span> ImageDraw.Draw(img)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
 b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
 c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)]
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):
     a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line_color(draw, a, c, size)
-display(im)</code></pre></div>
+img</code></pre></div>
 <p>成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。</p>
 <ul>
 <li>ヒント1： 修正するのは<code>draw_line_color</code>関数である</li>
 <li>ヒント2： リスト<code>colors</code>のサイズは<code>len(colors)</code>で取得できる</li>
 <li>ヒント3： ループカウンタ<code>i</code>を、リスト<code>colors</code>のサイズで割った余りを活用せよ</li>
+<li>ヒント4： ある数<code>i</code>を3で割ったあまりは<code>i % 3</code>で得ることができる</li>
 </ul>
 <p>完成したら、オリジナルのフラクタル図形も色付きにしてみよ。</p>
 <h3 id="内包表記">内包表記</h3>

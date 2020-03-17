@@ -145,32 +145,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>関数が作るブロックの中に、if文が作るブロックがネストしており、その文だけインデントが深くなっている。</p>
 <h3 id="pythonの哲学とコーディングスタイル">Pythonの哲学とコーディングスタイル</h3>
 <p>Pythonに限らず、どのプログラミング言語にも、開発者の設計思想が強く表れる。Pythonの哲学は、例えば<a href="https://www.python.org/dev/peps/pep-0020/">The Zen of Python</a>にまとまっている。全部で19あるが、そのうちいくつかを引用してみよう(和訳は筆者による)。</p>
-<pre><code>Beautiful is better than ugly.
-美しいことはよいことだ。
-
-Simple is better than complex.
-単純であることはよいことだ。
-
-Complex is better than complicated.
-しかし、ややこしいよりは複雑であるほうが良い。
-
-Flat is better than nested.
-ネストは浅い方が良い。
-
-Readability counts.
-読みやすさが正義。
-
-Special cases aren&#39;t special enough to break the rules.
-特別な場合を許さない。
-
-Although practicality beats purity.
-純粋さよりは実用を重視せよ。
-
-Now is better than never.
-「いつか」より「今」
-
-Although never is often better than *right* now.
-しかし、あわてて今やるよりはやらない方が良いこともある。</code></pre>
+<blockquote>
+<p>Beautiful is better than ugly. 美しいことはよいことだ。</p>
+<p>Simple is better than complex. 単純であることはよいことだ。</p>
+<p>Complex is better than complicated. しかし、ややこしいよりは複雑であるほうが良い。</p>
+<p>Flat is better than nested. ネストは浅い方が良い。</p>
+<p>Readability counts. 読みやすさが正義。</p>
+<p>Special cases aren't special enough to break the rules. 特別な場合を許さない。</p>
+<p>Although practicality beats purity. 純粋さよりは実用を重視せよ。</p>
+<p>Now is better than never. 「いつか」より「今」</p>
+<p>Although never is often better than <em>right</em> now. しかし、あわてて今やるよりはやらない方が良いこともある。</p>
+</blockquote>
 <p>この文章はPython Enhancement Proposals、通称PEPの20番として登録されたものだ。PEPとはPython開発コミュニティやユーザが参照するドキュメントのことで、様々な種類があり、多くのドキュメントが登録されているが、よく参照されるのが「Pythonのコーディング規約」を定めた<a href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>である。コーディング規約とは、コードを書く際の決まりごと、いわばマナーである。Pythonを貫く哲学の一つに、「誰が書いても同じようになるべし」というものがある。PEP8に従って書くことで、例えば「人によってインデントの深さや変数名の付け方が異なるので、大きなプロジェクトで流儀が混ざって読みづらくなる」といったことを防ぐことができる。また、バグの発生源となりやすい表記方法を禁止することで、バグの混入を防ぐ、という目的もある。</p>
 <p>PEP8は実に多くのルールを定めている。その多くは、「処理内容は変わらないが、より好ましい書き方を推奨する」というものだ。例えばある変数が真である時に何かを処理したい場合、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">==</span> <span class="va">True</span>:
@@ -241,12 +226,11 @@ Although never is often better than *right* now.
 <p>以下、番号はセルの順番を表している。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">from</span> IPython.display <span class="im">import</span> display</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
 <p>これは、イメージ描画ライブラリを利用するよ、という宣言である。<code>import</code>文については後で学ぶので、今は気にしなくて良い。</p>
 <h4 id="描画">2. 描画</h4>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">im <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
-draw <span class="op">=</span> ImageDraw.Draw(im)
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
+draw <span class="op">=</span> ImageDraw.Draw(img)
 cx <span class="op">=</span> <span class="dv">128</span>
 cy <span class="op">=</span> <span class="dv">128</span>
 r <span class="op">=</span> <span class="dv">96</span>
@@ -254,14 +238,13 @@ draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx
 <p><code>draw.ellipse</code>は、指定された二つの座標を左上と右下とする長方形に接する楕円を描く命令である。今回は正方形を入力しているので円を描く命令となっている。正しく入力されていればエラーは出ないはずだが、エラーが出たら、実行してエラーがでなくなるまで修正、実行を繰り返そう。</p>
 <h4 id="イメージの表示">3. イメージの表示</h4>
 <p>３つ目のセルに以下を入力し、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">display(im)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img</code></pre></div>
 <p>これまで正しく入力していれば、白地に黒い線で円が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
 <h3 id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h3>
 <p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
 <h4 id="インポートの追加">1. インポートの追加</h4>
 <p>一番目のセルを以下のように修正し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">from</span> IPython.display <span class="im">import</span> display
 <span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></code></pre></div>
 <p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。</p>
 <p>三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
@@ -288,7 +271,9 @@ k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</spa
 <p><code>for i in range(N):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>
-<p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセルを実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、クリックして三つ目のセルにフォーカスを移してから三角マークをクリックするか、シフト+リターンを入力する。ただしく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
+<p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">img</code></pre></div>
+<p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力すれば良い。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
 <h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
 <p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
 <h3 id="発展課題">発展課題</h3>

@@ -321,8 +321,7 @@ if True:
 <p>コラッツ問題をグラフで可視化してみよう。新しいノートブックを開き、<code>collatz_graph</code>という名前をつけて、以下のプログラムを4つのセルにわけて入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初に、一つ目のセルでグラフの可視化をするためのライブラリをインポートする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
-<span class="im">import</span> IPython</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h4 id="関数collatzの実装-1">2. 関数<code>collatz</code>の実装</h4>
 <p>コラッツ数列を作る関数<code>collatz</code>を実装しよう。条件1、条件2は課題1-1と同じであるが、グラフの作画のために<code>edge</code>を受け取り、ノードをつなぐ処理が追加されている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i, edges):
@@ -336,22 +335,21 @@ if True:
 <h4 id="グラフの作成">3. グラフの作成</h4>
 <p>3つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_graph(n):
-    g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)
+    g <span class="op">=</span> Digraph()
     edges <span class="op">=</span> <span class="bu">set</span>()
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
         collatz(i, edges)
     <span class="cf">for</span> i, j <span class="kw">in</span> edges:
         g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))
-    g.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
-    g.render(<span class="st">&quot;test&quot;</span>)</code></pre></div>
+    g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
+    <span class="cf">return</span> g</code></pre></div>
 <p>これは、1から<code>n</code>までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。</p>
 <h4 id="グラフの表示">4. グラフの表示</h4>
 <p>実際にコラッツ数列のグラフ表示をさせてみよう。4つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)
-IPython.display.Image(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)</code></pre></div>
 <p>これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。</p>
 <p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  g.graph_attr.update(size<span class="op">=</span><span class="st">&quot;10,120&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</code></pre></div>
 <p>と、生成するイメージのサイズを大きくすると見やすくなる。</p>
 <p>コラッツ予想とは、このグラフが木構造、つまりループ構造が無いことを主張するものである。</p>
 <h2 id="発展課題">発展課題</h2>

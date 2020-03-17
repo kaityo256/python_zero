@@ -200,7 +200,6 @@ BINARY_ADD</code></pre>
 <p>最初のセルで必要なライブラリをインポートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> ast
 <span class="im">import</span> dis
-<span class="im">from</span> IPython.display <span class="im">import</span> Image, display_png
 <span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h4 id="抽象構文木をグラフに変換する関数">2. 抽象構文木をグラフに変換する関数</h4>
 <p>２つ目のセルに抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
@@ -217,11 +216,10 @@ BINARY_ADD</code></pre>
 <h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
 <p>3つ目のセルに抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_ast(src):
-    graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
+    graph <span class="op">=</span> Digraph()
     tree <span class="op">=</span> ast.parse(src)
     visit(tree, [], <span class="dv">0</span>, graph)
-    graph.render(<span class="st">&quot;test&quot;</span>)
-    display_png(Image(<span class="st">&quot;test.png&quot;</span>))</code></pre></div>
+    <span class="cf">return</span> graph</code></pre></div>
 <p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコード(<code>visit</code>及び<code>show_ast</code>関数)の仕組みである。</p>
 <h4 id="抽象構文木の表示">4. 抽象構文木の表示</h4>
 <p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>

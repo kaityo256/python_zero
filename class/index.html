@@ -109,8 +109,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>ポリモーフィズム</li>
 <li>継承と合成</li>
 </ul>
-<p>これらのについて「たとえ話」を使って説明することはできる。それを聞いて「ぼんやりとわかった気」にもなるだろう。しかし、個人的な経験では、オブジェクト指向の用語を「たとえ話」で「わかった気」になってもほとんど意味がない。オブジェクト指向はプログラミング技法であり、プログラムを組みながらその感覚を身につけるものだ。</p>
-<p>そこで、本稿では詳細には触れず、とりあえずクラスを使ったプログラムを組んで、記述の仕方に慣れることを目標にしよう。今回の授業が終わった後に、</p>
+<p>これらのについて「たとえ話」を使って説明することはできる。それを聞いて「ぼんやりとわかった気」にもなるだろう。しかし、個人的な経験から、オブジェクト指向の用語を「たとえ話」で「わかった気」になってもほとんど意味がない。あくまでもオブジェクト指向はプログラミング技法の一種であり、プログラムを組みながらその感覚を身につけるものだ。</p>
+<p>そこで、本稿では詳細には触れず、とりあえずクラスを使ったプログラムを組むことで記述の仕方に慣れることを目標にしよう。本稿を読み終わった後に</p>
 <blockquote>
 <p>ひな形であるクラスから作ったオブジェクトをインスタンスと呼ぶ。オブジェクトは内部状態を持ち、メソッドというインタフェースを公開している。プログラマはメソッドを呼ぶことでオブジェクトにメッセージを送ることができる</p>
 </blockquote>
@@ -312,8 +312,7 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>新しいノートブックを開き、<code>waribashi.ipynb</code>という名前をつけよ。</p>
 <h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
 <p>まず最初のセルに、後で必要となるライブラリをインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
-<span class="im">import</span> IPython</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h3 id="状態クラスの実装">2. 状態クラスの実装</h3>
 <h4 id="初期化関数">初期化関数</h4>
 <p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。割りばしゲームの状態としては、先手番であるか否か<code>is_first</code>、先手番の指の本数<code>f</code>、後手番の指の本数<code>s</code>がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「遷移可能な状態」<code>siblings</code>、「この状態を描画したかどうか」<code>is_drawn</code>もつけておこう。2つ目のセルに以下を入力せよ。</p>
@@ -478,7 +477,8 @@ s
         g.node(ns)
     <span class="cf">for</span> n <span class="kw">in</span> node.siblings:
         g.edge(ns, <span class="bu">str</span>(n))
-        make_graph(n, g)</code></pre></div>
+        make_graph(n, g)
+    <span class="cf">return</span> g</code></pre></div>
 <h4 id="ゲーム木の可視化">6. ゲーム木の可視化</h4>
 <p>ここまでで上から</p>
 <ol style="list-style-type: decimal">
@@ -490,10 +490,8 @@ s
 </ol>
 <p>の5つのセルができているはずだ。それぞれが実行されていることを確認した後(不安なら再度実行した後)、一番下の6つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
-g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
-make_graph(root, g)
-g.render(<span class="st">&quot;tree&quot;</span>)
-IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre></div>
+g <span class="op">=</span> Digraph()
+make_graph(root, g)</code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
 <h2 id="発展課題-枝刈り">発展課題: 枝刈り</h2>
 <p>さて、無事にゲーム木(しつこいが正確には木構造ではなく有向グラフである)が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
@@ -521,10 +519,8 @@ IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre>
 <p>8つ目のセルに、枝刈りをした後のゲーム木を表示するプログラムを書こう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
 prune(root)
-g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
-make_graph(root, g)
-g.render(<span class="st">&quot;tree&quot;</span>)
-IPython.display.Image(<span class="st">&quot;tree.png&quot;</span>)</code></pre></div>
+g <span class="op">=</span> Digraph()
+make_graph(root, g)</code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
 <h3 id="後手必勝の確認">後手必勝の確認</h3>
 <p>隣の人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>

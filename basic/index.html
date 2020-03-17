@@ -336,8 +336,7 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <p>新しいノートブックを開き、<code>newton_map.ipynb</code>という名前をつけて保存してから、以下のプログラムを4つのセルに分けて入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリをインポートしよう。入力したら実行するのを忘れないこと。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">from</span> IPython.display <span class="im">import</span> display</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
 <h4 id="関数newtonの実装-1">2. 関数<code>newton</code>の実装</h4>
 <p>2つ目のセルに、関数<code>newton</code>を実装しよう。先ほどと異なり、ニュートン法による反復を10回繰り返したのちに、収束した値を返す。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> newton(x):
@@ -377,13 +376,22 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <span class="cf">else</span>:
   <span class="bu">print</span>(<span class="st">&quot;aは負か0です&quot;</span>)</code></pre></div>
 <p>と書ける。</p>
+<p>ヒント3： <code>if</code>文は多段にできる。</p>
+<p>例えば、条件Aと条件Bがあった場合、以下のように書ける。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> A:
+  <span class="bu">print</span>(<span class="st">&quot;条件Aが成立&quot;</span>)
+<span class="cf">else</span>:
+  <span class="cf">if</span> B:
+    <span class="bu">print</span>(<span class="st">&quot;条件Aが不成立かつ条件Bが成立&quot;</span>)
+  <span class="cf">else</span>:
+    <span class="bu">print</span>(<span class="st">&quot;条件Aが不成立かつ条件Bも不成立)</span></code></pre></div>
 <h4 id="画像の表示">4. 画像の表示</h4>
 <p>ここまで入力したプログラムを用いて、収束地図を作ってみよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
-im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
-draw <span class="op">=</span> ImageDraw.Draw(im)
+img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
+draw <span class="op">=</span> ImageDraw.Draw(img)
 plot(draw, size)
-display(im)</code></pre></div>
+img</code></pre></div>
 <p>正しく入力できていれば、上記を実行した際に「収束地図」が描けたはずだ。どのような地図になっただろうか？</p>
 <p>ニュートン法の繰り返し数が10だと原点付近の収束が甘い。20くらいにして再実行してみよ。逆に5に減らすとどうなるだろうか？</p>
 <h3 id="発展課題四次方程式の収束地図">発展課題：四次方程式の収束地図</h3>
