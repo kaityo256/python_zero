@@ -1,5 +1,5 @@
 
-# [簡単な機械学習](https://kaityo256.github.io/python_zero/gan/)
+# 簡単な機械学習
 
 ## 本講の目的
 
@@ -85,130 +85,66 @@ GANでは、GeneratorとDiscriminatorの二つのモデルを用意する。こ�
 
 こうして「偽造者」と「鑑定者」がお互いに切磋琢磨しながら学習していくと、最終的に「本物と見紛うばかりのデータを生成できる偽造者が誕生するだろう」というのがGANの要諦である。今回の課題では、適当なデータセットを用意し、偽造者と鑑定者を学習させることで、最終的に偽造者が用意したデータセットを真似た絵を生成できるようになるプロセスを観察しよう。
 
-# 簡単な機械学習：課題
+## 簡単な機械学習：課題
 
-## GAN
+### 課題1：回帰
 
-Googleによる機械学習のライブラリ、Tensorflowを使ってGAN (Generative Adversarial Networks)を組んでみよう。それなりにコード量があるので、間違いないように注意して入力すること。
+TODO
 
-### 課題1: GANの実行テスト
+### 課題2：GAN
 
-新しいノートブックを開き、`gan.ipynb`という名前で保存せよ。
+敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。
 
-#### 1. TensorFlowのダウングレード
+新しいノートブックを開き`gan.ipynb`として保存せよ。
 
-以下のコードは最新のTensorFlowでは動作しない。まずバージョンを落とそう。
+#### 1. TensorFlowのインストール
+
+Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。
 
 ```py
 %tensorflow_version 1.x
 !pip install tensorflow==1.13.1
 ```
 
-#### 2. import
+最初の`%`から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。
 
-二つ目のセルで必要なモジュールをインポートする。
-
-```py
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
+```txt
+Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0
 ```
 
-#### 3. 宣言
+と表示されれば正しくインストールされている。
 
-今後使うオブジェクトやパラメータの宣言を行う。
+#### 2. サンプルプログラムのダウンロード
 
-```py
-tfgan = tf.contrib.gan
-layers = tf.contrib.layers
-framework = tf.contrib.framework
-slim = tf.contrib.slim
-dataprovider = slim.dataset_data_provider.DatasetDataProvider
-BATCH_SIZE = 32
-```
-
-「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。
-
-#### 4. Generatorの宣言
-
-Generator(偽造者)の宣言を行う。
+GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。
 
 ```py
-def generator_fn(noise, weight_decay=2.5e-5, is_training=True):
-    f1 = framework.arg_scope(
-        [layers.fully_connected, layers.conv2d_transpose],
-        activation_fn=tf.nn.relu,
-        normalizer_fn=layers.batch_norm,
-        weights_regularizer=layers.l2_regularizer(weight_decay))
-    f2 = framework.arg_scope(
-        [layers.batch_norm],
-        is_training=is_training,
-        zero_debias_moving_mean=True)
-    with f1, f2:
-        net = layers.fully_connected(noise, 1024)
-        net = layers.fully_connected(net, 7 * 7 * 256)
-        net = tf.reshape(net, [-1, 7, 7, 256])
-        net = layers.conv2d_transpose(net, 64, [4, 4], stride=2)
-        net = layers.conv2d_transpose(net, 32, [4, 4], stride=2)
-        net = layers.conv2d(net, 1, 4, activation_fn=tf.tanh)
-        return net
+!wget https://kaityo256.github.io/python_zero/gan/gan_test.py
 ```
 
-#### 5. Discriminatorの宣言
+`‘gan_test.py’ saved`と表示されればダウンロード完了である。
 
-Discriminator(鑑定者)の宣言を行う。
+#### 3. インポート
+
+先程ダウンロードしたプログラムをインポートしよう。
 
 ```py
-def discriminator_fn(img, _, weight_decay=2.5e-5, is_training=True):
-    with framework.arg_scope(
-            [layers.conv2d, layers.fully_connected],
-            activation_fn=(lambda n: tf.nn.leaky_relu(n, alpha=0.01)),
-            weights_regularizer=layers.l2_regularizer(weight_decay),
-            biases_regularizer=layers.l2_regularizer(weight_decay)):
-        net = layers.conv2d(img, 64, [4, 4], stride=2)
-        net = layers.conv2d(net, 128, [4, 4], stride=2)
-        net = layers.flatten(net)
-        with framework.arg_scope([layers.batch_norm], is_training=is_training):
-            net = layers.fully_connected(
-                net, 1024, normalizer_fn=layers.batch_norm)
-        return layers.linear(net, 1)
+import gan_test
 ```
 
-#### 6. データセットの準備
+実行時に多数の`FutureWarning`が出るが、気にしなくて良い。これでGANが使えるようになった。
 
-「本物」のデータを供給する関数を定義する。
+#### 4. データのダウンロード
 
-```py
-def provide_data(source, batch_size):
-    keys_to_features = {
-        'image/encoded': tf.FixedLenFeature((), tf.string, default_value=''),
-        'image/format': tf.FixedLenFeature((), tf.string, default_value='raw'),
-    }
-    datanum = sum(1 for _ in tf.python_io.tf_record_iterator(source))
-    items_to_handlers = {
-        'image': slim.tfexample_decoder.Image(shape=[28, 28, 1], channels=1),
-    }
-    decoder = slim.tfexample_decoder.TFExampleDecoder(
-        keys_to_features, items_to_handlers)
-    reader = tf.TFRecordReader
-    dataset = slim.dataset.Dataset(source, reader, decoder, datanum, None)
-    provider = dataprovider(dataset, shuffle=True)
-    image, = provider.get(['image'])
-    image = (tf.cast(image, tf.float32) - 128.0) / 128.0
-    images = tf.train.batch([image], batch_size=batch_size)
-    return images
-```
-
-#### 7. データセットのダウンロード
-
-学習に用いるデータセットをダウンロードしよう。データセットは以下の三種類を用意してある。
+GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。
 
 * `mnist.tfrecord` 手書きの数字(MNIST)
-* `hiragana.tfrecord` ひらがなすべて(IPAゴシックフォント)
 * `fontawesome.tfrecord` Font Awesomeというフォントのシンボルアイコン10種類
+* `hiragana.tfrecord` ひらがなすべて(IPAゴシックフォント)
 
-上記のうち、好きなものを一つ選んで`TRAIN_DATA`とすること。以下はMNISTを選んだ場合の例である。
+上記のうち、好きなものを一つ選んで`TRAIN_DATA`とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。
+
+以下は手書きの数字(MNIST)を選んだ場合の例である。
 
 ```py
 TRAIN_DATA = "mnist.tfrecord"
@@ -217,81 +153,25 @@ file=url+TRAIN_DATA
 !wget $file
 ```
 
-上記を実行すると、ファイルがダウンロードされる。最後に以下のような表示がされたら成功である。
+`‘mnist.tfrecord’ saved`など、自分が選んだファイル名が表示されればダウンロード完了である。
 
-```sh
-2019-05-31 08:03:55 (138 MB/s) - ‘mnist.tfrecord’ saved [20852051/20852051]
-```
+#### 5. GANの実行
 
-#### 8. 初期化
-
-TensorFlowを初期化し、データをバッチに変換する。
+ではいよいよGANの実行をしてみよう。以下を実行せよ。
 
 ```py
-tf.reset_default_graph()
-with tf.device('/cpu:0'):
-    real_images = provide_data(TRAIN_DATA, BATCH_SIZE)
+gan_test.run_gan(TRAIN_DATA)
 ```
 
-#### 9. GANの宣言
+最初に
 
-これまで宣言した「偽造者(Generator)」と「鑑定者(Discriminator)」を競争させるGANを宣言する。
-
-```py
-gan_model = tfgan.gan_model(
-    generator_fn,
-    discriminator_fn,
-    real_data=real_images,
-    generator_inputs=tf.random_normal([BATCH_SIZE, 64]))
-
-improved_wgan_loss = tfgan.gan_loss(
-    gan_model,
-    generator_loss_fn=tfgan.losses.wasserstein_generator_loss,
-    discriminator_loss_fn=tfgan.losses.wasserstein_discriminator_loss,
-    gradient_penalty_weight=1.0)
-
-generator_optimizer = tf.train.AdamOptimizer(0.001, beta1=0.5)
-discriminator_optimizer = tf.train.AdamOptimizer(0.0001, beta1=0.5)
-gan_train_ops = tfgan.gan_train_ops(
-    gan_model,
-    improved_wgan_loss,
-    generator_optimizer,
-    discriminator_optimizer)
-
-with tf.variable_scope('Generator', reuse=True):
-    eval_images = gan_model.generator_fn(
-        tf.random_normal([500, 64]),
-        is_training=False)
-
-visualizer = tfgan.eval.image_reshaper(eval_images[:20, ...], num_cols=10)
-
-train_step_fn = tfgan.get_sequential_train_steps()
-global_step = tf.train.get_or_create_global_step()
+```txt
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
 ```
 
-#### 10. GANの実行
+といった警告が出るが、気にしないで良い。
 
-それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。
-
-```py
-TOTAL_STEPS = 201
-INTERVAL = 25
-with tf.train.SingularMonitoredSession() as sess:
-    for i in range(TOTAL_STEPS):
-        train_step_fn(sess, gan_train_ops, global_step,
-                        train_step_kwargs={})
-        if i % INTERVAL == 0:
-            digits_np = sess.run([visualizer])
-            plt.axis('off')
-            plt.imshow(np.squeeze(digits_np), cmap='gray')
-            plt.show()
-```
-
-Generatorが生成する画像は、最初は単なるノイズだが、徐々に「それっぽい」画像になっていくのがわかるであろう。
-
-### 課題2: 別のデータセットのテスト
-
-うまくいったら、他のデータセットも試してみよ。データをダウンロードするセル(6つ目)で`TRAIN_DATA`を書き換え、そこから順番にセルを再実行すれば、別のデータセットで学習をするはずである。もしくは，`TOTAL_STEPS`をもう少し長くして、学習結果がどうなるを見ても良い。MNISTやFont Awesomeなら1000ステップもあればそれなりの画像となるが、ひらがなは種類が多いため、学習に苦しむようである。その観察結果を報告せよ。
+画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。
 
 ## 余談:AIに悪意はあるか
 

@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="乱数を使ったプログラム"><a href="https://kaityo256.github.io/python_zero/random/">乱数を使ったプログラム</a></h1>
+<h1 id="乱数を使ったプログラム">乱数を使ったプログラム</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>モンテカルロ法</li>
@@ -298,10 +298,9 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <p>まず、Findは、「自分の属す会社の社長」を探す処理である。各サイトは「自分の上司」を覚えている。その上司にはさらに上司がいて・・・とたどっていくと、最終的に「自分自身が上司」となるサイトに到達する。この「自分自身が上司」となるサイトを社長としよう。例えば上の図で、6番の所属する会社の社長を探してみる。6の上司は3、3の上司は1であり、1の上司は自分自身であるため、6の所属する会社の社長は1とわかる。</p>
 <p>次にUnionは「二つの会社の合併処理」をする。いま、先程の図で3の所属する会社と5の所属する会社を合併したいとする。しかし、3も5も平社員だ。そこでそれぞれの所属する会社の社長である1と4に相談する。相談の結果、1の会社が4を吸収合併することに決まった。それまで4の上司は自分自身だったが、新たに1を上司としてつなぎ替える。この状態で「6」の所属する会社の社長を探すと、「6の上司は4」「4の上司は1」となり、直接合併に携わらなかった6も正しく1の会社に所属していることがわかる。</p>
 <p>課題では、このUnion-Findアルゴリズムを用いて、パーコレーションのクラスタリングを行ってみよう。</p>
-<h1 id="乱数を使ったプログラム課題">乱数を使ったプログラム：課題</h1>
-<h2 id="課題1モンティホール問題">課題1：モンティ・ホール問題</h2>
+<h2 id="乱数を使ったプログラム課題">乱数を使ったプログラム：課題</h2>
+<h3 id="課題1-1モンティホール問題-keep派">課題1-1：モンティ・ホール問題 (Keep派)</h3>
 <p>モンティ・ホール問題において、Keep派、Change派それぞれの「正解確率」を計算し、どちらが得かを考えてみよう。新しいノートブックを開き、<code>monty_hall.ipynb</code>という名前で保存せよ。</p>
-<h3 id="課題1-1keep派">課題1-1：Keep派</h3>
 <p>まずはKeep派のシミュレーションをしよう。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>何はともあれ、まずはライブラリのインポートである。後で使うライブラリをまとめてインポートしておこう。</p>
@@ -385,26 +384,26 @@ n <span class="op">=</span> <span class="dv">10000</span>
 <span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))
 <span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
 <p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
-<h2 id="課題2パーコレーション">課題2：パーコレーション</h2>
+<h3 id="課題2パーコレーション">課題2：パーコレーション</h3>
 <p>乱数を使ったシミュレーションの例として、パーコレーションを考える。<code>L</code>x<code>L</code>の碁盤の目上の道が、確率<span class="math inline">\(p\)</span>で通行できて、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。この時、通行可能な道を通過してお互いに行き来できる場所を色分けしてみよう。</p>
 <p>新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
-<h3 id="ライブラリのインポート-1">1. ライブラリのインポート</h3>
+<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>最初のセルでは、いつもどおりライブラリのインポートをする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
 <span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
-<h3 id="find関数">2. <code>find</code>関数</h3>
+<h4 id="find関数">2. <code>find</code>関数</h4>
 <p>2つ目のセルで、自分が所属するクラスタ番号を調べる<code>find</code>関数を実装しよう。自分の番号が親の番号と一致する<code>i = parent[i]</code>まで、親をたどっていくプログラムである。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> find(i, parent):
     <span class="cf">while</span> i <span class="op">!=</span> parent[i]:
         i <span class="op">=</span> parent[i]
     <span class="cf">return</span> i</code></pre></div>
-<h3 id="union関数">3.<code>union</code>関数</h3>
+<h4 id="union関数">3.<code>union</code>関数</h4>
 <p>3つ目のセルで、二つのサイトを確率的につなぐ<code>union</code>関数を実装しよう。サイト<code>i</code>とサイト<code>j</code>のクラスター番号を<code>find</code>で取得し、サイト<code>j</code>の所属するクラスタの親をサイト<code>i</code>が所属するクラスタにすることで、二つのサイトをつなぐことができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> union(i, j, parent):
     i <span class="op">=</span> find(i, parent)
     j <span class="op">=</span> find(j, parent)
     parent[j] <span class="op">=</span> i</code></pre></div>
-<h3 id="状態の作成">4. 状態の作成</h3>
+<h4 id="状態の作成">4. 状態の作成</h4>
 <p><code>find</code>と<code>union</code>の実装ができたら、サイトの状態を作るのは難しくない。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_conf(L, p):
     parent <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L <span class="op">*</span> L)]
@@ -419,7 +418,7 @@ n <span class="op">=</span> <span class="dv">10000</span>
                 union(i, j, parent)
     <span class="cf">return</span> parent</code></pre></div>
 <p>最初に「親」の情報<code>parent</code>を作成しておく。最初はすべて<code>parent[i] = i</code>、つまり自分の親が自分自身である状態にしておく。そして、右端と下端を除く全てのサイトについて「右」と「下」のサイトと確率的につなぐ処理を記述している。<code>if random.random() &lt; p:</code>というセンテンスは「確率pでif文の中身が実行される」という処理で、確率的な処理の基本となるので覚えておくと良い。</p>
-<h3 id="状態の可視化関数">5. 状態の可視化関数</h3>
+<h4 id="状態の可視化関数">5. 状態の可視化関数</h4>
 <p>5つ目のセルに、サイトの親の情報を受け取って可視化する関数<code>show_image</code>を実装しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_image(parent, L):
     size <span class="op">=</span> <span class="dv">512</span>
@@ -440,7 +439,7 @@ n <span class="op">=</span> <span class="dv">10000</span>
             draw.rectangle((ix<span class="op">*</span>s, iy<span class="op">*</span>s, ix<span class="op">*</span>s<span class="op">+</span>s, iy<span class="op">*</span>s<span class="op">+</span>s), fill<span class="op">=</span>c)
     <span class="cf">return</span> im</code></pre></div>
 <p>あらかじめ、ランダムにクラスター番号と色の対応表<code>colors</code>を作っておき、それぞれのサイトのクラスター番号で色を塗ることで「同じクラスターは同じ色で塗る」を実現している。</p>
-<h3 id="シミュレーション">6. シミュレーション</h3>
+<h4 id="シミュレーション">6. シミュレーション</h4>
 <p>では、早速シミュレーションをしてみよう。まずは通行確率pが0、つまり全ての区間が孤立している状態を可視化してみる。6つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">L <span class="op">=</span> <span class="dv">256</span>
 p <span class="op">=</span> <span class="fl">0.0</span>
@@ -449,7 +448,7 @@ show_image(sites, L)</code></pre></div>
 <p>ここまで正しく実装されていれば、ノイズのような画面が表示されたはずである。</p>
 <p>では、次に<code>p = 0.4</code>を試してみよ。お互いに通行可能な区間が同じ色で表示されるため、同じ色で塗られた領域(クラスター)が出現したはずである。</p>
 <p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。例えば、同じ色のクラスターだけをたどって「左から右」へ到達できるだろうか？無事な道のみを通って「左から右」に通過できる確率<span class="math inline">\(P\)</span>は、通過可能確率<span class="math inline">\(p\)</span>の関数であるはずだが、<span class="math inline">\(P(p)\)</span>はどのような関数となるか考察せよ。</p>
-<h2 id="発展課題コンプガチャの確率">発展課題：コンプガチャの確率</h2>
+<h3 id="発展課題コンプガチャの確率">発展課題：コンプガチャの確率</h3>
 <p>確率の難しさは、時に「正しい」確率が人の直感に反して大きかったり小さかったりする点にある。人の直感より確率が大きい例としては「誕生日のパラドックス」が知られている。誕生日が365日均等に分布しているとして、30人のクラスで誕生日が重なる人がいる確率はどれだけだろうか？直感的には365日に対して30人なので、10%も無いように思えるが、実際には約70.6%の確率で誕生日が同じ人がいる。</p>
 <p>逆に、人の直観より実際の確率が小さいことを「悪用」する例としては「コンプガチャ」と呼ばれる景品がある。これは「絵合わせ」もしくは「カード合わせ」と呼ばれる古典的なギャンブルであり、</p>
 <ul>
@@ -457,10 +456,10 @@ show_image(sites, L)</code></pre></div>
 <li>複数の絵柄をすべて揃えたら、景品が当たる</li>
 </ul>
 <p>というものである。例えば、あるアーティストのCDを購入すると、44種類あるポスターのうちどれかがランダムにあたる特典があり、44種類のポスター全てをコンプリートしたらイベントに招待する、という事例があったとしよう。全種類揃えるのに平均で何枚CDを購入する必要があるか、すぐにわかるだろうか？これを計算してみよう。新しいPython3 ノートブックを開き、<code>gacha.ipynb</code>という名前で保存せよ。</p>
-<h3 id="インポート">1. インポート</h3>
+<h4 id="インポート">1. インポート</h4>
 <p>まずは<code>random</code>をインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random</code></pre></div>
-<h3 id="シミュレーション-1">2. シミュレーション</h3>
+<h4 id="シミュレーション-1">2. シミュレーション</h4>
 <p>n種類のポスターを揃えるのに何枚CDが必要になるかを試してみる関数<code>gacha</code>を実装しよう。以下の「条件」と「ポスター追加処理」を埋めてコードを完成させよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> gacha(n):
   cd <span class="op">=</span> <span class="dv">0</span>
@@ -476,7 +475,7 @@ show_image(sites, L)</code></pre></div>
 <p>1からnまでのランダムな数は<code>random.randint(1, n)</code>で得られる。リストへの追加は<code>posters.append</code>を使う。</p>
 <p>ヒント3：</p>
 <p>得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる</p>
-<h3 id="実行">3. 実行</h3>
+<h4 id="実行">3. 実行</h4>
 <p><code>gacha</code>が完成したら、それをなんども実行して「購入CD枚数の期待値」を計算しよう。3つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">trial <span class="op">=</span> <span class="dv">100</span>
 cd <span class="op">=</span> <span class="dv">0</span>
@@ -485,7 +484,7 @@ N <span class="op">=</span> <span class="dv">44</span>
   cd <span class="op">+=</span> gacha(N)
 <span class="bu">print</span>(cd<span class="op">/</span>trial)</code></pre></div>
 <p>CDの平均購入枚数はどれくらいであっただろうか？</p>
-<h3 id="厳密解">4. 厳密解</h3>
+<h4 id="厳密解">4. 厳密解</h4>
 <p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションと結果が合っているか確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
     r <span class="op">=</span> <span class="fl">0.0</span>

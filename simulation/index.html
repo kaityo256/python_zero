@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="数値シミュレーション"><a href="https://kaityo256.github.io/python_zero/simulation/">数値シミュレーション</a></h1>
+<h1 id="数値シミュレーション">数値シミュレーション</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <ul>
 <li>拡散方程式</li>
@@ -284,16 +284,18 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <p class="caption">差分計算の流れ</p>
 </div>
 <p>もともとの式のうち、時間微分は一次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
-<h1 id="数値シミュレーション課題">数値シミュレーション:課題</h1>
-<h2 id="課題1反応拡散方程式">課題1:反応拡散方程式</h2>
+<h2 id="数値シミュレーション課題">数値シミュレーション:課題</h2>
+<h3 id="課題1拡散方程式">課題1:拡散方程式</h3>
+<p>TODO:</p>
+<h3 id="課題2反応拡散方程式">課題2:反応拡散方程式</h3>
 <p>反応拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
-<h3 id="ライブラリのインポート">1. ライブラリのインポート</h3>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np
 <span class="im">from</span> numba <span class="im">import</span> jit
 <span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</code></pre></div>
-<h3 id="ラプラシアンの実装">2. ラプラシアンの実装</h3>
+<h4 id="ラプラシアンの実装">2. ラプラシアンの実装</h4>
 <p>二次元配列<code>s[m][n]</code>の、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、</p>
 <p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
 <p>と表現できる。これを用いて、二次元配列<code>s</code>と位置<code>m,n</code>を受け取って、その位置でのラプラシアンの値を返す関数<code>laplacian</code>を実装したい。以下はそれを途中まで実装したものだ。</p>
@@ -308,7 +310,7 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
     <span class="cf">return</span> ts</code></pre></div>
 <p>上記がラプラシアンの値となるように、未完成の部分を完成させよ。</p>
 <p>なお、関数定義の前に<code>@jit</code>とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。</p>
-<h3 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h3>
+<h4 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h4>
 <p><code>laplacian</code>を実装したらテストしてみよう。以下はすべて三つ目のセルで実行せよ。</p>
 <p>まず、<code>laplacian</code>に食わせるテスト用のNumPy二次元配列を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
@@ -334,7 +336,7 @@ a</code></pre></div>
 a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
 laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
 <p>上記の実行結果が<code>-1.0</code>になれば正しく計算されている。</p>
-<h3 id="時間発展">4. 時間発展</h3>
+<h4 id="時間発展">4. 時間発展</h4>
 <p>二つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
 <span class="kw">def</span> calc(u, v, u2, v2):
@@ -355,7 +357,7 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
     u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
     v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
 <p>最初の<code>@jit</code>デコレータを忘れないこと。</p>
-<h3 id="シミュレーションループ">5. シミュレーションループ</h3>
+<h4 id="シミュレーションループ">5. シミュレーションループ</h4>
 <p>1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
 <span class="kw">def</span> simulation(L, loop):
@@ -374,63 +376,24 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
           r.append(v.copy())
     <span class="cf">return</span> r</code></pre></div>
 <p>これも、最初の行の<code>@jit</code>を忘れないこと。</p>
-<h3 id="シミュレーションの実行">6. シミュレーションの実行</h3>
+<h4 id="シミュレーションの実行">6. シミュレーションの実行</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)
 n <span class="op">=</span> <span class="bu">len</span>(imgs)
 <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):
   im <span class="op">=</span> plt.imshow(imgs[n<span class="op">//</span><span class="dv">4</span><span class="op">*</span>i])
   plt.show()</code></pre></div>
 <p>ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。</p>
-<h3 id="アニメーション">7. アニメーション</h3>
+<h4 id="アニメーション">7. アニメーション</h4>
 <p>せっかくシミュレーションしたので、アニメーションを表示させよう。そのための準備をする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fig <span class="op">=</span> plt.figure()
 im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])
 <span class="kw">def</span> update(i):
   im.set_array(imgs[i])</code></pre></div>
 <p>実行後、不思議な模様が出力されるはずである。</p>
-<h3 id="アニメーションの表示">8. アニメーションの表示</h3>
+<h4 id="アニメーションの表示">8. アニメーションの表示</h4>
 <p>ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
 animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))</code></pre></div>
-<h2 id="発展課題機械学習">発展課題：機械学習</h2>
-<p>せっかくなので、簡単な機械学習を経験してみよう。題材として敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を取り上げる。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。</p>
-<p>新しいノートブックを開き<code>gan.ipynb</code>として保存せよ。</p>
-<h3 id="tensorflowのインストール">1. TensorFlowのインストール</h3>
-<p>Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>tensorflow_version <span class="fl">1.</span>x
-<span class="op">!</span>pip install tensorflow<span class="op">==</span><span class="fl">1.13</span>.<span class="dv">1</span></code></pre></div>
-<p>最初の<code>%</code>から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。</p>
-<pre class="txt"><code>Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0</code></pre>
-<p>と表示されれば正しくインストールされている。</p>
-<h3 id="サンプルプログラムのダウンロード">2. サンプルプログラムのダウンロード</h3>
-<p>GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>gan<span class="op">/</span>gan_test.py</code></pre></div>
-<p><code>‘gan_test.py’ saved</code>と表示されればダウンロード完了である。</p>
-<h3 id="インポート">3. インポート</h3>
-<p>先程ダウンロードしたプログラムをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> gan_test</code></pre></div>
-<p>実行時に多数の<code>FutureWarning</code>が出るが、気にしなくて良い。これでGANが使えるようになった。</p>
-<h3 id="データのダウンロード">4. データのダウンロード</h3>
-<p>GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。</p>
-<ul>
-<li><code>mnist.tfrecord</code> 手書きの数字(MNIST)</li>
-<li><code>fontawesome.tfrecord</code> Font Awesomeというフォントのシンボルアイコン10種類</li>
-<li><code>hiragana.tfrecord</code> ひらがなすべて(IPAゴシックフォント)</li>
-</ul>
-<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。</p>
-<p>以下は手書きの数字(MNIST)を選んだ場合の例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TRAIN_DATA <span class="op">=</span> <span class="st">&quot;mnist.tfrecord&quot;</span>
-url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/gan/&quot;</span>
-<span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>TRAIN_DATA
-<span class="op">!</span>wget $file</code></pre></div>
-<p><code>‘mnist.tfrecord’ saved</code>など、自分が選んだファイル名が表示されればダウンロード完了である。</p>
-<h3 id="ganの実行">5. GANの実行</h3>
-<p>ではいよいよGANの実行をしてみよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_test.run_gan(TRAIN_DATA)</code></pre></div>
-<p>最初に</p>
-<pre class="txt"><code>WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.</code></pre>
-<p>といった警告が出るが、気にしないで良い。</p>
-<p>画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。</p>
 <h2 id="余談パーソナルスーパーコンピュータ">余談：パーソナルスーパーコンピュータ</h2>
 <p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。東京大学工学部物理工学科の助手、宇宙科学研究所の助教授を経て、自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
 <p>それから紆余曲折あって、計算流体力学研究所はスパコンを手放し、技術コンサルやパソコンの組み立て、販売をする会社となった。私が大学院に進学した際に与えられたパソコンは、この計算流体力学研究所で購入したAlpha21164のマシンであった。指導教員の「せっかくだから組み立てさせてもらったら？」の言葉に甘え、目黒に行ってアルバイトのお兄さんと一緒に自分の研究に使うマシンを組み立てた。そこに社長である桑原氏が様子を見にやってきた。僕が物工の学生と知ると、興味をもっていろいろ聞いてきた。僕はまさか目の前の社長さんが元物工の助手だったなんて知らなかったので「物工のご出身なんですか？どこの研究室ですか？」と的外れな質問をした。彼はただ笑って何も答えなかったのを思い出す。その時は青二才で何もわからなかった私だが、スパコンを使って研究をするようになった今なら、彼からいろいろ興味深い話が聞けたのではないかと残念に思う。桑原氏は2008年、その豪快な生涯を閉じた。「親の遺産をもっとも有効に学術に活かした」と評されている。</p>

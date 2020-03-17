@@ -25,7 +25,7 @@ index.html: index.md
 	pandoc -s $< -o $@ $(PANDOC_HTMLOPT)
 
 %/assignment.md: %/README.md
-	sed -n '/^#\s.*課題/,$$p' $< > $@
+	sed -n '/^##\s.*課題/,$$p' $< > $@
 
 %/assignment.pdf: %/assignment.md
 	cd $(dir $@);pandoc $(notdir $<) -s -o $(notdir $@) $(PANDOC_TEXOPT)

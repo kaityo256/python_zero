@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="簡単な機械学習"><a href="https://kaityo256.github.io/python_zero/gan/">簡単な機械学習</a></h1>
+<h1 id="簡単な機械学習">簡単な機械学習</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講の目的">本講の目的</h2>
 <ul>
@@ -153,151 +153,48 @@ a = \frac{\sum_i^N x_i y_i}{\sum_i^N x_i^2}
 <p class="caption">GANの概念図</p>
 </div>
 <p>こうして「偽造者」と「鑑定者」がお互いに切磋琢磨しながら学習していくと、最終的に「本物と見紛うばかりのデータを生成できる偽造者が誕生するだろう」というのがGANの要諦である。今回の課題では、適当なデータセットを用意し、偽造者と鑑定者を学習させることで、最終的に偽造者が用意したデータセットを真似た絵を生成できるようになるプロセスを観察しよう。</p>
-<h1 id="簡単な機械学習課題">簡単な機械学習：課題</h1>
-<h2 id="gan">GAN</h2>
-<p>Googleによる機械学習のライブラリ、Tensorflowを使ってGAN (Generative Adversarial Networks)を組んでみよう。それなりにコード量があるので、間違いないように注意して入力すること。</p>
-<h3 id="課題1-ganの実行テスト">課題1: GANの実行テスト</h3>
-<p>新しいノートブックを開き、<code>gan.ipynb</code>という名前で保存せよ。</p>
-<h4 id="tensorflowのダウングレード">1. TensorFlowのダウングレード</h4>
-<p>以下のコードは最新のTensorFlowでは動作しない。まずバージョンを落とそう。</p>
+<h2 id="簡単な機械学習課題">簡単な機械学習：課題</h2>
+<h3 id="課題1回帰">課題1：回帰</h3>
+<p>TODO</p>
+<h3 id="課題2gan">課題2：GAN</h3>
+<p>敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。</p>
+<p>新しいノートブックを開き<code>gan.ipynb</code>として保存せよ。</p>
+<h4 id="tensorflowのインストール">1. TensorFlowのインストール</h4>
+<p>Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>tensorflow_version <span class="fl">1.</span>x
 <span class="op">!</span>pip install tensorflow<span class="op">==</span><span class="fl">1.13</span>.<span class="dv">1</span></code></pre></div>
-<h4 id="import">2. import</h4>
-<p>二つ目のセルで必要なモジュールをインポートする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">import</span> tensorflow <span class="im">as</span> tf
-tf.logging.set_verbosity(tf.logging.ERROR)</code></pre></div>
-<h4 id="宣言">3. 宣言</h4>
-<p>今後使うオブジェクトやパラメータの宣言を行う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tfgan <span class="op">=</span> tf.contrib.gan
-layers <span class="op">=</span> tf.contrib.layers
-framework <span class="op">=</span> tf.contrib.framework
-slim <span class="op">=</span> tf.contrib.slim
-dataprovider <span class="op">=</span> slim.dataset_data_provider.DatasetDataProvider
-BATCH_SIZE <span class="op">=</span> <span class="dv">32</span></code></pre></div>
-<p>「WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.」といったTensorFlowからの警告が出るが気にしなくてよい。</p>
-<h4 id="generatorの宣言">4. Generatorの宣言</h4>
-<p>Generator(偽造者)の宣言を行う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> generator_fn(noise, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
-    f1 <span class="op">=</span> framework.arg_scope(
-        [layers.fully_connected, layers.conv2d_transpose],
-        activation_fn<span class="op">=</span>tf.nn.relu,
-        normalizer_fn<span class="op">=</span>layers.batch_norm,
-        weights_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay))
-    f2 <span class="op">=</span> framework.arg_scope(
-        [layers.batch_norm],
-        is_training<span class="op">=</span>is_training,
-        zero_debias_moving_mean<span class="op">=</span><span class="va">True</span>)
-    <span class="cf">with</span> f1, f2:
-        net <span class="op">=</span> layers.fully_connected(noise, <span class="dv">1024</span>)
-        net <span class="op">=</span> layers.fully_connected(net, <span class="dv">7</span> <span class="op">*</span> <span class="dv">7</span> <span class="op">*</span> <span class="dv">256</span>)
-        net <span class="op">=</span> tf.reshape(net, [<span class="op">-</span><span class="dv">1</span>, <span class="dv">7</span>, <span class="dv">7</span>, <span class="dv">256</span>])
-        net <span class="op">=</span> layers.conv2d_transpose(net, <span class="dv">64</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
-        net <span class="op">=</span> layers.conv2d_transpose(net, <span class="dv">32</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
-        net <span class="op">=</span> layers.conv2d(net, <span class="dv">1</span>, <span class="dv">4</span>, activation_fn<span class="op">=</span>tf.tanh)
-        <span class="cf">return</span> net</code></pre></div>
-<h4 id="discriminatorの宣言">5. Discriminatorの宣言</h4>
-<p>Discriminator(鑑定者)の宣言を行う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> discriminator_fn(img, _, weight_decay<span class="op">=</span><span class="fl">2.5e-5</span>, is_training<span class="op">=</span><span class="va">True</span>):
-    <span class="cf">with</span> framework.arg_scope(
-            [layers.conv2d, layers.fully_connected],
-            activation_fn<span class="op">=</span>(<span class="kw">lambda</span> n: tf.nn.leaky_relu(n, alpha<span class="op">=</span><span class="fl">0.01</span>)),
-            weights_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay),
-            biases_regularizer<span class="op">=</span>layers.l2_regularizer(weight_decay)):
-        net <span class="op">=</span> layers.conv2d(img, <span class="dv">64</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
-        net <span class="op">=</span> layers.conv2d(net, <span class="dv">128</span>, [<span class="dv">4</span>, <span class="dv">4</span>], stride<span class="op">=</span><span class="dv">2</span>)
-        net <span class="op">=</span> layers.flatten(net)
-        <span class="cf">with</span> framework.arg_scope([layers.batch_norm], is_training<span class="op">=</span>is_training):
-            net <span class="op">=</span> layers.fully_connected(
-                net, <span class="dv">1024</span>, normalizer_fn<span class="op">=</span>layers.batch_norm)
-        <span class="cf">return</span> layers.linear(net, <span class="dv">1</span>)</code></pre></div>
-<h4 id="データセットの準備">6. データセットの準備</h4>
-<p>「本物」のデータを供給する関数を定義する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> provide_data(source, batch_size):
-    keys_to_features <span class="op">=</span> {
-        <span class="st">&#39;image/encoded&#39;</span>: tf.FixedLenFeature((), tf.string, default_value<span class="op">=</span><span class="st">&#39;&#39;</span>),
-        <span class="st">&#39;image/format&#39;</span>: tf.FixedLenFeature((), tf.string, default_value<span class="op">=</span><span class="st">&#39;raw&#39;</span>),
-    }
-    datanum <span class="op">=</span> <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> _ <span class="kw">in</span> tf.python_io.tf_record_iterator(source))
-    items_to_handlers <span class="op">=</span> {
-        <span class="st">&#39;image&#39;</span>: slim.tfexample_decoder.Image(shape<span class="op">=</span>[<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>], channels<span class="op">=</span><span class="dv">1</span>),
-    }
-    decoder <span class="op">=</span> slim.tfexample_decoder.TFExampleDecoder(
-        keys_to_features, items_to_handlers)
-    reader <span class="op">=</span> tf.TFRecordReader
-    dataset <span class="op">=</span> slim.dataset.Dataset(source, reader, decoder, datanum, <span class="va">None</span>)
-    provider <span class="op">=</span> dataprovider(dataset, shuffle<span class="op">=</span><span class="va">True</span>)
-    image, <span class="op">=</span> provider.get([<span class="st">&#39;image&#39;</span>])
-    image <span class="op">=</span> (tf.cast(image, tf.float32) <span class="op">-</span> <span class="fl">128.0</span>) <span class="op">/</span> <span class="fl">128.0</span>
-    images <span class="op">=</span> tf.train.batch([image], batch_size<span class="op">=</span>batch_size)
-    <span class="cf">return</span> images</code></pre></div>
-<h4 id="データセットのダウンロード">7. データセットのダウンロード</h4>
-<p>学習に用いるデータセットをダウンロードしよう。データセットは以下の三種類を用意してある。</p>
+<p>最初の<code>%</code>から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。</p>
+<pre class="txt"><code>Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0</code></pre>
+<p>と表示されれば正しくインストールされている。</p>
+<h4 id="サンプルプログラムのダウンロード">2. サンプルプログラムのダウンロード</h4>
+<p>GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>gan<span class="op">/</span>gan_test.py</code></pre></div>
+<p><code>‘gan_test.py’ saved</code>と表示されればダウンロード完了である。</p>
+<h4 id="インポート">3. インポート</h4>
+<p>先程ダウンロードしたプログラムをインポートしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> gan_test</code></pre></div>
+<p>実行時に多数の<code>FutureWarning</code>が出るが、気にしなくて良い。これでGANが使えるようになった。</p>
+<h4 id="データのダウンロード">4. データのダウンロード</h4>
+<p>GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。</p>
 <ul>
 <li><code>mnist.tfrecord</code> 手書きの数字(MNIST)</li>
-<li><code>hiragana.tfrecord</code> ひらがなすべて(IPAゴシックフォント)</li>
 <li><code>fontawesome.tfrecord</code> Font Awesomeというフォントのシンボルアイコン10種類</li>
+<li><code>hiragana.tfrecord</code> ひらがなすべて(IPAゴシックフォント)</li>
 </ul>
-<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とすること。以下はMNISTを選んだ場合の例である。</p>
+<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。</p>
+<p>以下は手書きの数字(MNIST)を選んだ場合の例である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TRAIN_DATA <span class="op">=</span> <span class="st">&quot;mnist.tfrecord&quot;</span>
 url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/gan/&quot;</span>
 <span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>TRAIN_DATA
 <span class="op">!</span>wget $file</code></pre></div>
-<p>上記を実行すると、ファイルがダウンロードされる。最後に以下のような表示がされたら成功である。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">2019-05-31</span> 08:03:55 (138 MB/s) <span class="ex">-</span> ‘mnist.tfrecord’ saved [20852051/20852051]</code></pre></div>
-<h4 id="初期化">8. 初期化</h4>
-<p>TensorFlowを初期化し、データをバッチに変換する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tf.reset_default_graph()
-<span class="cf">with</span> tf.device(<span class="st">&#39;/cpu:0&#39;</span>):
-    real_images <span class="op">=</span> provide_data(TRAIN_DATA, BATCH_SIZE)</code></pre></div>
-<h4 id="ganの宣言">9. GANの宣言</h4>
-<p>これまで宣言した「偽造者(Generator)」と「鑑定者(Discriminator)」を競争させるGANを宣言する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_model <span class="op">=</span> tfgan.gan_model(
-    generator_fn,
-    discriminator_fn,
-    real_data<span class="op">=</span>real_images,
-    generator_inputs<span class="op">=</span>tf.random_normal([BATCH_SIZE, <span class="dv">64</span>]))
-
-improved_wgan_loss <span class="op">=</span> tfgan.gan_loss(
-    gan_model,
-    generator_loss_fn<span class="op">=</span>tfgan.losses.wasserstein_generator_loss,
-    discriminator_loss_fn<span class="op">=</span>tfgan.losses.wasserstein_discriminator_loss,
-    gradient_penalty_weight<span class="op">=</span><span class="fl">1.0</span>)
-
-generator_optimizer <span class="op">=</span> tf.train.AdamOptimizer(<span class="fl">0.001</span>, beta1<span class="op">=</span><span class="fl">0.5</span>)
-discriminator_optimizer <span class="op">=</span> tf.train.AdamOptimizer(<span class="fl">0.0001</span>, beta1<span class="op">=</span><span class="fl">0.5</span>)
-gan_train_ops <span class="op">=</span> tfgan.gan_train_ops(
-    gan_model,
-    improved_wgan_loss,
-    generator_optimizer,
-    discriminator_optimizer)
-
-<span class="cf">with</span> tf.variable_scope(<span class="st">&#39;Generator&#39;</span>, reuse<span class="op">=</span><span class="va">True</span>):
-    eval_images <span class="op">=</span> gan_model.generator_fn(
-        tf.random_normal([<span class="dv">500</span>, <span class="dv">64</span>]),
-        is_training<span class="op">=</span><span class="va">False</span>)
-
-visualizer <span class="op">=</span> tfgan.<span class="bu">eval</span>.image_reshaper(eval_images[:<span class="dv">20</span>, ...], num_cols<span class="op">=</span><span class="dv">10</span>)
-
-train_step_fn <span class="op">=</span> tfgan.get_sequential_train_steps()
-global_step <span class="op">=</span> tf.train.get_or_create_global_step()</code></pre></div>
-<h4 id="ganの実行">10. GANの実行</h4>
-<p>それではいよいよGANを実行してみよう。とりあえずテストとして200回ほど学習させる。25回に一度、Generatorが生成する画像を表示させている。ここまで正しく入力できていれば、学習過程が可視化されていくはずである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TOTAL_STEPS <span class="op">=</span> <span class="dv">201</span>
-INTERVAL <span class="op">=</span> <span class="dv">25</span>
-<span class="cf">with</span> tf.train.SingularMonitoredSession() <span class="im">as</span> sess:
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(TOTAL_STEPS):
-        train_step_fn(sess, gan_train_ops, global_step,
-                        train_step_kwargs<span class="op">=</span>{})
-        <span class="cf">if</span> i <span class="op">%</span> INTERVAL <span class="op">==</span> <span class="dv">0</span>:
-            digits_np <span class="op">=</span> sess.run([visualizer])
-            plt.axis(<span class="st">&#39;off&#39;</span>)
-            plt.imshow(np.squeeze(digits_np), cmap<span class="op">=</span><span class="st">&#39;gray&#39;</span>)
-            plt.show()</code></pre></div>
-<p>Generatorが生成する画像は、最初は単なるノイズだが、徐々に「それっぽい」画像になっていくのがわかるであろう。</p>
-<h3 id="課題2-別のデータセットのテスト">課題2: 別のデータセットのテスト</h3>
-<p>うまくいったら、他のデータセットも試してみよ。データをダウンロードするセル(6つ目)で<code>TRAIN_DATA</code>を書き換え、そこから順番にセルを再実行すれば、別のデータセットで学習をするはずである。もしくは，<code>TOTAL_STEPS</code>をもう少し長くして、学習結果がどうなるを見ても良い。MNISTやFont Awesomeなら1000ステップもあればそれなりの画像となるが、ひらがなは種類が多いため、学習に苦しむようである。その観察結果を報告せよ。</p>
+<p><code>‘mnist.tfrecord’ saved</code>など、自分が選んだファイル名が表示されればダウンロード完了である。</p>
+<h4 id="ganの実行">5. GANの実行</h4>
+<p>ではいよいよGANの実行をしてみよう。以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_test.run_gan(TRAIN_DATA)</code></pre></div>
+<p>最初に</p>
+<pre class="txt"><code>WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.</code></pre>
+<p>といった警告が出るが、気にしないで良い。</p>
+<p>画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。</p>
 <h2 id="余談aiに悪意はあるか">余談:AIに悪意はあるか</h2>
 <p>AIに意識があるか、という問題は難しい。個人的には「チューリングテストをパスしたAIには意識があるとみなす」という立場であり、究極的には人間の意識とAIの持つ「意識」は区別不可能となる未来が来るだろうと思っているが、現時点ではAIは発展途上であり、「あぁ、まだソフトウェアなんだな」と思う時と「人間と同じ問題を抱えているのでは」と思う時の両方がある。</p>
 <p>「あ、AIはただのソフトウェアなんだな」と思う例の一つは画像認識である。「犬」「猫」「羊」などのラベルがついた画像を事前に学習させておくことで、写真に何が写っているかを認識するAIを作るものだ。一見するとこのAIは写真に写るものを正しく認識しているように見えるが、何もいない草原に「羊がいる」と判断してしまう。「羊」のラベルがついた画像のほとんどが草原であったため、「草原＝羊」と認識してしまったのだ。逆に、子供が牧場で羊を抱きかかえる写真を見て「犬」と判断してしまうこともあった。草原以外にいる羊のデータがなかったためだと思われる。同様な例に「ハスキーと狼問題」がある。シベリアン・ハスキーは狼に似た犬種であるが、そのハスキーと狼を見分けるAIを作ったところ、実は犬ではなく「背景に雪があるかどうか」で判断していることがあった。</p>

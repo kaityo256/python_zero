@@ -87,7 +87,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 <body>
 <article class="markdown-body">
-<h1 id="pythonの概要とgoogle-colabの使い方"><a href="https://kaityo256.github.io/python_zero/hello/">Pythonの概要とGoogle Colabの使い方</a></h1>
+<h1 id="pythonの概要とgoogle-colabの使い方">Pythonの概要とGoogle Colabの使い方</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講の目的">本講の目的</h2>
 <ul>
@@ -203,32 +203,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>「12345」という表示が得られたはずである。変数の値を表示するだけなら、「print」は不要である。左上の「+ コード」と書かれたところをクリックし、出てきたセルに「a」とだけ入力して実行せよ。やはり「12345」という表示が得られたはずである。</p>
 <p>さて、ここまでで5つのセルができたはずである。これらは自由に編集、再実行することができる。[2]の「a=12345」を修正し、「a=6789」として実行してみよう。その後、4番の「print(a)」や5番の「a」のセルを実行し、出力が変わることを確認せよ。</p>
 <p>不要なセルは削除することができる。セルの右側のメニューから「セルの削除」を選ぶとセルが削除できる。また、上段のメニューの「↑ セル」や「↓ セル」で、セルの順番を入れ替えることもできる。</p>
-<h1 id="pythonの概要とgoogle-colabの使い方課題">Pythonの概要とGoogle Colabの使い方：課題</h1>
-<h2 id="課題1google-colabを使う">課題1：Google Colabを使う</h2>
+<h2 id="pythonの概要とgoogle-colabの使い方課題">Pythonの概要とGoogle Colabの使い方：課題</h2>
+<h3 id="課題1google-colabを使う">課題1：Google Colabを使う</h3>
 <p>まず、Google Colabへのログインと簡単なプログラムの実行、セルの編集のテストをする。</p>
-<h3 id="課題1-1google-colabへのログイン">課題1-1：Google Colabへのログイン</h3>
+<h4 id="課題1-1google-colabへのログイン">課題1-1：Google Colabへのログイン</h4>
 <p><code>https://colab.research.google.com/</code>にアクセスし、右上に表示された「ログイン」ボタンを押してログインせよ。</p>
-<h3 id="課題1-2プログラムの動作テスト">課題1-2：プログラムの動作テスト</h3>
+<h4 id="課題1-2プログラムの動作テスト">課題1-2：プログラムの動作テスト</h4>
 <p>最初のセルに、以下のプログラムを入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello World!&quot;</span>)</code></pre></div>
 <p>セルの左にある再生ボタンを押すか、セル内で「シフト+エンターキー」を押すことでそのセルを実行できる。</p>
-<h3 id="課題1-3プログラムの失敗テスト">課題1-3：プログラムの失敗テスト</h3>
+<h4 id="課題1-3プログラムの失敗テスト">課題1-3：プログラムの失敗テスト</h4>
 <p>「＋コード」を押して、2つ目のセルを表示させ、 以下のプログラムを入力し、実行せよ。わざと<code>print</code>を<code>plint</code>と間違って記載している。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plint(<span class="st">&quot;Hello World!&quot;</span>)</code></pre></div>
 <p>実行し、<code>NameError</code>が出ることを確認したら、<code>plint</code>を<code>print</code>と修正して、同じセルを再度実行し、正しく実行されることを確認せよ。</p>
-<h3 id="課題1-4セルの移動削除">課題1-4：セルの移動、削除</h3>
+<h4 id="課題1-4セルの移動削除">課題1-4：セルの移動、削除</h4>
 <p>二つ目のセルを一番上に移動させた後、そのセルを削除せよ。</p>
-<h3 id="課題1-5ファイル名の指定">課題1-5：ファイル名の指定</h3>
+<h4 id="課題1-5ファイル名の指定">課題1-5：ファイル名の指定</h4>
 <p>このノートブックに<code>hello.ipynb</code>という名前をつけて保存せよ。保存されたファイルはGoogleドライブに保存される。興味があれば「ファイル」メニューから「ドライブで探す」をクリックして見てみよ。</p>
-<h2 id="課題2-描画プログラム">課題2: 描画プログラム</h2>
-<h3 id="課題2-1描画の確認">課題2-1：描画の確認</h3>
+<h3 id="課題2-描画プログラム">課題2: 描画プログラム</h3>
+<h4 id="課題2-1描画の確認">課題2-1：描画の確認</h4>
 <p>Google Colab上で、簡単な描画プログラムを作成、実行してみよう。現在開いているノートを閉じて、新たにノートブックを作成する。 「ファイル」メニューから「PYTHON3の新しいノートブック」をクリックせよ。新しいノートブックが開かれたら<code>draw.ipynb</code>という名前に変更せよ。</p>
 <p>以下、番号はセルの順番を表している。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<h5 id="ライブラリのインポート">1. ライブラリのインポート</h5>
 <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
 <p>これは、イメージ描画ライブラリを利用するよ、という宣言である。<code>import</code>文については後で学ぶので、今は気にしなくて良い。</p>
-<h4 id="描画">2. 描画</h4>
+<h5 id="描画">2. 描画</h5>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
 draw <span class="op">=</span> ImageDraw.Draw(img)
 cx <span class="op">=</span> <span class="dv">128</span>
@@ -236,19 +236,19 @@ cy <span class="op">=</span> <span class="dv">128</span>
 r <span class="op">=</span> <span class="dv">96</span>
 draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</code></pre></div>
 <p><code>draw.ellipse</code>は、指定された二つの座標を左上と右下とする長方形に接する楕円を描く命令である。今回は正方形を入力しているので円を描く命令となっている。正しく入力されていればエラーは出ないはずだが、エラーが出たら、実行してエラーがでなくなるまで修正、実行を繰り返そう。</p>
-<h4 id="イメージの表示">3. イメージの表示</h4>
+<h5 id="イメージの表示">3. イメージの表示</h5>
 <p>３つ目のセルに以下を入力し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img</code></pre></div>
 <p>これまで正しく入力していれば、白地に黒い線で円が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
-<h3 id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h3>
+<h4 id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h4>
 <p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
-<h4 id="インポートの追加">1. インポートの追加</h4>
+<h5 id="インポートの追加">1. インポートの追加</h5>
 <p>一番目のセルを以下のように修正し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
 <span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></code></pre></div>
 <p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。</p>
 <p>三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
-<h4 id="五芒星の描画">2. 五芒星の描画</h4>
+<h5 id="五芒星の描画">2. 五芒星の描画</h5>
 <p>二番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">im <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
 draw <span class="op">=</span> ImageDraw.Draw(im)
@@ -270,13 +270,13 @@ k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</spa
   draw.line((x1,y1,x2,y2))</code></pre></div>
 <p><code>for i in range(N):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
-<h4 id="イメージの表示-1">3. イメージの表示</h4>
+<h5 id="イメージの表示-1">3. イメージの表示</h5>
 <p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
 <div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python">img</code></pre></div>
 <p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力すれば良い。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
-<h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
+<h4 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h4>
 <p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
-<h3 id="発展課題">発展課題</h3>
+<h4 id="発展課題">発展課題</h4>
 <p>先のプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
 <h2 id="余談タッチタイピングについて">余談：タッチタイピングについて</h2>
 <p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インターフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>

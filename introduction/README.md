@@ -1,4 +1,4 @@
-# [はじめに](https://kaityo256.github.io/python_zero/list/introduction)
+# はじめに
 
 この講義では、Pythonをゼロから学ぶ。しかし、始める前になぜPythonを学ぶべきなのか？Pythonを学んでどうするのか？について少し伝えたいことがある。
 
