@@ -336,7 +336,7 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">15</span>), dpi<span class="op">=</span><span class="dv">50</span>)
 plt.scatter(nx, ny, c<span class="op">=</span>nn, s<span class="op">=</span>nn, cmap<span class="op">=</span>cm.seismic)</code></pre></div>
 <p>「人口地図」が表示されただろうか？日本のどこにどれくらいの人が住んでいるかが、なんとなくわかるであろう。</p>
-<h3 id="課題2-1カラーテレビと平均寿命">課題2-1：カラーテレビと平均寿命</h3>
+<h3 id="課題2カラーテレビと平均寿命">課題2：カラーテレビと平均寿命</h3>
 <p>カラーテレビの普及率と、男性の平均寿命の関係を調べてみよう。データはそれぞれ以下のサイトから入手し、加工したものを利用した。</p>
 <ul>
 <li>カラーテレビの普及率データ(内閣府の消費動向調査)</li>
@@ -352,8 +352,7 @@ plt.scatter(nx, ny, c<span class="op">=</span>nn, s<span class="op">=</span>nn, 
 <h4 id="テレビの普及率データのダウンロード">2. テレビの普及率データのダウンロード</h4>
 <p>ウェブから、「カラーテレビの普及率データ」のCSVファイルをダウンロードしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span><span class="bu">file</span><span class="op">/</span>colortv.csv</code></pre></div>
-<p>上記を実行すると、ファイルがダウンロードされる。最後に以下のような表示がされたら成功である。</p>
-<pre class="txt"><code>2019-08-15 11:56:39 (23.7 MB/s) - ‘colortv.csv.1’ saved [162/162]</code></pre>
+<p>上記を実行すると、ファイルがダウンロードされる。<code>‘colortv.csv’ saved [162/162]</code>と表示されたら正しくダウンロードできている。</p>
 <h4 id="テレビの普及率データの確認">3. テレビの普及率データの確認</h4>
 <p><code>head</code>コマンドでダウンロードしたファイルの内容を確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>head colortv.csv</code></pre></div>
@@ -389,13 +388,10 @@ plt.scatter(tv_year, tv_data)</code></pre></div>
 </ul>
 <p>という処理をしている。</p>
 <p>上記を実行すると、1966年から1980年までのカラーテレビの普及率の推移が表示されるはずである。</p>
-<h3 id="課題2-2平均寿命データの解析">課題2-2：平均寿命データの解析</h3>
-<p>次に、平均寿命データの解析をしてみよう。</p>
 <h4 id="平均寿命データのダウンロード">5. 平均寿命データのダウンロード</h4>
 <p>次に5つ目のセルで「男性の平均寿命データ」のダウンロードをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span><span class="bu">file</span><span class="op">/</span>lifespan.csv</code></pre></div>
-<p>最後に以下のような表示が出たら成功である。</p>
-<pre class="txt"><code>2019-08-15 11:56:42 (21.5 MB/s) - ‘lifespan.csv.1’ saved [178/178]</code></pre>
+<p>実行後に<code>‘lifespan.csv’ saved [178/178]</code>と表示されれば正しくダウンロードできている。</p>
 <h4 id="平均寿命データの確認">6. 平均寿命データの確認</h4>
 <p>先ほどと同様に、<code>head</code>コマンドでダウンロードしたデータの中身を確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>head lifespan.csv</code></pre></div>
@@ -421,19 +417,19 @@ life_data <span class="op">=</span> []
     life_data.append(<span class="bu">float</span>(d))
 plt.scatter(life_year, life_data)</code></pre></div>
 <p>寿命が年々伸びている様子がわかるはずだ。</p>
-<h3 id="課題2-3-テレビの普及率と寿命の関係">課題2-3: テレビの普及率と寿命の関係</h3>
+<h3 id="発展課題テレビの普及率と寿命の関係">発展課題:テレビの普及率と寿命の関係</h3>
 <h4 id="テレビの普及率と寿命の関係">8. テレビの普及率と寿命の関係</h4>
 <p>カラーテレビの普及率、平均寿命のデータは、それぞれ1966年から1980年までの同じ15年間のデータに揃えてある。そこで、横軸をカラーテレビの普及率、縦軸を平均寿命としてプロットしてみよう。以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plt.xlabel(<span class="st">&quot;TV&quot;</span>)
 plt.ylabel(<span class="st">&quot;Lifespan&quot;</span>)
 plt.scatter(tv_data, life_data)</code></pre></div>
-<p>テレビの普及率の高い年ほど、平均寿命が長いことがわかるであろう。</p>
+<p>このグラフから、カラーテレビの普及率と平均寿命にどのような関係が見て取れるか論ぜよ。</p>
 <h4 id="テレビの普及率と寿命の相関係数">9. テレビの普及率と寿命の相関係数</h4>
 <p>カラーテレビの普及率と寿命には何かしら強い関係がありそうであった。そこで、両者の相関を調べてみよう。相関とは、お互いに完全に比例している場合に1、完全に反比例している時に-1、完全に無関係である時に0となるような量である。</p>
 <p>相関は<code>numpy</code>の<code>corrcoef</code>で調べることができる。以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">np.corrcoef(tv_data, life_data)</code></pre></div>
-<p>2行2列の行列が表示されたはずだ。対角成分は「自分自身との相関」なので1である。非対角成分が「テレビと寿命」の関係だ。1に近い値が表示されているはずだ。このデータから「テレビが普及している年ほど寿命が長い」ということが客観的に示された。</p>
-<p>以上の解析結果をもって、例えば「テレビを見るほど寿命が伸びる」と結論してよいか考察せよ。</p>
+<p>2行2列の行列が表示されたはずだ。対角成分は「自分自身との相関」なので1である。非対角成分が「テレビと寿命」の関係だ。1に近い値が表示されているはずだ。このデータから「テレビの普及率と平均寿命は、ほぼ比例している」ということが示される。</p>
+<p>以上の解析結果をもって、例えば「テレビを見るほど寿命が伸びる」と結論してよいか考察せよ。もしそう結論できない場合は、どんな可能性があるだろうか？</p>
 <h2 id="余談消えていくアイコンのオリジナルたち">余談：消えていくアイコンのオリジナルたち</h2>
 <p>パソコンを使っていると、ファイルを管理するのにフォルダを使ったことがあるだろう。Windowsであれば、右クリックのメニューで「新規作成」から「フォルダ」を作ることができる。また、iPadやiPhoneなどのスマホでも、アイコン長押しからドラッグでまとめてフォルダを作ることができる。もともと「フォルダ」とは厚紙でできており、書類をまとめて挟んで引き出しに入れる文房具である。上部にはラベルがあり、どんな書類をまとめているかが一目でわかるようになっている。「フォルダ」のアイコンはその文房具を模したものだが、おそらくいまこれを読んでいる人で「フォルダ」の実物を見たことがある人は少ないであろう。</p>
 <p>WordやPowerPointを使ったことがある人は多いと思われるが、「ファイルを保存する」ボタンにはフロッピーディスクをデザインしたアイコンが使われることが多い。これは昔、データの保存に主にフロッピーディスクを使っていたことの名残なのだが、現在フロッピーディスクはほぼ使われていないため、これも実物を見たことがある人は少ないと思われる。もしかしたらフロッピーディスクそのものを知らないかもしれない。筆者は高校生時代、友人と一緒にゲームを作っていたのだが、お互い家で作成したデータをフロッピーディスクに入れ、休み時間に交換していたのを思い出す。</p>
