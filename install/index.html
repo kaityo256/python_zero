@@ -89,25 +89,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <article class="markdown-body">
 <h1 id="pythonのインストール">Pythonのインストール</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本稿の目的">本稿の目的</h2>
-<ul>
-<li>Pythonのインストールと実行方法について学ぶ</li>
-<li>パッケージとパッケージマネージャについて知る</li>
-</ul>
-<p>本書では、原則としてGoogle Colabを用いてオンライン上でPythonを学ぶ。したがってローカルにPythonをインストールする必要はないが、後で必要になることもあるだろう。そこで、手元のPCにPythonをインストールする方法と、その実行方法について簡単に紹介しておく。</p>
+<p>本書では、原則としてGoogle Colabを用いてオンライン上でPythonを学ぶ。したがってローカルにPythonをインストールする必要はないが、後で必要になることもあるだろう。そこで、手元のPCにPythonをインストールする方法と、その実行方法について簡単に紹介しておく。また、Pythonを使う上で重要な、パッケージについても簡単に触れる。</p>
 <h2 id="pythonのライブラリについて">Pythonのライブラリについて</h2>
 <p>Pythonのインストールそのものは難しくない。公式サイトからダウンロードしてインストールするだけである。問題なのはパッケージ管理である。Pythonには最初からよくつかうライブラリが同封されており、標準ライブラリと呼ばれている。しかし、Pythonには標準ライブラリに含まれないライブラリ(サードパーティ製のライブラリと呼ばれる)が大量にある。そして、多くの場合、そのサードパーティのライブラリが使いたくなるであろう。そのようなライブラリがウェブに分散していてはインストールが大変なので、一箇所で管理するリポジトリがある。それがPython Package Index (PyPI)である。</p>
-<p>PyPIには誰でもライブラリを登録することができ、本稿執筆時点(2019年5月)で179710個のプロジェクトが登録されている。</p>
+<p>PyPIには誰でもライブラリを登録することができ、2019年5月時点で179710個のプロジェクトが登録されている。</p>
 <div class="figure">
 <img src="fig/pypi.png" alt="PyPI" />
 <p class="caption">PyPI</p>
 </div>
-<p>PyPIから欲しいライブラリを探し、ダウンロードしてインストールすることも可能である。しかし、例えば「AというライブラリはBというライブラリに依存している」「CというライブラリはCで書かれているため、ダウンロード後にコンパイルが必要になる」といった状況があり、全部人力で解決するのは面倒である。そこで、パッケージのダウンロード、依存関係の解決などをするpipというコマンドが用意された。コマンドラインで</p>
+<p>PyPIから欲しいライブラリを探し、ダウンロードしてインストールすることも可能である。しかし、例えば「AというライブラリはBというライブラリに依存している」「CというライブラリはCで書かれているため、ダウンロード後にコンパイルが必要になる」といった状況があり、全部人力で解決するのは面倒である。そこで、パッケージのダウンロードや依存関係の解決などをするpipというコマンドが用意されている。コマンドラインで</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">pip</span> install hoge</code></pre></div>
 <p>とすると、自動でPyPIから<code>hoge</code>を探してきて、依存関係も解決しつつインストールしてくれるようになる。しかし、Python本体にはPython2系とPython3系があり、お互いの互換性には問題がある。さらにライブラリでもバージョンによる互換性の問題が起きたため、「Pythonの環境を管理するマネージャ」が乱立した。このあたりは闇が深いので、ここでは深く突っ込まない。</p>
-<p>現在ではPythonの環境構築についてベストプラクティスもあるのであろうが、それはおいおい気になったらやってもらうことにして、ここでは、Anacondaというプラットフォームを紹介する。Anacondaには、科学技術計算に必要なライブラリや、Jupyter Notebookなどよく使うアプリケーションが最初から含まれているため、「とりあえず使ってみたい」という方にメリットが大きい。ただし、他のよく使われるパッケージマネージャとぶつかるため、使っていて気になりだしたら別のマネージャ(例えばpipenv)などを使えば良い。以下、Anacondaのインストールの仕方を説明しておく。</p>
+<p>現在ではPythonの環境構築についてベストプラクティスもあるのであろうが、それはおいおい気になったらやってもらうことにして、ここでは、Anacondaというプラットフォームを紹介する。Anacondaには、科学技術計算に必要なライブラリや、Jupyter Notebookなどよく使うアプリケーションが最初から含まれているため、「とりあえず使ってみたい」という方にメリットが大きい。ただし、他のよく使われるパッケージマネージャとぶつかるため、使っていて気になりだしたら別のパッケージマネージャ(例えばpipenv)などを使えば良い。以下、Anacondaのインストールの仕方を説明しておく。</p>
 <h2 id="anacondaのインストール">Anacondaのインストール</h2>
-<p>以下、Windowsへのインストールを例に説明する。MacやLinuxでも手順は同様だと思われる。</p>
+<p>以下、Windowsへのインストールを例に説明するが、MacやLinuxでも手順はほぼ同様である。</p>
 <p>Googleで「Anaconda」と検索するか、<a href="https://www.anaconda.com/" class="uri">https://www.anaconda.com/</a>にアクセスし、右上にある「ダウンロード」をクリックする。</p>
 <div class="figure">
 <img src="fig/download.png" alt="Anacondaのダウンロード" />
@@ -154,25 +149,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。</p>
 <p>右上の「Quit」を押してサーバを終了する。「Logout」を押して終了しようとすると、Anaconda Navigatorを終了しようとする時に 「Jupyter Notebookが終了していない」と言われるの注意。その場合はそのまま終了して問題ない。</p>
-<p>また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルの コマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すと コマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。</p>
+<p>また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルのコマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すとコマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。</p>
 <h3 id="anacondaのトラブル">Anacondaのトラブル</h3>
-<p>たまに、Anaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。 しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
+<p>たまに、Anaconda Navigatorを終了しようとすると「Anaconda Navigator is still busy. Do you want to quit?」と言われることがある。しばらくまって、再度終了しようとしてもまた出る場合はそのまま終了して良い。</p>
 <h2 id="pythonの実行方法">Pythonの実行方法</h2>
-<p>Pythonにはいくつかの実行方法がある。ここではPythonを使う方法、IPythonを使う方法、Jupyter Notebookを使う方法を紹介する。</p>
-<h3 id="pythonを使う方法">Pythonを使う方法</h3>
+<p>Pythonにはいくつかの実行方法がある。ここではコマンドラインから実行する方法、IPythonを使ってインタラクティブに実行する方法、Jupyter Notebookを使う方法を紹介する。</p>
+<h3 id="コマンドラインから実行">コマンドラインから実行</h3>
 <div class="figure">
-<img src="fig/execution_python.png" alt="Pythonで実行" />
-<p class="caption">Pythonで実行</p>
+<img src="fig/execution_python.png" alt="コマンドラインから実行" />
+<p class="caption">コマンドラインから実行</p>
 </div>
 <p>プログラムをファイルに保存し、それをPythonに渡して実行する方法である。別途エディタでプログラムを編集、保存し、コマンドラインでPythonを実行する。</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">python</span> test.py
 <span class="ex">Hello</span> Python!</code></pre></div>
-<p>スクリプト言語の基本的な使い方であり、Vim、Emacs、VS Codeなど、多くのエディタがPythonに対応しているため、そのような強力なエディタを使っていれば快適な開発環境が得られる。Pycharmという、Python専用のIDE(統合開発環境)もあるので、慣れたら好きなものを使ってほしい。</p>
-<p>LinuxやMacのように標準でコマンドラインが使いやすい環境なら良いが、コマンドラインが貧弱なWindowsではやや厳しいものがある(最近ではWSLやPowerShellなどもあるが・・・)。エディタや開発環境によってはコマンドラインを開かずに実行できる場合もあるが、その場合でも一度はコマンドラインで実行し、裏で何が起きているかわかってからコマンドラインを使わない実行に移った方が良いと思う。</p>
-<h3 id="ipythonを使う方法">IPythonを使う方法</h3>
+<p>スクリプト言語の基本的な使い方であり、Vim、Emacs、VS Codeなど、多くのエディタがPythonに対応しているため、そのような強力なエディタを使っていれば快適な開発環境が得られる。Pycharmという、Python専用のIDE(統合開発環境)もあるので、慣れたら好きなものを使ってほしい。ちなみに筆者のおすすめはVS Code (Visual Studio Code)である。</p>
+<p>エディタや開発環境によっては、コマンドラインを全く開かずにGUI環境のみで実行できる場合もあるが、その場合でも一度はコマンドラインで実行し、裏で何が起きているかわかってからコマンドラインを使わない実行に移った方が良いだろう。</p>
+<h3 id="ipythonを使ってインタラクティブに実行">IPythonを使ってインタラクティブに実行</h3>
 <div class="figure">
-<img src="fig/execution_ipython.png" alt="IPythonで実行" />
-<p class="caption">IPythonで実行</p>
+<img src="fig/execution_ipython.png" alt="IPythonでインタラクティブに実行" />
+<p class="caption">IPythonでインタラクティブに実行</p>
 </div>
 <p>IPythonとはPythonの対話的シェルである。コマンドから<code>ipython</code>と実行すると入力待ちになり、そこで対話的にプログラムを入力、実行ができる。タブ補完が効いたり、コードの色がついて見やすくなったりするため、ちょっとしたプログラムを試したりするのに便利である。エディタや統合環境を使ったり、Jupyter Notebookを使う場合でも、この方法を覚えておいて損はない。</p>
 <h3 id="jupyter-notebookを使う方法">Jupyter Notebookを使う方法</h3>
@@ -180,9 +175,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <img src="fig/execution_jupyter.png" alt="Jupyter Notebookで実行" />
 <p class="caption">Jupyter Notebookで実行</p>
 </div>
-<p>コマンドラインから<code>jupyter notebook</code>を入力するか、WindowsでAnacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すと、Jupyter Notebookが起動する。</p>
+<p>コマンドラインから<code>jupyter notebook</code>と入力するか、Anacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すと、Jupyter Notebook(ジュピター・ノートブック、あるいはジュパイター・ノートブック)が起動する。</p>
 <p>こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。本講義で用いるGoogle Colabも、ブラウザからJupyter Notebookが使えるサービスである。</p>
-<p>初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。ただし、例えばセル間でグローバル変数を共有したり、「セルの並び順」ではなく「セルを実行した順」にプログラムが実行されるため、書き方が悪いと混乱しやすいかもしれない。とりあえずJupyter Notebookを使いつつ、エディタによる開発に移行するか、併用するのが良いと思う。</p>
+<p>初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。ただし、例えばセル間でグローバル変数を共有したり、「セルの並び順」ではなく「セルを実行した順」にプログラムが実行されるため、書き方が悪いと混乱しやすいかもしれない。とりあえずJupyter Notebookを使いつつ、エディタによる開発に移行するか、併用するのが良い。</p>
 </article>
 </body>
 </html>

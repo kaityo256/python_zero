@@ -327,8 +327,8 @@ sato_info = database.info("佐藤").position() #=> 課長
 4. この時、もし指が5本以上になったらその手は死ぬ
 5. これを交互に繰り返し、両手が死んだら負け
 
-![rule1.png](fig/rule1.png)
-![rule2.png](fig/rule2.png)
+![割りばしのルール１：攻撃方法](fig/rule1.png)
+![割りばしのルール１：終了条件](fig/rule2.png)
 
 追加ルールやバリエーションとして、以下のようなものがある。
 

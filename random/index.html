@@ -253,7 +253,7 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <li>その上で司会者はプレイヤーに「選んだ箱を変えてよい」という</li>
 <li>さて、プレイヤーは選んだ箱を変えたほうが得だろうか？それとも確率は変わらないだろうか？</li>
 </ul>
-<p><img src="fig/mh1.png" alt="mh1.png" /> <img src="fig/mh2.png" alt="mh2.png" /></p>
+<p><img src="fig/mh1.png" alt="モンティ・ホール問題" /> <img src="fig/mh2.png" alt="モンティ・ホール問題の手順" /></p>
 <p>この問題は有名なので、答えを知っている人も多いだろう。しかし、ここは答えを全く知らないとして、シミュレーションをしよう。</p>
 <p>まずは、司会者が選ばれなかった箱のうち一つを開け、「選んだ箱を変えてよい」と言った時に「最初に選んだ箱を変えない」戦略を考えよう。 これをKeep派と呼ぶ。Keep派は司会者の影響を受けないので、シミュレーションは簡単だ。</p>
 <ol style="list-style-type: decimal">
@@ -345,11 +345,16 @@ boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</s
     first_choice <span class="op">=</span> choice(boxes)
     rest_boxes <span class="op">=</span> boxes.copy()
     rest_boxes.remove(answer)
-    <span class="co"># ここを埋めよ</span>
+    <span class="cf">if</span> first_choice <span class="op">==</span> answer:
+      second_choice <span class="op">=</span> <span class="co"># ここを産めよ</span>
+    <span class="cf">else</span>:
+      second_choice <span class="op">=</span> <span class="co"># ここを産めよ</span>
     <span class="cf">return</span> answer <span class="op">==</span> second_choice</code></pre></div>
 <ul>
-<li>ヒント1：<code>first_choice</code>が正解かどうかで条件分岐せよ</li>
-<li>ヒント2：<code>rest_boxes</code>は、「正解を除いた」箱のリストである</li>
+<li>ヒント1：最初に選んだ箱(<code>first_choice</code>)が正解かどうかで条件分岐している</li>
+<li>ヒント2：<code>rest_boxes</code>は、「正解を除いた」二つ箱のリストである</li>
+<li>ヒント3：正解を除いた二つの箱からランダムに一つ選ぶには<code>choice(rest_boxes)</code>とすれば良い</li>
+<li>ヒント4：最初に正解を選ばなかった場合、次に開ける箱はどんな箱だろうか？</li>
 </ul>
 <h4 id="changeの動作確認">5. <code>change</code>の動作確認</h4>
 <p>5つ目のセルで<code>change</code>関数の動作確認しよう。</p>
@@ -468,12 +473,11 @@ show_image(sites, L)</code></pre></div>
     cd <span class="op">+=</span> <span class="dv">1</span>
   <span class="cf">return</span> cd</code></pre></div>
 <p><code>cd</code>は購入したCDの枚数、<code>posters</code>は、当たったポスターのリストであり、このコードでは<code>n</code>種類のポスターを揃えるまでCDを購入し続け、揃った段階で購入したCDの枚数を返す関数である。</p>
-<p>ヒント1：</p>
-<p>1からnまでのランダムな数を<code>posters</code>に追加することでn種類のポスターがランダムに当たる処理を表現する。</p>
-<p>ヒント2：</p>
-<p>1からnまでのランダムな数は<code>random.randint(1, n)</code>で得られる。リストへの追加は<code>posters.append</code>を使う。</p>
-<p>ヒント3：</p>
-<p>得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる</p>
+<ul>
+<li>ヒント1：これまでに得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる</li>
+<li>ヒント2：1からnまでのランダムな数を<code>posters</code>に追加することでn種類のポスターがランダムに当たる処理を表現する。</li>
+<li>ヒント3：1からnまでのランダムな数は<code>random.randint(1, n)</code>で得られる。リストへの追加は<code>posters.append</code>を使う。</li>
+</ul>
 <h4 id="実行">3. 実行</h4>
 <p><code>gacha</code>が完成したら、それをなんども実行して「購入CD枚数の期待値」を計算しよう。3つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">trial <span class="op">=</span> <span class="dv">100</span>
@@ -484,7 +488,7 @@ N <span class="op">=</span> <span class="dv">44</span>
 <span class="bu">print</span>(cd<span class="op">/</span>trial)</code></pre></div>
 <p>CDの平均購入枚数はどれくらいであっただろうか？</p>
 <h4 id="厳密解">4. 厳密解</h4>
-<p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションと結果が合っているか確認せよ。</p>
+<p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションによって得られた結果が近い値かどうか確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
     r <span class="op">=</span> <span class="fl">0.0</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
