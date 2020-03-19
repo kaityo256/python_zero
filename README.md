@@ -11,13 +11,6 @@
 * [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「Pythonの概要とGoogle Colabの使い方」と共通)
 * なぜPythonを学ぶのか。「プログラマ的」発想について。
 
-## [Pythonのインストールと実行方法](install/README.md)
-
-(Google Colabを使う場合は不要)
-
-* Anacondaのインストール方法
-* Pythonの実行方法
-
 ## [Pythonの概要とGoogle Colabの使い方](hello/README.md)
 
 * [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「はじめに」と共通)
@@ -141,6 +134,13 @@
 * 機械学習の概要( **コードが古く、obsoleteです** )
 * GANを体験する
 * 余談：AIに悪意はあるか
+
+## [付録：Pythonのインストールと実行方法](install/README.md)
+
+(Google Colabを使う場合は不要)
+
+* Anacondaのインストール方法
+* Pythonの実行方法
 
 ## [参考文献](references/README.md)
 
