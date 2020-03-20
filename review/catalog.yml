@@ -1,5 +1,6 @@
 PREDEF:
   - introduction.re
+  - about.re
 
 CHAPS:
   - hello.re
