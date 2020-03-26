@@ -128,11 +128,12 @@
 * 反応拡散方程式(Gray-Scott Model)
 * 余談：パーソナルスーパーコンピュータ
 
-## [簡単な機械学習](gan/README.md)
+## [簡単な機械学習](ml/README.md)
 
 * [講義スライド](https://speakerdeck.com/kaityo256/python-14)
-* 機械学習の概要( **コードが古く、obsoleteです** )
-* GANを体験する
+* 機械学習の概要
+* 重回帰分析
+* GANを体験する( **コードが古く、obsoleteです** )
 * 余談：AIに悪意はあるか
 
 ## [付録：Pythonのインストールと実行方法](install/README.md)

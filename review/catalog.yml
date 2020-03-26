@@ -16,7 +16,7 @@ CHAPS:
   - dp.re
   - random.re
   - simulation.re
-  - gan.re
+  - ml.re
 
 APPENDIX:
   - install.re
