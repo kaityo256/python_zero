@@ -1,6 +1,6 @@
 PREDEF:
   - introduction.re
-  - install.re
+  - about.re
 
 CHAPS:
   - hello.re
@@ -16,9 +16,10 @@ CHAPS:
   - dp.re
   - random.re
   - simulation.re
-  - gan.re
+  - ml.re
 
 APPENDIX:
+  - install.re
 
 POSTDEF:
 

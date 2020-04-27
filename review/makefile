@@ -1,4 +1,4 @@
-RE=introduction.re install.re hello.re basic.re scope.re list.re string.re file.re recursion.re class.re numpy.re howtowork.re dp.re random.re simulation.re gan.re
+RE=introduction.re about.re install.re hello.re basic.re scope.re list.re string.re file.re recursion.re class.re numpy.re howtowork.re dp.re random.re simulation.re ml.re
 MD=$(RE:.re=.md)
 DIRS=$(RE:.re=)
 TARGET=python_zero.pdf

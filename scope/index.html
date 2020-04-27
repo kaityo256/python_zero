@@ -80,6 +80,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -269,7 +270,64 @@ if True:
     print(a) <span class="co"># ここから変数aが見える</span></code></pre></div>
 <p>繰り返しになるが、プログラミング言語には「スコープ」という概念があり、変数がどのスコープに属すか決める仕組みは言語ごとに異なる、ということは覚えておいて欲しい。名前解決がらみで問題が起きた時に、そもそも「スコープ」という単語を知らないと、問題解決が難しくなるからだ。</p>
 <h2 id="関数とスコープ課題">関数とスコープ：課題</h2>
-<h3 id="課題1コラッツ問題">課題1：コラッツ問題</h3>
+<h3 id="課題1-1ロジスティック写像">課題1-1：ロジスティック写像</h3>
+<p>関数と繰り返しを使い、ロジスティック写像を可視化してみよう。ロジスティック写像は</p>
+<p><span class="math display">\[
+n_{i+1} = r n_i (1- n_i)
+\]</span></p>
+<p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(r\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
+<p><span class="math display">\[
+n = 1 - \frac{1}{r}
+\]</span></p>
+<p>に落ち着くはずである。この振る舞いを確認してみよう。新しいノートブックを開き、<code>logistic.ipynb</code>と名前を付けよう。</p>
+<h4 id="インポート">1. インポート</h4>
+<p>まずは後で使うライブラリをインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
+<h4 id="関数logisticの実装">2. 関数<code>logistic</code>の実装</h4>
+<p>パラメータ<span class="math inline">\(r\)</span>を受け取って、個体数<span class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic(r):
+  n <span class="op">=</span> <span class="fl">0.1</span>
+  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+    n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+    <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:
+      <span class="bu">print</span>(n)</code></pre></div>
+<p>これは、初期値を<span class="math inline">\(n=0.1\)</span>として、<span class="math inline">\(n \leftarrow rn(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span class="math inline">\(n\)</span>を表示する関数だ。</p>
+<h4 id="関数logisticの動作確認">3. 関数<code>logistic</code>の動作確認</h4>
+<p>３つ目のセルで、関数<code>logistic</code>を実行してみよう。</p>
+<p>まずは、<span class="math inline">\(r=1.5\)</span>を代入してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">logistic(<span class="fl">1.5</span>)</code></pre></div>
+<p>結果が、予想される定常解<span class="math inline">\(n = 1 - 1/r\)</span>になっているか確認せよ。<span class="math inline">\(r=2.0\)</span>ではどうか。また、<span class="math inline">\(r=3.1\)</span>を代入すると、定常解に収束しないはずである。何が起きるか確認せよ。</p>
+<h3 id="課題1-2ロジスティック写像の可視化">課題1-2：ロジスティック写像の可視化</h3>
+<p>ロジスティック写像は、<span class="math inline">\(r\)</span>が小さいうちは定常解に収束するが、ある値を超えると個体数が振動することがわかった。では、どのような振る舞いをするのか、可視化してみよう。</p>
+<h4 id="関数logistic_plotの実装">4. 関数<code>logistic_plot</code>の実装</h4>
+<p>ある範囲の<span class="math inline">\(r\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic_plot(start, end, x, y):
+  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+    r <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start
+    n <span class="op">=</span> <span class="fl">0.1</span>
+    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+      n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+      <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:
+        x.append(r)
+        y.append(n)</code></pre></div>
+<h4 id="関数plotの実装">5. 関数<code>plot</code>の実装</h4>
+<p><code>logistic_plot</code>の結果を受け取って、グラフに描画する関数<code>plot</code>を実装しよう。5つ目のセルに以下を入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(start, end):
+  x, y <span class="op">=</span> [], []
+  logistic_plot(start, end, x, y)
+  plt.scatter(x, y, s <span class="op">=</span> <span class="fl">0.1</span>)</code></pre></div>
+<h4 id="定常状態の表示">6. 定常状態の表示</h4>
+<p>では、まずは定常状態に落ち着く領域<span class="math inline">\(1 &lt; r &lt; 3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plot(<span class="fl">1.0</span>, <span class="fl">3.0</span>)</code></pre></div>
+<h4 id="振動状態の表示">7. 振動状態の表示</h4>
+<p><span class="math inline">\(r&gt;3\)</span>では、個体数が定常状態にならない。それを見てみよう。7つ目のセルで以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plot(<span class="fl">1.0</span>, <span class="fl">4.0</span>)</code></pre></div>
+<p>どんなグラフが現れただろうか？</p>
+<p>また、興味のある人は<span class="math inline">\(3.54 &lt; r &lt; 3.58\)</span>の領域を拡大してみよう。次のセル(8つ目)で以下を実行せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])
+plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</code></pre></div>
+<p>どんなグラフが現れただろうか？拡大前のグラフと見比べて見よ。</p>
+<h3 id="課題2コラッツ問題">課題2：コラッツ問題</h3>
 <p>while文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
 <ul>
 <li>何か正の整数を考えよ</li>
@@ -278,9 +336,12 @@ if True:
 <li>以上の処理を数字が1になるまでずっと繰り返せ</li>
 </ul>
 <p>たとえば「5」を考えよう。これは奇数なので3倍して1を足すと「16」になる。 これは偶数だから2で割って「8」、さらに2で割って「4」「2」「１」となる。</p>
-<p>コラッツ問題とは「上記の手続きを繰り返した場合、すべての整数について有限回の手続きで1になるか？」というものであり、現在も解決されていない。もし有限の手続きで1にならないとしたら、どこかに無限に大きくなるか、ループする構造があるはずだが、今の所どちらも見つかっていない。</p>
+<p>コラッツ問題とは「上記の手続きを繰り返した場合、すべての整数について有限回の手続きで1になるか？」というものであり、未だに解決されていない。</p>
 <p>新しいノートブックを開き、<code>collatz.ipynb</code>と名前を付けておこう。</p>
-<h4 id="関数collatzの実装">1. 関数<code>collatz</code>の実装</h4>
+<h4 id="インポート-1">1. インポート</h4>
+<p>まずは最初のセルで、可視化に使うライブラリをインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
+<h4 id="関数collatzの実装">2. 関数<code>collatz</code>の実装</h4>
 <p>与えられた数字に対して、</p>
 <ul>
 <li>偶数なら2でわる</li>
@@ -295,17 +356,18 @@ if True:
   <span class="bu">print</span>(i)
   <span class="cf">while</span> (条件1):
     <span class="cf">if</span> (条件2):
-      i <span class="op">=</span> i <span class="op">//</span><span class="dv">2</span>
+      i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span>
     <span class="cf">else</span>:
       i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
     <span class="bu">print</span>(i)</code></pre></div>
 <p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
 <ul>
-<li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる。</li>
-<li>ヒント2：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる。</li>
+<li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる</li>
+<li>ヒント2：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる</li>
+<li>ヒント3：「整数<code>i</code>が0に等しい」という条件は<code>i == 0</code>と表現できる</li>
 </ul>
-<h4 id="関数collatzの動作確認">2. 関数<code>collatz</code>の動作確認</h4>
-<p>二つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
+<h4 id="関数collatzの動作確認">3. 関数<code>collatz</code>の動作確認</h4>
+<p>3つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">collatz(<span class="dv">3</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">3</span>
 <span class="ex">10</span>
@@ -316,14 +378,9 @@ if True:
 <span class="ex">2</span>
 <span class="ex">1</span></code></pre></div>
 <p>もし正しい結果が得られたら、いろいろな数字を入れて、すべて最終的に1になることを確認せよ。収束するまでの手続きが長い数を探せ。例えば27を入れたらどうなるか。</p>
-<h3 id="課題2コラッツ問題の可視化">課題2：コラッツ問題の可視化</h3>
-<p>コラッツ問題をグラフで可視化してみよう。新しいノートブックを開き、<code>collatz_graph</code>という名前をつけて、以下のプログラムを4つのセルにわけて入力せよ。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
-<p>最初に、一つ目のセルでグラフの可視化をするためのライブラリをインポートする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
-<h4 id="関数collatzの実装-1">2. 関数<code>collatz</code>の実装</h4>
-<p>コラッツ数列を作る関数<code>collatz</code>を実装しよう。条件1、条件2は課題1-1と同じであるが、グラフの作画のために<code>edge</code>を受け取り、ノードをつなぐ処理が追加されている。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i, edges):
+<h4 id="関数collatz_graphの実装">4. 関数<code>collatz_graph</code>の実装</h4>
+<p>コラッツ数列を可視化するための関数<code>collatz_graph</code>を実装しよう。条件1、条件2は先程と同じものを入力せよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz_graph(i, edges):
     <span class="cf">while</span> (条件1):
         j <span class="op">=</span> i
         <span class="cf">if</span> (条件2):
@@ -331,20 +388,20 @@ if True:
         <span class="cf">else</span>:
             i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
         edges.add((j, i))</code></pre></div>
-<h4 id="グラフの作成">3. グラフの作成</h4>
-<p>3つ目のセルに以下を入力、実行せよ。</p>
+<h4 id="グラフの作成">5. グラフの作成</h4>
+<p>5つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_graph(n):
     g <span class="op">=</span> Digraph()
     edges <span class="op">=</span> <span class="bu">set</span>()
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
-        collatz(i, edges)
+        collatz_graph(i, edges)
     <span class="cf">for</span> i, j <span class="kw">in</span> edges:
         g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))
     g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
     <span class="cf">return</span> g</code></pre></div>
 <p>これは、1から<code>n</code>までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。</p>
-<h4 id="グラフの表示">4. グラフの表示</h4>
-<p>実際にコラッツ数列のグラフ表示をさせてみよう。4つ目のセルに以下を入力、実行せよ。</p>
+<h4 id="グラフの表示">6. グラフの表示</h4>
+<p>実際にコラッツ数列のグラフ表示をさせてみよう。以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)</code></pre></div>
 <p>これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。</p>
 <p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
@@ -359,26 +416,23 @@ if True:
 <li>それが奇数なら3倍して <strong>3</strong> を足せ</li>
 <li>以上の処理を数字が <strong>1か3</strong> になるまでずっと繰り返せ</li>
 </ul>
-<p>というものである。これもやはり有限回の手順で止まるらしい(おそらくこちらも未解決問題)。これを確認してみよう。</p>
-<p>課題2で作成した<code>collatz_graph.ipynb</code>をコピーして使おう。「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz_graph.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz_graph.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2_graph.ipynb」という名前にしよう。「collatz2_graph.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
-<p>「collatz2_graph.ipynb」がGoogle Colabで開かれたら、</p>
+<p>というものである。これもやはり有限回の手順で止まるらしい(こちらも未解決問題)。これを確認してみよう。</p>
+<p>課題2で作成した<code>collatz.ipynb</code>をコピーして使おう。「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2.ipynb」という名前にしよう。「collatz2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
+<p>「collatz2.ipynb」がGoogle Colabで開かれたら、</p>
 <ul>
 <li>数字が1か3になったら終了とする</li>
 <li>奇数だったら3倍して3を足す</li>
 </ul>
-<p>となるように修正せよ。</p>
-<p>ヒント1：「条件XかつY」は、<code>if X and Y:</code>で表現できる。</p>
-<p>ヒント2：「条件XもしくはY」は、<code>if X or Y:</code>で表現できる。</p>
-<p>修正したら、例えば<code>make_graph(5)</code>として、1に収束する数字と3に収束する数字があることを確認せよ。<code>make_graph(50)</code>ではどうなるか調べよ。また、1に収束するのはどういう数字かについて考察せよ。</p>
+<p>となるように関数<code>collatz_graph</code>を修正せよ。</p>
+<ul>
+<li>ヒント1：「条件XかつY」は、<code>if X and Y:</code>で、「条件XもしくはY」は、<code>if X or Y:</code>で表現できる</li>
+</ul>
+<p>修正したら、すべてのセルを実行してから、例えば<code>make_graph(5)</code>を実行せよ。<code>make_graph(50)</code>ではどうなるだろうか。1に収束する数字と3に収束する数字があるはずだ。1に収束するのはどういう数字かについて考察せよ。</p>
 <h2 id="余談数論について">余談：数論について</h2>
 <p>コラッツ予想に代表されるような、「整数がこの条件を満たすか？」のような問いを扱うのが整数論(数論)である。一般に数論は「問いを理解するのは易しいが、その解決は極めて難しい」という性質を持つ。ガウスの「数学は科学の女王であり、数論は数学の女王である」という言葉は有名だ。数論の中でも特に有名なのは「フェルマーの最終定理」であろう。これは「三以上の自然数nについて、x^n + y^n = z^nを満たす自然数の組(x,y,z)は存在しない」という定理である。フェルマーはフランスの弁護士であったが、余暇に行った数学で大きな功績を残し、「数論の父」とも呼ばれる。彼は趣味でディオファントスの著作「算術」の注釈本を読み、その余白に有名な注釈を書き込んだ。その多くは後に証明、もしくは反証されたが、一つだけ証明も反証もされずに残ったのが「フェルマーの最終定理」である。フェルマーが「フェルマーの最終定理」を記述した横に「私はこの定理の驚くべき証明を手に入れたが、ここに書くには余白が足りない」と書いたのは有名である。この問題を解決したアンドリュー・ワイルズは、7年の間、秘密裏にこの問題に取り組み、1995年に解決した。フェルマーによる提唱から証明に至るまで、実に360年かかっている。数論の面白さは、整数しか扱わないにもかかわらず、そこに幾何や解析がからんでくることである。</p>
 <p>数論は入門しやすく、一方で極めて奥が深いため、その難しさ、美しさに魅せられて人生を捧げる人も多い。2011年5月にコラッツの弟子が「コラッツ予想を解決した」という論文を投稿した。しかし、すぐに証明の不備が見つかり、6月に撤回された。その<a href="https://preprint.math.uni-hamburg.de/public/papers/hbam/hbam2011-09.pdf">論文</a>には、</p>
 <blockquote>
-<p>The reasoning on p. 11, that &quot;The set of all vertices (2n,l) in all levels will contain all even numbers 2n ≧ 6 exactly once.&quot; has turned out to be incomplete. Thus, the statement “that the collatz conjecture is true” has to be withdrawn, at least temporarily.</p>
-</blockquote>
-<p>適当な和訳。</p>
-<blockquote>
-<p>「11ページにある証明は不完全であることがわかった。したがって、『コラッツ予想は真である』という主張は、今のところは撤回する」</p>
+<p>The reasoning on p. 11, that &quot;The set of all vertices (2n,l) in all levels will contain all even numbers 2n ≧ 6 exactly once.&quot; has turned out to be incomplete. Thus, the statement “that the collatz conjecture is true” has to be withdrawn, at least temporarily.(11ページにある証明は不完全であることがわかった。したがって、『コラッツ予想は真である』という主張は、今のところは撤回する)</p>
 </blockquote>
 <p>とある。最後の「at least temporarily (今のところは)」に悔しさがにじむ。サイモン・シンは、こうした数学の未解決問題へ取り憑かれることを熱病に例えた。フェルマーの最終定理に取り憑かれるフェルマー熱、ポアンカレ予想に取り憑かれるポアンカレ熱などが有名だが、この二つは近年解決した。しかし、コラッツ予想は未解決であり、今後もコラッツ熱の感染者を生み続けるのであろう。</p>
 <p>このような数学の話に興味のある人は「数学を作った人々 (E. T. Bell著、田中 勇、銀林 浩 訳)」をおすすめする。数学という、一種無味乾燥にも思える学問の構築の裏に、様々な人間ドラマがあったことを知れば、数学を学ぶ楽しさも増えるに違いない。</p>

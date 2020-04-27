@@ -97,38 +97,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>反応拡散方程式</li>
 </ul>
 <h2 id="数値シミュレーションとは">数値シミュレーションとは</h2>
-<p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている(らしい)。したがって、物理学とは、微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(Governing Equation)</strong> と呼ぶ。この支配方程式を、数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(Numerical Simulation)</strong> と呼ぶ。</p>
-<p>さて、この世界の空間や時間は(たぶん)連続的であるのに対し、コンピュータは原則として離散的な値しか扱うことができない。数値シミュレーションとはこの世界の出来事をコンピュータの中に再現することであるから、計算するにあたって連続的な値を離散的な値に変換する必要がある。例えば、パソコンやスマホで動画を見ることがあるだろう。動画は、我々が目にする世界のように、空間的にも時間的にも連続的に見えるが、実際には時間方向は静止画像を高速にコマ送りすることで連続的に見せており、静止画像も拡大するとピクセル単位で離散化されている。</p>
+<p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている。したがって、極限すれば物理学とは微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(Governing Equation)</strong> と呼ぶ。この支配方程式を数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(Numerical Simulation)</strong> と呼ぶ。</p>
+<p>さて、この世界の空間や時間は(おそらく)連続的であるのに対し、コンピュータは原則として離散的な値しか扱うことができない。数値シミュレーションとはこの世界の出来事をコンピュータの中に再現することであるから、計算するにあたって連続的な値を離散的な値に変換する必要がある。例えば、パソコンやスマホで動画を見ることがあるだろう。動画は、我々が目にする世界のように、空間的にも時間的にも連続的に見えるが、実際には時間方向は静止画像を高速にコマ送りすることで連続的に見せており、静止画像も拡大するとピクセル単位で離散化されている。</p>
 <div class="figure">
 <img src="fig/discretization.png" alt="時間と空間の離散化" />
 <p class="caption">時間と空間の離散化</p>
 </div>
 <p>このように、連続的な値をコンピュータで扱うために離散的な値にすることを <strong>離散化(discretization)</strong> と呼ぶ。以下では、時間や空間を離散化することで微分方程式を計算機が扱いやすい形にして、その振る舞いを数値シミュレーションで解析してみよう。</p>
-<h2 id="ニュートンの運動方程式">ニュートンの運動方程式</h2>
-<p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは何か？それは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
-<p><span class="math display">\[
-m \frac{d v}{dt} = F
-\]</span></p>
-<p>となる。さらに速度とは、単位時間当たりの位置の変化分であった。したがって、それもちゃんと書くと、</p>
-<p><span class="math display">\[
-\begin{aligned}
-\frac{d v}{dt} &amp;= \frac{F}{m} \\
-\frac{d r}{dt} &amp;= v
-\end{aligned}
-\]</span></p>
-<p>これが運動方程式である。すなわち、運動方程式とは時間に関する連立常微分方程式である。上記の式は一次元で書いたが、これを三次元の式にして、さらに二つの物質の間に距離の二乗に反比例する力を仮定すると、宇宙空間内で互いに重力で引き合う二つの星の運動を表す方程式となる。これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。 自然科学において <strong>法則(law)</strong> とは、実験や観測などで再現可能な自然の振る舞いである。物理学とは、より基本的な原理から、観測事実である「法則」を導き、説明しようとする営みである。</p>
-<h3 id="空気抵抗がない場合の弾道計算">空気抵抗がない場合の弾道計算</h3>
-<p>ものを斜め上に投げた時、最も遠くに飛ばすにはどんな角度で投げればよいだろうか。ただし空気抵抗は無視するものとする。答えが投げる強さ(初速)に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？空気抵抗を無視すれば、二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばして目的の場所に落とす」という設定は、戦争においては極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気抵抗もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っていた。実際に射出して着弾距離を調べることももちろん行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することは軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
-<p>さて、いま皆さんの目の前にあるのは、ちょっと前のスーパーコンピュータなみの計算能力を持つ計算機である。それを使って、簡単なシミュレーションをしてみよう。まずは空気抵抗がない場合である。二次元の場合を考えよう。速度ベクトルを<span class="math inline">\(\vec{v} = (v_x, v_y)\)</span>、位置ベクトルを<span class="math inline">\(\vec{r} = (r_x, r_y)\)</span>とし、運動方程式をそれぞれの要素について書き下すと以下のようになる。</p>
-<p><span class="math display">\[
-\begin{aligned}
-\dot{v_x} &amp;= 0 \\
-\dot{v_y} &amp;= - g \\
-\dot{r_x} &amp;= v_x \\
-\dot{r_y} &amp;= v_y
-\end{aligned}
-\]</span></p>
-<p>さて、この式は厳密に解けるのだが、その厳密解を知らないものとし、シミュレーションで近似的に解を求めることにする。求めたいものは重力下で角度<span class="math inline">\(\theta\)</span>で物体を投げた時の物体の軌道である。まず、数値計算で扱いやすいように、時間を離散化しよう。</p>
+<h2 id="差分化">差分化</h2>
 <p>今、ある量<span class="math inline">\(f(t)\)</span>の時間微分<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻みを<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。時間微分<span class="math inline">\(f&#39;(t)\)</span>がわかっているので、厳密な表式は積分で与えられる。</p>
 <p><span class="math display">\[
 f(t+h) = f(t) + \int_t^{t+h} f&#39;(t) dt
@@ -144,12 +120,47 @@ f(t+h) \sim f(t) + h f&#39;(t)
 f(t + h) &amp;= f(t) + f&#39;(t)h + O(h^2) \\
 \end{aligned}
 \]</span></p>
-<p>となることから、先程の近似は<span class="math inline">\(h\)</span>の一次まで正しい。これを一次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる、ということを主張する。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(Finite difference method)</strong> と呼ぶ。特に、一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
+<p>となることから、先程の近似は<span class="math inline">\(h\)</span>の一次まで正しい。これを一次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる。</p>
 <div class="figure">
 <img src="fig/nextstep.png" alt="時間の差分化" />
 <p class="caption">時間の差分化</p>
 </div>
-<p>先の運動方程式に一次の差分化を適用すると、</p>
+<p>以上から、ある時刻<span class="math inline">\(t_0\)</span>における値<span class="math inline">\(f(t_0)\)</span>がわかっているとき、</p>
+<p><span class="math display">\[
+\begin{aligned}
+f(t_0+h) &amp;= f(t_0) + f&#39;(t_0)h \\
+f(t_0+2h) &amp;= f(t_0+h) + f&#39;(t_0+h)h \\
+f(t_0+3h) &amp;= f(t_0+2h) + f&#39;(t_0+2h)h \\
+&amp; \cdots 
+\end{aligned}
+\]</span></p>
+<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(Finite difference method)</strong> と呼ぶ。特に、先程のように一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
+<h2 id="ニュートンの運動方程式">ニュートンの運動方程式</h2>
+<p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
+<p><span class="math display">\[
+m \frac{d v}{dt} = F
+\]</span></p>
+<p>となる。さらに速度とは、単位時間当たりの位置の変化分であった。それもあわせて書くと、以下の式が得られる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{d v}{dt} &amp;= \frac{F}{m} \\
+\frac{d r}{dt} &amp;= v
+\end{aligned}
+\]</span></p>
+<p>すなわち、運動方程式とは時間に関する連立常微分方程式である。ここで、二つの物体の間に距離の二乗に反比例する力を仮定すると、宇宙空間内で互いに重力で引き合う二つの星の運動を表す方程式となる。これを解くと、軌道が楕円になることや、面積速度一定則、調和の法則など、いわゆるケプラーの三法則が導かれる。 自然科学において <strong>法則(law)</strong> とは、実験や観測などで再現可能な自然の振る舞いである。物理学とは、より基本的な原理から、観測事実である「法則」を導き、説明しようとする営みである。以下では、運動方程式の簡単な場合として、重力下での自由運動、すなわち弾道計算を行ってみよう。</p>
+<h3 id="空気抵抗がない場合の弾道計算">空気抵抗がない場合の弾道計算</h3>
+<p>ものを斜め上に投げた時、最も遠くに飛ばすにはどんな角度で投げればよいだろうか。ただし空気抵抗は無視するものとする。答えが初速に依らず45度であることは知っているであろう。では逆に、初速と的までの距離が決まっているときに、何度で投げれば的に当てることができるだろうか？例えば初速100m/sで、500m先にある的に当てたいときの角度は？さらに、投げる場所と当てたい場所に高低差がある場合はどうなるだろう？空気抵抗を無視するなら二次方程式を解くだけだが、すぐに暗算するのは難しいであろう。この「重力下で物に初速を与えて飛ばして目的の場所に落とす」という設定は、戦争において極めて重要な問題設定であった。例えば敵までの距離がわかっているときに、迫撃砲の角度を何度にすればよいかを「すぐに」決めなくてはならない。当然だが戦闘中にいちいち方程式を解く暇はなく、実際には空気抵抗もあるために距離と角度の関係は難しい。そこで、あらかじめ弾の種類と距離の応じて「射表」と呼ばれる距離と角度の関係表を作っていた。実際に射出して着弾距離を調べることも行われたが、数値計算も行われた。最初期の電子計算機であるENIACは、もともと砲撃の射表の作成のために作られたものだ。ENIACは微分方程式を解くことができ、これが本格的な数値シミュレーションの始まりである。ENIACはその後「マンハッタン計画」にも用いられたことからもわかるように、計算機は軍事利用と深い関係にあり、スーパーコンピュータは半ば「兵器」として扱われた。強力な計算機を保有することは軍事的に優位に立つのに必要であり、実は現在もその名残が様々なところにみられるのだが、それはさておく。</p>
+<p>さて、いま皆さんの目の前にあるのは、ちょっと前のスーパーコンピュータなみの計算能力を持つ計算機である。それを使って、簡単なシミュレーションをしてみよう。二次元の場合を考えよう。速度ベクトルを<span class="math inline">\(\vec{v} = (v_x, v_y)\)</span>、位置ベクトルを<span class="math inline">\(\vec{r} = (r_x, r_y)\)</span>とし、運動方程式をそれぞれの要素について書き下すと以下のようになる。</p>
+<p><span class="math display">\[
+\begin{aligned}
+\dot{v_x} &amp;= 0 \\
+\dot{v_y} &amp;= - g \\
+\dot{r_x} &amp;= v_x \\
+\dot{r_y} &amp;= v_y
+\end{aligned}
+\]</span></p>
+<p>さて、この式は厳密に解けるのだが、その厳密解を知らないものとし、シミュレーションで近似的に解を求めることにする。求めたいものは重力下で角度<span class="math inline">\(\theta\)</span>で物体を投げた時の物体の軌道である。まず、数値計算で扱いやすいように、時間を離散化しよう。</p>
+<p>先の運動方程式に一次の差分化(オイラー法)を適用すると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 v_x(t+h) &amp;= v_x(t) \\
@@ -167,76 +178,58 @@ r_y(t+h) &amp;= r_y(t) + v_y(t) h\\
 \dot{v_y} &amp;= - g
 \end{aligned}
 \]</span></p>
-<p>これは簡単に求積できる。初期条件として、仰角<span class="math inline">\(\theta\)</span>、速度<span class="math inline">\(1\)</span>で投げたとすると、<span class="math inline">\(v_x(0) = \cos \theta, v_y(0) = \sin \theta\)</span>であるから、</p>
+<p>これは簡単に求積できる。初期条件として、仰角<span class="math inline">\(\theta\)</span>、速度<span class="math inline">\(v_0\)</span>で投げたとすると、<span class="math inline">\(v_x(0) = v_0 \cos \theta, v_y(0) = v_0 \sin \theta\)</span>であるから、</p>
 <p><span class="math display">\[
 \begin{aligned}
-v_x(t) &amp;= \cos \theta \\
-v_y(t) &amp;= -gt + \sin \theta
+v_x(t) &amp;= v_0 \cos \theta \\
+v_y(t) &amp;= -gt + v_0 \sin \theta
 \end{aligned}
 \]</span></p>
-<p>となる。これをさらに時間積分したものが座標であるから、初期位置が <span class="math inline">\(\vec{r}(0) = (0,0)\)</span> であったとすると、</p>
+<p>となる。これをさらに時間積分したものが座標であるから、初期位置が原点、すなわち<span class="math inline">\((r_x, r_y) = (0,0)\)</span> であったとすると、</p>
 <p><span class="math display">\[
 \begin{aligned}
-r_x(t) &amp;= t \cos \theta \\
-r_y(t) &amp;= -\frac{g t^2}{2} + t \sin \theta
+r_x(t) &amp;= v_0 t \cos \theta \\
+r_y(t) &amp;= -\frac{g t^2}{2} + v_0 t \sin \theta
 \end{aligned}
 \]</span></p>
-<p>これが求めたい軌道であった。</p>
-<h3 id="空気抵抗がある場合の弾道計算">空気抵抗がある場合の弾道計算</h3>
-<p>先程は空気抵抗が無い場合を考えた。次は空気抵抗がある場合を考えよう。一口に空気抵抗と言っても様々な要因があるのだが、ここは単純に「速度に比例して向きと反対向きにひっぱられる力」がかかっていると考えよう。このような力は「ストークス抵抗」と呼ばれ、流体の粘性が極めて高いか、物体の運動が非常に遅い時にしか成り立たないのだが、ここでは深入りしない。</p>
-<p>速度<span class="math inline">\(v\)</span>で運動する物体に対して、その速度とは逆向きに<span class="math inline">\(\gamma v\)</span>の力がかかるとしよう。<span class="math inline">\(\gamma\)</span>は比例係数であり、ここでは速度に依存しない定数とする。物体の速度ベクトルが地面となす角度が<span class="math inline">\(\phi\)</span>である時、物体にかかる力を<span class="math inline">\(x\)</span>軸、<span class="math inline">\(y\)</span>軸に分解するとこんな感じになる。</p>
+<p>これが求めたい軌道であった。着弾するまでの時間は<span class="math inline">\(r_y(t_f) = 0\)</span>となる<span class="math inline">\(t_f\)</span>であるから、</p>
+<p><span class="math display">\[
+t_f = 0, \frac{2 v_0 \sin \theta}{g}
+\]</span></p>
+<p>である。<span class="math inline">\(x\)</span>方向の速度はずっと<span class="math inline">\(v_0 \cos \theta\)</span>であるから、着弾までに飛んだ水平距離<span class="math inline">\(l(\theta)\)</span>は</p>
+<p><span class="math display">\[
+l(\theta) = v_0 t_f \cos \theta = \frac{2 v_0^2 \sin \theta \cos \theta}{g}
+\]</span></p>
+<p>これを最大にする角度は、<span class="math inline">\(l&#39;(\theta)=0\)</span>を満たす<span class="math inline">\(\theta\)</span>であり、<span class="math inline">\(v_0\)</span>や<span class="math inline">\(g\)</span>の値によらず<span class="math inline">\(\theta = \pi/2\)</span>、すなわち45度であることがわかる。</p>
+<h3 id="高低差がある場合の弾道計算">高低差がある場合の弾道計算</h3>
 <div class="figure">
-<img src="fig/forces.png" alt="物体にかかる力" />
-<p class="caption">物体にかかる力</p>
+<img src="fig/throw.png" alt="高低差がある場合の弾道" />
+<p class="caption">高低差がある場合の弾道</p>
 </div>
-<p>この図をもとに、速度に関係する運動方程式を書き下すとこうなる。</p>
+<p>さて、先程は、水平な地面から物を投げて、そのまま地面にぶつかるまでの距離を計算した。この場合、最も遠くに飛ぶ角度は45度である。では、台の上に乗って物を投げた場合はどうだろうか？なんとなく一番遠くに飛ぶ角度が45度からずれることは想像がつくであろう。では、上向きにずれるだろうか？それとも下向きにずれるだろうか？</p>
+<p>いま、初速<span class="math inline">\(v_0\)</span>、仰角<span class="math inline">\(\theta\)</span>で投げるのは同じとして、最初に高さ<span class="math inline">\(y_0\)</span>から物体を投げたとしよう。物体が従う運動方程式は地面から投げた場合と同じだが、初期条件が異なる。まず、速度については解は変わらない。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\dot{v_x} &amp;= - \gamma v \cos \phi \\
-\dot{v_y} &amp;= - \gamma v \sin \phi - g \\
+v_x(t) &amp;= v_0 \cos \theta \\
+v_y(t) &amp;= -gt + v_0 \sin \theta
 \end{aligned}
 \]</span></p>
-<p>さて、三角関数の定義から</p>
+<p>しかし、位置については、<span class="math inline">\(r_y\)</span>に<span class="math inline">\(y_0\)</span>が加わる。</p>
 <p><span class="math display">\[
 \begin{aligned}
-\cos \phi &amp;= \frac{v_x}{v}\\
-\sin \phi &amp;= \frac{v_y}{v}\\
+r_x(t) &amp;= v_0 t \cos \theta \\
+r_y(t) &amp;= -\frac{g t^2}{2} + v_0 t \sin \theta + y_0
 \end{aligned}
 \]</span></p>
-<p>である。これを代入すると、最終的に以下の運動方程式を得る。</p>
+<p>違いはたったこれだけだが、急に式が面倒になる。まず、着弾までの時刻<span class="math inline">\(t_f\)</span>は<span class="math inline">\(r_y(t_f)=0\)</span>の解であるから、</p>
 <p><span class="math display">\[
-\begin{aligned}
-\dot{r_x} &amp;= v_x \\
-\dot{r_y} &amp;= v_y \\
-\dot{v_x} &amp;= -  \gamma v_x \\
-\dot{v_y} &amp;= -  \gamma v_y - g
-\end{aligned}
+t_f = \frac{v_0 \sin \theta + \sqrt{v_0^2 \sin^2 \theta + 2 g y_0}}{g}
 \]</span></p>
-<p>課題では、この式を実装してみよう。</p>
-<p>なお、空気抵抗がある場合も厳密解を得ることができる。</p>
-<p>まず、速度に関する運動方程式は以下で与えられていた。</p>
+<p>ただし、複号は正の解をとった。着弾までに進む水平距離は</p>
 <p><span class="math display">\[
-\begin{aligned}
-\dot{v_x} &amp;= -  \gamma v_x \\
-\dot{v_y} &amp;= -  \gamma v_y - g
-\end{aligned}
+l(\theta) = v_0 t_f \cos\theta
 \]</span></p>
-<p>これはそのまま求積することができる。簡単のため、初速を仰角<span class="math inline">\(\theta\)</span>、速度<span class="math inline">\(1\)</span>だったとすると、<span class="math inline">\(v_x(0) = \cos \theta, v_y(0) = \sin \theta\)</span>であることから、解は以下のように求まる。</p>
-<p><span class="math display">\[
-\begin{aligned}
-v_x(t) &amp;= \mathrm{e}^{-\gamma t} \cos{\theta} \\
-v_y(t) &amp;= \mathrm{e}^{-\gamma t} \sin{\theta} - \frac{g}{\gamma}(1 - \mathrm{e}^{-\gamma t} )
-\end{aligned}
-\]</span></p>
-<p>このような式を得たら、必ず<span class="math inline">\(t=0\)</span>で初期条件と一致するか、<span class="math inline">\(t\rightarrow \infty\)</span>の場合にどうなるかを確認すること。特に、十分時間が経過した後は<span class="math inline">\(v_x \rightarrow 0, v_y \rightarrow -g/\gamma\)</span>という一定値に収束することがわかる。重力下で抵抗がある場合、最終的に速度が一定に落ち着くが、その落ち着いた速度を <strong>終端速度 (terminal verlocity)</strong> と呼ぶ。</p>
-<p>さて、速度が求まったので、これを積分すれば任意の時刻による位置も求めることができる。初期位置が <span class="math inline">\(\vec{r}(0) = (0,0)\)</span> であったとすると、</p>
-<p><span class="math display">\[
-\begin{aligned}
-r_x(t) &amp;=  \frac{(1 - \mathrm{e}^{-\gamma t})\cos{\theta} }{\gamma} \\
-r_y(t) &amp;= \frac{(1 - \mathrm{e}^{-\gamma t})\sin{\theta} }{\gamma} + \frac{g (1 -  \mathrm{e}^{-\gamma t} - \gamma t)}{\gamma^2}
-\end{aligned}
-\]</span></p>
-<p>これが空気抵抗がある場合の位置の厳密な軌道である。</p>
+<p>これを<span class="math inline">\(\theta\)</span>で微分して<span class="math inline">\(l&#39;(\theta)=0\)</span>となる<span class="math inline">\(\theta\)</span>を探せばよいが、実際に計算すると、解が初等的には求まらないことがわかるであろう。これを数値計算で求めてみよう。</p>
 <h2 id="反応拡散方程式グレイスコット模型">反応拡散方程式(グレイ・スコット模型)</h2>
 <p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として反応拡散系(Diffusion-Reaction System)を取り上げる。</p>
 <p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の二階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
@@ -286,11 +279,57 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 </div>
 <p>もともとの式のうち、時間微分は一次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
 <h2 id="数値シミュレーション課題">数値シミュレーション:課題</h2>
-<h3 id="課題1拡散方程式">課題1:拡散方程式</h3>
-<p>TODO:</p>
+<h3 id="課題1運動方程式">課題1:運動方程式</h3>
+<p>まずは物を投げた場合の運動を、運動方程式を解くことで数値的に追ってみよう。新しいPython3ノートブックを開き、<code>ballistic.ipynb</code>という名前で保存せよ。</p>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>最初のセルで、必要なライブラリのインポートをしよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
+<span class="im">from</span> math <span class="im">import</span> pi, cos, sin
+<span class="im">from</span> pylab <span class="im">import</span> rcParams</code></pre></div>
+<h4 id="プロットサイズの変更">2. プロットサイズの変更</h4>
+<p>デフォルトサイズでは、ややグラフが小さいので、少しサイズを大きくしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rcParams[<span class="st">&#39;figure.figsize&#39;</span>] <span class="op">=</span> <span class="dv">10</span>, <span class="dv">5</span></code></pre></div>
+<h4 id="運動方程式の数値解法">3. 運動方程式の数値解法</h4>
+<p>時間方向について差分化した運動方程式を数値的に解くルーチン、<code>throw</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw(theta, y0):
+  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, y0
+  vx, vy <span class="op">=</span> cos(theta), sin(theta)
+  ax, ay <span class="op">=</span> [], []
+  g <span class="op">=</span> <span class="fl">1.0</span>
+  h <span class="op">=</span> <span class="fl">0.001</span>
+  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+    rx <span class="op">+=</span> vx <span class="op">*</span> h
+    ry <span class="op">+=</span> vy <span class="op">*</span> h
+    vy <span class="op">-=</span> g <span class="op">*</span> h
+    ax.append(rx)
+    ay.append(ry)
+  <span class="cf">return</span> ax, ay</code></pre></div>
+<p>ここで、<code>theta</code>は投げる角度(仰角)、<code>y0</code>は最初に立っている「台」の高さである。</p>
+<h4 id="プロット">4. プロット</h4>
+<p>投げる角度と台の高さを受け取って、軌道をグラフにする関数<code>plot</code>を実装しよう。比較のため、複数の角度をリストで受け取り、それぞれの角度で投げた場合の軌道を重ねて表示している。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(angles, y0 <span class="op">=</span> <span class="fl">0.0</span>):
+  <span class="cf">for</span> theta <span class="kw">in</span> angles:
+    nx, ny <span class="op">=</span> run(theta<span class="op">/</span><span class="fl">180.0</span><span class="op">*</span>pi, y0)
+    plt.plot(nx,ny, label<span class="op">=</span>theta)
+  plt.legend()
+  plt.show()</code></pre></div>
+<h4 id="地面から投げた場合">5. 地面から投げた場合</h4>
+<p>まず、地面から投げた場合(<code>y0=0</code>の場合)を見てみよう。40度、45度、50度で投げてみた軌道を重ねて表示する。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]
+plot(angles)</code></pre></div>
+<p>予想通り、45度がもっとも遠くに届いているだろうか？</p>
+<h4 id="台の上から投げた場合">6. 台の上から投げた場合</h4>
+<p>次に、台の上から投げてみよう。最初に高さ<span class="math inline">\(1\)</span>の台に乗ってものを投げた場合にどうなるか調べてみる。遠くに届く角度が45度から増えるか減るか、予想してから実行すること。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]
+plot(angles, <span class="fl">1.0</span>)</code></pre></div>
+<p>実際に一番遠くに届く角度は45度から増えただろうか、減っただろうか。入力する角度を5度刻みで変化させ、最も遠くに届く角度を調べよ。</p>
+<h3 id="発展課題初速依存性">発展課題：初速依存性</h3>
+<p>先程の運動方程式では、初速を<span class="math inline">\(1\)</span>に固定していた。関数<code>throw</code>の初速を与える箇所を、以下のように変更すると、初速を<span class="math inline">\(2\)</span>に変えることができる。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</code></pre></div>
+<p>初速を大きくした場合、「台から投げた時」の「最も遠くに届く角度」は増えるだろうか、減るだろうか？初速を<span class="math inline">\(10\)</span>にしたらどうなるだろう？初速が大きい極限でどうなるか考察せよ。</p>
 <h3 id="課題2反応拡散方程式">課題2:反応拡散方程式</h3>
 <p>反応拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
 <span class="im">import</span> numpy <span class="im">as</span> np
