@@ -275,7 +275,7 @@ from math import pi, sin, cos # この行を追加
 二番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。
 
 ```py
-im = Image.new("L", (256, 256), 255)
+img = Image.new("L", (256, 256), 255)
 draw = ImageDraw.Draw(im)
 cx = 128
 cy = 128
