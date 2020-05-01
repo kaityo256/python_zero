@@ -260,7 +260,7 @@ ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>
 <p>と表示されれば正しくインストールされている。</p>
 <h4 id="サンプルプログラムのダウンロード">2. サンプルプログラムのダウンロード</h4>
 <p>GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>gan<span class="op">/</span>gan_test.py</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>gan_test.py</code></pre></div>
 <p><code>‘gan_test.py’ saved</code>と表示されればダウンロード完了である。</p>
 <h4 id="インポート">3. インポート</h4>
 <p>先程ダウンロードしたプログラムをインポートしよう。</p>
@@ -276,7 +276,7 @@ ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>
 <p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。</p>
 <p>以下は手書きの数字(MNIST)を選んだ場合の例である。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TRAIN_DATA <span class="op">=</span> <span class="st">&quot;mnist.tfrecord&quot;</span>
-url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/gan/&quot;</span>
+url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/ml/&quot;</span>
 <span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>TRAIN_DATA
 <span class="op">!</span>wget $file</code></pre></div>
 <p><code>‘mnist.tfrecord’ saved</code>など、自分が選んだファイル名が表示されればダウンロード完了である。</p>

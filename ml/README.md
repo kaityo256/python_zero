@@ -286,7 +286,7 @@ Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflo
 GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。
 
 ```py
-!wget https://kaityo256.github.io/python_zero/gan/gan_test.py
+!wget https://kaityo256.github.io/python_zero/ml/gan_test.py
 ```
 
 `‘gan_test.py’ saved`と表示されればダウンロード完了である。
@@ -315,7 +315,7 @@ GANでは、まず「正解の画像」をデータセットとして与える�
 
 ```py
 TRAIN_DATA = "mnist.tfrecord"
-url="https://kaityo256.github.io/python_zero/gan/"
+url="https://kaityo256.github.io/python_zero/ml/"
 file=url+TRAIN_DATA
 !wget $file
 ```
