@@ -309,7 +309,7 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <p>投げる角度と台の高さを受け取って、軌道をグラフにする関数<code>plot</code>を実装しよう。比較のため、複数の角度をリストで受け取り、それぞれの角度で投げた場合の軌道を重ねて表示している。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(angles, y0 <span class="op">=</span> <span class="fl">0.0</span>):
   <span class="cf">for</span> theta <span class="kw">in</span> angles:
-    nx, ny <span class="op">=</span> run(theta<span class="op">/</span><span class="fl">180.0</span><span class="op">*</span>pi, y0)
+    nx, ny <span class="op">=</span> throw(theta<span class="op">/</span><span class="fl">180.0</span><span class="op">*</span>pi, y0)
     plt.plot(nx,ny, label<span class="op">=</span>theta)
   plt.legend()
   plt.show()</code></pre></div>

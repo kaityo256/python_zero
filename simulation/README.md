@@ -303,7 +303,7 @@ def throw(theta, y0):
 ```py
 def plot(angles, y0 = 0.0):
   for theta in angles:
-    nx, ny = run(theta/180.0*pi, y0)
+    nx, ny = throw(theta/180.0*pi, y0)
     plt.plot(nx,ny, label=theta)
   plt.legend()
   plt.show()
