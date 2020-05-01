@@ -134,7 +134,7 @@ from sklearn.linear_model import LinearRegression
 次に、給与データ(CSVファイル)をダウンロードしよう。
 
 ```py
-!wget https://kaityo256.github.io/python_zero/gan/salary.csv
+!wget https://kaityo256.github.io/python_zero/ml/salary.csv
 ```
 
 #### 3. データの読み込み
