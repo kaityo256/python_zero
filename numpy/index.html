@@ -147,8 +147,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3 id="numpy配列の中身">NumPy配列の中身</h3>
 <p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある二次元のデータだが、三次元でも四次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも一次元配列として保存されている。NumPy配列は、一次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
 <p>連番の要素を持つ一次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.arange(<span class="dv">8</span>)
-<span class="bu">print</span>(data)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">8</span>)
+<span class="bu">print</span>(a)</code></pre></div>
 <pre class="txt"><code>array([0, 1, 2, 3, 4, 5, 6, 7])</code></pre>
 <p>このデータを「4行2列の行列」として解釈したNumPy配列を得るには、以下のようにすれば良い。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> a.reshape((<span class="dv">4</span>,<span class="dv">2</span>))

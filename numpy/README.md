@@ -127,8 +127,8 @@ NumPy配列は、どのような「形」でも作ることができる。通常
 連番の要素を持つ一次元のNumPy配列を作るには、`arange`を使う。
 
 ```py
-data = np.arange(8)
-print(data)
+a = np.arange(8)
+print(a)
 ```
 
 ```txt
