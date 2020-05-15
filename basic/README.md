@@ -475,16 +475,16 @@ def newton(x):
 
 ```py
 def plot(draw, s):
-    hs = s/2
-    red = (255, 0, 0)
-    green = (0, 255, 0)
-    blue = (0, 0, 255)
-    for x in range(s):
-        for y in range(s):
-            z = complex(x-hs+0.5, y-hs+0.5)/s*4
-            z = newton(z)
-            # ここを埋めよ
-            draw.rectangle([x, y, x+1, y+1], fill=c)
+  hs = s // 2
+  red = (255, 0, 0)
+  green = (0, 255, 0)
+  blue = (0, 0, 255)
+  for x in range(s):
+    for y in range(s):
+      z = complex(x - hs + 0.5, -y + hs + 0.5) / s * 4
+      z = newton(z)
+      # ここを埋めよ
+      draw.rectangle([x, y, x + 1, y + 1], fill=c)
 ```
 
 ただし、上記の「ここを埋めよ」の箇所に

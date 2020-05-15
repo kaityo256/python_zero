@@ -346,16 +346,16 @@ x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 <h4 id="プロット用の関数plotの実装">3. プロット用の関数<code>plot</code>の実装</h4>
 <p>3つ目のセルに、以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(draw, s):
-    hs <span class="op">=</span> s<span class="op">/</span><span class="dv">2</span>
-    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
-    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
-    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
-        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
-            z <span class="op">=</span> <span class="bu">complex</span>(x<span class="op">-</span>hs<span class="op">+</span><span class="fl">0.5</span>, y<span class="op">-</span>hs<span class="op">+</span><span class="fl">0.5</span>)<span class="op">/</span>s<span class="op">*</span><span class="dv">4</span>
-            z <span class="op">=</span> newton(z)
-            <span class="co"># ここを埋めよ</span>
-            draw.rectangle([x, y, x<span class="op">+</span><span class="dv">1</span>, y<span class="op">+</span><span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
+  hs <span class="op">=</span> s <span class="op">//</span> <span class="dv">2</span>
+  red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
+  green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
+  blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
+  <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):
+    <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):
+      z <span class="op">=</span> <span class="bu">complex</span>(x <span class="op">-</span> hs <span class="op">+</span> <span class="fl">0.5</span>, <span class="op">-</span>y <span class="op">+</span> hs <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> s <span class="op">*</span> <span class="dv">4</span>
+      z <span class="op">=</span> newton(z)
+      <span class="co"># ここを埋めよ</span>
+      draw.rectangle([x, y, x <span class="op">+</span> <span class="dv">1</span>, y <span class="op">+</span> <span class="dv">1</span>], fill<span class="op">=</span>c)</code></pre></div>
 <p>ただし、上記の「ここを埋めよ」の箇所に</p>
 <ul>
 <li><code>z</code>の実部が正なら<code>c = red</code></li>
