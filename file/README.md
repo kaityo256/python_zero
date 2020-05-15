@@ -273,7 +273,7 @@ with open("population.csv") as f:
 
 ## ファイル操作：課題
 
-### 課題1-1：人口地図の作成
+### 課題1:人口地図の作成
 
 都市の人口データと都市の位置データを使って、どの場所にどれくらいの人が住んでいるか、「人口地図」を作成してみよう。データはそれぞれ以下のサイトから入手し、加工したものを利用した。
 
@@ -284,7 +284,17 @@ with open("population.csv") as f:
 
 新しいノートブックを開き、`popmap.ipynb`として保存せよ。
 
-#### 1. データのダウンロード
+#### 1. ライブラリのインポート
+
+まずは必要なライブラリをインポートしておこう。
+
+```py
+import matplotlib.cm as cm
+import matplotlib.pyplot as plt
+```
+
+
+#### 2. データのダウンロード
 
 まずデータをダウンロードしよう。以下を実行せよ。
 
@@ -292,9 +302,9 @@ with open("population.csv") as f:
 !wget https://kaityo256.github.io/python_zero/file/popmap.zip
 ```
 
-実行後、`‘popmap.zip.1’ saved [42407/42407]`と表示されれば正しくダウンロードされている。
+実行後、`saved [42400/42400]`と表示されれば正しくダウンロードされている。
 
-#### 2. データの展開
+#### 3. データの展開
 
 ダウンロードしたファイルはZIPで圧縮されているため、展開しよう。
 
@@ -312,7 +322,7 @@ Archive:  popmap.zip
 
 と表示されていれば正しく展開されている。このファイルには人口データ`population.csv`と、位置データ`position.csv`が含まれている。
 
-#### 3. 人口データの確認
+#### 4. 人口データの確認
 
 まず、`head`コマンドで人口データ`population.csv`の内容を確認しよう。
 
@@ -339,7 +349,7 @@ Archive:  popmap.zip
 
 `head`はファイルの先頭を表示するコマンドである。大きなテキストファイルに何が書いてあるか、いちいちエディタを開かずにチェックするのに便利だ。ファイルの末尾を表示する`tail`コマンドと一緒に覚えておきたい。
 
-#### 4. 役所の位置データ確認
+#### 5. 役所の位置データ確認
 
 市役所、区役所の位置データ`position.csv`の中身を確認しよう。
 
@@ -364,18 +374,7 @@ Archive:  popmap.zip
 
 左から、都市コード(CITY CODE)、市役所/区役所名、緯度、経度である。
 
-### 課題1-2：人口地図の作成
-
 ダウンロードしたデータを用いてどこにどれだけの人が住んでいるかの「人口地図」を作成しよう。
-
-#### 5. ライブラリのインポート
-
-必要なライブラリをインポートしよう。
-
-```py
-import matplotlib.cm as cm
-import matplotlib.pyplot as plt
-```
 
 #### 6. 人口データの辞書作成
 
@@ -384,9 +383,9 @@ import matplotlib.pyplot as plt
 ```py
 d_pop = {}
 with open("population.csv") as f:
-    for line in f:
-        code, _, pop = line.split(",")
-        d_pop[int(code)] = int(pop)
+  for line in f:
+    code, _, pop = line.split(",")
+    d_pop[int(code)] = int(pop)
 ```
 
 #### 7. 位置データの作成
@@ -396,13 +395,13 @@ with open("population.csv") as f:
 ```py
 data = []
 with open("position.csv") as f:
-    for line in f:
-        a = line.strip().split(",")
-        code, _, y, x = a
-        code = int(code)
-        x, y = float(x), float(y)
-        if code in d_pop:
-            data.append((x, y, d_pop[code]))
+  for line in f:
+    a = line.strip().split(",")
+    code, _, y, x = a
+    code = int(code)
+    x, y = float(x), float(y)
+    if code in d_pop:
+      data.append((x, y, d_pop[code]))
 ```
 
 #### 8. データのソート
@@ -420,9 +419,9 @@ data = sorted(data, key=lambda x: x[2])
 ```py
 nx, ny, nn = [], [], []
 for x, y, n in data:
-    nx.append(x)
-    ny.append(y)
-    nn.append(n ** 0.5 * 0.3)
+  nx.append(x)
+  ny.append(y)
+  nn.append(n ** 0.5 * 0.3)
 plt.figure(figsize=(15, 15), dpi=50)
 plt.scatter(nx, ny, c=nn, s=nn, cmap=cm.seismic)
 ```

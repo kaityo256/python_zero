@@ -245,7 +245,7 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <p>次に位置データを読み込むと、位置と都市コードの対応が得られる。この時、既に都市コードと人口の対応表ができているので、位置と人口を出力することができる。</p>
 <p>このように、複数のデータファイルに共通して含まれる項目をキーとしてデータを集計する、という作業は日常業務で頻出するため、やり方を知っておいて損はない。なお、今回は二つのファイルであったので、エクセル等で作業してもさほど時間はかからないが、例えばこれが都道府県別に47個にファイルにわかれていたら大変である。しかし、Python(に限らずプログラミング言語)を使えば、複数のファイルを一気に読み込んで解析するのが容易であるのは想像できるだろう。</p>
 <h2 id="ファイル操作課題">ファイル操作：課題</h2>
-<h3 id="課題1-1人口地図の作成">課題1-1：人口地図の作成</h3>
+<h3 id="課題1人口地図の作成">課題1:人口地図の作成</h3>
 <p>都市の人口データと都市の位置データを使って、どの場所にどれくらいの人が住んでいるか、「人口地図」を作成してみよう。データはそれぞれ以下のサイトから入手し、加工したものを利用した。</p>
 <ul>
 <li>総務省参考資料4 市区町村別の人口及び世帯数</li>
@@ -254,11 +254,15 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <li><a href="http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html" class="uri">http://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-P34.html</a></li>
 </ul>
 <p>新しいノートブックを開き、<code>popmap.ipynb</code>として保存せよ。</p>
-<h4 id="データのダウンロード">1. データのダウンロード</h4>
+<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
+<p>まずは必要なライブラリをインポートしておこう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.cm <span class="im">as</span> cm
+<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
+<h4 id="データのダウンロード">2. データのダウンロード</h4>
 <p>まずデータをダウンロードしよう。以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span><span class="bu">file</span><span class="op">/</span>popmap.<span class="bu">zip</span></code></pre></div>
-<p>実行後、<code>‘popmap.zip.1’ saved [42407/42407]</code>と表示されれば正しくダウンロードされている。</p>
-<h4 id="データの展開">2. データの展開</h4>
+<p>実行後、<code>saved [42400/42400]</code>と表示されれば正しくダウンロードされている。</p>
+<h4 id="データの展開">3. データの展開</h4>
 <p>ダウンロードしたファイルはZIPで圧縮されているため、展開しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>unzip <span class="op">-</span>o popmap.<span class="bu">zip</span></code></pre></div>
 <p><code>-o</code>オプションは、既に同名のファイルが存在する場合でも上書きするオプションである。</p>
@@ -266,7 +270,7 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
   inflating: population.csv
   inflating: position.csv</code></pre>
 <p>と表示されていれば正しく展開されている。このファイルには人口データ<code>population.csv</code>と、位置データ<code>position.csv</code>が含まれている。</p>
-<h4 id="人口データの確認">3. 人口データの確認</h4>
+<h4 id="人口データの確認">4. 人口データの確認</h4>
 <p>まず、<code>head</code>コマンドで人口データ<code>population.csv</code>の内容を確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>head population.csv</code></pre></div>
 <p>以下のような表示が出れば成功である。</p>
@@ -282,7 +286,7 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 01108,札幌市厚別区,129604</code></pre>
 <p>左から順番に、都市コード(CITY CODE)、都道府県もしくは都市名、人口である。</p>
 <p><code>head</code>はファイルの先頭を表示するコマンドである。大きなテキストファイルに何が書いてあるか、いちいちエディタを開かずにチェックするのに便利だ。ファイルの末尾を表示する<code>tail</code>コマンドと一緒に覚えておきたい。</p>
-<h4 id="役所の位置データ確認">4. 役所の位置データ確認</h4>
+<h4 id="役所の位置データ確認">5. 役所の位置データ確認</h4>
 <p>市役所、区役所の位置データ<code>position.csv</code>の中身を確認しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>head position.csv</code></pre></div>
 <p>以下のような表示が出れば成功である。</p>
@@ -297,30 +301,25 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 01209,夕張市役所,43.05681400,141.97406900
 01210,岩見沢市役所,43.19616900,141.77585700</code></pre>
 <p>左から、都市コード(CITY CODE)、市役所/区役所名、緯度、経度である。</p>
-<h3 id="課題1-2人口地図の作成">課題1-2：人口地図の作成</h3>
 <p>ダウンロードしたデータを用いてどこにどれだけの人が住んでいるかの「人口地図」を作成しよう。</p>
-<h4 id="ライブラリのインポート">5. ライブラリのインポート</h4>
-<p>必要なライブラリをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.cm <span class="im">as</span> cm
-<span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
 <h4 id="人口データの辞書作成">6. 人口データの辞書作成</h4>
 <p><code>population.csv</code>を読み込み、都市コードをキー、人口を値に持つ辞書を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d_pop <span class="op">=</span> {}
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;population.csv&quot;</span>) <span class="im">as</span> f:
-    <span class="cf">for</span> line <span class="kw">in</span> f:
-        code, _, pop <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
-        d_pop[<span class="bu">int</span>(code)] <span class="op">=</span> <span class="bu">int</span>(pop)</code></pre></div>
+  <span class="cf">for</span> line <span class="kw">in</span> f:
+    code, _, pop <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
+    d_pop[<span class="bu">int</span>(code)] <span class="op">=</span> <span class="bu">int</span>(pop)</code></pre></div>
 <h4 id="位置データの作成">7. 位置データの作成</h4>
 <p>位置データ<code>position.csv</code>を読み込み、もし人口データが存在する都市であれば、「経度、緯度、人口」の形の「タプルのリスト」にまとめる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> []
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;position.csv&quot;</span>) <span class="im">as</span> f:
-    <span class="cf">for</span> line <span class="kw">in</span> f:
-        a <span class="op">=</span> line.strip().split(<span class="st">&quot;,&quot;</span>)
-        code, _, y, x <span class="op">=</span> a
-        code <span class="op">=</span> <span class="bu">int</span>(code)
-        x, y <span class="op">=</span> <span class="bu">float</span>(x), <span class="bu">float</span>(y)
-        <span class="cf">if</span> code <span class="kw">in</span> d_pop:
-            data.append((x, y, d_pop[code]))</code></pre></div>
+  <span class="cf">for</span> line <span class="kw">in</span> f:
+    a <span class="op">=</span> line.strip().split(<span class="st">&quot;,&quot;</span>)
+    code, _, y, x <span class="op">=</span> a
+    code <span class="op">=</span> <span class="bu">int</span>(code)
+    x, y <span class="op">=</span> <span class="bu">float</span>(x), <span class="bu">float</span>(y)
+    <span class="cf">if</span> code <span class="kw">in</span> d_pop:
+      data.append((x, y, d_pop[code]))</code></pre></div>
 <h4 id="データのソート">8. データのソート</h4>
 <p>人口が多い場所ほど後から描画するように、データを人口でソートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> <span class="bu">sorted</span>(data, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">2</span>])</code></pre></div>
@@ -328,9 +327,9 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <p>得られたデータから人口地図を描画する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny, nn <span class="op">=</span> [], [], []
 <span class="cf">for</span> x, y, n <span class="kw">in</span> data:
-    nx.append(x)
-    ny.append(y)
-    nn.append(n <span class="op">**</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.3</span>)
+  nx.append(x)
+  ny.append(y)
+  nn.append(n <span class="op">**</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.3</span>)
 plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">15</span>), dpi<span class="op">=</span><span class="dv">50</span>)
 plt.scatter(nx, ny, c<span class="op">=</span>nn, s<span class="op">=</span>nn, cmap<span class="op">=</span>cm.seismic)</code></pre></div>
 <p>「人口地図」が表示されただろうか？日本のどこにどれくらいの人が住んでいるかが、なんとなくわかるであろう。</p>
