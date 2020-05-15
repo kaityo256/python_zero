@@ -316,8 +316,6 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;position.csv&quot;</span>) <span class="im">as</span> f:
     <span class="cf">for</span> line <span class="kw">in</span> f:
         a <span class="op">=</span> line.strip().split(<span class="st">&quot;,&quot;</span>)
-        <span class="cf">if</span> <span class="bu">len</span>(a) <span class="op">&lt;</span> <span class="dv">4</span>:
-            <span class="cf">continue</span>
         code, _, y, x <span class="op">=</span> a
         code <span class="op">=</span> <span class="bu">int</span>(code)
         x, y <span class="op">=</span> <span class="bu">float</span>(x), <span class="bu">float</span>(y)

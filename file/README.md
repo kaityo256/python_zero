@@ -398,8 +398,6 @@ data = []
 with open("position.csv") as f:
     for line in f:
         a = line.strip().split(",")
-        if len(a) < 4:
-            continue
         code, _, y, x = a
         code = int(code)
         x, y = float(x), float(y)
