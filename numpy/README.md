@@ -309,14 +309,14 @@ import numpy as np
 
 ```py
 N = 32
-V = np.array([-5.0 if i in range(N//4, 3*N//4) else 0 for i in range(N)])
+V = np.array([-5.0 if i in range(N // 4, 3 * N // 4) else 0 for i in range(N)])
 H = np.zeros((N, N))
 for i in range(N):
-    i1 = (i + 1) % N
-    i2 = (i - 1 + N) % N
-    H[i][i] = 2.0 + V[i]
-    H[i][i1] = -1
-    H[i][i2] = -1
+  i1 = (i + 1) % N
+  i2 = (i - 1 + N) % N
+  H[i][i] = 2.0 + V[i]
+  H[i][i1] = -1
+  H[i][i2] = -1
 ```
 
 #### 3. 固有値と最低固有エネルギー
@@ -338,9 +338,9 @@ print(w[i0])
 井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。4つ目のセルに以下を入力せよ。
 
 ```py
-v = v.transpose()[i0]
+v = v[:, i0]
 v = v * v
-plt.plot(v*20+w[i0])
+plt.plot(v * 20 + w[i0])
 plt.plot(V)
 ```
 
@@ -370,9 +370,9 @@ from io import BytesIO
 
 ```py
 def download(url):
-    with urllib.request.urlopen(url) as f:
-        data = f.read()
-        return Image.open(BytesIO(data))
+  with urllib.request.urlopen(url) as f:
+    data = f.read()
+    return Image.open(BytesIO(data))
 ```
 
 #### 3. 画像の表示
@@ -392,9 +392,9 @@ download(URL)
 
 ```py
 def mono(url):
-    img = download(url)
-    gray_img = img.convert('L')
-    return gray_img
+  img = download(url)
+  gray_img = img.convert('L')
+  return gray_img
 ```
 
 #### 5. モノクロ変換のテスト
@@ -414,16 +414,16 @@ mono(URL)
 
 ```py
 def svd(url, ratio):
-    gray_img = mono(url)
-    a = np.asarray(gray_img)
-    w, _ = a.shape
-    rank = int(w*ratio)
-    u, s, v = linalg.svd(a)
-    ur = u[:, :rank]
-    sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
-    vr = v[:rank, :]
-    b = np.asarray(ur*sr*vr)
-    return Image.fromarray(np.uint8(b))
+  gray_img = mono(url)
+  a = np.asarray(gray_img)
+  w, _ = a.shape
+  rank = int(w * ratio)
+  u, s, v = linalg.svd(a)
+  ur = u[:, :rank]
+  sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
+  vr = v[:rank, :]
+  b = np.asarray(ur * sr * vr)
+  return Image.fromarray(np.uint8(b))
 ```
 
 画像データを`asarray`に渡すことでそのままNumPy配列にすることができる。その配列を`linalg.svd`に渡せば特異値分解完了である。その後、`ratio`で指定された特異値の数だけ残して画像を再構成している。
