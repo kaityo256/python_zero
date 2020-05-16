@@ -1,2 +1,4 @@
 ipag.ttf
 *.npy
+mnist_*
+hiragana
