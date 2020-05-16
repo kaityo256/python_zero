@@ -9,13 +9,13 @@ import time
 
 from IPython import display
 import matplotlib.pyplot as plt
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 
 
-def get_dataset(batch_size=256):
-    fashion_mnist = tf.keras.datasets.fashion_mnist
-    (train_images, _), _ = fashion_mnist.load_data()
+def load_dataset(filename, batch_size=256):
+    train_images = np.load(filename)
     train_images = train_images.reshape(
         train_images.shape[0], 28, 28, 1).astype('float32')
     train_images = (train_images - 127.5) / 127.5
@@ -138,11 +138,12 @@ def generate_and_save_images(model, epoch, test_input):
 
     filename = 'image_at_epoch_{:04d}.png'.format(epoch)
     plt.savefig(filename)
-    plt.show()
+    # plt.show()
 
 
 generator = make_generator_model()
 discriminator = make_discriminator_model()
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-train_dataset = get_dataset()
-train(train_dataset)
+BATCH_SIZE = 32
+train_dataset = load_dataset("fashion-mnist.npy", BATCH_SIZE)
+train(train_dataset, 50, BATCH_SIZE)
