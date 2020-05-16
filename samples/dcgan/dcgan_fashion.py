@@ -1,3 +1,10 @@
+"""
+The original file was released under the Apache 2.0 License
+https://www.tensorflow.org/tutorials/generative/dcgan
+
+Modified by H. Watanabe (2020)
+"""
+
 import time
 
 from IPython import display
@@ -112,8 +119,6 @@ def train(dataset, epochs=50, batch_size=256):
             train_step(generator_optimizer, discriminator_optimizer,
                        image_batch, batch_size, noise_dim)
 
-        # Produce images for the GIF as we go
-        display.clear_output(wait=True)
         generate_and_save_images(generator, epoch + 1, seed)
         print('Time for epoch {} is {} sec'.format(
             epoch + 1, time.time() - start))
