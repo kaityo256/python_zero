@@ -76,7 +76,7 @@ def generator_loss(fake_output):
 
 
 @tf.function
-def train_step(images, batch_size, noise_dim):
+def train_step(generator_optimizer, discriminator_optimizer, images, batch_size, noise_dim):
     noise = tf.random.normal([batch_size, noise_dim])
 
     with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
@@ -101,13 +101,16 @@ def train_step(images, batch_size, noise_dim):
 
 def train(dataset, epochs=50, batch_size=256):
     noise_dim = 100
+    generator_optimizer = tf.keras.optimizers.Adam(1e-4)
+    discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
     seed = tf.random.normal([16, noise_dim])
     for epoch in range(epochs):
         print(epoch)
         start = time.time()
 
         for image_batch in dataset:
-            train_step(image_batch, batch_size, noise_dim)
+            train_step(generator_optimizer, discriminator_optimizer,
+                       image_batch, batch_size, noise_dim)
 
         # Produce images for the GIF as we go
         display.clear_output(wait=True)
@@ -133,8 +136,6 @@ def generate_and_save_images(model, epoch, test_input):
     plt.show()
 
 
-generator_optimizer = tf.keras.optimizers.Adam(1e-4)
-discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
 generator = make_generator_model()
 discriminator = make_discriminator_model()
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
