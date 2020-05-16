@@ -258,87 +258,93 @@ ax.plot(X,Y2, marker='*')
 
 ### 課題2：GAN
 
-敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。
+機械学習の手法の一つ、敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。ここでは、DCGAN (Deep Convolutional Generative Adversarial Network)と呼ばれる手法を用いる。
 
-新しいノートブックを開き`gan.ipynb`として保存せよ。
+新しいノートブックを開き`dcgan.ipynb`として保存せよ。また、今回の計算はかなり重いため、CPUだけでは時間がかかりすぎてしまう。そこで、GPUを使って計算することにしよう。メニューの「ランタイム」から「ランタイムのタイプを変更」をクリックせよ。ハードウェアアクセラレータが「None」になっているので、そこを「GPU」に変更して「保存」をクリックする。このとき「このノートブックを保存する際にコードセルの出力を除外する」にはチェックを入れなくて良い。その後、右上にある「接続」をクリックする。その際、人間であるか確認するダイアログが出たら、「わたしはロボットではありません」をクリックする。
 
-**注意**：以下のコードは古いTensorFlowでしか動作しないため、書き直す予定です。
-
-#### 1. TensorFlowのインストール
-
-Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。
-
-```py
-%tensorflow_version 1.x
-!pip install tensorflow==1.13.1
-```
-
-最初の`%`から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。
-
-```txt
-Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0
-```
-
-と表示されれば正しくインストールされている。
-
-#### 2. サンプルプログラムのダウンロード
+#### 1. サンプルプログラムのダウンロード
 
 GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。
 
 ```py
-!wget https://kaityo256.github.io/python_zero/ml/gan_test.py
+!wget https://kaityo256.github.io/python_zero/ml/dcgan.py
 ```
 
-`‘gan_test.py’ saved`と表示されればダウンロード完了である。
-
-#### 3. インポート
+#### 2. インポート
 
 先程ダウンロードしたプログラムをインポートしよう。
 
 ```py
-import gan_test
+import dcgan
 ```
 
-実行時に多数の`FutureWarning`が出るが、気にしなくて良い。これでGANが使えるようになった。
+#### 3. データのダウンロード
 
-#### 4. データのダウンロード
+GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、二つのデータセットを用意した。
 
-GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。
+* `mnist.npy` 手書きの数字(MNIST)
+* `hiragana.npy` 「あ」から「こ」までの、ひらがな十種。
 
-* `mnist.tfrecord` 手書きの数字(MNIST)
-* `fontawesome.tfrecord` Font Awesomeというフォントのシンボルアイコン10種類
-* `hiragana.tfrecord` ひらがなすべて(IPAゴシックフォント)
-
-上記のうち、好きなものを一つ選んで`TRAIN_DATA`とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。
+上記のうち、好きなものを一つ選んで`TRAIN_DATA`とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しい。
 
 以下は手書きの数字(MNIST)を選んだ場合の例である。
 
 ```py
-TRAIN_DATA = "mnist.tfrecord"
+data = "mnist.npy"
 url="https://kaityo256.github.io/python_zero/ml/"
-file=url+TRAIN_DATA
+file=url+data
 !wget $file
 ```
 
-`‘mnist.tfrecord’ saved`など、自分が選んだファイル名が表示されればダウンロード完了である。
-
-#### 5. GANの実行
+#### 4. 学習
 
 ではいよいよGANの実行をしてみよう。以下を実行せよ。
 
 ```py
-gan_test.run_gan(TRAIN_DATA)
+dcgan.run(data)
 ```
 
-最初に
+画面には、一定時間ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。実行には10分～15分程度かかる。
 
-```txt
-WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+#### 5. APNGのインストール
+
+偽造者が徐々に腕を上げていく様子を見るため、学習を進めながら描いた絵をアニメーションにしてみよう。まずはアニメーションPNGを作るためのライブラリをインストールする。
+
+```py
+!pip install apng
 ```
 
-といった警告が出るが、気にしないで良い。
+#### 6. ライブラリのインポート
 
-画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。
+先ほどインストールしたライブラリをインポートしよう。また、表示に使うライブラリも併せてインポートしておく。
+
+```py
+import IPython
+from apng import APNG
+```
+
+#### 7. アニメーションの作成
+
+作成された画像を一つにまとめて、アニメーションPNGを作成しよう。
+
+```py
+files = []
+for i in range(100):
+    filename = 'img{:04d}.png'.format(i+1)
+    files.append(filename)
+
+APNG.from_files(files, delay=50).save("animation.png")
+```
+
+#### 8. アニメーションの表示
+
+作成されたアニメーションを表示してみよう。
+
+```py
+IPython.display.Image("animation.png")
+```
+
+アニメーションが表示されれば成功である。この学習の様子を見て、偽造者はどのように学習を進めているか考察してみよ。また、GAN等の技術が今後どのように活かされるか、予想してみよ。
 
 ## 余談：AIに悪意はあるか
 
