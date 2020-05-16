@@ -112,7 +112,6 @@ def train(dataset, epochs=50, batch_size=256):
     discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
     seed = tf.random.normal([16, noise_dim])
     for epoch in range(epochs):
-        print(epoch)
         start = time.time()
 
         for image_batch in dataset:
@@ -122,10 +121,6 @@ def train(dataset, epochs=50, batch_size=256):
         generate_and_save_images(generator, epoch + 1, seed)
         print('Time for epoch {} is {} sec'.format(
             epoch + 1, time.time() - start))
-
-    # Generate after the final epoch
-    display.clear_output(wait=True)
-    generate_and_save_images(generator, epochs, seed)
 
 
 def generate_and_save_images(model, epoch, test_input):
