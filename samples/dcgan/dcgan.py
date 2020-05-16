@@ -14,7 +14,7 @@ import tensorflow as tf
 from tensorflow.keras import layers
 
 
-def load_dataset(filename, batch_size=256):
+def load_dataset(filename, batch_size=32):
     train_images = np.load(filename)
     train_images = train_images.reshape(
         train_images.shape[0], 28, 28, 1).astype('float32')
@@ -106,7 +106,7 @@ def train_step(generator_optimizer, discriminator_optimizer, images, batch_size,
         zip(gradients_of_discriminator, discriminator.trainable_variables))
 
 
-def train(dataset, epochs=50, batch_size=256):
+def train(dataset, epochs=100, batch_size=32):
     noise_dim = 100
     generator_optimizer = tf.keras.optimizers.Adam(1e-4)
     discriminator_optimizer = tf.keras.optimizers.Adam(1e-4)
@@ -133,12 +133,14 @@ def generate_and_save_images(model, epoch, test_input):
 
     filename = 'image_at_epoch_{:04d}.png'.format(epoch)
     plt.savefig(filename)
-    # plt.show()
+    plt.show()
+
+
+def run(filename):
+    dataset = load_dataset(filename)
+    train(dataset)
 
 
 generator = make_generator_model()
 discriminator = make_discriminator_model()
 cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-BATCH_SIZE = 32
-train_dataset = load_dataset("fashion-mnist.npy", BATCH_SIZE)
-train(train_dataset, 50, BATCH_SIZE)
