@@ -22,6 +22,7 @@ APPENDIX:
   - install.re
 
 POSTDEF:
+  - answer.re
 
 ##
 ## ■Tips

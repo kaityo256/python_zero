@@ -403,9 +403,9 @@ def change(boxes):
     rest_boxes = boxes.copy()
     rest_boxes.remove(answer)
     if first_choice == answer:
-      second_choice = # ここを産めよ
+      second_choice = # ここを埋めよ(1)
     else:
-      second_choice = # ここを産めよ
+      second_choice = # ここを埋めよ(2)
     return answer == second_choice
 ```
 

@@ -124,7 +124,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">end</span></code></pre></div>
 <p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。</p>
 <p>この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
-<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは「インデント (indent)」と呼ばれ、特にブロックがネストした場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは</p>
+<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは <strong>インデント (indent)</strong> と呼ばれ、特にブロックがネストした場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){puts(<span class="st">&quot;Yes&quot;</span>);}<span class="cf">else</span>{puts(<span class="st">&quot;No&quot;</span>);}</code></pre></div>
 <p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。</p>
 <p>しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
@@ -135,7 +135,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Pythonではこのように、「キーワード + コロン(:)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)
     <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
-<p>このように、インデントでブロックを表現する方法を「オフサイドルール (off-side rule)」と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
+<p>このように、インデントでブロックを表現する方法を <strong>オフサイドルール (off-side rule)</strong> と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
 <p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はメモ化したフィボナッチ数の計算ルーチンである。</p>
 <div class="figure">
 <img src="fig/codeblock2.png" alt="Pythonのコードブロック" />
@@ -244,8 +244,7 @@ draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx
 <p>一番目のセルを以下のように修正し、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
 <span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></code></pre></div>
-<p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。</p>
-<p>三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
+<p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
 <h4 id="五芒星の描画">2. 五芒星の描画</h4>
 <p>二番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
@@ -266,14 +265,14 @@ k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</spa
     x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx
     y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy
     draw.line((x1, y1, x2, y2))</code></pre></div>
-<p><code>for i in range(N):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
+<p><code>for i in range(N):</code>の行を入力して改行すると(行末のコロンを忘れないこと)、カーソルの位置が少し右にずれたはずである。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>
 <p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img</code></pre></div>
-<p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力すれば良い。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
+<p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力する。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
 <h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
-<p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考えてみよ。</p>
+<p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考察せよ。</p>
 <h3 id="発展課題">発展課題</h3>
 <p>先のプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
 <h2 id="余談タッチタイピングについて">余談：タッチタイピングについて</h2>

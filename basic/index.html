@@ -98,7 +98,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <h2 id="変数と型について">変数と型について</h2>
 <h3 id="変数について">変数について</h3>
-<p>Pythonに限らず、プログラミング言語には「変数(Variable)」という概念が出てくる。変数は簡単なように見えて、意外に理解が難しい概念である。例え話を多用するととっつきやすが、後で混乱するもとなので、ここでは変数の実装に近いところから説明する。ただし、簡略化してあり、実装そのものではないので注意して欲しい。</p>
+<p>Pythonに限らず、プログラミング言語には <strong>変数(Variable)</strong> という概念が出てくる。変数は簡単なように見えて、意外に理解が難しい概念である。ここで例え話を多用すると一見理解しやすいように見えて後で混乱する原因になるため、ここでは変数の実装に近いところから説明する。ただし、簡略化してあり、実装そのものではないので注意して欲しい。</p>
 <p>計算機とは、メモリにあるデータをCPUで処理して、またメモリに書き戻す機械である。メモリには「番地」という通し番号がついており、例えば足し算なら「0番地と1番地のデータを読み込んで足してから2番地に書き込め」といったことを指示する。しかし、いちいちどの値がどこにあるか番地で覚えるのは面倒だ。そこで変数というラベルを使うことにする。</p>
 <p>以下のプログラムを見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span></code></pre></div>
@@ -110,14 +110,13 @@ b <span class="op">=</span> <span class="dv">20</span></code></pre></div>
 <p>今後、<code># =&gt;</code>という記号は、「左を実行すると、右の結果が得られるよ」という意味だと約束する。</p>
 <p>また、Jupyter Notebookでは、変数名だけを含む、もしくはセルの最後に変数名だけを含むセルを実行すると、その値を確認することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="co">#=&gt; 10</span></code></pre></div>
-<p>さて、この状態で<code>c = a + b</code>を実行してみよう。まず、右の<code>a+b</code>が評価される。その結果得られた値<code>30</code>を<code>c</code>の指す場所に書きこもうとするが、まだ<code>c</code>という変数は作られていないので、まず<code>c</code>の場所が作られてからそこに値が書き込まれる。</p>
-<p>同様に、<code>a = a + b</code>を実行した場合、<code>a</code>の場所はすでに存在するので、その値が更新される。</p>
+<p>さて、この状態で<code>c = a + b</code>を実行してみよう。まず、右の<code>a+b</code>が評価される。その結果得られた値<code>30</code>を<code>c</code>の指す場所に書きこもうとするが、まだ<code>c</code>という変数は作られていないので、まず<code>c</code>の場所が作られてからそこに値が書き込まれる。一方、<code>a = a + b</code>を実行した場合は、<code>a</code>の場所はすでに存在するので、その値が更新される。</p>
 <div class="figure">
 <img src="fig/add.png" alt="変数による足し算" />
 <p class="caption">変数による足し算</p>
 </div>
-<p>このようにPythonでは、代入文があった時、その左辺にある変数が未定義なら作成され、定義済みなら値を更新するので覚えておこう。</p>
-<p>また、その時に定義されていない変数を使おうとするとエラーになる。</p>
+<p>このようにPythonでは、代入文があった時、その左辺にある変数が未定義なら作成され、定義済みなら値を更新する。</p>
+<p>定義されていない変数を使おうとするとエラーになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 b <span class="op">=</span> <span class="dv">10</span>
 a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39; is not defined</span></code></pre></div>
@@ -127,17 +126,17 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <p class="caption">NameError</p>
 </div>
 <h3 id="型について">型について</h3>
-<p>変数とは、メモリにつけられた「ラベル」である。メモリには整数しか保存できないが、プログラムでは小数点を含む数や文字列なども表現したい。そこで、「このメモリの値をどう解釈するか」を指定する必要がでてくる。これが「型(Type)」である。全ての値や変数には型がある。</p>
+<p>変数とは、メモリにつけられた「ラベル」である。メモリには整数しか保存できないが、プログラムでは小数点を含む数や文字列なども表現したい。そこで、「このメモリの値をどう解釈するか」を指定する必要がでてくる。これが <strong>型(Type)</strong> である。全ての値や変数には型がある。</p>
 <p>例えば、<code>1</code>が代入された変数は「整数」の型を持っている。変数の型は<code>type</code>という命令で知ることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>
 <span class="bu">type</span>(a) <span class="co"># =&gt; int</span></code></pre></div>
 <p>小数点を含む数字は浮動小数点数(float型)になる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> <span class="fl">1.0</span>
 <span class="bu">type</span>(b) <span class="co"># =&gt; float</span></code></pre></div>
-<p>ダブルクォーテーション<code>&quot; &quot;</code>やシングルクォーテーションマーク<code>' '</code>で囲まれた文字は「文字列」として扱われる。</p>
+<p>ダブルクォーテーションマーク<code>&quot; &quot;</code>やシングルクォーテーションマーク<code>' '</code>で囲まれた文字は「文字列」として扱われる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> <span class="st">&quot;test&quot;</span>
 <span class="bu">type</span>(c) <span class="co"># =&gt; str</span></code></pre></div>
-<p>例えば文字列の場合、メモリに<code>0x74</code>という数値があった場合、それをアルファベット小文字の<code>t</code>と解釈しましょう、という約束を決めておく。変数<code>c</code>の<code>str</code>という型は、<code>c</code>が指す先のメモリを「文字列として解釈する」という意味を持つ。すると、今<code>c</code>が指している「0x74 65 73 74」という数値列が<code>test</code>という文字列として解釈される。</p>
+<p>例えば文字列の場合、メモリに<code>0x74</code>という数値があった場合、それをアルファベット小文字の<code>t</code>と解釈しましょう、という約束を決めておく。変数<code>c</code>の<code>str</code>という型は、<code>c</code>が指す先のメモリを「文字列として解釈する」という意味を持つ。すると、変数<code>c</code>が指している「0x74 65 73 74」という数値列が<code>test</code>という文字列として解釈される。</p>
 <p>同様に、例えば「1.0」という浮動小数点数は、メモリ上では「0x3FF0000000000000」という8バイトの数字で表現されている。これをある約束(IEEE754という規格)に従って解釈すると「1.0」という数値となる。</p>
 <div class="figure">
 <img src="fig/type.png" alt="型とメモリ上のデータ" />
@@ -162,7 +161,7 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <span class="bu">int</span>(<span class="st">&quot;1&quot;</span>) <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3</span>
 <span class="bu">float</span>(<span class="st">&quot;1&quot;</span>) <span class="op">+</span> <span class="dv">2</span> <span class="co"># =&gt; 3.0</span></code></pre></div>
 <h3 id="真偽値">真偽値</h3>
-<p>真偽値(bool)とは「真(True)」であるか「偽(False)」であるかの二値だけを取る型で、条件分岐などで使われる。</p>
+<p><strong>真偽値(bool)</strong> とは <strong>真(True)</strong> であるか <strong>偽(False)</strong> であるかの二値だけを取る型で、条件分岐などで使われる。</p>
 <p>値を比較すると真偽値になる。条件分岐や、ループの終了条件等に用いる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">==</span> <span class="dv">1</span> <span class="co">#=&gt; True</span>
 <span class="dv">1</span> <span class="op">==</span> <span class="dv">2</span> <span class="co">#=&gt; False</span>
@@ -187,7 +186,7 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="co">#=&gt; 1.0</span>
 <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="co">#=&gt; 0.25</span>
 <span class="fl">0.5</span> <span class="op">&lt;</span> <span class="fl">1.0</span> <span class="co">#=&gt; True</span></code></pre></div>
-<p>ただし、浮動小数点数は内部的には <strong>その数値に最も近い近似値</strong> を扱っているため、誤差が存在する。例えば0.1を3回足しても0.3にならないことに注意。</p>
+<p>ただし、浮動小数点数は内部的には <strong>その数値に最も近い近似値</strong> を扱っているため、誤差を持つ。例えば0.1を3回足しても0.3にならないことに注意。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="co">#=&gt; 0.30000000000000004</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.2</span> <span class="co"># =&gt; True</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.3</span> <span class="co">#=&gt; False</span></code></pre></div>
@@ -205,7 +204,7 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <p>繰り返し処理は以下のように書ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     <span class="bu">print</span>(i)</code></pre></div>
-<p>これは、iの値を0から9まで変化させながら、<code>print(i)</code>を実行しなさい、という意味である。この繰り返し文を「ループ」と呼び、ループ中に値が変わりながら繰り返し実行される変数を「ループカウンタ」と呼ぶ。<code>for</code>がある文の最後に「コロン」があるが、Pythonは「コロン」の後にブロックを伴う。<code>for</code>文では、続くブロックの中身を繰り返し処理する。</p>
+<p>これは、iの値を0から9まで変化させながら、<code>print(i)</code>を実行しなさい、という意味である。この繰り返し文を <strong>ループ</strong> と呼び、ループ中に値が変わりながら繰り返し実行される変数を <strong>ループカウンタ</strong> と呼ぶ。<code>for</code>がある文の最後に「コロン」があるが、Pythonは「コロン」の後にブロックを伴う。<code>for</code>文では、続くブロックの中身を繰り返し処理する。</p>
 <p>ループで繰り返し処理するブロックは何行でも良い。ただし、同じブロックは同じ幅のインデントをしなければならない。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     j <span class="op">=</span> i <span class="op">*</span> <span class="dv">2</span>
@@ -286,7 +285,7 @@ x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
 x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 \]</span></p>
 <p>である。</p>
-<p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？ナイーブに考えると、複数の解がある場合、初期値に一番近い解に収束すると考えられるが、本当だろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
+<p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？単純にに考えると、複数の解がある場合は初期値に一番近い解に収束すると考えられるが、本当だろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
 <div class="figure">
 <img src="fig/map.png" alt="ニュートン法の収束地図" />
 <p class="caption">ニュートン法の収束地図</p>
@@ -399,7 +398,7 @@ img</code></pre></div>
 <p><span class="math display">\[
 x_{n+1} = x_n - \frac{x^4-1}{4x^3}
 \]</span></p>
-<p>ヒント2：以下の4つの場合分けが必要になる。</p>
+<p>ヒント2：以下の2つの条件による、合計4つの場合分けが必要になる。</p>
 <ul>
 <li><code>z</code>の実部と虚部の和が正か負か</li>
 <li><code>z</code>の実部と虚部の差が正か負か</li>
