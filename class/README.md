@@ -93,7 +93,7 @@ data.add(name, age, group)
 ```py
 person = EmployeeData(name, age, group)
 if person.is_valid():
-  data.add(person)
+    data.add(person)
 ```
 
 ![データの正しさをオブジェクト自身に問い合わせる](fig/person_isvalid.png)
@@ -133,9 +133,9 @@ label.alert()
 
 ```py
 class Label:
-  def alert(self):
-    self.color = red
-    self.face = bold
+    def alert(self):
+        self.color = red
+        self.face = bold
 ```
 
 オブジェクト指向であろうかなんであろうが、同じことを実現しているのだから、結局は同じプログラムを書かなければならない。しかし、このような形にすることで、呼び出し側はラベルに「目立ってね」と依頼し、その目立ち方はラベルに任せる、という気持ちでプログラムが組める。こうして置くと、後で「目立たせ方」を変えたい、と思ったときに修正箇所は一箇所で済むため、仕様変更に強いコードになる。
