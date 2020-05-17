@@ -306,20 +306,20 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <p><code>population.csv</code>を読み込み、都市コードをキー、人口を値に持つ辞書を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d_pop <span class="op">=</span> {}
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;population.csv&quot;</span>) <span class="im">as</span> f:
-  <span class="cf">for</span> line <span class="kw">in</span> f:
-    code, _, pop <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
-    d_pop[<span class="bu">int</span>(code)] <span class="op">=</span> <span class="bu">int</span>(pop)</code></pre></div>
+    <span class="cf">for</span> line <span class="kw">in</span> f:
+        code, _, pop <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
+        d_pop[<span class="bu">int</span>(code)] <span class="op">=</span> <span class="bu">int</span>(pop)</code></pre></div>
 <h4 id="位置データの作成">7. 位置データの作成</h4>
 <p>位置データ<code>position.csv</code>を読み込み、もし人口データが存在する都市であれば、「経度、緯度、人口」の形の「タプルのリスト」にまとめる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> []
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;position.csv&quot;</span>) <span class="im">as</span> f:
-  <span class="cf">for</span> line <span class="kw">in</span> f:
-    a <span class="op">=</span> line.strip().split(<span class="st">&quot;,&quot;</span>)
-    code, _, y, x <span class="op">=</span> a
-    code <span class="op">=</span> <span class="bu">int</span>(code)
-    x, y <span class="op">=</span> <span class="bu">float</span>(x), <span class="bu">float</span>(y)
-    <span class="cf">if</span> code <span class="kw">in</span> d_pop:
-      data.append((x, y, d_pop[code]))</code></pre></div>
+    <span class="cf">for</span> line <span class="kw">in</span> f:
+        a <span class="op">=</span> line.strip().split(<span class="st">&quot;,&quot;</span>)
+        code, _, y, x <span class="op">=</span> a
+        code <span class="op">=</span> <span class="bu">int</span>(code)
+        x, y <span class="op">=</span> <span class="bu">float</span>(x), <span class="bu">float</span>(y)
+        <span class="cf">if</span> code <span class="kw">in</span> d_pop:
+            data.append((x, y, d_pop[code]))</code></pre></div>
 <h4 id="データのソート">8. データのソート</h4>
 <p>人口が多い場所ほど後から描画するように、データを人口でソートする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> <span class="bu">sorted</span>(data, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">2</span>])</code></pre></div>
@@ -327,9 +327,9 @@ line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;
 <p>得られたデータから人口地図を描画する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">nx, ny, nn <span class="op">=</span> [], [], []
 <span class="cf">for</span> x, y, n <span class="kw">in</span> data:
-  nx.append(x)
-  ny.append(y)
-  nn.append(n <span class="op">**</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.3</span>)
+    nx.append(x)
+    ny.append(y)
+    nn.append(n <span class="op">**</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.3</span>)
 plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">15</span>), dpi<span class="op">=</span><span class="dv">50</span>)
 plt.scatter(nx, ny, c<span class="op">=</span>nn, s<span class="op">=</span>nn, cmap<span class="op">=</span>cm.seismic)</code></pre></div>
 <p>「人口地図」が表示されただろうか？日本のどこにどれくらいの人が住んでいるかが、なんとなくわかるであろう。</p>
@@ -371,10 +371,10 @@ plt.scatter(nx, ny, c<span class="op">=</span>nn, s<span class="op">=</span>nn, 
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">tv_year <span class="op">=</span> []
 tv_data <span class="op">=</span> []
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;colortv.csv&quot;</span>) <span class="im">as</span> f:
-  <span class="cf">for</span> line <span class="kw">in</span> f:
-    y, d <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
-    tv_year.append(<span class="bu">int</span>(y))
-    tv_data.append(<span class="bu">float</span>(d))
+    <span class="cf">for</span> line <span class="kw">in</span> f:
+        y, d <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
+        tv_year.append(<span class="bu">int</span>(y))
+        tv_data.append(<span class="bu">float</span>(d))
 plt.scatter(tv_year, tv_data)</code></pre></div>
 <p>これは、</p>
 <ul>
@@ -408,10 +408,10 @@ plt.scatter(tv_year, tv_data)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">life_year <span class="op">=</span> []
 life_data <span class="op">=</span> []
 <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;lifespan.csv&quot;</span>) <span class="im">as</span> f:
-  <span class="cf">for</span> line <span class="kw">in</span> f:
-    y, d <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
-    life_year.append(<span class="bu">int</span>(y))
-    life_data.append(<span class="bu">float</span>(d))
+    <span class="cf">for</span> line <span class="kw">in</span> f:
+        y, d <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>)
+        life_year.append(<span class="bu">int</span>(y))
+        life_data.append(<span class="bu">float</span>(d))
 plt.scatter(life_year, life_data)</code></pre></div>
 <p>寿命が年々伸びている様子がわかるはずだ。</p>
 <h3 id="発展課題テレビの普及率と寿命の関係">発展課題:テレビの普及率と寿命の関係</h3>

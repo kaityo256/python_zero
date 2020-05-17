@@ -70,7 +70,7 @@ Pythonではこのように、「キーワード + コロン(:)」でブロッ�
 
 ```py
 print("Hello")
-  print("Python") # ←ここで「IndentationError: unexpected indent」というエラーになる
+    print("Python") # ←ここで「IndentationError: unexpected indent」というエラーになる
 ```
 
 このように、インデントでブロックを表現する方法を「オフサイドルール (off-side rule)」と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。
@@ -270,16 +270,16 @@ r = 96
 draw.ellipse((cx - r, cy - r, cx + r, cy + r))
 # ↓ここから追加 (このコメントは入力しなくて良い)
 N = 5
-s = 2*pi/N
+s = 2 * pi / N
 k = N // 2
 for i in range(N):
-  s1 = ((i*k)%N)*s - 0.5*pi
-  s2 = s1 + s*k
-  x1 = r*cos(s1)+cx
-  y1 = r*sin(s1)+cy
-  x2 = r*cos(s2)+cx
-  y2 = r*sin(s2)+cy
-  draw.line((x1,y1,x2,y2))
+    s1 = ((i * k) % N) * s - 0.5 * pi
+    s2 = s1 + s * k
+    x1 = r * cos(s1) + cx
+    y1 = r * sin(s1) + cy
+    x2 = r * cos(s2) + cx
+    y2 = r * sin(s2) + cy
+    draw.line((x1, y1, x2, y2))
 ```
 
 `for i in range(N):`の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを **インデント** と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。`for i in range(N):`以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。

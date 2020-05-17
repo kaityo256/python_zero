@@ -223,21 +223,21 @@ names</code></pre></div>
 <h4 id="貪欲法の実装">4. 貪欲法の実装</h4>
 <p>4つ目のセルに、以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> greedy(budget):
-  ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
-  ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)
-  psum <span class="op">=</span> <span class="dv">0</span>
-  csum <span class="op">=</span> <span class="dv">0</span>
-  <span class="cf">for</span> i <span class="kw">in</span> ind:
-    <span class="cf">if</span> psum <span class="op">+</span> prices[i] <span class="op">&gt;=</span> budget:
-      <span class="cf">continue</span>
-    psum <span class="op">+=</span> prices[i]
-    csum <span class="op">+=</span> cals[i]
-    <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
-  <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen, </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(psum,csum))</code></pre></div>
+    ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
+    ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x] <span class="op">/</span> prices[x], reverse<span class="op">=</span><span class="va">True</span>)
+    psum <span class="op">=</span> <span class="dv">0</span>
+    csum <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">for</span> i <span class="kw">in</span> ind:
+        <span class="cf">if</span> psum <span class="op">+</span> prices[i] <span class="op">&gt;=</span> budget:
+            <span class="cf">continue</span>
+        psum <span class="op">+=</span> prices[i]
+        csum <span class="op">+=</span> cals[i]
+        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
+    <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen, </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(psum, csum))</code></pre></div>
 <p>最後の<code>print</code>文のインデントが異なることに注意すること。</p>
 <p>ここで、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
-  ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
+    ind <span class="op">=</span> <span class="bu">sorted</span>(ind, key<span class="op">=</span><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x], reverse<span class="op">=</span><span class="va">True</span>)</code></pre></div>
 <p>が、「メニューを価格あたりのカロリーでソートする」部分である。<code>list(range(len(names)))</code>は<code>[0,1,2,...,113]</code>という連番のインデックスを持つリストを作る部分である。このインデックスを、ある基準<code>key</code>でソートするようラムダ式で指定している。ラムダ式というと難しく聞こえるが、要するに</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">lambda</span> x: cals[x]<span class="op">/</span>prices[x]</code></pre></div>
 <p>とは、「x」という値が与えられたら、<code>cals[x]/prices[x]</code>を返しなさい、という意味で、</p>
@@ -258,13 +258,13 @@ greedy(<span class="dv">10000</span>)</code></pre></div>
 <h4 id="全探索関数searchの実装">6. 全探索関数<code>search</code>の実装</h4>
 <p><code>n</code>番目までのメニューを使って、<code>budget</code>円以内で得られる最大のカロリーを返す関数<code>search(n, budget)</code>を実装しよう。6つ目のセルに、以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> search(n, budget):
-  <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
-    <span class="cf">return</span> <span class="dv">0</span>
-  c1 <span class="op">=</span> <span class="dv">0</span>
-  <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
-    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
-  c2 <span class="op">=</span> search(n<span class="op">-</span><span class="dv">1</span>, budget)
-  <span class="cf">return</span> <span class="bu">max</span>(c1,c2)</code></pre></div>
+    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
+        <span class="cf">return</span> <span class="dv">0</span>
+    c1 <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
+        c1 <span class="op">=</span> cals[n] <span class="op">+</span> search(n <span class="op">-</span> <span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+    c2 <span class="op">=</span> search(n <span class="op">-</span> <span class="dv">1</span>, budget)
+    <span class="cf">return</span> <span class="bu">max</span>(c1, c2)</code></pre></div>
 <p>一般に再帰による全探索コードは簡潔に書ける。「再帰の三カ条」を思い出そう。「再帰は自分自身を呼び出す」「最初に終端条件を書く」「問題をより小さくして自分自身を呼び出す」の三つが満たされていることを確認すること。</p>
 <p>再帰の最初に書くのは終端処理だ。ここでは<code>n</code>を減らしながら再帰するので、<code>n &lt; 0</code>になったら終了としている。</p>
 <p>次に、<code>n</code>番目のメニューを注文するか、しないかで二通りに分岐しながら再帰する。もし、<code>n</code>番目のメニューの値段が、現在の予算の範囲内であれば、それを採用した場合のカロリーは</p>
@@ -287,24 +287,24 @@ cal <span class="op">=</span> search(<span class="bu">len</span>(names)<span cla
 <h4 id="メモ化再帰の実装">8. メモ化再帰の実装</h4>
 <p>8つ目のセルに、メモ化機能をつけた全探索ルーチン<code>search_memo</code>を実装しよう。<code># 追加(1)</code>などのコメントは入力しなくて良い。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> search_memo(n, budget):
-  <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
-    <span class="cf">return</span> <span class="dv">0</span>
-  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(1)</span>
-    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(1)</span>
-  c1 <span class="op">=</span> <span class="dv">0</span>
-  <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
-    c1 <span class="op">=</span> cals[n] <span class="op">+</span> search_memo(n<span class="op">-</span><span class="dv">1</span>, budget <span class="op">-</span> prices[n])
-  c2 <span class="op">=</span> search_memo(n<span class="op">-</span><span class="dv">1</span>, budget)
-  cmax <span class="op">=</span> <span class="bu">max</span>(c1,c2)
-  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(2)</span>
-  <span class="cf">return</span> cmax</code></pre></div>
+    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:
+        <span class="cf">return</span> <span class="dv">0</span>
+    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span>
+        <span class="cf">return</span> dic[(n, budget)]    <span class="co"># 追加(1)</span>
+    c1 <span class="op">=</span> <span class="dv">0</span>
+    <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:
+        c1 <span class="op">=</span> cals[n] <span class="op">+</span> search_memo(n <span class="op">-</span> <span class="dv">1</span>, budget <span class="op">-</span> prices[n])
+    c2 <span class="op">=</span> search_memo(n <span class="op">-</span> <span class="dv">1</span>, budget)
+    cmax <span class="op">=</span> <span class="bu">max</span>(c1, c2)
+    dic[(n, budget)] <span class="op">=</span> cmax  <span class="co"># 追加(2)</span>
+    <span class="cf">return</span> cmax</code></pre></div>
 <p>先ほどの関数<code>search</code>に、3行追加しただけだ。</p>
 <p>まず、新たな終端条件として「もしすでに調べた<code>(n, budget)</code>の組み合わせなら、計算済みの値を返す」という処理を追加したのが「追加(1)」だ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>: <span class="co"># 追加(1)</span>
-    <span class="cf">return</span> dic[(n, budget)]     <span class="co"># 追加(1)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span>
+        <span class="cf">return</span> dic[(n, budget)]    <span class="co"># 追加(1)</span></code></pre></div>
 <p>ここで、<code>n</code>と<code>budget</code>をまとめたタプル<code>(n, budget)</code>を辞書のキーとしている。</p>
 <p>もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく(メモしておく)のが「追加(2)」だ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  dic[(n, budget)] <span class="op">=</span> cmax <span class="co"># 追加(2)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    dic[(n, budget)] <span class="op">=</span> cmax  <span class="co"># 追加(2)</span></code></pre></div>
 <p>これは<code>(n, budget)</code>の組み合わせで得られる最大カロリーを辞書に登録するコードだ。まるでメモを取って再利用しているようなので「 <strong>メモ化 (Memoization)</strong> 」と呼ぶ。メモ化は実装が簡単なわりに、極めて効果的な高速化テクニックである。</p>
 <h4 id="メモ化再帰の実行">9. メモ化再帰の実行</h4>
 <p>さて、早速実行してみよう。9つ目のセルで以下を実行せよ。まずは予算1000円から。</p>
@@ -331,24 +331,24 @@ dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><spa
 <h4 id="解の再構成get_menuの実装">10. 解の再構成<code>get_menu</code>の実装</h4>
 <p>10個目のセルに、「予算」と「カロリー」から「メニュー」を再構成する関数<code>get_menu</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_menu(budget, cal):
-  menu <span class="op">=</span> []
-  <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(<span class="bu">len</span>(names))):
-    <span class="cf">if</span> cal <span class="kw">is</span> <span class="dv">0</span>:
-      <span class="cf">break</span>
-    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> dic[(n<span class="op">-</span><span class="dv">1</span>, budget)]:
-      cal <span class="op">-=</span> cals[n]
-      budget <span class="op">-=</span> prices[n]
-      menu.append(n)
-  <span class="cf">return</span> menu</code></pre></div>
+    menu <span class="op">=</span> []
+    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(<span class="bu">len</span>(names))):
+        <span class="cf">if</span> cal <span class="kw">is</span> <span class="dv">0</span>:
+            <span class="cf">break</span>
+        <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> dic[(n <span class="op">-</span> <span class="dv">1</span>, budget)]:
+            cal <span class="op">-=</span> cals[n]
+            budget <span class="op">-=</span> prices[n]
+            menu.append(n)
+    <span class="cf">return</span> menu</code></pre></div>
 <p>この関数が、「カロリー最大化メニュー」のインデックスリストを返す。</p>
 <h4 id="メニューの表示関数show_menuの実装">11. メニューの表示関数<code>show_menu</code>の実装</h4>
 <p><code>get_menu</code>が返すンデックスリストを受け取って、名前やカロリーを表示するコードも書こう。11個目のセルに以下を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_menu(menu):
-  <span class="cf">for</span> i <span class="kw">in</span> menu:
-    <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
-  total_price <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: prices[x], menu))
-  total_cal <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: cals[x], menu))
-  <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(total_price, total_cal))</code></pre></div>
+    <span class="cf">for</span> i <span class="kw">in</span> menu:
+        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
+    total_price <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: prices[x], menu))
+    total_cal <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: cals[x], menu))
+    <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(total_price, total_cal))</code></pre></div>
 <h4 id="解の再構成">12. 解の再構成</h4>
 <p>上記二つをまとめて実行してみよう。まずは1000円で得られる最大カロリーのメニューを見てみる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">budget <span class="op">=</span> <span class="dv">1000</span>

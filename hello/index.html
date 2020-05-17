@@ -134,7 +134,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="bu">print</span>(<span class="st">&quot;No&quot;</span>)</code></pre></div>
 <p>Pythonではこのように、「キーワード + コロン(:)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)
-  <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
+    <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
 <p>このように、インデントでブロックを表現する方法を「オフサイドルール (off-side rule)」と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
 <p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はメモ化したフィボナッチ数の計算ルーチンである。</p>
 <div class="figure">
@@ -256,16 +256,16 @@ r <span class="op">=</span> <span class="dv">96</span>
 draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))
 <span class="co"># ↓ここから追加 (このコメントは入力しなくて良い)</span>
 N <span class="op">=</span> <span class="dv">5</span>
-s <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>pi<span class="op">/</span>N
+s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> pi <span class="op">/</span> N
 k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</span>
 <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
-  s1 <span class="op">=</span> ((i<span class="op">*</span>k)<span class="op">%</span>N)<span class="op">*</span>s <span class="op">-</span> <span class="fl">0.5</span><span class="op">*</span>pi
-  s2 <span class="op">=</span> s1 <span class="op">+</span> s<span class="op">*</span>k
-  x1 <span class="op">=</span> r<span class="op">*</span>cos(s1)<span class="op">+</span>cx
-  y1 <span class="op">=</span> r<span class="op">*</span>sin(s1)<span class="op">+</span>cy
-  x2 <span class="op">=</span> r<span class="op">*</span>cos(s2)<span class="op">+</span>cx
-  y2 <span class="op">=</span> r<span class="op">*</span>sin(s2)<span class="op">+</span>cy
-  draw.line((x1,y1,x2,y2))</code></pre></div>
+    s1 <span class="op">=</span> ((i <span class="op">*</span> k) <span class="op">%</span> N) <span class="op">*</span> s <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi
+    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k
+    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx
+    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy
+    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx
+    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy
+    draw.line((x1, y1, x2, y2))</code></pre></div>
 <p><code>for i in range(N):</code>の行を入力して改行すると、カーソルの位置が少し右にずれたはずである(行末のコロンを忘れないこと)。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>

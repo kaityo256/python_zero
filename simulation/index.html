@@ -292,27 +292,27 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <h4 id="運動方程式の数値解法">3. 運動方程式の数値解法</h4>
 <p>時間方向について差分化した運動方程式を数値的に解くルーチン、<code>throw</code>を実装しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw(theta, y0):
-  rx, ry <span class="op">=</span> <span class="fl">0.0</span>, y0
-  vx, vy <span class="op">=</span> cos(theta), sin(theta)
-  ax, ay <span class="op">=</span> [], []
-  g <span class="op">=</span> <span class="fl">1.0</span>
-  h <span class="op">=</span> <span class="fl">0.001</span>
-  <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-    rx <span class="op">+=</span> vx <span class="op">*</span> h
-    ry <span class="op">+=</span> vy <span class="op">*</span> h
-    vy <span class="op">-=</span> g <span class="op">*</span> h
-    ax.append(rx)
-    ay.append(ry)
-  <span class="cf">return</span> ax, ay</code></pre></div>
+    rx, ry <span class="op">=</span> <span class="fl">0.0</span>, y0
+    vx, vy <span class="op">=</span> cos(theta), sin(theta)
+    ax, ay <span class="op">=</span> [], []
+    g <span class="op">=</span> <span class="fl">1.0</span>
+    h <span class="op">=</span> <span class="fl">0.001</span>
+    <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
+        rx <span class="op">+=</span> vx <span class="op">*</span> h
+        ry <span class="op">+=</span> vy <span class="op">*</span> h
+        vy <span class="op">-=</span> g <span class="op">*</span> h
+        ax.append(rx)
+        ay.append(ry)
+    <span class="cf">return</span> ax, ay</code></pre></div>
 <p>ここで、<code>theta</code>は投げる角度(仰角)、<code>y0</code>は最初に立っている「台」の高さである。</p>
 <h4 id="プロット">4. プロット</h4>
 <p>投げる角度と台の高さを受け取って、軌道をグラフにする関数<code>plot</code>を実装しよう。比較のため、複数の角度をリストで受け取り、それぞれの角度で投げた場合の軌道を重ねて表示している。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(angles, y0 <span class="op">=</span> <span class="fl">0.0</span>):
-  <span class="cf">for</span> theta <span class="kw">in</span> angles:
-    nx, ny <span class="op">=</span> throw(theta<span class="op">/</span><span class="fl">180.0</span><span class="op">*</span>pi, y0)
-    plt.plot(nx,ny, label<span class="op">=</span>theta)
-  plt.legend()
-  plt.show()</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(angles, y0<span class="op">=</span><span class="fl">0.0</span>):
+    <span class="cf">for</span> theta <span class="kw">in</span> angles:
+        nx, ny <span class="op">=</span> throw(theta <span class="op">/</span> <span class="fl">180.0</span> <span class="op">*</span> pi, y0)
+        plt.plot(nx, ny, label<span class="op">=</span>theta)
+    plt.legend()
+    plt.show()</code></pre></div>
 <h4 id="地面から投げた場合">5. 地面から投げた場合</h4>
 <p>まず、地面から投げた場合(<code>y0=0</code>の場合)を見てみよう。40度、45度、50度で投げてみた軌道を重ねて表示する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]
@@ -325,7 +325,7 @@ plot(angles, <span class="fl">1.0</span>)</code></pre></div>
 <p>実際に一番遠くに届く角度は45度から増えただろうか、減っただろうか。入力する角度を5度刻みで変化させ、最も遠くに届く角度を調べよ。</p>
 <h3 id="発展課題初速依存性">発展課題：初速依存性</h3>
 <p>先程の運動方程式では、初速を<span class="math inline">\(1\)</span>に固定していた。関数<code>throw</code>の初速を与える箇所を、以下のように変更すると、初速を<span class="math inline">\(2\)</span>に変えることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</code></pre></div>
 <p>初速を大きくした場合、「台から投げた時」の「最も遠くに届く角度」は増えるだろうか、減るだろうか？初速を<span class="math inline">\(10\)</span>にしたらどうなるだろう？初速が大きい極限でどうなるか考察せよ。</p>
 <h3 id="課題2反応拡散方程式">課題2:反応拡散方程式</h3>
 <p>反応拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
@@ -420,15 +420,15 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)
 n <span class="op">=</span> <span class="bu">len</span>(imgs)
 <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):
-  im <span class="op">=</span> plt.imshow(imgs[n<span class="op">//</span><span class="dv">4</span><span class="op">*</span>i])
-  plt.show()</code></pre></div>
+    im <span class="op">=</span> plt.imshow(imgs[n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> i])
+    plt.show()</code></pre></div>
 <p>ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。</p>
 <h4 id="アニメーション">7. アニメーション</h4>
 <p>せっかくシミュレーションしたので、アニメーションを表示させよう。そのための準備をする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fig <span class="op">=</span> plt.figure()
 im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])
 <span class="kw">def</span> update(i):
-  im.set_array(imgs[i])</code></pre></div>
+    im.set_array(imgs[i])</code></pre></div>
 <p>実行後、不思議な模様が出力されるはずである。</p>
 <h4 id="アニメーションの表示">8. アニメーションの表示</h4>
 <p>ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。</p>
