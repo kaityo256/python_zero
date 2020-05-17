@@ -220,7 +220,7 @@ complex(1,2) # => (1+2j)
 
 ```py
 for i in range(10):
-  print(i)
+    print(i)
 ```
 
 これは、iの値を0から9まで変化させながら、`print(i)`を実行しなさい、という意味である。この繰り返し文を「ループ」と呼び、ループ中に値が変わりながら繰り返し実行される変数を「ループカウンタ」と呼ぶ。`for`がある文の最後に「コロン」があるが、Pythonは「コロン」の後にブロックを伴う。`for`文では、続くブロックの中身を繰り返し処理する。
@@ -229,15 +229,15 @@ for i in range(10):
 
 ```py
 for i in range(10):
-  j = i * 2
-  print(j)
+    j = i * 2
+    print(j)
 ```
 
 ループカウンタに用いる変数はなんでも良い。例えば以下のよう`i`の代わりに`j`を用いても同じ結果となる。
 
 ```py
 for j in range(10):
-  print(j)
+    print(j)
 ```
 
 ループカウンタには長い変数名を使っても良い。
@@ -251,7 +251,7 @@ for abracadabra in range(10):
 
 ```py
 for _ in range(10):
-  print("Hello") # Helloが10回表示される
+    print("Hello") # Helloが10回表示される
 ```
 
 ### 条件分岐
@@ -260,7 +260,7 @@ for _ in range(10):
 
 ```py
 if 5 > 3:
-  print("5>3")
+    print("5>3")
 ```
 
 `if`文に書かれた条件が成立した場合に、後に続くブロックを実行する。
@@ -269,9 +269,9 @@ if 5 > 3:
 
 ```py
 if 5 < 3:
-  print("A") # 実行されない
+    print("A") # 実行されない
 else:
-  print("B") # => B
+    print("B") # => B
 ```
 
 「もし〜ならAをせよ、そうでない場合で〜ならBをせよ」という場合には`elif`を使う。
@@ -279,11 +279,11 @@ else:
 ```py
 a, b = 1, 2
 if a == b:
-  print("a == b")
+    print("a == b")
 elif a > b:
-  print("a > b")
+    print("a > b")
 else:
-  print("a < b")
+    print("a < b")
 ```
 
 if文は入れ子構造にできる。例えば、変数`a`が、「5以下」「5より大きく10未満」「10以上」の3つの領域のどこに存在するか知りたい場合、以下のようなコードを書けばよい。
@@ -379,9 +379,9 @@ $$
 
 ```py
 def newton(x):
-  for _ in range(10):
-    x = x - (x**3-1)/(3*x**2)
-    print(x)
+    for _ in range(10):
+        x = x - (x**3 - 1) / (3 * x**2)
+        print(x)
 ```
 
 ここで`def newton(x):`とあるのは、「`newton`という関数を定義し、`x`という名前で値を受け入れるよ」という宣言である。関数については次回紹介するが、ここでは
@@ -462,9 +462,9 @@ from PIL import Image, ImageDraw
 
 ```py
 def newton(x):
-  for _ in range(10):
-    x = x - (x**3-1)/(3*x**2)
-  return x
+    for _ in range(10):
+        x = x - (x**3 - 1) / (3 * x**2)
+    return x
 ```
 
 ここで、`return x`のインデントに注意。`x = x - (x**3-1)/(3*x**2)`ではなく、`for`と同じ高さにしなければならない。
@@ -475,16 +475,16 @@ def newton(x):
 
 ```py
 def plot(draw, s):
-  hs = s // 2
-  red = (255, 0, 0)
-  green = (0, 255, 0)
-  blue = (0, 0, 255)
-  for x in range(s):
-    for y in range(s):
-      z = complex(x - hs + 0.5, -y + hs + 0.5) / s * 4
-      z = newton(z)
-      # ここを埋めよ
-      draw.rectangle([x, y, x + 1, y + 1], fill=c)
+    hs = s // 2
+    red = (255, 0, 0)
+    green = (0, 255, 0)
+    blue = (0, 0, 255)
+    for x in range(s):
+        for y in range(s):
+            z = complex(x - hs + 0.5, -y + hs + 0.5) / s * 4
+            z = newton(z)
+            # ここを埋めよ
+            draw.rectangle([x, y, x + 1, y + 1], fill=c)
 ```
 
 ただし、上記の「ここを埋めよ」の箇所に
@@ -501,18 +501,18 @@ def plot(draw, s):
 
 ```py
 if 条件:
-  条件が成立した時に実行したいこと
+    条件が成立した時に実行したいこと
 else:
-  条件が成立していない時に実行したいこと
+    条件が成立していない時に実行したいこと
 ```
 
 例えば、`a`が正かどうかで処理を分けたいなら、
 
 ```py
 if a > 0:
-  print("aは正です")
+    print("aは正です")
 else:
-  print("aは負か0です")
+    print("aは負か0です")
 ```
 
 と書ける。
@@ -523,12 +523,12 @@ else:
 
 ```py
 if A:
-  print("条件Aが成立")
+    print("条件Aが成立")
 else:
-  if B:
-    print("条件Aが不成立かつ条件Bが成立")
-  else:
-    print("条件Aが不成立かつ条件Bも不成立)
+    if B:
+        print("条件Aが不成立かつ条件Bが成立")
+    else:
+        print("条件Aが不成立かつ条件Bも不成立)
 ```
 
 #### 4. 画像の表示
