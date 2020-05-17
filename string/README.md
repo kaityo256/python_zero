@@ -593,9 +593,9 @@ URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 
 ```py
 if files == 1:
-  print ("Found a file.")
+    print("Found a file.")
 else:
-  print ("Found {} files.".format)
+    print("Found {} files.".format)
 ```
 
 などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、
