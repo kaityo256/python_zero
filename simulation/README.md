@@ -280,18 +280,18 @@ rcParams['figure.figsize'] = 10, 5
 
 ```py
 def throw(theta, y0):
-  rx, ry = 0.0, y0
-  vx, vy = cos(theta), sin(theta)
-  ax, ay = [], []
-  g = 1.0
-  h = 0.001
-  while ry >= 0.0:
-    rx += vx * h
-    ry += vy * h
-    vy -= g * h
-    ax.append(rx)
-    ay.append(ry)
-  return ax, ay
+    rx, ry = 0.0, y0
+    vx, vy = cos(theta), sin(theta)
+    ax, ay = [], []
+    g = 1.0
+    h = 0.001
+    while ry >= 0.0:
+        rx += vx * h
+        ry += vy * h
+        vy -= g * h
+        ax.append(rx)
+        ay.append(ry)
+    return ax, ay
 ```
 
 ここで、`theta`は投げる角度(仰角)、`y0`は最初に立っている「台」の高さである。
@@ -301,12 +301,12 @@ def throw(theta, y0):
 投げる角度と台の高さを受け取って、軌道をグラフにする関数`plot`を実装しよう。比較のため、複数の角度をリストで受け取り、それぞれの角度で投げた場合の軌道を重ねて表示している。
 
 ```py
-def plot(angles, y0 = 0.0):
-  for theta in angles:
-    nx, ny = throw(theta/180.0*pi, y0)
-    plt.plot(nx,ny, label=theta)
-  plt.legend()
-  plt.show()
+def plot(angles, y0=0.0):
+    for theta in angles:
+        nx, ny = throw(theta / 180.0 * pi, y0)
+        plt.plot(nx, ny, label=theta)
+    plt.legend()
+    plt.show()
 ```
 
 #### 5. 地面から投げた場合
@@ -336,7 +336,7 @@ plot(angles, 1.0)
 先程の運動方程式では、初速を$1$に固定していた。関数`throw`の初速を与える箇所を、以下のように変更すると、初速を$2$に変えることができる。
 
 ```py
-  vx, vy = 2.0*cos(theta), 2.0*sin(theta)
+    vx, vy = 2.0*cos(theta), 2.0*sin(theta)
 ```
 
 初速を大きくした場合、「台から投げた時」の「最も遠くに届く角度」は増えるだろうか、減るだろうか？初速を$10$にしたらどうなるだろう？初速が大きい極限でどうなるか考察せよ。
@@ -492,8 +492,8 @@ def simulation(L, loop):
 imgs = simulation(64, 10000)
 n = len(imgs)
 for i in range(4):
-  im = plt.imshow(imgs[n//4*i])
-  plt.show()
+    im = plt.imshow(imgs[n // 4 * i])
+    plt.show()
 ```
 
 ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。
@@ -506,7 +506,7 @@ for i in range(4):
 fig = plt.figure()
 im = plt.imshow(imgs[-1])
 def update(i):
-  im.set_array(imgs[i])
+    im.set_array(imgs[i])
 ```
 
 実行後、不思議な模様が出力されるはずである。
