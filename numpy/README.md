@@ -39,7 +39,7 @@ NumPy用の配列(NumPy配列)を作成するにはいくつか方法がある�
 
 ```py
 data = np.array([1,2,3])
-prit(a)
+print(a)
 ```
 
 ```txt
@@ -49,7 +49,7 @@ prit(a)
 以下は二行二列の行列を作る例である。
 
 ```py
-data = np.array([[1,2],[3,4]])
+a = np.array([[1,2],[3,4]])
 print(data)
 ```
 
@@ -127,8 +127,8 @@ NumPy配列は、どのような「形」でも作ることができる。通常
 連番の要素を持つ一次元のNumPy配列を作るには、`arange`を使う。
 
 ```py
-data = np.arange(8)
-print(data)
+a = np.arange(8)
+print(a)
 ```
 
 ```txt
@@ -309,7 +309,8 @@ import numpy as np
 
 ```py
 N = 32
-V = np.array([-5.0 if i in range(N//4, 3*N//4) else 0 for i in range(N)])
+V = np.zeros(N)
+V[N // 4:3 * N // 4] = -5.0
 H = np.zeros((N, N))
 for i in range(N):
     i1 = (i + 1) % N
@@ -338,9 +339,9 @@ print(w[i0])
 井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。4つ目のセルに以下を入力せよ。
 
 ```py
-v = v.transpose()[i0]
+v = v[:, i0]
 v = v * v
-plt.plot(v*20+w[i0])
+plt.plot(v * 20 + w[i0])
 plt.plot(V)
 ```
 
@@ -417,12 +418,12 @@ def svd(url, ratio):
     gray_img = mono(url)
     a = np.asarray(gray_img)
     w, _ = a.shape
-    rank = int(w*ratio)
+    rank = int(w * ratio)
     u, s, v = linalg.svd(a)
     ur = u[:, :rank]
     sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
     vr = v[:rank, :]
-    b = np.asarray(ur*sr*vr)
+    b = np.asarray(ur * sr * vr)
     return Image.fromarray(np.uint8(b))
 ```
 

@@ -169,17 +169,17 @@ names
 
 ```py
 def greedy(budget):
-  ind = list(range(len(names)))
-  ind = sorted(ind, key=lambda x: cals[x]/prices[x], reverse=True)
-  psum = 0
-  csum = 0
-  for i in ind:
-    if psum + prices[i] >= budget:
-      continue
-    psum += prices[i]
-    csum += cals[i]
-    print("{} {} Yen {} kcal".format(names[i], prices[i], cals[i]))
-  print("Total {} Yen, {} kcal".format(psum,csum))
+    ind = list(range(len(names)))
+    ind = sorted(ind, key=lambda x: cals[x] / prices[x], reverse=True)
+    psum = 0
+    csum = 0
+    for i in ind:
+        if psum + prices[i] >= budget:
+            continue
+        psum += prices[i]
+        csum += cals[i]
+        print("{} {} Yen {} kcal".format(names[i], prices[i], cals[i]))
+    print("Total {} Yen, {} kcal".format(psum, csum))
 ```
 
 最後の`print`文のインデントが異なることに注意すること。
@@ -187,8 +187,8 @@ def greedy(budget):
 ここで、
 
 ```py
-  ind = list(range(len(names)))
-  ind = sorted(ind, key=lambda x: cals[x]/prices[x], reverse=True)
+    ind = list(range(len(names)))
+    ind = sorted(ind, key=lambda x: cals[x]/prices[x], reverse=True)
 ```
 
 が、「メニューを価格あたりのカロリーでソートする」部分である。`list(range(len(names)))`は`[0,1,2,...,113]`という連番のインデックスを持つリストを作る部分である。このインデックスを、ある基準`key`でソートするようラムダ式で指定している。ラムダ式というと難しく聞こえるが、要するに
@@ -236,13 +236,13 @@ greedy(10000)
 
 ```py
 def search(n, budget):
-  if n < 0:
-    return 0
-  c1 = 0
-  if prices[n] <= budget:
-    c1 = cals[n] + search(n-1, budget - prices[n])
-  c2 = search(n-1, budget)
-  return max(c1,c2)
+    if n < 0:
+        return 0
+    c1 = 0
+    if prices[n] <= budget:
+        c1 = cals[n] + search(n - 1, budget - prices[n])
+    c2 = search(n - 1, budget)
+    return max(c1, c2)
 ```
 
 一般に再帰による全探索コードは簡潔に書ける。「再帰の三カ条」を思い出そう。「再帰は自分自身を呼び出す」「最初に終端条件を書く」「問題をより小さくして自分自身を呼び出す」の三つが満たされていることを確認すること。
@@ -293,17 +293,17 @@ print("{} kcal".format(cal))
 
 ```py
 def search_memo(n, budget):
-  if n < 0:
-    return 0
-  if dic[(n, budget)] is not 0: # 追加(1)
-    return dic[(n, budget)]     # 追加(1)
-  c1 = 0
-  if prices[n] <= budget:
-    c1 = cals[n] + search_memo(n-1, budget - prices[n])
-  c2 = search_memo(n-1, budget)
-  cmax = max(c1,c2)
-  dic[(n, budget)] = cmax # 追加(2)
-  return cmax
+    if n < 0:
+        return 0
+    if dic[(n, budget)] is not 0:  # 追加(1)
+        return dic[(n, budget)]    # 追加(1)
+    c1 = 0
+    if prices[n] <= budget:
+        c1 = cals[n] + search_memo(n - 1, budget - prices[n])
+    c2 = search_memo(n - 1, budget)
+    cmax = max(c1, c2)
+    dic[(n, budget)] = cmax  # 追加(2)
+    return cmax
 ```
 
 先ほどの関数`search`に、3行追加しただけだ。
@@ -311,8 +311,8 @@ def search_memo(n, budget):
 まず、新たな終端条件として「もしすでに調べた`(n, budget)`の組み合わせなら、計算済みの値を返す」という処理を追加したのが「追加(1)」だ。
 
 ```py
-  if dic[(n, budget)] is not 0: # 追加(1)
-    return dic[(n, budget)]     # 追加(1)
+    if dic[(n, budget)] is not 0:  # 追加(1)
+        return dic[(n, budget)]    # 追加(1)
 ```
 
 ここで、`n`と`budget`をまとめたタプル`(n, budget)`を辞書のキーとしている。
@@ -320,7 +320,7 @@ def search_memo(n, budget):
 もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく(メモしておく)のが「追加(2)」だ。
 
 ```py
-  dic[(n, budget)] = cmax # 追加(2)
+    dic[(n, budget)] = cmax  # 追加(2)
 ```
 
 これは`(n, budget)`の組み合わせで得られる最大カロリーを辞書に登録するコードだ。まるでメモを取って再利用しているようなので「 **メモ化 (Memoization)** 」と呼ぶ。メモ化は実装が簡単なわりに、極めて効果的な高速化テクニックである。
@@ -371,15 +371,15 @@ dic[(n, budget)] = search(n-1, budget)
 
 ```py
 def get_menu(budget, cal):
-  menu = []
-  for n in reversed(range(len(names))):
-    if cal is 0:
-      break
-    if dic[(n, budget)] is not dic[(n-1, budget)]:
-      cal -= cals[n]
-      budget -= prices[n]
-      menu.append(n)
-  return menu
+    menu = []
+    for n in reversed(range(len(names))):
+        if cal is 0:
+            break
+        if dic[(n, budget)] is not dic[(n - 1, budget)]:
+            cal -= cals[n]
+            budget -= prices[n]
+            menu.append(n)
+    return menu
 ```
 
 この関数が、「カロリー最大化メニュー」のインデックスリストを返す。
@@ -390,11 +390,11 @@ def get_menu(budget, cal):
 
 ```py
 def show_menu(menu):
-  for i in menu:
-    print("{} {} Yen {} kcal".format(names[i], prices[i], cals[i]))
-  total_price = sum(map(lambda x: prices[x], menu))
-  total_cal = sum(map(lambda x: cals[x], menu))
-  print("Total {} Yen {} kcal".format(total_price, total_cal))
+    for i in menu:
+        print("{} {} Yen {} kcal".format(names[i], prices[i], cals[i]))
+    total_price = sum(map(lambda x: prices[x], menu))
+    total_cal = sum(map(lambda x: cals[x], menu))
+    print("Total {} Yen {} kcal".format(total_price, total_cal))
 ```
 
 #### 12. 解の再構成

@@ -433,9 +433,9 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 <p>有名なところでは、アラビア語は「右から左」に文字を書く。メニューなどが左寄せになっている場合、アラビア語に対応するためには「右寄せ」にしなければならない。Twitterにアカウントを持っている人は<code>https://twitter.com/home?lang=ar</code>にアクセスしてみよ。左右が反転するのがわかるだろう。</p>
 <p>数詞も頭が痛い問題だ。英語には単数、複数の区別があることは知っているであろう。例えばある検索条件で何個ファイルを見つけたかを表示したい場合、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:
-  <span class="bu">print</span> (<span class="st">&quot;Found a file.&quot;</span>)
+    <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)
 <span class="cf">else</span>:
-  <span class="bu">print</span> (<span class="st">&quot;Found </span><span class="sc">{}</span><span class="st"> files.&quot;</span>.<span class="bu">format</span>)</code></pre></div>
+    <span class="bu">print</span>(<span class="st">&quot;Found </span><span class="sc">{}</span><span class="st"> files.&quot;</span>.<span class="bu">format</span>)</code></pre></div>
 <p>などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、</p>
 <pre class="txt"><code>a file.
 2 files.

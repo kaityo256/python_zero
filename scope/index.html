@@ -116,7 +116,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3 id="continue"><code>continue</code></h3>
 <p>例えば、0から9までの数字を表示するループを考えてみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-  <span class="bu">print</span>(i)</code></pre></div>
+    <span class="bu">print</span>(i)</code></pre></div>
 <p>実行すると、0から9まで表示される。これを、「偶数の時だけ表示する」ようにしたい。そのまま書くと以下のようになるだろう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     <span class="cf">if</span> i<span class="op">%</span><span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:
@@ -170,13 +170,13 @@ money <span class="op">=</span> <span class="dv">5</span>
 <h2 id="関数">関数</h2>
 <p>Pythonでは、よく使う処理を「関数」という形で定義し、何度も利用することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> sayhello():
-  <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
+    <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</code></pre></div>
 <p>関数は「def 関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。Pythonはコロンの後にインデントによりブロックを作る言語である。</p>
 <p>定義した関数は後から何度でも呼ぶこともできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></code></pre></div>
 <p>関数にインプットを与えることもできる。このインプットを<strong>引数(ひきすう)</strong>と呼ぶ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> say(s):
-  <span class="bu">print</span>(s)</code></pre></div>
+    <span class="bu">print</span>(s)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></code></pre></div>
 <p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> add(a, b):
@@ -187,9 +187,9 @@ money <span class="op">=</span> <span class="dv">5</span>
 <span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
 <p>次回学ぶ「タプル」を用いると、複数の値を一度に返すこともできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(i):
-  <span class="cf">return</span> i, i<span class="op">+</span><span class="dv">1</span>
+    <span class="cf">return</span> i, i <span class="op">+</span> <span class="dv">1</span>
 
-a, b <span class="op">=</span> func(<span class="dv">5</span>) <span class="co"># a = 5, b = 6が代入される。</span></code></pre></div>
+a, b <span class="op">=</span> func(<span class="dv">5</span>)  <span class="co"># a = 5, b = 6が代入される。</span></code></pre></div>
 <h2 id="スコープ">スコープ</h2>
 <p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。この変数の有効範囲のことを<strong>スコープ(scope)</strong>と呼ぶ。</p>
 <p>最初に述べたように、本講義において、プログラムの文法やライブラリの使い方の詳細については覚える必要はなく、「なんとなくそういうものがあったなぁ」と覚えておくだけでよい。なぜなら、やりかたを忘れてしまっても、例えば関数の定義の仕方を忘れてしまっても、「Python 関数」で検索すればすぐにやり方はわかるからだ。しかし、「スコープ」については、ここである程度しっかり理解しておいた方が良い。将来プログラムでスコープなどの「変数の名前解決がらみ」で問題を起こした時、そうと知らなければ「これはスコープの問題だ」と認識することができないため、適切な検索ワードも思いつかず、自力では解決できなくなるからだ。</p>
@@ -226,8 +226,8 @@ func()</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 
 <span class="kw">def</span> func():
-  a <span class="op">=</span> <span class="dv">20</span>
-  <span class="bu">print</span>(a)
+    a <span class="op">=</span> <span class="dv">20</span>
+    <span class="bu">print</span>(a)
 
 func()
 <span class="bu">print</span>(a)</code></pre></div>
@@ -247,12 +247,12 @@ func()
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 
 <span class="kw">def</span> func():
-  <span class="kw">global</span> a <span class="co"># 変数aがグローバル変数であることを宣言する</span>
-  a <span class="op">=</span> <span class="dv">20</span>
-  <span class="bu">print</span>(a)  <span class="co">#=&gt; 20</span>
+    <span class="kw">global</span> a  <span class="co"># 変数aがグローバル変数であることを宣言する</span>
+    a <span class="op">=</span> <span class="dv">20</span>
+    <span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span>
 
 func()
-<span class="bu">print</span>(a) <span class="co">#=&gt; 20</span></code></pre></div>
+<span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span></code></pre></div>
 <p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
 <p>しかし、このようなコードはバグの元であり、推奨されない。一般にはグローバル変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。</p>
 <p>とりあえず「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
@@ -286,11 +286,11 @@ n = 1 - \frac{1}{r}
 <h4 id="関数logisticの実装">2. 関数<code>logistic</code>の実装</h4>
 <p>パラメータ<span class="math inline">\(r\)</span>を受け取って、個体数<span class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic(r):
-  n <span class="op">=</span> <span class="fl">0.1</span>
-  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-    n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
-    <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:
-      <span class="bu">print</span>(n)</code></pre></div>
+    n <span class="op">=</span> <span class="fl">0.1</span>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+        n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+        <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:
+            <span class="bu">print</span>(n)</code></pre></div>
 <p>これは、初期値を<span class="math inline">\(n=0.1\)</span>として、<span class="math inline">\(n \leftarrow rn(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span class="math inline">\(n\)</span>を表示する関数だ。</p>
 <h4 id="関数logisticの動作確認">3. 関数<code>logistic</code>の動作確認</h4>
 <p>３つ目のセルで、関数<code>logistic</code>を実行してみよう。</p>
@@ -302,20 +302,20 @@ n = 1 - \frac{1}{r}
 <h4 id="関数logistic_plotの実装">4. 関数<code>logistic_plot</code>の実装</h4>
 <p>ある範囲の<span class="math inline">\(r\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic_plot(start, end, x, y):
-  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-    r <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start
-    n <span class="op">=</span> <span class="fl">0.1</span>
-    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-      n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
-      <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:
-        x.append(r)
-        y.append(n)</code></pre></div>
+    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+        r <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start
+        n <span class="op">=</span> <span class="fl">0.1</span>
+        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
+            n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+            <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:
+                x.append(r)
+                y.append(n)</code></pre></div>
 <h4 id="関数plotの実装">5. 関数<code>plot</code>の実装</h4>
 <p><code>logistic_plot</code>の結果を受け取って、グラフに描画する関数<code>plot</code>を実装しよう。5つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(start, end):
-  x, y <span class="op">=</span> [], []
-  logistic_plot(start, end, x, y)
-  plt.scatter(x, y, s <span class="op">=</span> <span class="fl">0.1</span>)</code></pre></div>
+    x, y <span class="op">=</span> [], []
+    logistic_plot(start, end, x, y)
+    plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <h4 id="定常状態の表示">6. 定常状態の表示</h4>
 <p>では、まずは定常状態に落ち着く領域<span class="math inline">\(1 &lt; r &lt; 3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plot(<span class="fl">1.0</span>, <span class="fl">3.0</span>)</code></pre></div>
@@ -353,13 +353,13 @@ plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</code></pre></d
 </ul>
 <p>繰り返しながら表示する関数<code>collatz</code>を作りたい。以下の「条件1」「条件2」を埋めて関数を完成させよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> collatz(i):
-  <span class="bu">print</span>(i)
-  <span class="cf">while</span> (条件1):
-    <span class="cf">if</span> (条件2):
-      i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span>
-    <span class="cf">else</span>:
-      i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
-    <span class="bu">print</span>(i)</code></pre></div>
+    <span class="bu">print</span>(i)
+    <span class="cf">while</span> (条件1):
+        <span class="cf">if</span> (条件2):
+            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span>
+        <span class="cf">else</span>:
+            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span>
+        <span class="bu">print</span>(i)</code></pre></div>
 <p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
 <ul>
 <li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる</li>
@@ -405,7 +405,7 @@ plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</code></pre></d
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">make_graph(<span class="dv">3</span>)</code></pre></div>
 <p>これまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。</p>
 <p>成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">  g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</code></pre></div>
 <p>と、生成するイメージのサイズを大きくすると見やすくなる。</p>
 <p>コラッツ予想とは、このグラフが木構造、つまりループ構造が無いことを主張するものである。</p>
 <h3 id="発展課題拡張コラッツ問題">発展課題：拡張コラッツ問題</h3>

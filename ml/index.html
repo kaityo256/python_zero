@@ -94,7 +94,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li>機械学習の概要</li>
 <li>回帰</li>
-<li>GAN</li>
+<li>DCGAN</li>
 </ul>
 <h2 id="機械学習の概要">機械学習の概要</h2>
 <p>昨今、「機械学習」「ディープラーニング」「AI」といった言葉をよく聞く。「TensorFlow」など、広く使われている機械学習のフレームワークの多くがPythonで記述されていることもあり、機械学習をする上でPythonが事実上の共通語になりつつある。機械学習による派手な結果を目にすることも多いだろう。せっかく本講義でPythonを学んだのであるから、最後は機械学習を体験してみよう。今回は、ざっと機械学習の概要について触れてから、機械学習で注目されている技術の一つ、GANによる画像生成を体験してみる。</p>
@@ -180,7 +180,7 @@ y = a x + c z + b
 <span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</code></pre></div>
 <h4 id="給与データのダウンロード">2. 給与データのダウンロード</h4>
 <p>次に、給与データ(CSVファイル)をダウンロードしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>gan<span class="op">/</span>salary.csv</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>salary.csv</code></pre></div>
 <h4 id="データの読み込み">3. データの読み込み</h4>
 <p>CSVファイルをPandasで読み込んで見よう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">df <span class="op">=</span> pd.read_csv(<span class="st">&quot;salary.csv&quot;</span>)
@@ -248,45 +248,49 @@ ax.plot(X,Y1, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>
 ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>)</code></pre></div>
 <p>正しく実行されていれば、大企業に務める人の賃金のグラフに、回帰による予測値(中卒と大学・大学院卒)が重ねてプロットされたはずである。どのくらい正確に予想できているだろうか？もし実際のデータとずれているなら、その原因は何か考察せよ。</p>
 <h3 id="課題2gan">課題2：GAN</h3>
-<p>敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。</p>
-<p>新しいノートブックを開き<code>gan.ipynb</code>として保存せよ。</p>
-<p><strong>注意</strong>：以下のコードは古いTensorFlowでしか動作しないため、書き直す予定です。</p>
-<h4 id="tensorflowのインストール">1. TensorFlowのインストール</h4>
-<p>Google ColabではデフォルトでTensorFlowが使えるが、今回はやや古いバージョンを使いたいので、バージョンを指定してインストールをする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%</span>tensorflow_version <span class="fl">1.</span>x
-<span class="op">!</span>pip install tensorflow<span class="op">==</span><span class="fl">1.13</span>.<span class="dv">1</span></code></pre></div>
-<p>最初の<code>%</code>から始まる行はマジックコメントと呼ばれ、Google Colabに「これからバージョン1.0系を使うよ」という指示をする。</p>
-<pre class="txt"><code>Successfully installed mock-3.0.5 tensorboard-1.13.1 tensorflow-1.13.1 tensorflow-estimator-1.13.0</code></pre>
-<p>と表示されれば正しくインストールされている。</p>
-<h4 id="サンプルプログラムのダウンロード">2. サンプルプログラムのダウンロード</h4>
+<p>機械学習の手法の一つ、敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。ここでは、DCGAN (Deep Convolutional Generative Adversarial Network)と呼ばれる手法を用いる。</p>
+<p>新しいノートブックを開き<code>dcgan.ipynb</code>として保存せよ。また、今回の計算はかなり重いため、CPUだけでは時間がかかりすぎてしまう。そこで、GPUを使って計算することにしよう。メニューの「ランタイム」から「ランタイムのタイプを変更」をクリックせよ。ハードウェアアクセラレータが「None」になっているので、そこを「GPU」に変更して「保存」をクリックする。このとき「このノートブックを保存する際にコードセルの出力を除外する」にはチェックを入れなくて良い。その後、右上にある「接続」をクリックする。その際、「あなたはロボットですか？」と、人間であるか確認するダイアログが出る場合がある。その時には「わたしはロボットではありません」をクリックする。</p>
+<h4 id="サンプルプログラムのダウンロード">1. サンプルプログラムのダウンロード</h4>
 <p>GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>gan<span class="op">/</span>gan_test.py</code></pre></div>
-<p><code>‘gan_test.py’ saved</code>と表示されればダウンロード完了である。</p>
-<h4 id="インポート">3. インポート</h4>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>dcgan.py</code></pre></div>
+<h4 id="インポート">2. インポート</h4>
 <p>先程ダウンロードしたプログラムをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> gan_test</code></pre></div>
-<p>実行時に多数の<code>FutureWarning</code>が出るが、気にしなくて良い。これでGANが使えるようになった。</p>
-<h4 id="データのダウンロード">4. データのダウンロード</h4>
-<p>GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、三つのデータセットを用意した。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dcgan</code></pre></div>
+<h4 id="データのダウンロード">3. データのダウンロード</h4>
+<p>GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。本講義では、二つのデータセットを用意した。</p>
 <ul>
-<li><code>mnist.tfrecord</code> 手書きの数字(MNIST)</li>
-<li><code>fontawesome.tfrecord</code> Font Awesomeというフォントのシンボルアイコン10種類</li>
-<li><code>hiragana.tfrecord</code> ひらがなすべて(IPAゴシックフォント)</li>
+<li><code>mnist.npy</code> 手書きの数字(MNIST)</li>
+<li><code>hiragana.npy</code> 「あ」から「こ」までの、ひらがな十種。</li>
 </ul>
-<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しく、シンボルはその中間、といった特徴がある。</p>
+<p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しい。</p>
 <p>以下は手書きの数字(MNIST)を選んだ場合の例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">TRAIN_DATA <span class="op">=</span> <span class="st">&quot;mnist.tfrecord&quot;</span>
-url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/gan/&quot;</span>
-<span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>TRAIN_DATA
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> <span class="st">&quot;mnist.npy&quot;</span>
+url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/ml/&quot;</span>
+<span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>data
 <span class="op">!</span>wget $file</code></pre></div>
-<p><code>‘mnist.tfrecord’ saved</code>など、自分が選んだファイル名が表示されればダウンロード完了である。</p>
-<h4 id="ganの実行">5. GANの実行</h4>
+<h4 id="学習">4. 学習</h4>
 <p>ではいよいよGANの実行をしてみよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">gan_test.run_gan(TRAIN_DATA)</code></pre></div>
-<p>最初に</p>
-<pre class="txt"><code>WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.</code></pre>
-<p>といった警告が出るが、気にしないで良い。</p>
-<p>画面には、数十秒ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。学習が終わったら(もしくは途中で止めて)、別の画像でも学習させてみよ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dcgan.run(data)</code></pre></div>
+<p>画面には、一定時間ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。実行には10分～15分程度かかる。</p>
+<h4 id="apngのインストール">5. APNGのインストール</h4>
+<p>偽造者が徐々に腕を上げていく様子を見るため、学習を進めながら描いた絵をアニメーションにしてみよう。まずはアニメーションPNGを作るためのライブラリをインストールする。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng</code></pre></div>
+<h4 id="ライブラリのインポート-1">6. ライブラリのインポート</h4>
+<p>先ほどインストールしたライブラリをインポートしよう。また、表示に使うライブラリも併せてインポートしておく。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
+<span class="im">from</span> apng <span class="im">import</span> APNG</code></pre></div>
+<h4 id="アニメーションの作成">7. アニメーションの作成</h4>
+<p>作成された画像を一つにまとめて、アニメーションPNGを作成しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">files <span class="op">=</span> []
+<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):
+    filename <span class="op">=</span> <span class="st">&#39;img</span><span class="sc">{:04d}</span><span class="st">.png&#39;</span>.<span class="bu">format</span>(i<span class="op">+</span><span class="dv">1</span>)
+    files.append(filename)
+
+APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<h4 id="アニメーションの表示">8. アニメーションの表示</h4>
+<p>作成されたアニメーションを表示してみよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<p>アニメーションが表示されれば成功である。この学習の様子を見て、偽造者はどのように学習を進めているか考察してみよ。また、GAN等の技術が今後どのように活かされるか、予想してみよ。</p>
 <h2 id="余談aiに悪意はあるか">余談：AIに悪意はあるか</h2>
 <p>AIに意識があるか、という問題は難しい。個人的には「AIはそのうち意識を持つ」と信じているが、現時点では「まだソフトウェアなんだな」と思う時と「人間と同じ問題を抱えているのでは」と思う時の両方がある。</p>
 <p>「あ、AIはただのソフトウェアなんだな」と思う例の一つは画像認識である。「犬」「猫」「羊」などのラベルがついた画像を事前に学習させておくことで、写真に何が写っているかを認識するAIを作るものだ。一見するとこのAIは写真に写るものを正しく認識しているように見えるが、何もいない草原に「羊がいる」と判断してしまう。「羊」のラベルがついた画像のほとんどが草原であったため、「草原＝羊」と認識してしまったのだ。同様な例に「ハスキーと狼問題」がある。シベリアン・ハスキーは狼に似た犬種であるが、そのハスキーと狼を見分けるAIを作ったところ、実は犬ではなく「背景に雪があるかどうか」で判断していることがあった。</p>

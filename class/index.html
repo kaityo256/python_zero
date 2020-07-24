@@ -160,7 +160,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>ここで問題だったのは「どこでデータがいじられているかわからない」ということだ。そこで、考え方を変えて「社員データが正しいかどうかは、社員データ自身が知っているべき」と考えよう。後で説明するが、社員データ「オブジェクト」というものを作る。そして、社員データが正当なものであるかの判断は社員データに問い合わせ、問題なければデータを追加する形にしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">person <span class="op">=</span> EmployeeData(name, age, group)
 <span class="cf">if</span> person.is_valid():
-  data.add(person)</code></pre></div>
+    data.add(person)</code></pre></div>
 <div class="figure">
 <img src="fig/person_isvalid.png" alt="データの正しさをオブジェクト自身に問い合わせる" />
 <p class="caption">データの正しさをオブジェクト自身に問い合わせる</p>
@@ -180,9 +180,9 @@ label.face <span class="op">=</span> bold</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.alert()</code></pre></div>
 <p>そして、目立たせるための実装は、ラベルクラスの<code>alert</code>メソッド内に記述する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Label:
-  <span class="kw">def</span> alert(<span class="va">self</span>):
-    <span class="va">self</span>.color <span class="op">=</span> red
-    <span class="va">self</span>.face <span class="op">=</span> bold</code></pre></div>
+    <span class="kw">def</span> alert(<span class="va">self</span>):
+        <span class="va">self</span>.color <span class="op">=</span> red
+        <span class="va">self</span>.face <span class="op">=</span> bold</code></pre></div>
 <p>オブジェクト指向であろうかなんであろうが、同じことを実現しているのだから、結局は同じプログラムを書かなければならない。しかし、このような形にすることで、呼び出し側はラベルに「目立ってね」と依頼し、その目立ち方はラベルに任せる、という気持ちでプログラムが組める。こうして置くと、後で「目立たせ方」を変えたい、と思ったときに修正箇所は一箇所で済むため、仕様変更に強いコードになる。</p>
 <p>すなわち、オブジェクト指向プログラミングとは</p>
 <ul>

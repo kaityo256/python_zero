@@ -125,9 +125,9 @@ a = [1,2,3]
 リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、`for`と`in`を使う。
 
 ```py
-a = ["A","B","C"]
+a = ["A", "B", "C"]
 for i in a:
-  print(i)
+    print(i)
 ```
 
 ## タプル
@@ -164,9 +164,9 @@ a[1] = 4 #=> 'tuple' object does not support item assignment
 
 ```py
 def func():
-  return 1,2
+    return 1, 2
 
-func() #=> (1,2)
+func()  # => (1,2)
 ```
 
 タプルを使って、複数の変数を一度に初期化することができる。
@@ -205,9 +205,9 @@ x, y = a[0] # x = 1, y = 2になる
 例えば、こんなことができる。
 
 ```py
-a = ["A","B","C"]
+a = ["A", "B", "C"]
 for i, x in enumerate(a):
-  print(i, x)
+    print(i, x)
 ```
 
 ここでは、インデックスを`i`で、要素を`x`で受け取っている。
@@ -285,7 +285,7 @@ b = [4, 5, 6]
 
 ```py
 def func(a):
-  a = 2
+    a = 2
 
 a = 1
 func(a)
@@ -461,7 +461,7 @@ def length(a):
 
 ```py
 for ai in a:
-  dx, dy = ai
+    dx, dy = ai
 ```
 
 と同じ意味である。
@@ -469,7 +469,7 @@ for ai in a:
 入力したら、3つ目のセルを使って動作確認をしよう。以下を実行してみよ。
 
 ```py
-a = [(1,0),(0,1)]
+a = [(1, 0), (0, 1)]
 length(a)
 ```
 
@@ -581,9 +581,9 @@ N = 1
 img = Image.new("RGB", (size, size))
 draw = ImageDraw.Draw(img)
 a = [(size, 0)]
-b = [(1, 0), (0.5, sqrt(3.0)/2), (0.5, -sqrt(3.0)/2), (1, 0)]
+b = [(1, 0), (0.5, sqrt(3.0) / 2), (0.5, -sqrt(3.0) / 2), (1, 0)]
 for _ in range(N):
-  a = apply(a, b)
+    a = apply(a, b)
 draw_line(draw, a, size)
 img
 ```

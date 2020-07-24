@@ -112,10 +112,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
 <p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、簡単なのは<code>np.array</code>にリストを与えることだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])
-prit(a)</code></pre></div>
+<span class="bu">print</span>(a)</code></pre></div>
 <pre class="txt"><code>[1 2 3]</code></pre>
 <p>以下は二行二列の行列を作る例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
 <span class="bu">print</span>(data)</code></pre></div>
 <pre class="txt"><code>[[1 2]
  [3 4]]</code></pre>
@@ -147,8 +147,8 @@ prit(a)</code></pre></div>
 <h3 id="numpy配列の中身">NumPy配列の中身</h3>
 <p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある二次元のデータだが、三次元でも四次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも一次元配列として保存されている。NumPy配列は、一次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
 <p>連番の要素を持つ一次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.arange(<span class="dv">8</span>)
-<span class="bu">print</span>(data)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">8</span>)
+<span class="bu">print</span>(a)</code></pre></div>
 <pre class="txt"><code>array([0, 1, 2, 3, 4, 5, 6, 7])</code></pre>
 <p>このデータを「4行2列の行列」として解釈したNumPy配列を得るには、以下のようにすれば良い。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> a.reshape((<span class="dv">4</span>,<span class="dv">2</span>))
@@ -256,7 +256,8 @@ X = U \Sigma V^{\dagger}
 <h4 id="行列の作成">2. 行列の作成</h4>
 <p>次に、ポテンシャル<span class="math inline">\(V(x)\)</span>に対応するベクトル<code>V</code>と、微分方程式を差分化した行列<code>H</code>を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">32</span>
-V <span class="op">=</span> np.array([<span class="op">-</span><span class="fl">5.0</span> <span class="cf">if</span> i <span class="kw">in</span> <span class="bu">range</span>(N<span class="op">//</span><span class="dv">4</span>, <span class="dv">3</span><span class="op">*</span>N<span class="op">//</span><span class="dv">4</span>) <span class="cf">else</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N)])
+V <span class="op">=</span> np.zeros(N)
+V[N <span class="op">//</span> <span class="dv">4</span>:<span class="dv">3</span> <span class="op">*</span> N <span class="op">//</span> <span class="dv">4</span>] <span class="op">=</span> <span class="op">-</span><span class="fl">5.0</span>
 H <span class="op">=</span> np.zeros((N, N))
 <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
     i1 <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> N
@@ -273,9 +274,9 @@ i0 <span class="op">=</span> np.argmin(w)
 <p>実行してみると、-5よりも若干大きな値が表示されたはずである。これが「閉じ込めエネルギー」と呼ばれるものだ。なぜ「閉じ込め」と呼ばれるかは次のステップで可視化することで明らかとなる。</p>
 <h4 id="波動関数の可視化">4. 波動関数の可視化</h4>
 <p>井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。4つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> v.transpose()[i0]
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> v[:, i0]
 v <span class="op">=</span> v <span class="op">*</span> v
-plt.plot(v<span class="op">*</span><span class="dv">20</span><span class="op">+</span>w[i0])
+plt.plot(v <span class="op">*</span> <span class="dv">20</span> <span class="op">+</span> w[i0])
 plt.plot(V)</code></pre></div>
 <p>波動関数とポテンシャルが同時にプロットされたはずである。波動関数は「そこに電子が存在する確率」である。その存在確率が少しだけ井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
 <h3 id="課題2行列の低ランク近似による画像処理">課題2：行列の低ランク近似による画像処理</h3>
@@ -316,12 +317,12 @@ mono(URL)</code></pre></div>
     gray_img <span class="op">=</span> mono(url)
     a <span class="op">=</span> np.asarray(gray_img)
     w, _ <span class="op">=</span> a.shape
-    rank <span class="op">=</span> <span class="bu">int</span>(w<span class="op">*</span>ratio)
+    rank <span class="op">=</span> <span class="bu">int</span>(w <span class="op">*</span> ratio)
     u, s, v <span class="op">=</span> linalg.svd(a)
     ur <span class="op">=</span> u[:, :rank]
     sr <span class="op">=</span> np.matrix(linalg.diagsvd(s[:rank], rank, rank))
     vr <span class="op">=</span> v[:rank, :]
-    b <span class="op">=</span> np.asarray(ur<span class="op">*</span>sr<span class="op">*</span>vr)
+    b <span class="op">=</span> np.asarray(ur <span class="op">*</span> sr <span class="op">*</span> vr)
     <span class="cf">return</span> Image.fromarray(np.uint8(b))</code></pre></div>
 <p>画像データを<code>asarray</code>に渡すことでそのままNumPy配列にすることができる。その配列を<code>linalg.svd</code>に渡せば特異値分解完了である。その後、<code>ratio</code>で指定された特異値の数だけ残して画像を再構成している。</p>
 <h4 id="画像の低ランク近似の確認">7. 画像の低ランク近似の確認</h4>

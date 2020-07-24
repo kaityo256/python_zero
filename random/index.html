@@ -346,9 +346,9 @@ boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</s
     rest_boxes <span class="op">=</span> boxes.copy()
     rest_boxes.remove(answer)
     <span class="cf">if</span> first_choice <span class="op">==</span> answer:
-      second_choice <span class="op">=</span> <span class="co"># ここを産めよ</span>
+      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(1)</span>
     <span class="cf">else</span>:
-      second_choice <span class="op">=</span> <span class="co"># ここを産めよ</span>
+      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(2)</span>
     <span class="cf">return</span> answer <span class="op">==</span> second_choice</code></pre></div>
 <ul>
 <li>ヒント1：最初に選んだ箱(<code>first_choice</code>)が正解かどうかで条件分岐している</li>
@@ -466,12 +466,12 @@ show_image(sites, L)</code></pre></div>
 <h4 id="シミュレーション-1">2. シミュレーション</h4>
 <p>n種類のポスターを揃えるのに何枚CDが必要になるかを試してみる関数<code>gacha</code>を実装しよう。以下の「条件」と「ポスター追加処理」を埋めてコードを完成させよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> gacha(n):
-  cd <span class="op">=</span> <span class="dv">0</span>
-  posters <span class="op">=</span> []
-  <span class="cf">while</span> 条件 <span class="op">&lt;</span> n:
-    <span class="co"># ポスター追加処理</span>
-    cd <span class="op">+=</span> <span class="dv">1</span>
-  <span class="cf">return</span> cd</code></pre></div>
+    cd <span class="op">=</span> <span class="dv">0</span>
+    posters <span class="op">=</span> []
+    <span class="cf">while</span> 条件 <span class="op">&lt;</span> n:
+        <span class="co"># ポスター追加処理</span>
+        cd <span class="op">+=</span> <span class="dv">1</span>
+    <span class="cf">return</span> cd</code></pre></div>
 <p><code>cd</code>は購入したCDの枚数、<code>posters</code>は、当たったポスターのリストであり、このコードでは<code>n</code>種類のポスターを揃えるまでCDを購入し続け、揃った段階で購入したCDの枚数を返す関数である。</p>
 <ul>
 <li>ヒント1：これまでに得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる</li>
@@ -484,8 +484,8 @@ show_image(sites, L)</code></pre></div>
 cd <span class="op">=</span> <span class="dv">0</span>
 N <span class="op">=</span> <span class="dv">44</span>
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
-  cd <span class="op">+=</span> gacha(N)
-<span class="bu">print</span>(cd<span class="op">/</span>trial)</code></pre></div>
+    cd <span class="op">+=</span> gacha(N)
+<span class="bu">print</span>(cd <span class="op">/</span> trial)</code></pre></div>
 <p>CDの平均購入枚数はどれくらいであっただろうか？</p>
 <h4 id="厳密解">4. 厳密解</h4>
 <p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションによって得られた結果が近い値かどうか確認せよ。</p>

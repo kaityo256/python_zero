@@ -133,7 +133,7 @@
 * [講義スライド](https://speakerdeck.com/kaityo256/python-14)
 * 機械学習の概要
 * 重回帰分析
-* GANを体験する( **コードが古く、obsoleteです** )
+* DCGAN
 * 余談：AIに悪意はあるか
 
 ## [付録：Pythonのインストールと実行方法](install/README.md)

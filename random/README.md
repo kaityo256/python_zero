@@ -403,9 +403,9 @@ def change(boxes):
     rest_boxes = boxes.copy()
     rest_boxes.remove(answer)
     if first_choice == answer:
-      second_choice = # ここを産めよ
+      second_choice = # ここを埋めよ(1)
     else:
-      second_choice = # ここを産めよ
+      second_choice = # ここを埋めよ(2)
     return answer == second_choice
 ```
 
@@ -589,12 +589,12 @@ n種類のポスターを揃えるのに何枚CDが必要になるかを試し�
 
 ```py
 def gacha(n):
-  cd = 0
-  posters = []
-  while 条件 < n:
-    # ポスター追加処理
-    cd += 1
-  return cd
+    cd = 0
+    posters = []
+    while 条件 < n:
+        # ポスター追加処理
+        cd += 1
+    return cd
 ```
 
 `cd`は購入したCDの枚数、`posters`は、当たったポスターのリストであり、このコードでは`n`種類のポスターを揃えるまでCDを購入し続け、揃った段階で購入したCDの枚数を返す関数である。
@@ -612,8 +612,8 @@ trial = 100
 cd = 0
 N = 44
 for _ in range(trial):
-  cd += gacha(N)
-print(cd/trial)
+    cd += gacha(N)
+print(cd / trial)
 ```
 
 CDの平均購入枚数はどれくらいであっただろうか？

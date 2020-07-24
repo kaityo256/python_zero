@@ -148,9 +148,9 @@ a.append(b)</code></pre></div>
 <span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span>
 <span class="dv">4</span> <span class="kw">in</span> a <span class="co">#=&gt; False</span></code></pre></div>
 <p>リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、<code>for</code>と<code>in</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]
 <span class="cf">for</span> i <span class="kw">in</span> a:
-  <span class="bu">print</span>(i)</code></pre></div>
+    <span class="bu">print</span>(i)</code></pre></div>
 <h2 id="タプル">タプル</h2>
 <p>タプル(tuple)は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
@@ -166,9 +166,9 @@ a[<span class="dv">0</span>] <span class="co">#=&gt; 1</span>
 a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co">#=&gt; &#39;tuple&#39; object does not support item assignment</span></code></pre></div>
 <p>タプルは関数で複数の値を返したい場合によく使われる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
-  <span class="cf">return</span> <span class="dv">1</span>,<span class="dv">2</span>
+    <span class="cf">return</span> <span class="dv">1</span>, <span class="dv">2</span>
 
-func() <span class="co">#=&gt; (1,2)</span></code></pre></div>
+func()  <span class="co"># =&gt; (1,2)</span></code></pre></div>
 <p>タプルを使って、複数の変数を一度に初期化することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>
 a <span class="co">#=&gt; 1</span>
@@ -184,9 +184,9 @@ x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x
 <p><code>for x in a:</code>という構文で、リスト<code>a</code>のそれぞれの要素<code>x</code>について処理をすることができる。しかし、たまに「要素の値」と、「その要素がリストの何番目にあるか」の情報が両方欲しい場合がある。その時に使うのが<code>enumerate</code>だ。</p>
 <p>リスト<code>a</code>について、<code>enumerate(a)</code>とすると、要素のインデックスと要素の内容をペアで受け取ることができる。</p>
 <p>例えば、こんなことができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]
 <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(a):
-  <span class="bu">print</span>(i, x)</code></pre></div>
+    <span class="bu">print</span>(i, x)</code></pre></div>
 <p>ここでは、インデックスを<code>i</code>で、要素を<code>x</code>で受け取っている。</p>
 <p>実行結果はこうなる。</p>
 <pre class="txt"><code>0 A
@@ -242,7 +242,7 @@ b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span
 <p>まず、関数の引数は、関数が作るブロック内だけで有効なローカル変数である。グローバル変数と同じ名前をつけても、別の変数として扱われる。</p>
 <p>こんなコードを見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a):
-  a <span class="op">=</span> <span class="dv">2</span>
+    a <span class="op">=</span> <span class="dv">2</span>
 
 a <span class="op">=</span> <span class="dv">1</span>
 func(a)
@@ -361,10 +361,10 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
     <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</code></pre></div>
 <p>ここで<code>a</code>は、タプルのリスト、例えば<code>[(1,0),(0,1)]</code>のような入力を想定している。<code>for (dx, dy) in a:</code>は、リスト<code>a</code>に含まれるタプルを直接<code>(dx, dy)</code>というタプルで受け取るという意味で、冗長に書けば</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> ai <span class="kw">in</span> a:
-  dx, dy <span class="op">=</span> ai</code></pre></div>
+    dx, dy <span class="op">=</span> ai</code></pre></div>
 <p>と同じ意味である。</p>
 <p>入力したら、3つ目のセルを使って動作確認をしよう。以下を実行してみよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>)]
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>)]
 length(a)</code></pre></div>
 <p>次のような表示がなされれば正しく入力されている。</p>
 <pre class="txt"><code>1.4142135623730951</code></pre>
@@ -428,9 +428,9 @@ N <span class="op">=</span> <span class="dv">1</span>
 img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
 draw <span class="op">=</span> ImageDraw.Draw(img)
 a <span class="op">=</span> [(size, <span class="dv">0</span>)]
-b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
+b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]
 <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):
-  a <span class="op">=</span> <span class="bu">apply</span>(a, b)
+    a <span class="op">=</span> <span class="bu">apply</span>(a, b)
 draw_line(draw, a, size)
 img</code></pre></div>
 <p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
