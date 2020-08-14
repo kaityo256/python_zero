@@ -27,7 +27,8 @@ $(TARGET): catalog.yml config.yml $(RE) imgcopy
 	docker run --rm -v `pwd`/:/work kauplan/review2.5 /bin/bash -c "cd /work; rake pdf"
 
 wsl: catalog.yml config.yml $(RE) imgcopy
-	docker run --rm -v c:\\Users\\watanabe\\Desktop\\github\\python_zero\\review:/work kauplan/review2.5 /bin/bash -c "cp -r work work2;cd /work2; rake pdf;cp python_zero.pdf /work"
+	#docker run --rm -v c:\\Users\\watanabe\\Desktop\\github\\python_zero\\review:/work kauplan/review2.5 /bin/bash -c "cp -r work work2;cd /work2; rake pdf;cp python_zero.pdf /work"
+	docker run --rm -v c:\\Users\\watanabe\\Desktop\\github\\python_zero\\review:/work kauplan/review2.5 /bin/bash -c "cd /work; rake pdf"
 
 clean:
 	rm -f $(TARGET) *.post *.pre $(RE) $(MD)
