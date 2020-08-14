@@ -1,4 +1,4 @@
-RE=introduction.re about.re install.re hello.re basic.re scope.re list.re string.re file.re recursion.re class.re numpy.re howtowork.re dp.re random.re simulation.re ml.re answer.re
+RE=introduction.re about.re install.re hello.re basic.re scope.re list.re string.re file.re recursion.re class.re numpy.re howtowork.re dp.re random.re simulation.re ml.re answer.re references.re
 MD=$(RE:.re=.md)
 DIRS=$(RE:.re=)
 TARGET=python_zero.pdf
@@ -15,7 +15,10 @@ dir:
 	cp ../$*/README.md $@
 
 imgcopy:
-	for dir in $(DIRS);do mkdir -p images/$$dir;cp ../$$dir/fig/*.png images/$$dir 2>/dev/null;done
+	for dir in $(DIRS);\
+		do mkdir -p images/$$dir;\
+		cp ../$$dir/fig/*.png images/$$dir 2>/dev/null;\
+		done
 
 %.re: %.md
 	ruby md2re.rb $^ > $*.re
