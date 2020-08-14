@@ -122,17 +122,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">else</span>
   puts(<span class="st">&quot;No&quot;</span>)
 <span class="kw">end</span></code></pre></div>
-<p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。</p>
-<p>この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
+<p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
 <p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは <strong>インデント (indent)</strong> と呼ばれ、特にブロックがネストした場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){puts(<span class="st">&quot;Yes&quot;</span>);}<span class="cf">else</span>{puts(<span class="st">&quot;No&quot;</span>);}</code></pre></div>
-<p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。</p>
-<p>しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
+<p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
     <span class="bu">print</span>(<span class="st">&quot;Yes&quot;</span>)
 <span class="cf">else</span>:
     <span class="bu">print</span>(<span class="st">&quot;No&quot;</span>)</code></pre></div>
-<p>Pythonではこのように、「キーワード + コロン(:)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
+<p>Pythonではこのように、「キーワード + コロン(<code>:</code>)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)
     <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
 <p>このように、インデントでブロックを表現する方法を <strong>オフサイドルール (off-side rule)</strong> と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
@@ -165,7 +163,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>と書きましょう、といった具合だ。他にも「インデントは空白4文字」「空白の入れ方」「改行の入れ方」など、様々な細かい「マナー」が書いてある。</p>
 <p>Pythonを学ぶにあたり、とりあえず「マナー」は気にしなくて良いが、実際にPythonを使ってコードを書いたり、それを外部に公開したりする場合は気にした方がよいだろう。Pythonには、コードがPEP8に従っているかチェックしてくれる<code>pep8</code>というツールや、コーディングスタイルだけではなく品質チェックもする<code>pylint</code>といったツールがある。広く使われているエディタはほとんどこういったツールとの連携機能があるので、それらを有効にするだけで自動的にコーディングスタイルを守れるようになるはずだ。</p>
 <h2 id="google-colabの使い方">Google Colabの使い方</h2>
-<p>本講義では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyterノートブーク環境であり、ブラウザさえあればPythonが実行できる。この環境が完全に無料で使えるというのだから恐れ入る。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
+<p>本講義では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
 <p>まず、Googleにログインした状態で、<a href="https://colab.research.google.com">Google Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogle Driveのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
 <p>正しくアクセスできると、以下のようなウェルカムメニューが表示される。</p>
 <div class="figure">
@@ -225,7 +223,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
-<p>これは、イメージ描画ライブラリを利用するよ、という宣言である。<code>import</code>文については後で学ぶので、今は気にしなくて良い。</p>
+<p>これは、イメージ描画ライブラリを利用するよ、という宣言である。<code>import</code>文については今は気にしなくて良い。</p>
 <h4 id="描画">2. 描画</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
 draw <span class="op">=</span> ImageDraw.Draw(img)

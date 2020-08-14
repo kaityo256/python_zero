@@ -24,23 +24,19 @@ pip install hoge
 
 以下、Windowsへのインストールを例に説明するが、MacやLinuxでも手順はほぼ同様である。
 
-Googleで「Anaconda」と検索するか、[https://www.anaconda.com/](https://www.anaconda.com/)にアクセスし、右上にある「ダウンロード」をクリックする。
+Googleで「Anaconda」と検索するか、[https://www.anaconda.com/](https://www.anaconda.com/)にアクセスし、Productsのメニューの「Indivisual Edition」を選ぶ。
 
-![Anacondaのダウンロード](fig/download.png)
+![Anacondaのダウンロード](fig/indivisual.png)
 
 現れたページの下の方に「Windows | macOS | Linux」のタブが現れるので「Windows」をクリックしてから「Python 3.7 version」の「Download」ボタンを押す。
 
 ![Anacondaのダウンロード](fig/download_win.png)
 
-ダウンロードが完了したら、以下のアイコンをダブルクリックしてインストールを開始する。
-
-![Anacondaのアイコン](fig/anaconda.png)
+ダウンロードが完了したら、Anacondaのアイコンをダブルクリックしてインストールを開始する。
 
 すべてデフォルトのままで良いが、途中で自分だけにインストールするか、このPC全員にインストールされるか聞かれるので、適宜対応する。必要なパッケージをほとんど含んでいるため、インストールにはかなり時間がかかる。
 
 インストールが完了したら、「Anaconda Cloud」や「get started」を見るか聞かれる。必要ないので、チェックを外して「Finish」を押す。
-
-![インストール完了](fig/finish.png)
 
 Windowsのスタートメニューから、Anaconda Navigatorを実行する。Windows 10だとメニューが折り畳まれている場合もあるので注意。
 

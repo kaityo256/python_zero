@@ -99,16 +99,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="変数と型について">変数と型について</h2>
 <h3 id="変数について">変数について</h3>
 <p>Pythonに限らず、プログラミング言語には <strong>変数(Variable)</strong> という概念が出てくる。変数は簡単なように見えて、意外に理解が難しい概念である。ここで例え話を多用すると一見理解しやすいように見えて後で混乱する原因になるため、ここでは変数の実装に近いところから説明する。ただし、簡略化してあり、実装そのものではないので注意して欲しい。</p>
-<p>計算機とは、メモリにあるデータをCPUで処理して、またメモリに書き戻す機械である。メモリには「番地」という通し番号がついており、例えば足し算なら「0番地と1番地のデータを読み込んで足してから2番地に書き込め」といったことを指示する。しかし、いちいちどの値がどこにあるか番地で覚えるのは面倒だ。そこで変数というラベルを使うことにする。</p>
-<p>以下のプログラムを見てみよう。</p>
+<p>計算機とは、メモリにあるデータをCPUで処理して、またメモリに書き戻す機械である。メモリには「番地」という通し番号がついており、例えば足し算なら「0番地と1番地のデータを読み込んで足してから2番地に書き込め」といったことを指示する。しかし、いちいちどの値がどこにあるか番地で覚えるのは面倒だ。そこで変数というラベルを使うことにする。以下のプログラムを見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span></code></pre></div>
 <p>これは、<code>a</code>という変数を用意し、そこに<code>10</code>という値を代入せよ、という意味だ。実際には、メモリ上に<code>a</code>というラベルを貼り、そこに<code>10</code>を書き込む、という処理をする。同様に<code>b = 20</code>とすると、<code>b</code>というラベルが作られ、そこに<code>20</code>が書き込まれる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">10</span>
 b <span class="op">=</span> <span class="dv">20</span></code></pre></div>
-<p><code>print</code>という命令を使うと、その値を確認することができる。</p>
+<p><code>print</code>という命令を使うと、変数が指す値を確認することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co"># =&gt; 10</span></code></pre></div>
 <p>今後、<code># =&gt;</code>という記号は、「左を実行すると、右の結果が得られるよ」という意味だと約束する。</p>
-<p>また、Jupyter Notebookでは、変数名だけを含む、もしくはセルの最後に変数名だけを含むセルを実行すると、その値を確認することができる。</p>
+<p>Jupyter Notebookでは、変数名だけを含む、もしくはセルの最後に変数名だけを含むセルを実行すると、その値を確認することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="co">#=&gt; 10</span></code></pre></div>
 <p>さて、この状態で<code>c = a + b</code>を実行してみよう。まず、右の<code>a+b</code>が評価される。その結果得られた値<code>30</code>を<code>c</code>の指す場所に書きこもうとするが、まだ<code>c</code>という変数は作られていないので、まず<code>c</code>の場所が作られてからそこに値が書き込まれる。一方、<code>a = a + b</code>を実行した場合は、<code>a</code>の場所はすでに存在するので、その値が更新される。</p>
 <div class="figure">
@@ -136,8 +135,8 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <p>ダブルクォーテーションマーク<code>&quot; &quot;</code>やシングルクォーテーションマーク<code>' '</code>で囲まれた文字は「文字列」として扱われる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> <span class="st">&quot;test&quot;</span>
 <span class="bu">type</span>(c) <span class="co"># =&gt; str</span></code></pre></div>
-<p>例えば文字列の場合、メモリに<code>0x74</code>という数値があった場合、それをアルファベット小文字の<code>t</code>と解釈しましょう、という約束を決めておく。変数<code>c</code>の<code>str</code>という型は、<code>c</code>が指す先のメモリを「文字列として解釈する」という意味を持つ。すると、変数<code>c</code>が指している「0x74 65 73 74」という数値列が<code>test</code>という文字列として解釈される。</p>
-<p>同様に、例えば「1.0」という浮動小数点数は、メモリ上では「0x3FF0000000000000」という8バイトの数字で表現されている。これをある約束(IEEE754という規格)に従って解釈すると「1.0」という数値となる。</p>
+<p>例えば文字列の場合、メモリに<code>0x74</code>という数値(以後、頭に<code>0x</code>がついていたら16進数表記)があった場合、それをアルファベット小文字の<code>t</code>と解釈しましょう、という約束を決めておく。変数<code>c</code>の<code>str</code>という型は、<code>c</code>が指す先のメモリを「文字列として解釈する」という意味を持つ。すると、変数<code>c</code>が指している<code>0x74,65,73,74</code>という数値列が<code>test</code>という文字列として解釈される。</p>
+<p>同様に、例えば<code>1.0</code>という浮動小数点数は、メモリ上では<code>0x3FF0000000000000</code>という8バイトの数字で表現されている。これをある約束(IEEE754という規格)に従って解釈すると<code>1.0</code>という数値となる。</p>
 <div class="figure">
 <img src="fig/type.png" alt="型とメモリ上のデータ" />
 <p class="caption">型とメモリ上のデータ</p>
@@ -173,16 +172,14 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <p>文字列の比較もできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co">&quot;test&quot;</span> <span class="op">==</span> <span class="st">&quot;test&quot;</span> <span class="co">#=&gt; True</span>
 <span class="co">&quot;hoge&quot;</span> <span class="op">&lt;</span> <span class="st">&quot;piyo&quot;</span> <span class="co">#=&gt; True</span></code></pre></div>
-<p>真偽値は、<code>not</code>をつけると真偽値が逆転する。</p>
+<p>真偽値は、<code>not</code>をつけると真偽値が反転する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
 <span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
 <p>二つの真偽値を使って論理演算もできる。<code>and</code>は「かつ」、<code>or</code>は「または」を意味する。例えば「真かつ偽」は「偽」に、「真または偽」は「真」となる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="va">True</span> <span class="kw">and</span> <span class="va">False</span> <span class="co"># =&gt; False</span>
-<span class="va">True</span> <span class="kw">or</span> <span class="va">False</span> <span class="co"># =&gt; True</span>
-<span class="kw">not</span> <span class="va">True</span> <span class="co"># =&gt; False</span>
-<span class="kw">not</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
+<span class="va">True</span> <span class="kw">or</span> <span class="va">False</span> <span class="co"># =&gt; True</span></code></pre></div>
 <h3 id="浮動少数点数">浮動少数点数</h3>
-<p>「0.1」「123.45」といった、整数ではない値を表現する。整数と同様に四則演算や比較ができるし、負の数も扱える。</p>
+<p>浮動少数点数は「0.1」「123.45」といった、整数ではない値を表現する。整数と同様に四則演算や比較ができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.5</span> <span class="co">#=&gt; 1.0</span>
 <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="co">#=&gt; 0.25</span>
 <span class="fl">0.5</span> <span class="op">&lt;</span> <span class="fl">1.0</span> <span class="co">#=&gt; True</span></code></pre></div>
@@ -190,9 +187,9 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="co">#=&gt; 0.30000000000000004</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.2</span> <span class="co"># =&gt; True</span>
 <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">==</span> <span class="fl">0.3</span> <span class="co">#=&gt; False</span></code></pre></div>
-<p>したがって、<strong>浮動小数点数同士の等号比較は信頼できない</strong>。浮動小数点数同士の等号比較は、意図通りに動作したりしなかったりする。初心者がよく入れるバグなので注意すること。</p>
+<p>したがって、<strong>浮動小数点数同士の等号比較は信頼できない</strong>。浮動小数点数同士の等号比較は、意図通りに動作しない場合がある。慣れていないプログラマがよく入れるバグなので注意すること。</p>
 <h3 id="複素数">複素数</h3>
-<p>Pythonは複素数も扱うことができる。虚数単位がjなので注意。実部、虚部は<code>real</code>、<code>imag</code>で取り出すことができる。 また、整数で記述しても浮動小数点数として扱われることに注意。複素数の宣言は<code>1+2j</code>のように書くか、<code>complex(1,2)</code>のように書く。</p>
+<p>Pythonは複素数も扱うことができる。虚数単位が<code>i</code>ではなく<code>j</code>なので注意。実部、虚部は<code>real</code>、<code>imag</code>で取り出すことができる。また、複素数は整数で記述しても浮動小数点数として扱われることに注意。複素数の宣言は<code>1+2j</code>のように書くか、<code>complex(1,2)</code>のように書く。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="dv">1</span> <span class="op">+</span><span class="ot"> 2j</span> <span class="co"># =&gt; (1+2j)</span>
 <span class="bu">complex</span>(<span class="dv">1</span>,<span class="dv">2</span>) <span class="co"># =&gt; (1+2j)</span>
 (<span class="dv">1</span><span class="op">+</span>2j) <span class="op">+</span> (<span class="dv">2</span><span class="op">+</span>4j) <span class="co">#=&gt; (3+6j)</span>
@@ -209,13 +206,13 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     j <span class="op">=</span> i <span class="op">*</span> <span class="dv">2</span>
     <span class="bu">print</span>(j)</code></pre></div>
-<p>ループカウンタに用いる変数はなんでも良い。例えば以下のよう<code>i</code>の代わりに<code>j</code>を用いても同じ結果となる。</p>
+<p>ループカウンタに用いる変数には何を使っても良い。例えば以下のよう<code>i</code>の代わりに<code>j</code>を用いても同じ結果となる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     <span class="bu">print</span>(j)</code></pre></div>
 <p>ループカウンタには長い変数名を使っても良い。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">for abracadabra in range(<span class="dv">10</span>):
     print(abracadabra)</code></pre></div>
-<p>また、単に10回繰り返したいだけで、現在何回目かは不要である場合には<code>_</code>を使う。</p>
+<p>また、ループカウンタが不要である場合(現在何回目かが必要ない場合)には<code>_</code>を使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
     <span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>) <span class="co"># Helloが10回表示される</span></code></pre></div>
 <h3 id="条件分岐">条件分岐</h3>
@@ -254,9 +251,9 @@ a <span class="op">=</span> c <span class="co">#=&gt; NameError: name &#39;c&#39
   <span class="co"># 正の時の処理</span>
 <span class="cf">else</span>:
   <span class="co"># そうでない場合 (負と0の可能性がある)</span></code></pre></div>
-<p>と<code>else</code>を用いて書けば、<code>a</code>にどのような値が来ても「どちらか」は必ず実行される。複雑な条件分岐を書く場合は、「Xであるか、そうでないか」に分けて<code>if</code>と<code>else</code>で分解していくと、「条件漏れ」がなくなって安全である。</p>
+<p>最後に<code>else</code>節をつけておけば、<code>a</code>にどのような値が来ても「どちらか」は必ず実行される。複雑な条件分岐を書く場合は、「Xであるか、そうでないか」に分けて<code>if</code>と<code>else</code>で分解していくと「条件漏れ」が発生しづらく安全である。</p>
 <h2 id="ニュートン法">ニュートン法</h2>
-<p>以上の知識で、何かコードを書いてみよう。ある方程式を解きたいが、その解が厳密にはわからないとする。その場合でも数値計算で必要な精度で解を求めることができる。そのような場合によく用いられるのがニュートン法である。</p>
+<p>以上の知識で、何かコードを書いてみよう。ある方程式を解きたいが、その解が厳密にはわからないとする。この解を数値的に求める場合によく用いられるのがニュートン法である。</p>
 <p>いま、</p>
 <p><span class="math display">\[
 f(x) = 0
@@ -285,7 +282,7 @@ x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
 x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
 \]</span></p>
 <p>である。</p>
-<p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？単純にに考えると、複数の解がある場合は初期値に一番近い解に収束すると考えられるが、本当だろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
+<p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？単純に考えると、複数の解がある場合は初期値に一番近い解に収束すると期待されるが、そうなるだろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
 <div class="figure">
 <img src="fig/map.png" alt="ニュートン法の収束地図" />
 <p class="caption">ニュートン法の収束地図</p>
@@ -407,9 +404,9 @@ x_{n+1} = x_n - \frac{x^4-1}{4x^3}
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)</code></pre></div>
 <p>を追加せよ。</p>
 <h2 id="余談バグについて">余談：バグについて</h2>
-<p>プログラムが何か意図しない動作をする場合、その原因となる箇所を「バグ」と呼ぶ。バグの語源については諸説あるようだが、詳しいことはわからない。「i」と「l」と「1」など、似ている文字を誤入力してしまったり、考慮すべきケースを忘れていたり、バグの原因は様々である。単純なバグについては、コンパイラや検査ツールの充実、テスト手法の向上などにより事前に検出できるようになってきた。そんななか、未だによく見かけるバグに「オーバーフローバグ」がある。コンピュータが扱える数字には上限がある。たとえば整数は32ビットで表現されることが多い。符号無し整数の場合、表現できる最大の数は4294967295、つまり43億ちょっとである。符号付きの場合は、符号に1ビット使うので最大の数はその半分になる。この数字を超える、すなわち最大値を取っている変数に1を足すと、またゼロに戻ってしまう。オーバーフローバグは、よくタイマー周りに潜む。最近だと、ボーイング787という飛行機の電源制御システムが、連続して248日動作させると不具合を起こすことが報告された。慣れたプログラマなら、「248日」と聞いた瞬間に「あ、オーバーフローやったな」と気がつく。248日とは21427200秒である。31ビットで表現できる最大の数は2147483647であるから10ミリ秒を単位に動作する31ビットのクロックが、248日でオーバーフローしたと考えられる。同根のバグに「497日問題」とか「49.7日問題」があるので、興味があれば調べられたい。</p>
-<p>値があふれるのとは逆に、値が0になってるのに引き算をすることで値が大きくなるバグもあり、こちらもオーバーフローバグと呼ばれている。有名なのは「突然キレるガンジー」であろう。Cibilizationという、文明を発展させるゲームがある。歴史上の有名人をプレイヤーとして選び、世界制覇などを目指すゲームである。この中のプレイヤーにガンジーがいた。ガンジーは「非暴力、不服従」の提唱者であり、平和主義者なのであるが、文明がある程度発展すると突如として核攻撃をしかけてくるようになる。これはオーバーフローバグであった。Cibilizationでは各プレイヤーには攻撃性が設定されており、文明が民主主義を採用すると攻撃性が2下がる、という仕組みがあった。さて、ガンジーの攻撃性は1なのだが、インド文明が民主主義を採用し2を引くと-1になる。しかし、攻撃性は「符号なし8ビット整数」で表現されていたため、1から2を引くと攻撃性最大の255になってしまった。こうして「突然キレるガンジー」が誕生したのである。</p>
-<p>整数の表現できる数値に最大値があることに起因するバグは根深く、発見が難しい。かくいう私も、4294967295回に一度意図しない動作をするというエグいバグを入れたことがある。43億回に一度発生するため、研究室のPCでは再現せず、スパコンを使ったときにたまに発生する、という感じだったので原因究明に時間がかかった。バグという概念が生まれてかなりの時間がたったが、まだ人類はバグを根絶できていない。それなら僕がバグを入れるのもやむを得まい(言い訳である)。</p>
+<p>プログラムが何か意図しない動作をする場合、その原因となる箇所を「バグ」と呼ぶ。バグの語源については諸説あるようだ。「i」と「l」と「1」など、似ている文字を誤入力してしまったり、考慮すべきケースを忘れていたり、バグの原因は様々である。単純なバグについては、コンパイラや検査ツールの充実、テスト手法の向上などにより事前に検出できるようになってきた。そんななか、未だによく見かけるバグに「オーバーフローバグ」がある。コンピュータが扱える数字には上限がある。たとえば整数は32ビットで表現されることが多い。符号無し整数の場合、表現できる最大の数は4294967295、つまり43億ちょっとである。符号付きの場合は、符号に1ビット使うので最大の数はその半分になる。この数字を超える、すなわち最大値を取っている変数に1を足すと、またゼロに戻ってしまう。オーバーフローバグは、よくタイマー周りに潜む。最近だと、ボーイング787という飛行機の電源制御システムが、連続して248日動作させると不具合を起こすことが報告された。慣れたプログラマなら、「248日」と聞いた瞬間に「あ、オーバーフローやったな」と気がつく。248日とは21427200秒である。31ビットで表現できる最大の数は2147483647であるから10ミリ秒を単位に動作する31ビットのクロックが、248日でオーバーフローしたと考えられる。同根のバグに「497日問題」とか「49.7日問題」があるので、興味があれば調べられたい。</p>
+<p>値があふれるのとは逆に、値が0になってるのに引き算をすることで値が大きくなるバグもあり、こちらもオーバーフローバグと呼ばれている。有名なのは「突然キレるガンジー」であろう。Cibilizationという、文明を発展させるゲームがある。歴史上の有名人をプレイヤーとして選び、世界制覇などを目指すゲームである。この中のプレイヤーにガンジーがいた。ガンジーは「非暴力、不服従」の提唱者であり、平和主義者なのであるが、文明がある程度発展すると突如として核攻撃をしかけてくるようになる。原因はオーバーフローバグであった。Cibilizationでは各プレイヤーには攻撃性が設定されており、文明が民主主義を採用すると攻撃性が2下がる、という仕組みがあった。さて、ガンジーの攻撃性は最低の1なのだが、インド文明が民主主義を採用し2を引くと-1になる。しかし、攻撃性は「符号なし8ビット整数」で表現されていたため、1から2を引くと攻撃性最大の255になってしまった。こうして「突然キレるガンジー」が誕生したのである。</p>
+<p>整数の表現できる数値に最大値があることに起因するバグは根深く、発見が難しい。かくいう私も、4294967295回に一度意図しない動作をするというエグいバグを入れたことがある。43億回に一度発生するため、研究室のPCでは再現せず、スパコンを使った時にだけ稀に発生したため、原因究明に時間がかかった。バグという概念が生まれてかなりの時間がたったが、まだ人類はバグを根絶できていない。</p>
 <p>参考：<a href="https://note.mu/ruiu/n/n89d18450b1bb">オーバーフローが引き起こした面白いバグの話</a></p>
 </article>
 </body>
