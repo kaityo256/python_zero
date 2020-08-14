@@ -5,6 +5,7 @@
 *.erb.orig
 tmp/*
 python_zero-pdf/*
+python_zero.zip
 images
 *.pre
 *.post
