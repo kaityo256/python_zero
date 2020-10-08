@@ -120,8 +120,8 @@ a <span class="co"># =&gt; [1,4,3]</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</code></pre></div>
 <p>入れ子になったリストは、添え字を複数指定することで要素を得ることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]
-a[<span class="dv">0</span>] <span class="co">#=&gt; [1,2]</span>
-a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co">#=&gt; 2</span></code></pre></div>
+a[<span class="dv">0</span>] <span class="co"># =&gt; [1,2]</span>
+a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co"># =&gt; 2</span></code></pre></div>
 <p>リストの長さは<code>len</code>という関数で取得できる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 <span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></code></pre></div>
@@ -137,32 +137,32 @@ b <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>
 a.append(b)
 a.append(b)</code></pre></div>
 <p>とすると、見かけ上<code>a</code>は二行二列の行列のように見える。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co">#=&gt; [[1, 2], [1, 2]]</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co"># =&gt; [[1, 2], [1, 2]]</span></code></pre></div>
 <p>しかし、要素に含まれる二つのリストは同じものであるから、一方を修正するともう一方も影響を受ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span>
-<span class="bu">print</span>(a) <span class="co">#=&gt; [[4, 2], [4, 2]]</span></code></pre></div>
+<span class="bu">print</span>(a) <span class="co"># =&gt; [[4, 2], [4, 2]]</span></code></pre></div>
 <p>なぜこうなるかは、後述する「リストのメモリ上での表現」を知れば理解できるであろう。</p>
 <p>リストに要素が含まれるかどうかは、<code>in</code>で調べることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 <span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span>
-<span class="dv">4</span> <span class="kw">in</span> a <span class="co">#=&gt; False</span></code></pre></div>
+<span class="dv">4</span> <span class="kw">in</span> a <span class="co"># =&gt; False</span></code></pre></div>
 <p>リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、<code>for</code>と<code>in</code>を使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]
 <span class="cf">for</span> i <span class="kw">in</span> a:
     <span class="bu">print</span>(i)</code></pre></div>
 <h2 id="タプル">タプル</h2>
-<p>タプル(tuple)は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
+<p><strong>タプル(tuple)</strong> は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
-a <span class="co">#=&gt; (1, 2, 3)</span></code></pre></div>
+a <span class="co"># =&gt; (1, 2, 3)</span></code></pre></div>
 <p>タプルはリストと同様に<code>len</code>で長さを得たり、添え字で要素を得ることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>
-a[<span class="dv">0</span>] <span class="co">#=&gt; 1</span>
-<span class="bu">len</span>(a) <span class="co">#=&gt; 3</span></code></pre></div>
+a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span>
+<span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></code></pre></div>
 <p>タプルの結合もできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">+</span> (<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># =&gt; (1,2,3,4)</span></code></pre></div>
 <p>このようにタプルはリストに似ているが、一度作成されたタプルは修正できない。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)
-a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co">#=&gt; &#39;tuple&#39; object does not support item assignment</span></code></pre></div>
+a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co"># =&gt; &#39;tuple&#39; object does not support item assignment</span></code></pre></div>
 <p>タプルは関数で複数の値を返したい場合によく使われる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func():
     <span class="cf">return</span> <span class="dv">1</span>, <span class="dv">2</span>
@@ -170,8 +170,8 @@ a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span>
 func()  <span class="co"># =&gt; (1,2)</span></code></pre></div>
 <p>タプルを使って、複数の変数を一度に初期化することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>
-a <span class="co">#=&gt; 1</span>
-b <span class="co">#=&gt; 2</span></code></pre></div>
+a <span class="co"># =&gt; 1</span>
+b <span class="co"># =&gt; 2</span></code></pre></div>
 <p>以下のようにすると、変数の値の交換ができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a, b <span class="op">=</span> b, a</code></pre></div>
 <p>タプルのリストを作ることもできる。</p>
@@ -242,7 +242,7 @@ b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span
 
 a <span class="op">=</span> <span class="dv">1</span>
 func(a)
-<span class="bu">print</span>(a) <span class="co">#=&gt; 1</span></code></pre></div>
+<span class="bu">print</span>(a) <span class="co"># =&gt; 1</span></code></pre></div>
 <p>関数<code>func</code>は、引数として変数<code>a</code>を受け取る。この時、<code>a</code>の値がコピーされ、「関数内のローカル変数<code>a</code>」が作成される。この変数<code>a</code>は関数内だけで有効なので、関数内で値を変更しても、外部の変数である<code>a</code>に影響は与えない。このような情報の渡し方を <strong>値渡し (call by value)</strong> と呼ぶ。</p>
 <div class="figure">
 <img src="fig/ref1.png" alt="関数の引数の受け渡し" />
@@ -255,7 +255,7 @@ func(a)
 
 a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 func(a)
-<span class="bu">print</span>(a) <span class="co">#=&gt; [1,4,3]</span></code></pre></div>
+<span class="bu">print</span>(a) <span class="co"># =&gt; [1,4,3]</span></code></pre></div>
 <div class="figure">
 <img src="fig/ref2.png" alt="リストを関数に渡した場合" />
 <p class="caption">リストを関数に渡した場合</p>
@@ -267,13 +267,13 @@ func(a)
 
 a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
 func(a)
-<span class="bu">print</span>(a) <span class="co">#=&gt; [1,2,3] aは影響を受けない</span></code></pre></div>
+<span class="bu">print</span>(a) <span class="co"># =&gt; [1,2,3] aは影響を受けない</span></code></pre></div>
 <div class="figure">
 <img src="fig/ref3.png" alt="関数内で引数にリストを代入した場合" />
 <p class="caption">関数内で引数にリストを代入した場合</p>
 </div>
 <p>このように、関数の引数に値をコピーして渡す方法を「<strong>値渡し(call by value)</strong>」と呼ぶ。Pythonは関数には値がコピーして渡されるため、値渡しとなる。また、リストを指す変数は、リストの値そのものではなく、リストの先頭の場所を指している。このような値の持ち方を「<strong>参照(reference)</strong>」と呼ぶ。</p>
-<p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、「<strong>参照の値渡し</strong>」と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来プログラムでこの問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
+<p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、「<strong>参照の値渡し</strong>」と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来この問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
 <h2 id="リスト内包表記">リスト内包表記</h2>
 <div class="figure">
 <img src="fig/report.png" alt="大量のレポートを採点する教員" />
@@ -337,7 +337,6 @@ result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</s
 <h2 id="リストとタプル課題">リストとタプル：課題</h2>
 <h3 id="課題1コッホ曲線の描画">課題1：コッホ曲線の描画</h3>
 <p>新しいノートブックを開き、<code>koch.ipynb</code>という名前にせよ。</p>
-<p>最初と次のセルに以下を入力せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>1つ目のセルでは、必要なライブラリをインポートする。ここでは<code>math</code>ライブラリの平方根<code>sqrt</code>と、描画に必要なライブラリをインポートしている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> math <span class="im">import</span> sqrt
@@ -365,7 +364,7 @@ length(a)</code></pre></div>
 <p>次に、入力ベクトルを、変換ベクトルリストに基づいて変換することを考えよう。処理は以下の通りである。</p>
 <ul>
 <li>入力ベクトルの長さと変換ベクトルリストの長さの比<code>scale</code>を求める</li>
-<li>入力ベクトルの傾き角度<span class="math inline">\(\theta\)</span>の<span class="math inline">\(sin\)</span>と<span class="math inline">\(cos\)</span>の値を求める</li>
+<li>入力ベクトルの傾き角度<span class="math inline">\(\theta\)</span>の<span class="math inline">\(\sin\)</span>と<span class="math inline">\(\cos\)</span>の値を求める</li>
 <li>変換ベクトルリストに含まれるベクトルそれぞれについて、<code>scale</code>倍して<span class="math inline">\(\theta\)</span>だけ傾けたものをリストに追加する</li>
 </ul>
 <p>以上を実現する以下のコードを、3つ目のセルに入力せよ。</p>
@@ -414,7 +413,7 @@ b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span
         x1, y1 <span class="op">=</span> x2, y2</code></pre></div>
 <p>これは、ベクトルのリストを受け取り、そのベクトルの通りに線を描画する関数である。</p>
 <h4 id="画像の表示">6. 画像の表示</h4>
-<p>では、最後に描画してみよう。以下のコードを7つ目のセルに入力せよ。</p>
+<p>では、最後に描画してみよう。以下のコードを6つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
 N <span class="op">=</span> <span class="dv">1</span>
 img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))
@@ -510,7 +509,7 @@ img</code></pre></div>
 <h2 id="余談osを作ってミュージシャンになった人">余談：OSを作ってミュージシャンになった人</h2>
 <p>普段、Windowsが入っているパソコンを使うことが多いであろう。WindowsとはOS (Operating System)の一種である。OSとは基本ソフトとも言われ、ユーザとハードウェアの仲立ちをする非常に重要なソフトウェアだ。マイクロソフトはMS-DOSというOSの成功から急成長した会社だが、現在はWindows というOSを開発している。さて、Windowsには様々な種類があるが、2006年にリリースされた「Windows Vista」というOSがあった。私はVistaがプリインストールされたノートPCを購入したが、Vistaのあまりのひどさに「これを開発したのは誰だ？」と思って調べてみたら、開発責任者はVistaの発売翌日にマイクロソフトを退職し、ミュージシャンになっていた。彼の名前はジム・オールチン。Windows 95を作るはずの人物であった。</p>
 <p>1994年。マイクロソフトのCEO、ビル・ゲイツは「指先で情報を」という基調講演を行った。当時マイクロソフトはWindows 3.1の後継となり、Appleの洗練されたOSに対抗できる次世代OSがぜひとも必要であった。そのために進められていたのが「Cairo」というプロジェクトであり、そのリーダーがジム・オールチンであった。しかし、Cairoの進捗は悪く、別に「Chicago」というプロジェクトが走り出した。最終的にCairoはChicagoに破れ、Chicagoが「Windows 95」としてリリース。Windows 95は大ヒットし、市場におけるマイクロソフトの立場を盤石なものにした。</p>
-<p>マイクロソフトはコンシューマ向けであるWindows 95とは別に、サーバ向けに安定動作するWindows NTの開発も進めていた。そのストーリーは「闘うプログラマ」に詳しいので是非読んでみてほしい。コンシューマ向けに使いやすい95ファミリと、サーバ向けに安定しているNT、その両方の良さを受け継いだOSがWindows XPで、これまたヒット、Windowsユーザを一気に増やすことに成功した。</p>
+<p>マイクロソフトはコンシューマ向けであるWindows 95とは別に、サーバ向けに安定動作するWindows NTの開発も進めていた。そのストーリーは「闘うプログラマー」に詳しいので是非読んでみてほしい。コンシューマ向けに使いやすい95ファミリと、サーバ向けに安定しているNT、その両方の良さを受け継いだOSがWindows XPで、これまたヒット、Windowsユーザを一気に増やすことに成功した。</p>
 <p>2001年、XPのリリースと同時に、ジム・オールチンをリーダーとしてXPの後継となるOS開発プロジェクトが始まった。コードネームはLonghorn、後のVistaである。Vistaは当初、XPのマイナーバージョンアップという位置付けであったが、いつのまにか野心的な機能が次々と追加され、プロジェクトは膨れ上がっていった。もともと2001年にリリースされたXPの後を継いで2003年頃にリリースされるはずだったが、リリース延期を重ねていく。そして2005年頃にどうにもならなくなり、プログラムの作り直しを決断する(Longhorn Reset)。そこから一年でなんとかVistaはリリースされたが、約束された先進的な機能はほとんど実装されず、VistaプリインストールマシンはWindows XPへダウングレードができるようにされるなど市場からも不評であり、マイクロソフトはOSのリリース計画を大幅に変更せざるを得なくなった。</p>
 <p>ジム・オールチンは、Cairoで実現できなかった「指先で情報を」というスローガンをVistaで実現しようとしたのだろうか。Vistaで約束され、実装されなかった機能の多くは、Cairoで実現しようとしていたものと重なるものが多い。ジム・オールチンの公式サイトには「私のマイクロソフトでの最大の貢献はサーバービジネスだ」とあり、その経歴には、キャリアのほぼすべてで関わったはずのCairoとVistaの名前はない。</p>
 </article>

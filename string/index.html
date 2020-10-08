@@ -80,6 +80,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -100,7 +101,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="文字列と文字コードについて">文字列と文字コードについて</h2>
 <h3 id="文字とはなにか">文字とはなにか</h3>
 <p>今回は文字列処理を扱う。文字列処理とは文字列を何か処理することであり、文字列とは文字の列であるから、文字列処理のためには、「そもそも文字とは何か」を知らなければならない。プログラムの世界において「文字とは何か？」は極めて非自明で難しい問題であり、筆者もきちんと説明できる自信がない。ここでの説明は必ずしも実際の歴史に沿っていないことに注意されたい。</p>
-<p>例えば今、画面上に「あ」というひらがなが表示されているとしよう。計算機が扱えるのは数字だけである。したがって、メモリ上になんらかの数字が格納されており、それを処理することで画面に対応する文字が表示される仕組みがある。以前、「型」とはメモリ上のデータをどのように表現するかを約束する役割があると学んだ。例えば<code>test</code>という文字列は、メモリ上では「0x74 65 73 74」という4バイトの文字列として表現される。このように、アルファベットや数字は、7ビットの数字で表現される。7ビットの情報が表現できるのは2^7個、すなわち128個までである。アルファベットの大文字小文字、数字、記号などはこれで収めることができる。これらをASCII (American Standard Code for Information Interchange、アスキー)文字、ASCII文字に対応する「数字」をASCIIコードと呼ぶ。メモリに格納されるのはアスキーコードである。</p>
+<p>例えば今、画面上に「あ」というひらがなが表示されているとしよう。計算機が扱えるのは数字だけである。したがって、メモリ上になんらかの数字が格納されており、それを処理することで画面に対応する文字が表示される仕組みがある。以前、「型」とはメモリ上のデータをどのように表現するかを約束する役割があると学んだ。例えば<code>test</code>という文字列は、メモリ上では「0x74 65 73 74」という4バイトの文字列として表現される。このように、アルファベットや数字は、7ビットの数字で表現される。7ビットの情報が表現できるのは<span class="math inline">\(2^7\)</span>個、すなわち128個までである。アルファベットの大文字小文字、数字、記号などはこれで収めることができる。これらをASCII (American Standard Code for Information Interchange、アスキー)文字、ASCII文字に対応する「数字」をASCIIコードと呼ぶ。メモリに格納されるのはアスキーコードである。</p>
 <p>さて、計算機で日本語、すなわちひらがなやカタカナ、漢字を表示したい、というニーズがある。どうすればよいだろうか？そのためには、なんらかの方法で文字に数字を割り当てなければならない。そして、割り当てた数字をメモリに格納する必要がある。さらに、文字を表示するためには、「どの文字がどんな形をしているか」を計算機が知っていなければならない。以上の概念をまとめてみよう。</p>
 <div class="figure">
 <img src="fig/glyph.png" alt="文字とはなにか" />
@@ -144,7 +145,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d[<span class="st">&quot;Apple&quot;</span>] <span class="op">=</span> <span class="dv">158</span></code></pre></div>
 <p>結びつけたデータは、キーを入力することで取得することができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(d[<span class="st">&quot;Apple&quot;</span>]) <span class="co"># =&gt; 158</span></code></pre></div>
-<p>初期化時にキーと要素を指定することができる。この時「キー: 値」という</p>
+<p>初期化時にキーと要素を指定することができる。この時「キー: 値」という形で与える。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d <span class="op">=</span> {<span class="st">&quot;Apple&quot;</span>: <span class="dv">158</span>, <span class="st">&quot;Banana&quot;</span> : <span class="dv">198</span>, <span class="st">&quot;Orange&quot;</span> : <span class="dv">100</span>}</code></pre></div>
 <p>数字でもタプルでもなんでもキーにすることができる。また、なんでも要素にすることができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d[<span class="dv">1</span>] <span class="op">=</span> <span class="st">&quot;one&quot;</span>
@@ -213,7 +214,7 @@ s <span class="op">=</span> <span class="st">&quot;すもももももももも�
         <span class="cf">continue</span>
     <span class="bu">print</span>(s, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
 <span class="bu">print</span>()</code></pre></div>
-<p>しかし、正規表現を用いると以下のようにコマンド一発で実現できる。</p>
+<p>しかし、正規表現を用いると以下のように簡単に実現できる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
 <span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.*?》&#39;</span>, <span class="st">&#39;&#39;</span>, text))</code></pre></div>
 <p>以下が実行結果だ。</p>
@@ -225,12 +226,12 @@ s <span class="op">=</span> <span class="st">&quot;すもももももももも�
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">text <span class="op">=</span> <span class="st">&#39;hanamogera&#39;</span>
 m <span class="op">=</span> re.search(<span class="vs">r&#39;moge&#39;</span>, text)</code></pre></div>
 <p>上記の例は、「hanamogera」という文字列から、「moge」という文字列を探せ、という命令である。正規表現を表す文字列の頭には<code>r</code>をつけるが、ここでは深入りしないので、そういうものだと思っていて欲しい。<code>search</code>はマッチした場合、Matchオブジェクトを返すが、その<code>span()</code>メソッドによりマッチした場所がわかる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.span() <span class="co">#=&gt; (4, 8)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.span() <span class="co"># =&gt; (4, 8)</span></code></pre></div>
 <p><code>span()</code>はマッチした場所をタプルとして返すため、それを使って部分文字列を抜き出すことができる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s, e <span class="op">=</span> m.span()
-text[s:e] <span class="co">#=&gt; &#39;moge&#39;</span></code></pre></div>
+text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p>もしくは単に、<code>group()</code>でマッチした文字列を取り出すこともできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.group() <span class="co">#=&gt; &#39;moge&#39;</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.group() <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p><code>group()</code>を用いると、グループ化させた場合、それぞれのグループにアクセスできるのだが、ここでは詳細には立ち入らない。</p>
 <p>さて、より柔軟なパターン検索のために、正規表現には様々な特殊な文字、メタ文字がある。まずよく使うのが「どのような一文字にでもマッチする」メタ文字、「<code>.</code>」である。例えば「<code>.bc</code>」というパターンは、「<code>abc</code>」という文字列にも「<code>xbc</code>」という文字列にもマッチする。</p>
 <p>次によく使うのが、繰り返しを表す「<code>*?+</code>」だ。それぞれ以下のような意味を持つ。</p>
