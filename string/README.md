@@ -560,7 +560,7 @@ IPython.display.Image("wc.png")
 URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 ```
 
-として実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。
+として実行してみよう。実行の度に結果は代わるが、おそらく中央に大きく「名人」と表示されたことと思う。
 
 どうしても小説が思いつかない場合は、以下から選んで良い。
 
@@ -585,7 +585,7 @@ URL = "https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip"
 if files == 1:
     print("Found a file.")
 else:
-    print("Found {} files.".format)
+    print(f"Found {files} files.")
 ```
 
 などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、
