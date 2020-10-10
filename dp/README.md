@@ -272,7 +272,7 @@ c2 = search(n-1, budget)
 ```py
 %%time
 cal = search(len(names)-1,1000)
-print("{} kcal".format(cal))
+print(f"{cal} kcal")
 ```
 
 実行した結果、実行時間と1000円で得られる最大カロリーのみが表示されるはずである(メニューの取得は)。実行時間と結果を貪欲法と比較せよ。結果は貪欲法と一致したか？実行時間はどうであろうか？
