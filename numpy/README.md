@@ -75,15 +75,15 @@ print(z)
 NumPy配列のデータには「型」がある。Pythonのリストは複数の型の混在が許されたが、NumPy配列は全て同じ型でなければならない。NumPy配列のデータの型は`dtype`で調べることができる。
 
 ```py
-print(a.dtype) #=> int64
-print(z.dtype) #=> float64
+print(a.dtype) # => int64
+print(z.dtype) # => float64
 ```
 
 `np.array`で作った場合は、与えたリストから推定された型が使われるが、`np.zeros`の場合はデフォルトで`float64`の型になる。明示的に型を指定すれば、その型のゼロ要素行列を得ることができる。
 
 ```py
 z2 = np.zeros((2,2),dtype=np.int64)
-print(z2.dtype) #=> int64
+print(z2.dtype) # => int64
 ```
 
 ### NumPy配列同士の演算
@@ -91,7 +91,7 @@ print(z2.dtype) #=> int64
 NumPy配列は、「形」を保持しており、`shape`でその形を知ることができる。`shape`は、タプルの形で返ってくる。
 
 ```py
-data.shape #=> (2,2)
+data.shape # => (2,2)
 ```
 
 形が同じ行列同士は四則演算ができる。ここで`*`を計算すると、行列積ではなく、「要素ごとの積」を計算することに注意。
@@ -165,7 +165,7 @@ print(c)
 `reshape`は、データ数が合わないとエラーとなる。
 
 ```py
-a.reshape((4,4)) #=> ValueError: cannot reshape array of size 8 into shape (4,4)
+a.reshape((4,4)) # => ValueError: cannot reshape array of size 8 into shape (4,4)
 ```
 
 ## SciPyについて
@@ -191,14 +191,14 @@ w, v = linalg.eig(a)
 例えば固有値は
 
 ```py
-print(w) #=> [ 3.+0.j -1.+0.j]
+print(w) # => [ 3.+0.j -1.+0.j]
 ```
 
 つまり「3」と「-1」である。一般に固有値は複素数となるが、今回のように入力が実対称行列(もしくはエルミート行列)であることがわかっていれば、エルミート行列向けの`eigh`が使える。
 
 ```py
 w, v = linalg.eigh(a)
-print(w) #=> [-1.  3.]
+print(w) # => [-1.  3.]
 ```
 
 エルミート行列の固有値は常に実数であるから、返り値も実数となる。
