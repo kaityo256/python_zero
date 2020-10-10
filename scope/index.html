@@ -270,42 +270,42 @@ if True:
 <h3 id="課題1-1ロジスティック写像">課題1-1：ロジスティック写像</h3>
 <p>関数と繰り返しを使い、ロジスティック写像を可視化してみよう。ロジスティック写像は</p>
 <p><span class="math display">\[
-n_{i+1} = r n_i (1- n_i)
+n_{i+1} = a n_i (1- n_i)
 \]</span></p>
-<p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(r\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
+<p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(a\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
 <p><span class="math display">\[
-n = 1 - \frac{1}{r}
+n = 1 - \frac{1}{a}
 \]</span></p>
 <p>に落ち着くはずである。この振る舞いを確認してみよう。新しいノートブックを開き、<code>logistic.ipynb</code>と名前を付けよう。</p>
 <h4 id="インポート">1. インポート</h4>
 <p>まずは後で使うライブラリをインポートしておこう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</code></pre></div>
 <h4 id="関数logisticの実装">2. 関数<code>logistic</code>の実装</h4>
-<p>パラメータ<span class="math inline">\(r\)</span>を受け取って、個体数<span class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic(r):
+<p>パラメータ<span class="math inline">\(a\)</span>を受け取って、個体数<span class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic(a):
     n <span class="op">=</span> <span class="fl">0.1</span>
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-        n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+        n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
         <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:
             <span class="bu">print</span>(n)</code></pre></div>
-<p>これは、初期値を<span class="math inline">\(n=0.1\)</span>として、<span class="math inline">\(n \leftarrow rn(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span class="math inline">\(n\)</span>を表示する関数だ。</p>
+<p>これは、初期値を<span class="math inline">\(n=0.1\)</span>として、<span class="math inline">\(n \leftarrow a n(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span class="math inline">\(n\)</span>を表示する関数だ。</p>
 <h4 id="関数logisticの動作確認">3. 関数<code>logistic</code>の動作確認</h4>
 <p>３つ目のセルで、関数<code>logistic</code>を実行してみよう。</p>
-<p>まずは、<span class="math inline">\(r=1.5\)</span>を代入してみよう。</p>
+<p>まずは、<span class="math inline">\(a=1.5\)</span>を代入してみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">logistic(<span class="fl">1.5</span>)</code></pre></div>
-<p>結果が、予想される定常解<span class="math inline">\(n = 1 - 1/r\)</span>になっているか確認せよ。<span class="math inline">\(r=2.0\)</span>ではどうか。また、<span class="math inline">\(r=3.1\)</span>を代入すると、定常解に収束しないはずである。何が起きるか確認せよ。</p>
+<p>結果が、予想される定常解<span class="math inline">\(n = 1 - 1/a\)</span>になっているか確認せよ。<span class="math inline">\(a=2.0\)</span>ではどうか。また、<span class="math inline">\(a=3.1\)</span>を代入すると、定常解に収束しないはずである。何が起きるか確認せよ。</p>
 <h3 id="課題1-2ロジスティック写像の可視化">課題1-2：ロジスティック写像の可視化</h3>
 <p>ロジスティック写像は、<span class="math inline">\(r\)</span>が小さいうちは定常解に収束するが、ある値を超えると個体数が振動することがわかった。では、どのような振る舞いをするのか、可視化してみよう。</p>
 <h4 id="関数logistic_plotの実装">4. 関数<code>logistic_plot</code>の実装</h4>
-<p>ある範囲の<span class="math inline">\(r\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
+<p>ある範囲の<span class="math inline">\(a\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> logistic_plot(start, end, x, y):
     <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-        r <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start
+        a <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start
         n <span class="op">=</span> <span class="fl">0.1</span>
         <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):
-            n <span class="op">=</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
+            n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)
             <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:
-                x.append(r)
+                x.append(a)
                 y.append(n)</code></pre></div>
 <h4 id="関数plotの実装">5. 関数<code>plot</code>の実装</h4>
 <p><code>logistic_plot</code>の結果を受け取って、グラフに描画する関数<code>plot</code>を実装しよう。5つ目のセルに以下を入力せよ。</p>
@@ -314,13 +314,13 @@ n = 1 - \frac{1}{r}
     logistic_plot(start, end, x, y)
     plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</code></pre></div>
 <h4 id="定常状態の表示">6. 定常状態の表示</h4>
-<p>では、まずは定常状態に落ち着く領域<span class="math inline">\(1 &lt; r &lt; 3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
+<p>では、まずは定常状態に落ち着く領域<span class="math inline">\(1 &lt; a &lt; 3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plot(<span class="fl">1.0</span>, <span class="fl">3.0</span>)</code></pre></div>
 <h4 id="振動状態の表示">7. 振動状態の表示</h4>
-<p><span class="math inline">\(r&gt;3\)</span>では、個体数が定常状態にならない。それを見てみよう。7つ目のセルで以下を実行せよ。</p>
+<p><span class="math inline">\(a&gt;3\)</span>では、個体数が定常状態にならない。それを見てみよう。7つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plot(<span class="fl">1.0</span>, <span class="fl">4.0</span>)</code></pre></div>
 <p>どんなグラフが現れただろうか？</p>
-<p>また、興味のある人は<span class="math inline">\(3.54 &lt; r &lt; 3.58\)</span>の領域を拡大してみよう。次のセル(8つ目)で以下を実行せよ。</p>
+<p>また、興味のある人は<span class="math inline">\(3.54 &lt; a &lt; 3.58\)</span>の領域を拡大してみよう。次のセル(8つ目)で以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])
 plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</code></pre></div>
 <p>どんなグラフが現れただろうか？拡大前のグラフと見比べて見よ。</p>

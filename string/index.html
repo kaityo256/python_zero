@@ -413,7 +413,7 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 <p>「小説名　青空文庫」で検索し、出てきたページの下の方にある「図書カード」のリンクをたどると、「ファイルのダウンロード」の箇所に「テキストファイル(ルビあり)」というzipファイルがあるはずである。ブラウザによるが、右クリックで「リンクのアドレスをコピー」できるはずなので、それをURLに指定してやってみよ。</p>
 <p>例えば中島敦の「名人伝」ならば、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span></code></pre></div>
-<p>として実行してみよう。実行の度に結果は代わるが、おそらくまんなかに大きく「名人」と表示されたことと思う。</p>
+<p>として実行してみよう。実行の度に結果は代わるが、おそらく中央に大きく「名人」と表示されたことと思う。</p>
 <p>どうしても小説が思いつかない場合は、以下から選んで良い。</p>
 <ul>
 <li>「<a href="https://www.aozora.gr.jp/cards/000296/card47061.html">学問のすすめ</a>」(福沢 諭吉)</li>
@@ -431,7 +431,7 @@ IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:
     <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)
 <span class="cf">else</span>:
-    <span class="bu">print</span>(<span class="st">&quot;Found </span><span class="sc">{}</span><span class="st"> files.&quot;</span>.<span class="bu">format</span>)</code></pre></div>
+    <span class="bu">print</span>(<span class="ss">f&quot;Found </span><span class="sc">{</span>files<span class="sc">}</span><span class="ss"> files.&quot;</span>)</code></pre></div>
 <p>などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、</p>
 <pre class="txt"><code>a file.
 2 files.
