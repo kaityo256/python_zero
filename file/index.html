@@ -176,12 +176,12 @@ f.close() <span class="co"># 閉じる</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>)
 <span class="cf">for</span> line <span class="kw">in</span> f: <span class="co"># ファイルから一行ずつlineに読み込む</span>
     <span class="bu">print</span>(line)</code></pre></div>
-<p>なお、この形で取得した<code>line</code>は、改行コードが含まれているため、それをそのまま<code>print</code>で出力すると改行が二つつながり、出力としては「一行おき」に表示されてしまう。それを防ぐには、<code>line</code>の末尾の改行を含む空白文字を削除する<code>rstrip()</code>を使えばよい。</p>
+<p>なお、この形で取得した<code>line</code>には改行コードが含まれているため、それをそのまま<code>print</code>で出力すると改行が二つつながり、出力としては「一行おき」に表示されてしまう。それを防ぐには、<code>line</code>の末尾の改行を含む空白文字を削除する<code>rstrip()</code>を使えばよい。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>)
 <span class="cf">for</span> line <span class="kw">in</span> f: <span class="co"># ファイルから一行ずつlineに読み込む</span>
     <span class="bu">print</span>(line.rstrip())</code></pre></div>
 <h3 id="with構文">with構文</h3>
-<p>蛇口を開けたら閉めるように、ファイルを開いたら閉じなければならない。実際には開いたままのファイルはプログラム終了時に閉じてくれるため、ちゃんと閉じなくても問題が起きることは少ないのだが、ファイルを多数開いて、ファイル数の上限に達してしまったり、うっかり開いたままのファイルを別の場所で変にいじっておかしなことになったりと、後々嫌らしい問題を起こすことがあるので、「開いたら閉じる」癖をつけておきたい。といっても、人間のやることなので、ファイルの閉じ忘れを完全に防ぐのは難しい。そこで、Pythonは自動でファイルを閉じてくれる<code>with</code>構文、というものがある。</p>
+<p>蛇口を開けたら閉めるように、ファイルを開いたら閉じなければならない。実際には開いたままのファイルはプログラム終了時に閉じてくれるため、ちゃんと閉じなくても問題が起きることは少ないのだが、ファイルを多数開いて、ファイル数の上限に達してしまったり、うっかり開いたままのファイルを別の場所で変にいじっておかしなことになったりと、後々嫌らしい問題を起こすことがあるので、「開いたら閉じる」癖をつけておきたい。といっても、人間のやることなので、ファイルの閉じ忘れを完全に防ぐのは難しい。そこで、Pythonは自動でファイルを閉じてくれる<code>with</code>構文というものがある。</p>
 <p><code>with</code>は以下のように使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;test.txt&quot;</span>) <span class="im">as</span> f:
     <span class="co"># ファイルに関する処理</span></code></pre></div>
@@ -206,10 +206,10 @@ f.close() <span class="co"># 閉じる</span></code></pre></div>
         <span class="co"># ここでlineにデータ行が入ってくる</span></code></pre></div>
 <p>さて、<code>for</code>文の中で渡される<code>line</code>には、CSVファイルのデータが一行ずつ入ってくる。これを<code>split</code>を使って配列にバラしてやる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">line <span class="op">=</span> <span class="st">&quot;1, 成績太郎, B&quot;</span>
-line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;1&#39;, &#39; 成績太郎&#39;, &#39; B\n&#39;]</span></code></pre></div>
+line.split(<span class="st">&quot;,&quot;</span>) <span class="co"># =&gt; [&#39;1&#39;, &#39; 成績太郎&#39;, &#39; B\n&#39;]</span></code></pre></div>
 <p>最後に改行が入っていることに注意。削除しておきたければ、<code>line = line.rstrip()</code>としておこう。さて、バラされた要素は文字列のリストになっているため、必要に応じて整数や浮動小数点数に変換してやろう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">line <span class="op">=</span> <span class="st">&quot;1, 成績太郎, B&quot;</span>
-<span class="bu">id</span>, name, grade <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>) <span class="co">#=&gt; [&#39;1&#39;, &#39; 成績太郎&#39;, &#39; B\n&#39;]</span>
+<span class="bu">id</span>, name, grade <span class="op">=</span> line.split(<span class="st">&quot;,&quot;</span>) <span class="co"># =&gt; [&#39;1&#39;, &#39; 成績太郎&#39;, &#39; B\n&#39;]</span>
 <span class="bu">id</span> <span class="op">=</span> <span class="bu">int</span>(<span class="bu">id</span>)</code></pre></div>
 <p>これで名前と学籍番号を得ることができた。</p>
 <p>次に、二つのCSVファイルを読み込んで、一つのグラフなどを作りたいときに便利な方法も紹介しておこう。いま、どこにどれだけの人が住んでいるかの「人口地図」を作りたいとする。人口地図を作るのに必要なのは「座標と人口」の組だが、我々がアクセスできるのは「どの都市にどれだけの人口があるか」と「どの都市がどこにあるか」の情報だけだ。この二つを組み合わせて「人口地図」を作る。</p>

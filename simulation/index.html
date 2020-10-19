@@ -97,7 +97,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>反応拡散方程式</li>
 </ul>
 <h2 id="数値シミュレーションとは">数値シミュレーションとは</h2>
-<p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている。したがって、極限すれば物理学とは微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(Governing Equation)</strong> と呼ぶ。この支配方程式を数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(Numerical Simulation)</strong> と呼ぶ。</p>
+<p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている。したがって、極限すれば物理学とは微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(governing equation)</strong> と呼ぶ。この支配方程式を数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(numerical simulation)</strong> と呼ぶ。</p>
 <p>さて、この世界の空間や時間は(おそらく)連続的であるのに対し、コンピュータは原則として離散的な値しか扱うことができない。数値シミュレーションとはこの世界の出来事をコンピュータの中に再現することであるから、計算するにあたって連続的な値を離散的な値に変換する必要がある。例えば、パソコンやスマホで動画を見ることがあるだろう。動画は、我々が目にする世界のように、空間的にも時間的にも連続的に見えるが、実際には時間方向は静止画像を高速にコマ送りすることで連続的に見せており、静止画像も拡大するとピクセル単位で離散化されている。</p>
 <div class="figure">
 <img src="fig/discretization.png" alt="時間と空間の離散化" />
@@ -105,7 +105,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>このように、連続的な値をコンピュータで扱うために離散的な値にすることを <strong>離散化(discretization)</strong> と呼ぶ。以下では、時間や空間を離散化することで微分方程式を計算機が扱いやすい形にして、その振る舞いを数値シミュレーションで解析してみよう。</p>
 <h2 id="差分化">差分化</h2>
-<p>今、ある量<span class="math inline">\(f(t)\)</span>の時間微分<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻みを<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。時間微分<span class="math inline">\(f&#39;(t)\)</span>がわかっているので、厳密な表式は積分で与えられる。</p>
+<p>今、ある量<span class="math inline">\(f(t)\)</span>の時間微分<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻み<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。時間微分<span class="math inline">\(f&#39;(t)\)</span>がわかっているので、厳密な表式は積分で与えられる。</p>
 <p><span class="math display">\[
 f(t+h) = f(t) + \int_t^{t+h} f&#39;(t) dt
 \]</span></p>
@@ -134,7 +134,7 @@ f(t_0+3h) &amp;= f(t_0+2h) + f&#39;(t_0+2h)h \\
 &amp; \cdots 
 \end{aligned}
 \]</span></p>
-<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(Finite difference method)</strong> と呼ぶ。特に、先程のように一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
+<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(finite difference method)</strong> と呼ぶ。特に、先程のように一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
 <h2 id="ニュートンの運動方程式">ニュートンの運動方程式</h2>
 <p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
 <p><span class="math display">\[
@@ -170,8 +170,7 @@ r_y(t+h) &amp;= r_y(t) + v_y(t) h\\
 \end{aligned}
 \]</span></p>
 <p>となる。この計算を一度行うことで、時刻<span class="math inline">\(t\)</span>の物理量から時刻<span class="math inline">\(t+h\)</span>の物理量が得られる。あとはこれを繰り返せば(時間刻み<span class="math inline">\(h\)</span>の精度で)任意の時刻の位置と速度がわかることになる。</p>
-<p>厳密解も求めておこう。</p>
-<p>まず、運動方程式から速度に関する部分を抜き出すと以下のようになる。</p>
+<p>厳密解も求めておこう。まず、運動方程式から速度に関する部分を抜き出すと以下のようになる。</p>
 <p><span class="math display">\[
 \begin{aligned}
 \dot{v_x} &amp;= 0 \\
@@ -231,13 +230,13 @@ l(\theta) = v_0 t_f \cos\theta
 \]</span></p>
 <p>これを<span class="math inline">\(\theta\)</span>で微分して<span class="math inline">\(l&#39;(\theta)=0\)</span>となる<span class="math inline">\(\theta\)</span>を探せばよいが、実際に計算すると、解が初等的には求まらないことがわかるであろう。これを数値計算で求めてみよう。</p>
 <h2 id="反応拡散方程式グレイスコット模型">反応拡散方程式(グレイ・スコット模型)</h2>
-<p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として反応拡散系(Diffusion-Reaction System)を取り上げる。</p>
+<p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として反応拡散系(diffusion-reaction system)を取り上げる。</p>
 <p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の二階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
 <div class="figure">
 <img src="fig/bz.png" alt="BZ反応" />
 <p class="caption">BZ反応</p>
 </div>
-<p>さて、BZ反応は時間的に変動する現象であるが、これが「拡散(Diffusion)」と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(Reaction)と拡散(Diffusion)が組み合わさった現象であるから反応拡散系(Diffusion-Reaction System)と呼ばれる。反応拡散系は様々な例が知られているが、そのうちの一つ、グレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
+<p>さて、BZ反応は時間的に変動する現象であるが、これが拡散と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(reaction)と拡散(diffusion)が組み合わさった現象であるから反応拡散系(diffusion-reaction system)と呼ばれる。反応拡散系は様々な例が知られているが、そのうちの一つ、グレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
 <p>グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -280,7 +279,7 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <p>もともとの式のうち、時間微分は一次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
 <h2 id="数値シミュレーション課題">数値シミュレーション:課題</h2>
 <h3 id="課題1運動方程式">課題1:運動方程式</h3>
-<p>まずは物を投げた場合の運動を、運動方程式を解くことで数値的に追ってみよう。新しいPython3ノートブックを開き、<code>ballistic.ipynb</code>という名前で保存せよ。</p>
+<p>まずは物を投げた場合の運動を、運動方程式を解くことで数値的に追ってみよう。新しいノートブックを開き、<code>ballistic.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
@@ -328,7 +327,7 @@ plot(angles, <span class="fl">1.0</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</code></pre></div>
 <p>初速を大きくした場合、「台から投げた時」の「最も遠くに届く角度」は増えるだろうか、減るだろうか？初速を<span class="math inline">\(10\)</span>にしたらどうなるだろう？初速が大きい極限でどうなるか考察せよ。</p>
 <h3 id="課題2反応拡散方程式">課題2:反応拡散方程式</h3>
-<p>反応拡散方程式を数値的に解いてみよう。新しいPython3ノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
+<p>反応拡散方程式を数値的に解いてみよう。新しいノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt

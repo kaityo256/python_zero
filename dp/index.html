@@ -169,7 +169,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>大きな問題を、より小さな問題に分解できること (分割統治)</li>
 <li>分解された小さな問題の結果が、再利用可能であること (メモ化)</li>
 </ul>
-<p>ナップサック問題でも動的計画法の説明はできるが、より説明がわかりやすい「最適経路探索問題」を例に動的計画法の説明をする。</p>
+<p>ナップサック問題でも動的計画法の説明はできるが、より説明がわかりやすい「最短経路探索問題」を例に動的計画法の説明をする。</p>
 <p>あなたは旅行を計画している。目的値に到着するのに、複数の経路があるのだが、できるだけ早く、もしくはできるだけ安く到着したい。どのような経路を取ればよいだろうか？いま、この経路をグラフで表現すると以下のようになるとする。</p>
 <div class="figure">
 <img src="fig/shortestpath1.png" alt="最短経路問題" />
@@ -232,8 +232,8 @@ names</code></pre></div>
             <span class="cf">continue</span>
         psum <span class="op">+=</span> prices[i]
         csum <span class="op">+=</span> cals[i]
-        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
-    <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen, </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(psum, csum))</code></pre></div>
+        <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>names[i]<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>prices[i]<span class="sc">}</span><span class="ss"> Yen </span><span class="sc">{</span>cals[i]<span class="sc">}</span><span class="ss"> kcal&quot;</span>)
+    <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{psum}</span><span class="st"> Yen, </span><span class="sc">{csum}</span><span class="st"> kcal&quot;</span>)</code></pre></div>
 <p>最後の<code>print</code>文のインデントが異なることに注意すること。</p>
 <p>ここで、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    ind <span class="op">=</span> <span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(names)))
@@ -254,7 +254,7 @@ greedy(<span class="dv">1000</span>)</code></pre></div>
 greedy(<span class="dv">10000</span>)</code></pre></div>
 <p>を実行せよ。結果はどうなるだろうか？出てきたメニューを見た感想を述べよ。</p>
 <h3 id="課題1-3全探索">課題1-3：全探索</h3>
-<p>動的計画法を実装する前に、全探索コードを書いてみよう。いま、メニューが114個ある。全てのメニューについて「注文する/しない」を選ぶと、全体で<span class="math inline">\(O(2^N)\)</span>の手間がかかる。ただし、すでに予算を超えている時に、さらに追加でメニューを注文する必要はないので、その部分は枝刈をする。これをナイーブに再帰で書いてみよう。</p>
+<p>動的計画法を実装する前に、全探索コードを書いてみよう。いま、メニューが114個ある。全てのメニューについて「注文する/しない」を選ぶと、全体で<span class="math inline">\(O(2^N)\)</span>の手間がかかる。ただし、すでに予算を超えている時に、さらに追加でメニューを注文する必要はないので、その部分は枝刈りをする。これをナイーブに再帰で書いてみよう。</p>
 <h4 id="全探索関数searchの実装">6. 全探索関数<code>search</code>の実装</h4>
 <p><code>n</code>番目までのメニューを使って、<code>budget</code>円以内で得られる最大のカロリーを返す関数<code>search(n, budget)</code>を実装しよう。6つ目のセルに、以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> search(n, budget):
@@ -277,7 +277,7 @@ greedy(<span class="dv">10000</span>)</code></pre></div>
 <p>実際に全探索を実行してみよう。7つ目のセルで以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 cal <span class="op">=</span> search(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">1000</span>)
-<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
+<span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>cal<span class="sc">}</span><span class="ss"> kcal&quot;</span>)</code></pre></div>
 <p>実行した結果、実行時間と1000円で得られる最大カロリーのみが表示されるはずである(メニューの取得は)。実行時間と結果を貪欲法と比較せよ。結果は貪欲法と一致したか？実行時間はどうであろうか？</p>
 <p>次に<code>search(len(names)-1,1200)</code>と、予算を「1200円」にして実行してみよ。実行時間はどうなったであろうか？予算1万円の探索は実行可能できそうか？</p>
 <p>なお、ここで求められるのは最大カロリーだけである。最大カロリーが求まった時、それを与えるメニューの組み合わせを求める方法は後述する。</p>
@@ -311,12 +311,12 @@ cal <span class="op">=</span> search(<span class="bu">len</span>(names)<span cla
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
 cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">1000</span>)
-<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
+<span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>cal<span class="sc">}</span><span class="ss"> kcal&quot;</span>)</code></pre></div>
 <p>メモ化に用いる辞書をここで定義していることに注意。全探索と同じ結果を、非常に高速に返したはずだ。特筆すべきは、実行時間の予算依存性である。全探索の場合は1000円を1200円にするだけで計算時間が激増した。しかし、メモ化を施した再帰ルーチンなら、10000円でも実行可能だ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">%%</span>time
 dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
 cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">10000</span>) <span class="co"># ←ここを10000に修正して再実行せよ</span>
-<span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(cal))</code></pre></div>
+<span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>cal<span class="sc">}</span><span class="ss"> kcal&quot;</span>)</code></pre></div>
 <p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。また、ここで得たカロリーは次の「発展課題：解の再構成」で使うので覚えておくこと。</p>
 <h3 id="発展課題解の再構成">発展課題：解の再構成</h3>
 <p>さて、メモ化再帰により、「ある予算内で得られる最大カロリー」はわかったが、「その最大カロリーを与えるメニュー」はわからない。しかし、先ほどメモしたリストと、最大カロリーがわかれば、そのメニューを構成するのは簡単である。</p>
@@ -345,10 +345,10 @@ dic[(n, budget)] <span class="op">=</span> search(n<span class="op">-</span><spa
 <p><code>get_menu</code>が返すンデックスリストを受け取って、名前やカロリーを表示するコードも書こう。11個目のセルに以下を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_menu(menu):
     <span class="cf">for</span> i <span class="kw">in</span> menu:
-        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(names[i], prices[i], cals[i]))
+        <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>names[i]<span class="sc">}</span><span class="ss"> </span><span class="sc">{</span>prices[i]<span class="sc">}</span><span class="ss"> Yen </span><span class="sc">{</span>cals[i]<span class="sc">}</span><span class="ss"> kcal&quot;</span>)
     total_price <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: prices[x], menu))
     total_cal <span class="op">=</span> <span class="bu">sum</span>(<span class="bu">map</span>(<span class="kw">lambda</span> x: cals[x], menu))
-    <span class="bu">print</span>(<span class="st">&quot;Total </span><span class="sc">{}</span><span class="st"> Yen </span><span class="sc">{}</span><span class="st"> kcal&quot;</span>.<span class="bu">format</span>(total_price, total_cal))</code></pre></div>
+    <span class="bu">print</span>(<span class="ss">f&quot;Total </span><span class="sc">{</span>total_price<span class="sc">}</span><span class="ss"> Yen </span><span class="sc">{</span>total_cal<span class="sc">}</span><span class="ss"> kcal&quot;</span>)</code></pre></div>
 <h4 id="解の再構成">12. 解の再構成</h4>
 <p>上記二つをまとめて実行してみよう。まずは1000円で得られる最大カロリーのメニューを見てみる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">budget <span class="op">=</span> <span class="dv">1000</span>
@@ -367,7 +367,7 @@ show_menu(menu)</code></pre></div>
 <h2 id="余談エレファントな解法">余談：エレファントな解法</h2>
 <p>チェス、将棋、囲碁、オセロといった「ゲーム」は、局面によって打てる「手」が決まっており、これを「合法手」と呼ぶ。例えば、平均で4種類の合法手があり、勝負がつくまでに10手程度かかるゲームであれば、最終局面の数は4の10乗、およそ100万通りである。もし勝負がつくまでに40手かかるとすると、4の40乗でおよそ一兆通りになる。このように、問題サイズに対して状態数が指数関数的に増えることを <strong>組み合わせ爆発</strong> と呼ぶ。組み合わせ爆発を題材にした、日本科学未来館の<a href="https://www.youtube.com/watch?v=Q4gTV4r0zRs">フカシギの数え方</a>という動画、通称「フカシギおねえさん」は面白いので是非一度見てみられたい。</p>
 <p>一般に組み合わせ爆発が起きると計算機を使っても手も足もでないことが多いのだが、うまく「大きいけど有限」に問題を落とすことができると計算機で「読み切る」ことができる。その有名な例が四色問題だ。四色問題とは「二次元の地図に対して、隣り合う領域を同じ色に塗らないという条件を満たしつつ全ての領域に色を塗るのに四色あれば足りるか」という命題である。五色で足りる証明は比較的早く得られたが、四色で足りることの数学的な証明は長らくされなかった。問題が提起されてからおよそ100年後の1976年、アッペルとハーケンは、四色問題問題を「大きいが有限」の問題に帰着させ、スパコンで力任せに「四色で足りる」ことを証明した。雑な言い方をすれば「この地図すべてを四色で塗ることができれば、いかなる地図も四色で塗ることができる」という「基礎地図(正確には不可避集合)」をすべてリストアップし、その「基礎地図」がすべて四色で塗り分けられることを示す、という方法である。</p>
-<p>似たような「証明」に、「9×9の数独について、解が一意であるためには最低ヒントが17個必要である」という定理もある。これも、「すべての可能な数独の問題」に対して、それぞれに「すべての16ヒント問題」を作り、それが全て解が一意でないことをスパコンで力任せに確認することで証明された。このように「大きいが有限」の問題に帰着させて計算機で力任せに解いてしまうことを「エレファントな証明」と呼ぶ。数学の美しい証明を「エレガントな証明」と呼ぶことの対比である。</p>
+<p>似たような「証明」に、「9×9のナンプレについて、解が一意であるためには最低ヒントが17個必要である」という定理もある。これも、「すべての可能なナンプレの問題」に対して、それぞれに「すべての16ヒント問題」を作り、それが全て解が一意でないことをスパコンで力任せに確認することで証明された。このように「大きいが有限」の問題に帰着させて計算機で力任せに解いてしまうことを「エレファントな証明」と呼ぶ。数学の美しい証明を「エレガントな証明」と呼ぶことの対比である。</p>
 <p>果たして「エレファントな証明」は人類を賢くしているのか？というのは難しい問題であり、現在もよく議論になる。例えばオセロも6×6マスまでは完全に解析されており(後手必勝である)、その知識を使えば、後手番なら絶対に負けない思考ルーチンを作ることができるのだが、果たしてそれは「思考」ルーチンといえるのだろうか？このような問題は、例えば<a href="https://ja.wikipedia.org/wiki/%E4%B8%AD%E5%9B%BD%E8%AA%9E%E3%81%AE%E9%83%A8%E5%B1%8B">中国語の部屋</a>という思考実験で問題提起されている。</p>
 <p>私個人の意見としては、「エレファント」であろうと証明は証明だし、人類の知識を増やしたことは間違いないと考えている。ただし、それが「人類を賢くしたか」は別問題である。今後、「計算機が何か答えを出し、なぜかはわからないがそれが正しいように見える」ことが増えるであろう(天気予報が典型例だ)。このような「計算された知性」と人類はどう向き合うべきか、は難しい問題である。</p>
 </article>

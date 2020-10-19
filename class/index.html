@@ -113,13 +113,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </blockquote>
 <p>という文章がだいたい理解できていればそれでよい。</p>
 <h3 id="オブジェクトとは">オブジェクトとは</h3>
-<p>オブジェクト指向には、<strong>オブジェクト(Object)</strong>という概念が出てくる。これは「データ(内部状態)」と「振る舞い」をまとめたものだ。オブジェクト指向プログラミングでは、オブジェクトに何か処理を「依頼」することでなんらかの処理をする。この「依頼」を<strong>メッセージ (Message)</strong>と呼ぶ。Pythonでは、次のような形でオブジェクトにメッセージを送る。</p>
+<p>オブジェクト指向には、<strong>オブジェクト(object)</strong>という概念が出てくる。これは「データ(内部状態)」と「振る舞い」をまとめたものだ。オブジェクト指向プログラミングでは、オブジェクトに何か処理を「依頼」することでなんらかの処理をする。この「依頼」を<strong>メッセージ (message)</strong>と呼ぶ。Pythonでは、次のような形でオブジェクトにメッセージを送る。</p>
 <div class="figure">
 <img src="fig/message.png" alt="オブジェクトとメッセージ" />
 <p class="caption">オブジェクトとメッセージ</p>
 </div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">obj.do_somthing()</code></pre></div>
-<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので<strong>レシーバ(reciever)</strong>と呼ばれる。逆に、メッセージを送る側は<strong>センダー(Sender)</strong>と言う。ピリオドの右にある<code>do_something()</code>は<strong>メソッド(Method)</strong>と呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。</p>
+<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので<strong>レシーバ(reciever)</strong>と呼ばれる。逆に、メッセージを送る側は<strong>センダー(sender)</strong>と言う。ピリオドの右にある<code>do_something()</code>は<strong>メソッド(method)</strong>と呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。</p>
 <h3 id="カプセル化">カプセル化</h3>
 <p>なぜオブジェクト指向プログラミングをするかというと、それはオブジェクトに責任を移譲するためだ。例をあげよう。社員データをまとめたデータベースがある。社員データは以下のデータを持つ。</p>
 <ul>
@@ -211,17 +211,17 @@ label.face <span class="op">=</span> bold</code></pre></div>
 </div>
 <p>クラス名を関数のように呼び出すと、このクラスのオブジェクトが作られ、それが返される。この時、内部的に<code>__init__</code>が呼ばれている。こうして作られたオブジェクトを、元になったクラスのインスタンスと呼ぶ。</p>
 <p>コンストラクタから返された<code>c</code>がカウンターオブジェクトだ。このオブジェクトのメソッドを呼ぶことでメッセージを送ることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c.count() <span class="co">#=&gt; 1</span>
-c.count() <span class="co">#=&gt; 2</span>
-c.count() <span class="co">#=&gt; 3</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c.count() <span class="co"># =&gt; 1</span>
+c.count() <span class="co"># =&gt; 2</span>
+c.count() <span class="co"># =&gt; 3</span></code></pre></div>
 <div class="figure">
 <img src="fig/c_count.png" alt="メソッド呼び出し" />
 <p class="caption">メソッド呼び出し</p>
 </div>
 <p><code>c.count()</code>呼ぶ度に表示される数字が増えていくのがわかる。クラスから別のオブジェクトを作ることもできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c2 <span class="op">=</span> Counter()
-c2.count() <span class="co">#=&gt; 1</span>
-c2.count() <span class="co">#=&gt; 2</span></code></pre></div>
+c2.count() <span class="co"># =&gt; 1</span>
+c2.count() <span class="co"># =&gt; 2</span></code></pre></div>
 <p>新たに作られたカウンターオブジェクト<code>c2</code>は、自分自身の内部状態を持つ。</p>
 <p>さて、こうして作ったカウンターの初期値はつねに0だが、任意の初期値を与えたくなったとしよう。この時、<code>__init__</code>に引数を渡すことで、初期値を与えるようにできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
@@ -233,10 +233,10 @@ c2.count() <span class="co">#=&gt; 2</span></code></pre></div>
         <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co"># 何も指定しなかった場合、初期値が0になる</span>
 c <span class="op">=</span> Counter()
-c.count() <span class="co">#=&gt; 1</span>
+c.count() <span class="co"># =&gt; 1</span>
 <span class="co"># 初期値を指定することもできる</span>
 c2 <span class="op">=</span> Counter(<span class="dv">10</span>)
-c2.count() <span class="co">#=&gt; 11</span></code></pre></div>
+c2.count() <span class="co"># =&gt; 11</span></code></pre></div>
 <p>オブジェクト.メソッド名(引数)という形で呼ぶと、暗黙に第一引数としてオブジェクト自身が渡され、それを慣習として<code>self</code>という名前で受け取る。</p>
 <p>さて、ここで、カウンタークラスはカウント値を属性として持ち、それを修正するメソッド<code>count()</code>を公開しており、カプセル化の例となっている。ここで、属性<code>__num</code>は外からアクセスできない。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(c.__num)
@@ -260,12 +260,12 @@ address <span class="op">=</span> [<span class="st">&quot;sato&quot;</span>, <sp
 <p>また、子会社ができたことにより、社員番号の扱いも変えなければならない。高橋さんは子会社<code>Fuga</code>の社員番号0番であるべきだ。どうしよう？別に所属会社と社員番号のリストを作るべきだろうか？今後両方に所属する人が出てきたら？今後何か変更があるたびにプログラムを全部書き直しなければならないだろうか？</p>
 <p>上記のプログラムは、「名前やアドレスを管理したい」という「目的」と、「それをどう実現するか」という「実装」がべったりくっついているところに問題があった。オブジェクト指向プログラミングでは、「目的(振る舞い)」と「実装」を分離する。</p>
 <p>実装はともかく、社員データベース<code>database</code>があり、そこに社員名を問い合わせればアドレスを教えてくれるようになっているとしよう。イメージはこんな感じである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co">#=&gt; takahashi@fuga.co.jp</span>
-tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co">#=&gt; tanaka@hoge.co.jp</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co"># =&gt; takahashi@fuga.co.jp</span>
+tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co"># =&gt; tanaka@hoge.co.jp</span></code></pre></div>
 <p>こうしておくと、将来子会社が増えた時、<code>database</code>の内部実装は変更する必要があるが、<code>database</code>に問い合わせている上記の部分のプログラムを修正しなくて良い。</p>
 <p>このプログラムは全社員に通し番号で社員番号を付与しているかもしれないし、会社ごとに異なるデータベースを持っているかもしれない。しかし、そんなことはプログラマは気にしなくて良い。</p>
 <p>さて、今度は佐藤さんの役職も知りたいとしよう。こう書きたくなるだろうか？</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_position <span class="op">=</span> database.position(<span class="st">&quot;佐藤&quot;</span>) <span class="co">#=&gt; 課長</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_position <span class="op">=</span> database.position(<span class="st">&quot;佐藤&quot;</span>) <span class="co"># =&gt; 課長</span></code></pre></div>
 <p>オブジェクト指向に慣れた人なら、上記のプログラムに違和感を感じるだろう。「データベースに聞けばなんでも教えてくれる」ということは、「データベースが全ての情報を把握している」ということである。会社で「とにかくなんでもこの人に聞け」という人がいたら、その人の責任が過大であり、危険信号であることは想像できるであろう。</p>
 <p>そこで、データベースは名前から「社員情報」というオブジェクトを返すことにして、細かい情報はそのオブジェクトに教えてもらおう。総合受付から担当秘書を教えてもらい、詳細は担当秘書に教えてもらうイメージだ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>)
@@ -281,7 +281,7 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 </ul>
 <p>と、「誰がどこまで責任をもっているか」が明確になり、かつ「オブジェクト同士の責任が重なる」こともない。</p>
 <p>ちなみに<code>sato_info</code>を消して、メソッド呼び出しをピリオドでつなげることもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co">#=&gt; 課長</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co"># =&gt; 課長</span></code></pre></div>
 <p>オブジェクト指向に慣れたプログラマは「こういうオブジェクトはこういう振る舞いをして欲しい」とか「このオブジェクト(クラス)の責任が多すぎるな」といった「お気持ち」を持つ。この「お気持ち」に沿ってプログラムを組むと、バグが少なかったり、将来の仕様変更に強いプログラムができる。オブジェクト指向はそういう「プログラミングノウハウ」を形として具現化したものだ。ある程度大きなプログラムを組んでみないと、このあたりの感覚を身につけることは難しい。</p>
 <p>本稿も含めて、巷にあるオブジェクト指向の説明においては「たとえ話」が頻出する。たとえ話はなんとなくイメージを掴むのには有用であるが、オブジェクト指向がプログラミング技法である以上、いくらわかった気になっても実際に使えなければ意味がない。あくまでもプログラムの具体例に数多く触れ、経験を積み重ねていくのがオブジェクト指向の理解の早道であろう。</p>
 <h2 id="割りばしゲーム">割りばしゲーム</h2>
@@ -477,7 +477,7 @@ s
 <h4 id="ゲーム木の可視化">6. ゲーム木の可視化</h4>
 <p>ここまでで上から</p>
 <ol style="list-style-type: decimal">
-<li>import文</li>
+<li><code>import</code>文</li>
 <li><code>State</code>クラスの宣言</li>
 <li><code>move</code>関数</li>
 <li><code>make_tree</code>関数</li>
@@ -490,7 +490,7 @@ make_graph(root, g)</code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
 <h3 id="発展課題-枝刈り">発展課題: 枝刈り</h3>
 <p>さて、無事にゲーム木(しつこいが正確には木構造ではなく有向グラフである)が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
-<p>引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈する。こうして後手の負けにつながる枝を全て刈れば、後手必勝の手筋のみが残るはずである。</p>
+<p>引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈りする。こうして後手の負けにつながる枝を全て刈れば、後手必勝の手筋のみが残るはずである。</p>
 <h4 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h4>
 <p>7つ目のセルに、枝を刈るための関数<code>prune</code>を実装せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> prune(node):
@@ -518,7 +518,7 @@ g <span class="op">=</span> Digraph()
 make_graph(root, g)</code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
 <h4 id="後手必勝の確認">後手必勝の確認</h4>
-<p>隣の人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
+<p>友人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
 <h2 id="余談心理的安全性について">余談：心理的安全性について</h2>
 <p>子育てをしていると、たまに「ヒヤリ」とすることがある。いつの間にか子供が危険なもので遊んでいた、危険なものの近くにいた、ふと目を離した隙にいなくなった……そんな「ヒヤリ」としたり「ハッと」したりする、重大事故一歩手前の状態を俗に「ヒヤリハット」と呼ぶ。そんな「ヒヤリハット」をブログなどに書いた時の、まわりの人の反応を想像してみてほしい。「そんな危険な目に合わせるなんて子供がかわいそう」「○○に気をつけないなんて親として失格」という非難のコメントが付きそうな気がするであろう。このように「ヒヤリハット」を公開し、非難された親はどうするか。「次回は気をつけよう」と思う以上に「子育てのヒヤリハットはネットに公開してはいけない」と学ぶであろう。そして、そのブログの読者が「うちも気をつけよう」と思うような貴重な情報の共有機会が失われることになる。</p>
 <p>同様なことが会社組織などで起きる。工事現場で危険な目にあったことを何気なく上長に伝えたら「危ないだろ！気をつけろ！」と叱責されたとしよう。その部下は次から危険な事例を報告しなくなるだろう。頻繁に「ヒヤリハット」が発生するということは、安全性になんらかの根本的な問題があるという重要なサインなのであるが、それを言い出しづらい雰囲気の中では「危険の芽」は黙殺され、そのうち重大事故につながってしまう。このような「ネガティブな報告」をしづらい雰囲気がまずいことは感覚的にわかるであろう。逆に、「ネガティブな報告をしても責められない、初歩的な質問をしても馬鹿にされない」状態を「心理的安全性が保たれた状態」と呼ぶ。心理的安全性(Psychological Safety)は、Googleの働き方の研究、<a href="https://rework.withgoogle.com/blog/five-keys-to-a-successful-google-team/">Project Aristotle</a>の報告から広まったものだ。</p>
