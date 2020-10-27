@@ -66,4 +66,4 @@ def sociable(n):
 
 perfect(10000)
 amicable(10000)
-# sociable(100000)
+sociable(100000)
