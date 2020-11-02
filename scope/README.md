@@ -316,7 +316,7 @@ import matplotlib.pyplot as plt
 
 #### 2. 関数`logistic`の実装
 
-パラメータ$a$を受け取って、個体数$n$の収束を調べる関数`logistic`を実装しよう。
+パラメタ$a$を受け取って、個体数$n$の収束を調べる関数`logistic`を実装しよう。
 
 ```py
 def logistic(a):
