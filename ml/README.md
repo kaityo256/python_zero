@@ -169,7 +169,7 @@ large
 
 #### 5. データのピボット
 
-学歴別の収入を見るため、年齢を行、学歴を列とした二次元のデータに整形しよう。
+学歴別の収入を見るため、年齢を行、学歴を列とした2次元のデータに整形しよう。
 
 ```py
 large = large.pivot(index='age', columns='education', values='salary')
