@@ -136,7 +136,7 @@ a <span class="co"># =&gt; [1,2,3]</span></code></pre></div>
 b <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]
 a.append(b)
 a.append(b)</code></pre></div>
-<p>とすると、見かけ上<code>a</code>は二行二列の行列のように見える。</p>
+<p>とすると、見かけ上<code>a</code>は2行2列の行列のように見える。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a) <span class="co"># =&gt; [[1, 2], [1, 2]]</span></code></pre></div>
 <p>しかし、要素に含まれる二つのリストは同じものであるから、一方を修正するともう一方も影響を受ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span>
@@ -234,7 +234,7 @@ b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span
 <p class="caption">コピー後のリストの代入</p>
 </div>
 <p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。このように、値そのものではなく、「この場所を見よ」というような情報を <strong>参照(reference)</strong> と呼ぶ。</p>
-<h2 id="参照の値渡しについて">参照の値渡しについて</h2>
+<h2 id="参照の値渡し">参照の値渡し</h2>
 <p>前回「関数」を学び、今回「リスト」を学んだ。これにより、関数の引数としてリストを受け渡せるようになった。この時、注意すべきことがある。まず、関数の引数は、関数が作るブロック内だけで有効なローカル変数である。グローバル変数と同じ名前をつけても、別の変数として扱われる。</p>
 <p>こんなコードを見てみよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> func(a):
@@ -272,8 +272,8 @@ func(a)
 <img src="fig/ref3.png" alt="関数内で引数にリストを代入した場合" />
 <p class="caption">関数内で引数にリストを代入した場合</p>
 </div>
-<p>このように、関数の引数に値をコピーして渡す方法を「<strong>値渡し(call by value)</strong>」と呼ぶ。Pythonは関数には値がコピーして渡されるため、値渡しとなる。また、リストを指す変数は、リストの値そのものではなく、リストの先頭の場所を指している。このような値の持ち方を「<strong>参照(reference)</strong>」と呼ぶ。</p>
-<p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、「<strong>参照の値渡し</strong>」と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来この問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
+<p>このように、関数の引数に値をコピーして渡す方法を<strong>値渡し(call by value)</strong>と呼ぶ。Pythonは関数には値がコピーして渡されるため、値渡しとなる。また、リストを指す変数は、リストの値そのものではなく、リストの先頭の場所を指している。このような値の持ち方を <strong>参照(reference)</strong>と呼ぶ。</p>
+<p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、<strong>参照の値渡し (call by sharing)</strong>と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来この問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
 <h2 id="リスト内包表記">リスト内包表記</h2>
 <div class="figure">
 <img src="fig/report.png" alt="大量のレポートを採点する教員" />
@@ -285,7 +285,7 @@ func(a)
 result <span class="op">=</span> []
 <span class="cf">for</span> i <span class="kw">in</span> source:
     result.append(i<span class="op">*</span><span class="dv">2</span>)</code></pre></div>
-<p>Pythonには<strong>リスト内包表記 (List Comprehension)</strong>という表記法があり、上記のコードは以下のように書ける。</p>
+<p>Pythonには<strong>リスト内包表記 (list comprehension)</strong>という表記法があり、上記のコードは以下のように書ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]
 result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</code></pre></div>
 <p>リスト内包表記は</p>

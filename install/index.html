@@ -90,7 +90,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1 id="pythonのインストール">Pythonのインストール</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <p>本書では、原則としてGoogle Colabを用いてオンライン上でPythonを学ぶ。したがってローカルにPythonをインストールする必要はないが、後で必要になることもあるだろう。そこで、手元のPCにPythonをインストールする方法と、その実行方法について簡単に紹介しておく。また、Pythonを使う上で重要な、パッケージについても簡単に触れる。</p>
-<h2 id="pythonのライブラリについて">Pythonのライブラリについて</h2>
+<h2 id="pythonのライブラリ">Pythonのライブラリ</h2>
 <p>Pythonのインストールそのものは難しくない。公式サイトからダウンロードしてインストールするだけである。問題なのはパッケージ管理である。Pythonには最初からよくつかうライブラリが同封されており、標準ライブラリと呼ばれている。しかし、Pythonには標準ライブラリに含まれないライブラリ(サードパーティ製のライブラリと呼ばれる)が大量にある。そして、多くの場合、そのサードパーティのライブラリが使いたくなるであろう。そのようなライブラリがウェブに分散していてはインストールが大変なので、一箇所で管理するリポジトリがある。それがPython Package Index (PyPI)である。</p>
 <p>PyPIには誰でもライブラリを登録することができ、2019年5月時点で179710個のプロジェクトが登録されている。</p>
 <div class="figure">
@@ -168,7 +168,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p class="caption">Jupyter Notebookで実行</p>
 </div>
 <p>コマンドラインから<code>jupyter notebook</code>と入力するか、Anacondaを使っているなら「Anaconda Navigator」で「Jupyter notebook」の「Launch」を押すと、Jupyter Notebook(ジュピター・ノートブック、あるいはジュパイター・ノートブック)が起動する。</p>
-<p>こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。本講義で用いるGoogle Colabも、ブラウザからJupyter Notebookが使えるサービスである。</p>
+<p>こちらはプログラムだけではなく、画像やノートも貼り付けることができ、「プログラムを埋め込むことができる実験ノート」として使える。ノートは保存し、後で開くことも、プログラムを編集して再度実行することもできる。プログラムのタブ補完も効く。本書で用いるGoogle Colabも、ブラウザからJupyter Notebookが使えるサービスである。</p>
 <p>初めてPythonを触るならばJupyter Notebookを使うのが良いと思う。ただし、例えばセル間でグローバル変数を共有したり、「セルの並び順」ではなく「セルを実行した順」にプログラムが実行されるため、書き方が悪いと混乱しやすいかもしれない。とりあえずJupyter Notebookを使いつつ、エディタによる開発に移行するか、併用するのが良い。</p>
 </article>
 </body>

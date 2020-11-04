@@ -95,15 +95,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Google Colabの使い方</li>
 </ul>
 <h2 id="pythonの特徴">Pythonの特徴</h2>
-<h3 id="プログラミング言語について">プログラミング言語について</h3>
-<p>Pythonとはプログラミング言語の一つである。プログラミング言語とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
-<p>コンピュータは「機械語(マシン語)」という言葉しか解さない。機械語は数字の羅列であり、昔は人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
-<p>プログラムの実行方式として、大きく分けて「人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式」と、「機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式」があり、前者を「スクリプト言語」後者を「コンパイラ言語」と呼ぶ。ただし、両者の区別は絶対ではない。</p>
+<h3 id="プログラミング言語">プログラミング言語</h3>
+<p>Pythonとはプログラミング言語の一つである。 <strong>プログラミング言語 (programming language)</strong> とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
+<p>コンピュータは <strong>機械語 (machine language)</strong> という言葉しか解さない。機械語は数字の羅列であり、昔は人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
+<p>プログラムの実行方式として、大きく分けて人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式と、機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式があり、前者をスクリプト言語、後者をコンパイラ言語と呼ぶ。ただし、両者の区別は絶対ではない。</p>
 <div class="figure">
 <img src="fig/language.png" alt="スクリプト言語とコンパイラ言語" />
 <p class="caption">スクリプト言語とコンパイラ言語</p>
 </div>
-<h3 id="オフサイドルールについて">オフサイドルールについて</h3>
+<h3 id="オフサイドルール">オフサイドルール</h3>
 <p>プログラムは、いくつかの「文(statement)」でできている。「文」とはプログラム実行の単位である。プログラムは「文」が並んだものとして構成される。プログラムは原則として「上から順番に」実行されていく。しかし、例えば条件分岐などで「AならばXを、そうでなければYを実行したい」ということがあるだろう。この時、なんらかの方法で「X」や「Y」といった「かたまり」を表現しなければならない。いくつかの文で表現された「かたまり」を「コードブロック (code block)」あるいは単に「ブロック」と呼ぶ。このブロックをどのように表現するかが、プログラミング言語の見た目を決める。Pythonはブロックをインデントによって表現するのが大きな特徴である。これをオフサイドルールと呼ぶ。ブロックの表現方法としては、他に中括弧方式やキーワード方式がある。</p>
 <div class="figure">
 <img src="fig/codeblock.png" alt="コードブロックの表現方法" />
@@ -123,7 +123,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   puts(<span class="st">&quot;No&quot;</span>)
 <span class="kw">end</span></code></pre></div>
 <p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
-<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは <strong>インデント (indent)</strong> と呼ばれ、特にブロックがネストした場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは</p>
+<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは <strong>インデント (indent)</strong> と呼ばれ、特にブロックの中にブロックが含まれる(ネストする)場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは、　</p>
 <div class="sourceCode"><pre class="sourceCode c"><code class="sourceCode c"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){puts(<span class="st">&quot;Yes&quot;</span>);}<span class="cf">else</span>{puts(<span class="st">&quot;No&quot;</span>);}</code></pre></div>
 <p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
@@ -134,7 +134,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)
     <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></code></pre></div>
 <p>このように、インデントでブロックを表現する方法を <strong>オフサイドルール (off-side rule)</strong> と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
-<p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はメモ化したフィボナッチ数の計算ルーチンである。</p>
+<p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はフィボナッチ数の計算ルーチンである。</p>
 <div class="figure">
 <img src="fig/codeblock2.png" alt="Pythonのコードブロック" />
 <p class="caption">Pythonのコードブロック</p>
@@ -157,14 +157,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>PEP8は実に多くのルールを定めている。その多くは、「処理内容は変わらないが、より好ましい書き方を推奨する」というものだ。例えばある変数が真である時に何かを処理したい場合、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">==</span> <span class="va">True</span>:
     <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</code></pre></div>
-<p>と書くより、</p>
+<p>と冗長に書くより、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a:
     <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</code></pre></div>
 <p>と書きましょう、といった具合だ。他にも「インデントは空白4文字」「空白の入れ方」「改行の入れ方」など、様々な細かい「マナー」が書いてある。</p>
 <p>Pythonを学ぶにあたり、とりあえず「マナー」は気にしなくて良いが、実際にPythonを使ってコードを書いたり、それを外部に公開したりする場合は気にした方がよいだろう。Pythonには、コードがPEP8に従っているかチェックしてくれる<code>pep8</code>というツールや、コーディングスタイルだけではなく品質チェックもする<code>pylint</code>といったツールがある。広く使われているエディタはほとんどこういったツールとの連携機能があるので、それらを有効にするだけで自動的にコーディングスタイルを守れるようになるはずだ。</p>
 <h2 id="google-colabの使い方">Google Colabの使い方</h2>
-<p>本講義では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
-<p>まず、Googleにログインした状態で、<a href="https://colab.research.google.com">Google Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogle Driveのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
+<p>本書では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
+<p>まず、Googleにログインした状態で、<a href="https://colab.research.google.com">Google Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogleドライブのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
 <p>正しくアクセスできると、以下のようなウェルカムメニューが表示される。</p>
 <div class="figure">
 <img src="fig/colab_welcome.png" alt="Google Colabのウェルカムメニュー" />
@@ -177,10 +177,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <p>この三角の矢印のある行に、なにか入力してみよう。たとえば「3+5」と入力し、「三角ボタンをクリック」するか、「シフトキーを押しながらリターン」を入力する。以下、この動作を「実行する」と呼ぶ。</p>
 <div class="figure">
-<img src="fig/colab_firstcode.png" alt="3+4を実行した状態" />
-<p class="caption"><code>3+4</code>を実行した状態</p>
+<img src="fig/colab_firstcode.png" alt="3+5を実行した状態" />
+<p class="caption"><code>3+5</code>を実行した状態</p>
 </div>
-<p>矢印がしばらくくるくる回ってから、<code>[1]</code>という表記に変わり、答えである8が表示されたと思う。これは</p>
+<p>矢印がしばらくくるくる回ってから、<code>[1]</code>という表記に変わり、答えである8が表示されたと思う。これは、</p>
 <ul>
 <li>「3+5」というPythonのコードがクラウドに送信され</li>
 <li>クラウドでPythonが実行され</li>
@@ -223,7 +223,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
-<p>これは、イメージ描画ライブラリを利用するよ、という宣言である。<code>import</code>文については今は気にしなくて良い。</p>
+<p>これは、イメージ描画ライブラリを利用するよ、という宣言である。ライブラリとは、よく使う機能をパッケージ化したものだ。<code>import</code>文については今は気にしなくて良い。</p>
 <h4 id="描画">2. 描画</h4>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
 draw <span class="op">=</span> ImageDraw.Draw(img)
@@ -244,7 +244,7 @@ draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx
 <span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></code></pre></div>
 <p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
 <h4 id="五芒星の描画">2. 五芒星の描画</h4>
-<p>二番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
+<p>2番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)
 draw <span class="op">=</span> ImageDraw.Draw(im)
 cx <span class="op">=</span> <span class="dv">128</span>
@@ -263,18 +263,18 @@ k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</spa
     x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx
     y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy
     draw.line((x1, y1, x2, y2))</code></pre></div>
-<p><code>for i in range(N):</code>の行を入力して改行すると(行末のコロンを忘れないこと)、カーソルの位置が少し右にずれたはずである。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントのレベルに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
+<p><code>for i in range(N):</code>の行を入力して改行すると(行末のコロンを忘れないこと)、カーソルの位置が少し右にずれたはずである。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントの深さに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
 <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
 <h4 id="イメージの表示-1">3. イメージの表示</h4>
-<p>さて、一つめのセルの<code>import</code>文、二つめのセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
+<p>さて、一つ目のセルの<code>import</code>文、二つ目のセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">img</code></pre></div>
 <p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力する。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
 <h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
-<p>先の二つめのセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考察せよ。</p>
+<p>先ほどの二つ目のセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考察せよ。</p>
 <h3 id="発展課題">発展課題</h3>
-<p>先のプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
-<h2 id="余談タッチタイピングについて">余談：タッチタイピングについて</h2>
-<p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インターフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
+<p>先ほどのプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
+<h2 id="余談タッチタイピング">余談：タッチタイピング</h2>
+<p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インタフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
 </article>
 </body>
 </html>

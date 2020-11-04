@@ -114,13 +114,13 @@ f(t+h) = f(t) + \int_t^{t+h} f&#39;(t) dt
 <p><span class="math display">\[
 f(t+h) \sim f(t) + h f&#39;(t)
 \]</span></p>
-<p>と近似することができる。<span class="math inline">\(f(t+h)\)</span>を<span class="math inline">\(t\)</span>の周りでテイラー展開して、一次までとると、</p>
+<p>と近似することができる。<span class="math inline">\(f(t+h)\)</span>を<span class="math inline">\(t\)</span>の周りでテイラー展開して、1次までとると、</p>
 <p><span class="math display">\[
 \begin{aligned}
 f(t + h) &amp;= f(t) + f&#39;(t)h + O(h^2) \\
 \end{aligned}
 \]</span></p>
-<p>となることから、先程の近似は<span class="math inline">\(h\)</span>の一次まで正しい。これを一次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる。</p>
+<p>となることから、先程の近似は<span class="math inline">\(h\)</span>の1次まで正しい。これを1次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる。</p>
 <div class="figure">
 <img src="fig/nextstep.png" alt="時間の差分化" />
 <p class="caption">時間の差分化</p>
@@ -134,9 +134,9 @@ f(t_0+3h) &amp;= f(t_0+2h) + f&#39;(t_0+2h)h \\
 &amp; \cdots 
 \end{aligned}
 \]</span></p>
-<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(finite difference method)</strong> と呼ぶ。特に、先程のように一次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
+<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(finite difference method)</strong> と呼ぶ。特に、先程のように1次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
 <h2 id="ニュートンの運動方程式">ニュートンの運動方程式</h2>
-<p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
+<p>互いに重力で引き合う二つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？　様々な答えはあろうが、一つの答えは「距離の逆二乗に比例する力で互いに引き合う二つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
 <p><span class="math display">\[
 m \frac{d v}{dt} = F
 \]</span></p>
@@ -224,14 +224,14 @@ r_y(t) &amp;= -\frac{g t^2}{2} + v_0 t \sin \theta + y_0
 <p><span class="math display">\[
 t_f = \frac{v_0 \sin \theta + \sqrt{v_0^2 \sin^2 \theta + 2 g y_0}}{g}
 \]</span></p>
-<p>ただし、複号は正の解をとった。着弾までに進む水平距離は</p>
+<p>ただし、複号は正の解をとった。着弾までに進む水平距離は、</p>
 <p><span class="math display">\[
 l(\theta) = v_0 t_f \cos\theta
 \]</span></p>
 <p>これを<span class="math inline">\(\theta\)</span>で微分して<span class="math inline">\(l&#39;(\theta)=0\)</span>となる<span class="math inline">\(\theta\)</span>を探せばよいが、実際に計算すると、解が初等的には求まらないことがわかるであろう。これを数値計算で求めてみよう。</p>
 <h2 id="反応拡散方程式グレイスコット模型">反応拡散方程式(グレイ・スコット模型)</h2>
 <p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として反応拡散系(diffusion-reaction system)を取り上げる。</p>
-<p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の二階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
+<p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の２階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
 <div class="figure">
 <img src="fig/bz.png" alt="BZ反応" />
 <p class="caption">BZ反応</p>
@@ -254,7 +254,7 @@ l(\theta) = v_0 t_f \cos\theta
 <p><span class="math display">\[
 \Delta \equiv \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}
 \]</span></p>
-<p>今は二次元空間を考えているが、まずは一次元の世界<span class="math inline">\(f(x)\)</span>を考える。微分方程式に二階微分が含まれているので、二階微分を近似したい。そのために、<span class="math inline">\(f(x+h)\)</span>と<span class="math inline">\(f(x-h)\)</span>をそれぞれ二次までテイラー展開してみよう。</p>
+<p>今は２次元空間を考えているが、まずは１次元の世界<span class="math inline">\(f(x)\)</span>を考える。微分方程式に２階微分が含まれているので、２階微分を近似したい。そのために、<span class="math inline">\(f(x+h)\)</span>と<span class="math inline">\(f(x-h)\)</span>をそれぞれ２次までテイラー展開してみよう。</p>
 <p><span class="math display">\[
 \begin{aligned}
 f(x + h) &amp;= f(x) + f&#39;(x)h + \frac{h^2}{2} f&#39;&#39;(x) + O(h^3) \\
