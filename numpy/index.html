@@ -103,7 +103,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>なお、NumPyやSciPyの使い方を覚える必要はない。ただ「PythonにはNumPyやSciPyというライブラリがあり、数行書くだけで行列の固有値問題を解くことができる」ということをぼんやり覚えておいて、将来、必要になった時にそれを思い出して、詳細については本を読むなりウェブで検索するなりすればよい。</p>
 <h2 id="numpyの使い方">Numpyの使い方</h2>
 <h3 id="numpyとは">NumPyとは</h3>
-<p>数値計算では、行列を扱うことが非常に多い。行列がからむ演算の中で特に重要なのが、行列同士の積の計算だ。行列と行列の積を行列行列積と呼ぶ。スーパーコンピュータにはTop500という性能ランキングがあり、年に二回ランキングが更新されるが、そこで行われているベンチマークは巨大な連立一次方程式をどれだけ効率的に解くことができるか、という問題である。そして、その計算の中心は行列行列積である。従って、Top500における「スパコンの性能」は、「いかに行列同士の積を早く計算できるか」に依存している。</p>
+<p>数値計算では、行列を扱うことが非常に多い。行列がからむ演算の中で特に重要なのが、行列同士の積の計算だ。行列と行列の積を行列行列積と呼ぶ。スーパーコンピュータにはTop500という性能ランキングがあり、年に2回ランキングが更新されるが、そこで行われているベンチマークは巨大な連立1次方程式をどれだけ効率的に解くことができるか、という問題である。そして、その計算の中心は行列行列積である。従って、Top500における「スパコンの性能」は、「いかに行列同士の積を早く計算できるか」に依存している。</p>
 <p>行列の積の定義そのものは簡単だ。普通にかけば三重ループで計算できる。しかし、現代の計算機では行列の乗算の効率的な実装は非常に面倒であり、「普通」に書くとまったく性能がでない。なにしろ行列行列積は数値計算の根幹をなす演算であり、そこが遅いと非常に広範囲の計算が影響を受けてしまう。そこで、Pythonにおいて行列を効率的に扱うためのライブラリが作られた。それがNumPyである。</p>
 <h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
 <p>NumPyを使うには、まず<code>numpy</code>をインポートする。<code>np</code>という別名をつけるのが慣習である。</p>
@@ -143,8 +143,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre class="txt"><code>[[19 22]
  [43 50]]</code></pre>
 <h3 id="numpy配列の中身">NumPy配列の中身</h3>
-<p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある二次元のデータだが、三次元でも四次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも一次元配列として保存されている。NumPy配列は、一次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
-<p>連番の要素を持つ一次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
+<p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある2次元のデータだが、3次元でも4次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも1次元配列として保存されている。NumPy配列は、1次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
+<p>連番の要素を持つ1次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">8</span>)
 <span class="bu">print</span>(a)</code></pre></div>
 <pre class="txt"><code>array([0, 1, 2, 3, 4, 5, 6, 7])</code></pre>
@@ -182,7 +182,7 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 <p>エルミート行列の固有値は常に実数であるから、返り値も実数となる。</p>
 <h2 id="シュレーディンガー方程式">シュレーディンガー方程式</h2>
 <h3 id="トンネル効果">トンネル効果</h3>
-<p>原子スケールのようなミクロの世界では、我々が普段目にする世界とは異なり、不思議なことがおきる。そのうちの一つ、「シュレーディンガーの猫」などは聞いたことがあるだろう。今回は量子力学における不思議の一つ、「トンネル効果」をNumPyを使って計算してみよう。</p>
+<p>原子スケールのようなミクロの世界では、我々が普段目にする世界とは異なり、不思議なことがおきる。そのうちの一つ、「シュレーディンガーの猫」などは聞いたことがあるだろう。今回は量子力学における不思議の一つ、「トンネル効果」をNumPyを使って計算してみよう(課題1)。</p>
 <div class="figure">
 <img src="fig/tunneling.png" alt="トンネル効果" />
 <p class="caption">トンネル効果</p>
@@ -190,7 +190,7 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 <p>真っ直ぐな道の真ん中に、小さな山があるとしよう。山の高さを<span class="math inline">\(h\)</span>とする。山の麓にボールを置いて、それに初速を与えて山の方に動かす。初速が、ある程度大きい時には山を超えることができるが、それより小さい場合は山を登りきれずに帰ってくることが予想される。摩擦や回転などを無視して、重力加速度を<span class="math inline">\(g\)</span>、物体の質量を<span class="math inline">\(m\)</span>としよう。初速<span class="math inline">\(v\)</span>を与えると、物体は運動エネルギー<span class="math inline">\(mv^2/2\)</span>を得る。山の頂上に行くためには、ポテンシャルエネルギー<span class="math inline">\(mgh\)</span>が必要だ。以上から、山を登り切るためには<span class="math inline">\(mv^2/2 &gt; mgh\)</span>だけのエネルギーが必要であるため、<span class="math inline">\(v &lt; \sqrt{2gh}\)</span>の時には山を登り切ることができない。このように、量子力学が必要ないようなマクロな世界を古典系と呼ぶ。古典系では、初速が足りなければなんどトライしても山を超えることはできない。</p>
 <p>しかし、物体の波動性が効いてくるようなミクロな領域では古典系とは異なることがおきる。初期エネルギーが山を超えるのに必要なエネルギーより小さい場合でも、低確率で山をすり抜けて向こう側に行ってしまう。まるでトンネルを抜けたかのように見えるので、トンネル効果と呼ばれる。トンネル効果は、例えば走査型トンネル顕微鏡などに応用されている。</p>
 <h3 id="シュレーディンガー方程式-1">シュレーディンガー方程式</h3>
-<p>さて、マクロな物体の運動はニュートンの運動方程式で記述されるが、ミクロな現象は量子力学に支配されている。例えば電子の位置などはシュレーディンガー方程式に従う。時間非依存・一体・一次元のシュレーディンガー方程式は以下のように書ける。</p>
+<p>さて、マクロな物体の運動はニュートンの運動方程式で記述されるが、ミクロな現象は量子力学に支配されている。例えば電子の位置などはシュレーディンガー方程式に従う。時間非依存・1体・1次元のシュレーディンガー方程式は以下のように書ける。</p>
 <p><span class="math display">\[
 \left(
 \frac{-\hbar^2}{2m} \frac{d^2 }{d x^2} + V(x)
@@ -225,8 +225,7 @@ H \vec{v} = E \vec{v}
 <img src="fig/mprod.png" alt="行列積の定義" />
 <p class="caption">行列積の定義</p>
 </div>
-<p><code>(m,n)</code>の形をした行列と<code>(n,k)</code>の形をした行列から<code>(m,k)</code>の形をした行列ができるのだから、例えば10行2列の行列<span class="math inline">\(A\)</span>と、2行10列の行列<span class="math inline">\(B\)</span>の積は、10行10列の行列<span class="math inline">\(C\)</span>になる。この時、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数はそれぞれ20個、合計40個だが、積をとってできる行列<span class="math inline">\(C\)</span>の要素数は100個となり、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数の合計よりも多い。</p>
-<p>この事実を利用して、<span class="math inline">\(C\)</span>という大きな行列を、<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>という「細長い」行列の積で近似することを考えよう。</p>
+<p><code>(m,n)</code>の形をした行列と<code>(n,k)</code>の形をした行列から<code>(m,k)</code>の形をした行列ができるのだから、例えば10行2列の行列<span class="math inline">\(A\)</span>と、2行10列の行列<span class="math inline">\(B\)</span>の積は、10行10列の行列<span class="math inline">\(C\)</span>になる。この時、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数はそれぞれ20個、合計40個だが、積をとってできる行列<span class="math inline">\(C\)</span>の要素数は100個となり、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数の合計よりも多い。この事実を利用して、<span class="math inline">\(C\)</span>という大きな行列を、<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>という「細長い」行列の積で近似することを考えよう。</p>
 <div class="figure">
 <img src="fig/approximation.png" alt="行列の近似" />
 <p class="caption">行列の近似</p>
@@ -242,7 +241,7 @@ X = U \Sigma V^{\dagger}
 \]</span></p>
 <p>ただし、<span class="math inline">\(U\)</span>はm行m列、<span class="math inline">\(V^{\dagger}\)</span>はn行n列のそれぞれ正方行列であり、<span class="math inline">\(\Sigma\)</span>は対角行列である。この<span class="math inline">\(\Sigma\)</span>の対角成分を特異値と呼び、全て非負の実数に取ることができる。</p>
 <p>さて、真ん中の<span class="math inline">\(\Sigma\)</span>を2つの<span class="math inline">\(\sqrt{\Sigma}\)</span>にわけて、それぞれ左右にくっつけると、<span class="math inline">\(X = A B\)</span>の形に書くことができる。この<span class="math inline">\(A\)</span>の行列の「右端の帯」と、<span class="math inline">\(B\)</span>の行列の「上端の帯」の積をとってできる行列<span class="math inline">\(\tilde{X}\)</span>は、元の行列<span class="math inline">\(X\)</span>と同じ形であり、かつ良い近似になっている。これを「行列の低ランク近似」と呼ぶが、ここではその詳細は触れない。</p>
-<p>課題では、行列の特異値分解と低ランク近似を利用して、画像圧縮をしてみよう。</p>
+<p>課題では、行列の特異値分解と低ランク近似を利用して、画像圧縮をしてみよう(課題2)。</p>
 <h2 id="numpyとscipyの使い方課題">NumPyとSciPyの使い方：課題</h2>
 <h3 id="課題1シュレーディンガー方程式">課題1：シュレーディンガー方程式</h3>
 <p>シュレーディンガー方程式を離散化することで数値的に解いてみよう。新しいノートブックを開き、<code>tunneling.ipynb</code>という名前で保存せよ。</p>

@@ -158,9 +158,9 @@ y = a_1 x_1 + a_2 x_2 + \cdots + b
 <p><span class="math display">\[
 y = a x + c z + b
 \]</span></p>
-<p>と予想する。<span class="math inline">\(z\)</span>は大卒であるときに<span class="math inline">\(1\)</span>、そうで無い時に<span class="math inline">\(0\)</span>となる。すなわち、係数<span class="math inline">\(c\)</span>は「大卒」であるときに期待される賃金の増加分と解釈できる。ラベルが複数ある時、例えば学歴を「中卒」「高卒」「大卒」に区別したい時には、ダミー変数を<span class="math inline">\(z_1\)</span>、<span class="math inline">\(z_2\)</span>、<span class="math inline">\(z_3\)</span>と三つ用意し、中卒の時には<span class="math inline">\(z_1 = 1, z_2 = 0, z_3 = 0\)</span>、高卒の時には<span class="math inline">\(z_1 = 0, z_2 = 1, z_3 = 0\)</span>などとすることで学歴を変数として表現することができる。課題では、学歴に加えて企業規模が賃金に与える影響も重回帰分析で調べてみよう。</p>
+<p>と予想する。<span class="math inline">\(z\)</span>は大卒であるときに<span class="math inline">\(1\)</span>、そうで無い時に<span class="math inline">\(0\)</span>となる。すなわち、係数<span class="math inline">\(c\)</span>は「大卒」であるときに期待される賃金の増加分と解釈できる。ラベルが複数ある時、例えば学歴を「中卒」「高卒」「大卒」に区別したい時には、ダミー変数を<span class="math inline">\(z_1\)</span>、<span class="math inline">\(z_2\)</span>、<span class="math inline">\(z_3\)</span>と三つ用意し、中卒の時には<span class="math inline">\(z_1 = 1, z_2 = 0, z_3 = 0\)</span>、高卒の時には<span class="math inline">\(z_1 = 0, z_2 = 1, z_3 = 0\)</span>などとすることで学歴を変数として表現することができる。課題では、学歴に加えて企業規模が賃金に与える影響も重回帰分析で調べてみよう(課題1)。</p>
 <h2 id="ganとは">GANとは</h2>
-<p>通常よく使われる機械学習、例えば「植物の写真を見せて名前を答えるモデル」や「人間の写真を見せて年齢を推定するモデル」などでは、モデルは入力となるデータに対して何かしら「答え」を返すことが目的である。しかし、そういう分類や回帰ができるようになってくると、もっと難しい作業、例えば「有名な画家の絵を多数模写させることで、その画家のタッチでオリジナルの絵が書けるモデル」や、「テーマを伝えただけで映画やドラマの脚本を書けるモデル」などをやらせてみたくなるのが人情である。ここではそんな例として、GANを取り上げる。<strong>GAN (generative adversarial networks)</strong> とは、直訳すると <strong>敵対的生成ネットワーク</strong>であり、二つのモデルを競わせることで画像を生成する手法である。</p>
+<p>通常よく使われる機械学習、例えば「植物の写真を見せて名前を答えるモデル」や「人間の写真を見せて年齢を推定するモデル」などでは、モデルは入力となるデータに対して何かしら「答え」を返すことが目的である。しかし、そういう分類や回帰ができるようになってくると、もっと難しい作業、例えば「有名な画家の絵を多数模写させることで、その画家のタッチでオリジナルの絵が書けるモデル」や、「テーマを伝えただけで映画やドラマの脚本を書けるモデル」などをやらせてみたくなるのが人情である。ここではそんな例として、GANを取り上げる(課題2)。<strong>GAN (generative adversarial networks)</strong> とは、直訳すると <strong>敵対的生成ネットワーク</strong>であり、二つのモデルを競わせることで画像を生成する手法である。</p>
 <p>GANでは、GeneratorとDiscriminatorの二つのモデルを用意する。これらはよく「偽造者」「鑑定者」にたとえられる。まず、本物のデータセット(例えば有名な画家の絵)を用意する。その後、ランダムに「本物のデータ」と「偽造者」が生成した「偽物のデータ」を「鑑定士」に見せ、それを本物か、偽物か判定させる。鑑定者から見れば、これは二値分類問題になっている。ラベルは「本物」か「偽物」である。鑑定者は大量に見せられるデータをどんどん鑑定することで「鑑定士」としての観察眼を磨いていく。</p>
 <p>逆に、偽造者は、自分が提出したデータが「偽物」と見破られたら失敗、「本物」と鑑定されたら成功であり、そのフィードバックを受けながら「偽造者」としての腕を磨いていく。</p>
 <div class="figure">
@@ -202,7 +202,7 @@ df</code></pre></div>
 large</code></pre></div>
 <p><code>company_size</code>が<code>large</code>のデータのみが抽出されたはずだ。</p>
 <h4 id="データのピボット">5. データのピボット</h4>
-<p>学歴別の収入を見るため、年齢を行、学歴を列とした二次元のデータに整形しよう。</p>
+<p>学歴別の収入を見るため、年齢を行、学歴を列とした2次元のデータに整形しよう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">large <span class="op">=</span> large.pivot(index<span class="op">=</span><span class="st">&#39;age&#39;</span>, columns<span class="op">=</span><span class="st">&#39;education&#39;</span>, values<span class="op">=</span><span class="st">&#39;salary&#39;</span>)
 large</code></pre></div>
 <p>それぞれの年齢に対して、学歴別に収入が並んだデータになったはずである。</p>
