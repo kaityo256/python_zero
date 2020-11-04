@@ -121,7 +121,7 @@ Pythonを学ぶにあたり、とりあえず「マナー」は気にしなく�
 
 ## Google Colabの使い方
 
-本講義では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。
+本書では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。
 
 まず、Googleにログインした状態で、[Google Colabのウェブサイト](https://colab.research.google.com)にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogleドライブのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。
 
@@ -137,7 +137,7 @@ Pythonを学ぶにあたり、とりあえず「マナー」は気にしなく�
 
 ![`3+5`を実行した状態](fig/colab_firstcode.png)
 
-矢印がしばらくくるくる回ってから、`[1]`という表記に変わり、答えである8が表示されたと思う。これは
+矢印がしばらくくるくる回ってから、`[1]`という表記に変わり、答えである8が表示されたと思う。これは、
 
 * 「3+5」というPythonのコードがクラウドに送信され
 * クラウドでPythonが実行され
