@@ -354,7 +354,7 @@ plt.plot(V)
 1つ目のセルにで、必要なライブラリをインポートしよう。
 
 ```py
-import urllib
+import urllib.request
 import numpy as np
 from PIL import Image
 from scipy import linalg
