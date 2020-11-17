@@ -270,7 +270,7 @@ url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/p
 <h4 id="学習">4. 学習</h4>
 <p>ではいよいよGANの実行をしてみよう。以下を実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dcgan.run(data)</code></pre></div>
-<p>画面には、一定時間ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。実行には10分～15分程度かかる。</p>
+<p>画面には、一定時間ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。実行すると「Time for epoch 1 is xxx sec」からepochの値を増やしながら学習が進んでいき、「Time for epoch 100 is xxx sec」まで到達したら完了である。実行には10分～15分程度かかる。</p>
 <h4 id="apngのインストール">5. APNGのインストール</h4>
 <p>偽造者が徐々に腕を上げていく様子を見るため、学習を進めながら描いた絵をアニメーションにしてみよう。まずはアニメーションPNGを作るためのライブラリをインストールする。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng</code></pre></div>
