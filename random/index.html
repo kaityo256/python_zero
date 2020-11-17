@@ -383,8 +383,8 @@ n <span class="op">=</span> <span class="dv">10000</span>
         k <span class="op">+=</span> <span class="dv">1</span>
     <span class="cf">if</span> change(boxes):
         c <span class="op">+=</span> <span class="dv">1</span>
-<span class="bu">print</span>(<span class="st">&quot;Keep  : &quot;</span> <span class="op">+</span> <span class="bu">str</span>(k<span class="op">/</span>n))
-<span class="bu">print</span>(<span class="st">&quot;Change: &quot;</span> <span class="op">+</span> <span class="bu">str</span>(c<span class="op">/</span>n))</code></pre></div>
+<span class="bu">print</span>(<span class="ss">f&quot;Keep  : </span><span class="sc">{k</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)
+<span class="bu">print</span>(<span class="ss">f&quot;Change: </span><span class="sc">{c</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)</code></pre></div>
 <p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
 <h3 id="課題2パーコレーション">課題2：パーコレーション</h3>
 <p>乱数を使ったシミュレーションの例として、パーコレーションを考える。<code>L</code>×<code>L</code>の碁盤の目上の道が、確率<span class="math inline">\(p\)</span>で通行できて、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。この時、通行可能な道を通過してお互いに行き来できる場所を色分けしてみよう。</p>

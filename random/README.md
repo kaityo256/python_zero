@@ -453,8 +453,8 @@ for _ in range(n):
         k += 1
     if change(boxes):
         c += 1
-print("Keep  : " + str(k/n))
-print("Change: " + str(c/n))
+print(f"Keep  : {k/n}")
+print(f"Change: {c/n}")
 ```
 
 `n`が試行回数、`k`がKeep派の正解数、`c`がChange派の正解数であるから、`k/n`がKeep派の、`c/n`がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。
