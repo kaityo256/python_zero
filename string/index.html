@@ -233,7 +233,7 @@ text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p>もしくは単に、<code>group()</code>でマッチした文字列を取り出すこともできる。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.group() <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p><code>group()</code>を用いると、グループ化させた場合、それぞれのグループにアクセスできるのだが、ここでは詳細には立ち入らない。</p>
-<p>さて、より柔軟なパターン検索のために、正規表現には様々な特殊な文字、メタ文字が用意されている。まずよく使うのが「どのような一文字にでもマッチする」メタ文字、「<code>.</code>」である。例えば「<code>.bc</code>」というパターンは、「<code>abc</code>」という文字列にも「<code>xbc</code>」という文字列にもマッチする。</p>
+<p>さて、より柔軟なパターン検索のために、正規表現には様々な特殊な文字、 <strong>メタ文字(metacharacter)</strong> が用意されている。まずよく使うのが「どのような一文字にでもマッチする」メタ文字、「<code>.</code>」である。例えば「<code>.bc</code>」というパターンは、「<code>abc</code>」という文字列にも「<code>xbc</code>」という文字列にもマッチする。</p>
 <p>次によく使うのが、繰り返しを表す「<code>*?+</code>」だ。それぞれ以下のような意味を持つ。</p>
 <ul>
 <li><code>*</code> 直前のパターンが0回以上繰り返す場合にマッチ</li>
@@ -243,17 +243,17 @@ text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p>正規表現にはこれらのメタ文字が頻出するため、一見「呪文」のように見えるが、ゆっくり読み解いていけば難しくはない。いくつか例を挙げよう。</p>
 <ul>
 <li>「<code>.*bc</code>」: なんでも良いが、何か文字が0個以上あり、その後「bc」という文字列が続くような文字列。</li>
-<li><code>bc</code> =&gt; <code>bc</code>にマッチ</li>
-<li><code>xxxbc</code> =&gt; <code>xxxbc</code>にマッチ</li>
-<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li><code>bc</code> → <code>bc</code>にマッチ</li>
+<li><code>xxxbc</code> → <code>xxxbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> → <code>xxxbc</code>にマッチ</li>
 <li>「<code>.?bc</code>」：なんでも良いが、何か文字が0個か1個あり、その後「bc」という文字列が続くような文字列。</li>
-<li><code>bc</code> =&gt; <code>bc</code>にマッチ</li>
-<li><code>xxxbc</code> =&gt; <code>xbc</code>にマッチ</li>
-<li><code>xxxbcyyy</code> =&gt; <code>xbc</code>にマッチ</li>
+<li><code>bc</code> → <code>bc</code>にマッチ</li>
+<li><code>xxxbc</code> → <code>xbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> → <code>xbc</code>にマッチ</li>
 <li>「<code>.+bc</code>」：なんでも良いが、何か文字が1個以上、その後「bc」という文字列が続くような文字列。</li>
-<li><code>bc</code> =&gt; マッチしない</li>
-<li><code>xxxbc</code> =&gt; <code>xxxbc</code>にマッチ</li>
-<li><code>xxxbcyyy</code> =&gt; <code>xxxbc</code>にマッチ</li>
+<li><code>bc</code> → マッチしない</li>
+<li><code>xxxbc</code> → <code>xxxbc</code>にマッチ</li>
+<li><code>xxxbcyyy</code> → <code>xxxbc</code>にマッチ</li>
 </ul>
 <div class="figure">
 <img src="fig/re.png" alt="正規表現の例" />
@@ -262,11 +262,11 @@ text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 <p>他によく使うメタ文字は「行頭」と「行末」を表す<code>^</code>と<code>$</code>である。例を挙げよう。</p>
 <ul>
 <li><code>^#.*</code>: 文頭に「#」があり、それ以後は何があっても良いような文字列。</li>
-<li><code>#hoge fuga</code> =&gt; <code>#hoge fuga</code>にマッチ</li>
-<li><code>hoge #fuga</code> =&gt; 文頭に<code>#</code>が無いのでマッチしない</li>
+<li><code>#hoge fuga</code> → <code>#hoge fuga</code>にマッチ</li>
+<li><code>hoge #fuga</code> → 文頭に<code>#</code>が無いのでマッチしない</li>
 <li><code>fuga$</code>: 文末に<code>fuga</code>があるような文字列</li>
-<li><code>hoge fuga</code> =&gt; <code>fuga</code>にマッチ</li>
-<li><code>fuga hoge</code> =&gt; マッチしない</li>
+<li><code>hoge fuga</code> → <code>fuga</code>にマッチ</li>
+<li><code>fuga hoge</code> → マッチしない</li>
 </ul>
 <p>正規表現には他にも様々なメタ文字や機能が存在するがここでは深入りしない。興味を持ったら調べてみて欲しい。</p>
 <div class="figure">
