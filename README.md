@@ -124,7 +124,8 @@
 ## [数値シミュレーション](simulation/README.md)
 
 * [講義スライド](https://speakerdeck.com/kaityo256/python-13)
-* 反応拡散方程式(Gray-Scott Model)
+* 弾道計算
+* 反応拡散方程式
 * 余談：パーソナルスーパーコンピュータ
 
 ## [簡単な機械学習](ml/README.md)
