@@ -1,4 +1,5 @@
-*.pdf
+assignment.pdf
+python_zero.pdf
 .ipynb_checkpoints
 .DS_Store
 .vscode
