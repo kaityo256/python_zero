@@ -351,7 +351,7 @@ plot(angles, <span class="fl">1.0</span>)</code></pre></div>
 <p>なお、関数定義の前に<code>@jit</code>とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。</p>
 <h4 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h4>
 <p><code>laplacian</code>を実装したらテストしてみよう。以下はすべて三つ目のセルで実行せよ。</p>
-<p>まず、<code>laplacian</code>に食わせるテスト用のNumPy2次元配列を作成する。</p>
+<p>まず、<code>laplacian</code>に食わせるテスト用に、NumPyの2次元配列を作成する。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
 a</code></pre></div>
 <p>実行すると以下のような表示になるはずである。</p>

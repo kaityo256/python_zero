@@ -382,7 +382,7 @@ def laplacian(m, n, s):
 
 `laplacian`を実装したらテストしてみよう。以下はすべて三つ目のセルで実行せよ。
 
-まず、`laplacian`に食わせるテスト用のNumPy2次元配列を作成する。
+まず、`laplacian`に食わせるテスト用に、NumPyの2次元配列を作成する。
 
 ```py
 a = np.arange(9).reshape(3,3)
