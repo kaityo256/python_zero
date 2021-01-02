@@ -8,19 +8,19 @@
 
 ## [はじめに](introduction/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「Pythonの概要とGoogle Colabの使い方」と共通)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-hello) (「Pythonの概要とGoogle Colabの使い方」と共通)
 * なぜPythonを学ぶのか。「プログラマ的」発想について。
 
 ## [Pythonの概要とGoogle Colabの使い方](hello/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-01) (「はじめに」と共通)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-hello) (「はじめに」と共通)
 * Google Colabの使い方に慣れる
 * Pythonに触れてみる
 * 余談：タッチタイピングについて
 
 ## [条件分岐と繰り返し処理](basic/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-02)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-basic)
 * 組み込み型
 * 関数の宣言と利用方法
 * for文による繰り返し処理
@@ -30,17 +30,18 @@
 
 ## [関数とスコープ](scope/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-03)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-scope)
 * while文
 * ループのスキップと脱出
 * 関数
 * スコープ
+* ロジスティック写像
 * Collatz問題
 * 余談：数論について
 
 ## [リストやタプルの使い方](list/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-04)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-list)
 * リスト
 * タプル
 * 値のコピーとリストのコピーの違い
@@ -51,7 +52,7 @@
 
 ## [文字列処理](string/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-05)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-string)
 * 文字列処理
 * 辞書
 * 正規表現
@@ -61,7 +62,7 @@
 
 ## [ファイル操作](file/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-06)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-file)
 * ファイルシステムについて
 * ファイルの読み込み
 * CSVファイルの扱い
@@ -70,7 +71,7 @@
 
 ## [再帰呼び出し](recursion/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-07)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-recursion)
 * 再帰呼び出しとは
 * 階段の登り方問題
 * 再帰による迷路の解法
@@ -78,7 +79,7 @@
 
 ## [クラスとオブジェクト指向](class/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-08)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-class)
 * オブジェクト指向とは？
 * クラスとインスタンス
 * オブジェクト指向プログラミングの実例
@@ -87,7 +88,7 @@
 
 ## [NumPyとSciPyの使い方](numpy/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-09)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-numpy)
 * NumPyの使い方
 * SciPyの使い方
 * シュレーディンガー方程式と固有値問題
