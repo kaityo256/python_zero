@@ -106,7 +106,7 @@
 
 ## [動的計画法](dp/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-11-866f2256-14b6-46ae-b145-478c21cb50fb)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-dp)
 * 組み合わせ最適化問題
 * 貪欲法
 * 全探索
@@ -115,7 +115,7 @@
 
 ## [乱数を使ったプログラム](random/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-12)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-random)
 * モンテカルロ法
 * 疑似乱数
 * モンティ・ホール問題
@@ -124,14 +124,14 @@
 
 ## [数値シミュレーション](simulation/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-13)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-simulation)
 * 弾道計算
 * 反応拡散方程式
 * 余談：パーソナルスーパーコンピュータ
 
 ## [簡単な機械学習](ml/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/python-14)
+* [講義スライド](https://speakerdeck.com/kaityo256/python-ml)
 * 機械学習の概要
 * 重回帰分析
 * DCGAN
