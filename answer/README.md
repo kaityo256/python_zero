@@ -271,3 +271,20 @@ def gacha(n):
         cd += 1
     return cd
 ```
+
+## 第13章
+
+### 課題2
+
+```py
+@jit
+def laplacian(m, n, s):
+    ts = 0.0
+    ts += s[m+1][n]
+    ts += s[m-1][n]
+    ts += s[m][n+1]
+    ts += s[m][n-1]
+    # ここを埋めよ
+    ts -= 4*s[m][n]
+    return ts
+```

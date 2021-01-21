@@ -287,6 +287,18 @@ s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> 
         posters.append(random.randint(<span class="dv">1</span>, n))
         cd <span class="op">+=</span> <span class="dv">1</span>
     <span class="cf">return</span> cd</code></pre></div>
+<h2 id="第13章">第13章</h2>
+<h3 id="課題2-4">課題2</h3>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
+<span class="kw">def</span> laplacian(m, n, s):
+    ts <span class="op">=</span> <span class="fl">0.0</span>
+    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m<span class="op">-</span><span class="dv">1</span>][n]
+    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]
+    ts <span class="op">+=</span> s[m][n<span class="op">-</span><span class="dv">1</span>]
+    <span class="co"># ここを埋めよ</span>
+    ts <span class="op">-=</span> <span class="dv">4</span><span class="op">*</span>s[m][n]
+    <span class="cf">return</span> ts</code></pre></div>
 </article>
 </body>
 </html>
