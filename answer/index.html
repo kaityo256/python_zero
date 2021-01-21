@@ -80,7 +80,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -278,7 +277,7 @@ s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> 
 <p>また、最初に選んだ箱が正解ではなかった場合は、次に選ぶ箱は必ず正解になるので</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">      second_choice <span class="op">=</span> answer <span class="co"># ここを埋めよ(2)</span></code></pre></div>
 <h3 id="課題2-3">課題2</h3>
-<p>左から右に通行可能な確率は、<span class="math inline">\(p\)</span>が<span class="math inline">\(0.5\)</span>より小さいとほとんどゼロ、<span class="math inline">\(0.5\)</span>より大きいとほぼ1という、ステップ関数のような関数になる。このように、パラメタを変えた時、あるところで系の状態が劇的に変化する現象を相転移と呼ぶ。パーコレーションは相転移を起こす最も簡単なモデルの一つである。</p>
+<p>左から右に通行可能な確率は、道路の通行可能確率pが0.5より小さいとほとんどゼロ、0.5より大きいとほぼ1という、ステップ関数のような関数になる。このように、パラメタを変えた時、あるところで系の状態が劇的に変化する現象を相転移と呼ぶ。パーコレーションは相転移を起こす最も簡単なモデルの一つである。</p>
 <h3 id="発展課題-4">発展課題</h3>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> gacha(n):
     cd <span class="op">=</span> <span class="dv">0</span>

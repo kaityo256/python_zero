@@ -155,10 +155,9 @@
 
 Copyright (C) 2018-present Hiroshi Watanabe
 
-この文章と絵(pptxファイルを含む)はクリエイティブ・コモンズ 4.0 表示 (CC-BY 4.0)で提供する。ただし、[answer.pdf](answer.pdf)については全ての権利を著者と講談社が保持し、再配布を禁じる。
+この文章と絵(pptxファイルを含む)はクリエイティブ・コモンズ 4.0 表示 (CC-BY 4.0)で提供する。
 
-This article and pictures are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/) except for [answer.pdf](answer.pdf).
-Do not redistribute [answer.pdf](answer.pdf).
+This article and pictures are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
 本リポジトリに含まれるプログラムは、[MITライセンス](https://opensource.org/licenses/MIT)で提供する。
 

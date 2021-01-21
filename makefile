@@ -24,6 +24,10 @@ index.html: index.md
 %/index.html: %/index.md
 	pandoc -s $< -o $@ $(PANDOC_HTMLOPT)
 
+errata/index.html: errata/README.md
+	pandoc -s $< -o $@ $(PANDOC_HTMLOPT)
+	sed -i 's/style=\"width:17%;\"//' $@ 
+
 %/assignment.md: %/README.md
 	sed -n '/^##\s.*課題/,$$p' $< > $@
 
