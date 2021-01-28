@@ -137,6 +137,10 @@
 * DCGAN
 * 余談：AIに悪意はあるか
 
+## [略解と解説](answer/README.md)
+
+* 各章の問題の略解と解説
+
 ## [付録：Pythonのインストールと実行方法](install/README.md)
 
 (Google Colabを使う場合は不要)
