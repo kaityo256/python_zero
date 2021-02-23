@@ -583,7 +583,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .markdown-body table {
   display: block;
   width: 100%;
-  overflow: auto;
 }
 
 .markdown-body table th {
