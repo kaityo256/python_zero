@@ -65,7 +65,7 @@ print("Hello Python")
 セルの真下に「Hello Python」と表示されて、次のセルが入力待ちになれば成功である。これでPythonを実行する環境は整った。
 
 右上の「Quit」を押してサーバを終了する。「Logout」を押して終了しようとすると、Anaconda Navigatorを終了しようとする時に
-「Jupyter Notebookが終了していない」と言われるの注意。その場合はそのまま終了して問題ない。
+「Jupyter Notebookが終了していない」と言われるので注意。その場合はそのまま終了して問題ない。
 
 また、次回からはAnaconda Navigatorを経由せず、いきなりJupyter Notebookを実行して良い。「Jupyter Notebook」というタイトルのコマンドライン画面経由でブラウザが起動されるが、「Quit」を押せば、コマンドライン画面は消える。この時も「Logout」を押すとコマンドライン画面が残ってしまうが、その場合はCtrl+Cを何度か押せば消える。
 

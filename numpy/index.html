@@ -1,94 +1,249 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title></title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="numpyとscipyの使い方">NumPyとSciPyの使い方</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="numpyとscipyの使い方">NumPyとSciPyの使い方</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -101,7 +256,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="numpyとscipy">NumPyとSciPy</h2>
 <p>Pythonには強力なライブラリが多数存在し、それらを使いこなすことで、少ない記述で豊富な機能を素早く実装することができる。今回は、数多くのライブラリの中でも、数値計算、特に行列演算を効率的に行うことができるNumPyと、それを用いて様々な科学的な計算を行うことができるライブラリ、SciPyを使ってみる。</p>
 <p>なお、NumPyやSciPyの使い方を覚える必要はない。ただ「PythonにはNumPyやSciPyというライブラリがあり、数行書くだけで行列の固有値問題を解くことができる」ということをぼんやり覚えておいて、将来、必要になった時にそれを思い出して、詳細については本を読むなりウェブで検索するなりすればよい。</p>
-<h2 id="numpyの使い方">Numpyの使い方</h2>
+<h2 id="numpyの使い方">NumPyの使い方</h2>
 <h3 id="numpyとは">NumPyとは</h3>
 <p>数値計算では、行列を扱うことが非常に多い。行列がからむ演算の中で特に重要なのが、行列同士の積の計算だ。行列と行列の積を行列行列積と呼ぶ。スーパーコンピュータにはTop500という性能ランキングがあり、年に2回ランキングが更新されるが、そこで行われているベンチマークは巨大な連立1次方程式をどれだけ効率的に解くことができるか、という問題である。そして、その計算の中心は行列行列積である。従って、Top500における「スパコンの性能」は、「いかに行列同士の積を早く計算できるか」に依存している。</p>
 <p>行列の積の定義そのものは簡単だ。普通にかけば三重ループで計算できる。しかし、現代の計算機では行列の乗算の効率的な実装は非常に面倒であり、「普通」に書くとまったく性能がでない。なにしろ行列行列積は数値計算の根幹をなす演算であり、そこが遅いと非常に広範囲の計算が影響を受けてしまう。そこで、Pythonにおいて行列を効率的に扱うためのライブラリが作られた。それがNumPyである。</p>
@@ -118,7 +273,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre class="txt"><code>[[1 2]
  [3 4]]</code></pre>
 <p>要素が全てゼロの配列を作るには、<code>zeros</code>を使えばよい。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">np.zeros((<span class="dv">2</span>,<span class="dv">2</span>)))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">z <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))
 <span class="bu">print</span>(z)</code></pre></div>
 <pre class="txt"><code>[[0. 0.]
@@ -339,6 +494,7 @@ svd(URL, ratio)</code></pre></div>
 <p>本稿の読者は大学生を想定しているが、20年近く生きていれば、「あ、こいつには絶対にかなわない」というような、才能の差を感じて絶望したことが一度や二度はあるであろう。おそらく君たちの二倍以上生きている筆者も、自慢じゃないがこれまでなんども「才能の差」に絶望してきた。特に「プログラミング」は、「できる人」と「できない人」の差が極めて大きく開く分野である。定義にもよるが、「できる人」と「できない人」の生産性はかるく桁で変わってしまう。そして、「この人、本当に人間なんかいな」という「人外プログラマ」の作るものを目の当たりにして驚嘆し、自分と比較して絶望し、その後に達観するのである。</p>
 <p>我々一般人は、普通に生きていれば「人外」とぶつかる可能性は低い。むしろぶつからないように生きるのが正しい道である。しかし、何かとちくるって、一般人であるにもかかわらず「世界一になりたい」という野望を抱いてしまうと不幸である。なんでもよいが、何かの処理の最速、世界一を目指すと、極めて高確率で「人外」とぶつかる。人外は、その絶対数が少ない希少種である。しかし、何か数値化され、「世界一」が客観的に定義できる場所には(それがどんなにマイナーな分野であっても)必ず生息している。世界一になるためには、彼らに勝たなければいけない。ファンタジーでの定番、圧倒的な存在である人外をどうやって人間が討伐するか、という問題図式である。</p>
 <p>ではどうすればいいのか？　まだどの分野でも世界一になったことがない僕は、もちろんその答えを持っていない。</p>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>

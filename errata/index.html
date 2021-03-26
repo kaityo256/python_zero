@@ -247,8 +247,8 @@
 pandocでHTMLを作成した後、tableのwidth指定を削除しなければならない。
 -->
 <p>注意深く執筆したつもりですが、現時点で以下のミスや修正点が見つかっております。ご迷惑をおかけして申し訳ありません。</p>
-<p>他に誤りや修正すべき点を見つけた方は、<a href="https://github.com/kaityo256/python_zero/issues">GitHubのIssue</a>にてご指摘いただければ幸いです。</p>
-<p>最終更新日：2021年1月25日</p>
+<p>他に誤りや修正すべき点を見つけた方は、<a href="https://github.com/kaityo256/python_zero/issues">GitHubのIssue</a>にてご指摘いただければ幸いです。なお、以下の誤植についてはKindle版では修正されています。</p>
+<p>最終更新日：2021年3月27日</p>
 <table >
 <colgroup>
 <col width="5%" />
@@ -264,34 +264,64 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 </thead>
 <tbody>
 <tr class="odd">
+<td>p. ix</td>
+<td>Numpy</td>
+<td>NumPy (Pは大文字)</td>
+</tr>
+<tr class="even">
 <td>p. 10</td>
 <td>「2. 五芒星の描画」のコードの2行目 <br><code>draw = ImageDraw.raw(im)</code></td>
 <td><br> <code>draw = ImageDraw.raw(img)</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>p. 34</td>
 <td>図3.2の「関数が作る」のが「ローカルグループ」「中から外を見ることはできない」「右側の矢印が右向き」<BR> <img src="fig/fig03_2_error.jpg" alt="図3.2誤" /></td>
 <td>「関数が作る」のは「ローカル<strong>スコープ</strong>」「中から外を見ることは<strong>できる</strong>」「右側の矢印は<strong>左向き</strong>」<BR><img src="fig/fig03_2_correct.jpg" alt="図3.2正" /></td>
 </tr>
+<tr class="even">
+<td>p. 41</td>
+<td>とすると、生成するイメージを大きくすると見やすくなる。</td>
+<td>とすると、生成されるイメージが大きくなるため見やすくなる。</td>
+</tr>
 <tr class="odd">
+<td>p. 61</td>
+<td>できたリストをb返せ</td>
+<td>できたリストをb<strong>に</strong>返せ</td>
+</tr>
+<tr class="even">
 <td>p. 66</td>
 <td>12行目 <br>「8ビットが0でない」</td>
 <td><br>「8ビット<strong>目</strong>が0でない」</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>p. 124</td>
 <td>図8.3のクラスのコードのインデントが不正。 <br> <img src="fig/fig08_3_error.jpg" alt="図8.3誤" /></td>
 <td>正しいインデントは以下の通り。<br> <img src="fig/fig08_3_correct.jpg" alt="図8.3正" /></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>p. 124</td>
 <td>図8.4のメッセージが「<code>c = Counter()</code>」 <br> <img src="fig/fig08_4_error.jpg" alt="図8.4誤" /></td>
 <td>正しくは<code>c.count()</code> <br> <img src="fig/fig08_4_correct.jpg" alt="図8.4正しい" /></td>
 </tr>
+<tr class="odd">
+<td>p. 140</td>
+<td>Numpy</td>
+<td>NumPy (Pは大文字)</td>
+</tr>
 <tr class="even">
+<td>p. 141</td>
+<td><code>np.zeros((2,2)))</code></td>
+<td><code>np.zeros((2,2))</code> (右側の閉じカッコが一つ多い)</td>
+</tr>
+<tr class="odd">
 <td>p. 156</td>
 <td>8行目 「一方、プログラミング言語を逐次的に解釈して実行するのがスクリプト言語であり」</td>
 <td>「一方、プログラミング言語を逐次的に解釈して実行するのが<strong>インタプリタ言語</strong>であり」</td>
+</tr>
+<tr class="even">
+<td>p. 156</td>
+<td>9行目 「多くのスクリプト言語はバイトコード（bytecode）と呼ばれる」</td>
+<td>「多くの<strong>インタプリタ言語</strong>はバイトコード（bytecode）と呼ばれる」</td>
 </tr>
 <tr class="odd">
 <td>p. 161</td>
@@ -309,14 +339,29 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 <td>AとCの間のコストは7 <img src="fig/fig11_7_correct.jpg" alt="図11.6正" /></td>
 </tr>
 <tr class="even">
+<td>p.184</td>
+<td>アッペルとハーケンは、四色問題問題を四色問題<strong>問題</strong>を</td>
+<td>アッペルとハーケンは、四色問題四色問題を</td>
+</tr>
+<tr class="odd">
 <td>p. 188</td>
 <td>「random.randint」から2行目<br>「これは6面サイコロを10回ふることを」</td>
 <td><br>「これは6面サイコロを<strong>5</strong>回ふることを」</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>p. 197</td>
 <td>6行目「いま、先ほどの図で3の所属する会社と5の所属する会社を」</td>
 <td>「<strong>図12.6の下の図で</strong>3の所属する会社と5の所属する会社を」</td>
+</tr>
+<tr class="odd">
+<td>p. 209</td>
+<td>「優位に立つため<strong>ため</strong>に必要」</td>
+<td>「優位に立つために必要」</td>
+</tr>
+<tr class="even">
+<td>p. 240</td>
+<td>「言われるの注意」</td>
+<td>「言われるの<strong>で</strong>注意」</td>
 </tr>
 </tbody>
 </table>
