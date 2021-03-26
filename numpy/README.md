@@ -417,9 +417,9 @@ def svd(url, ratio):
     rank = int(w * ratio)
     u, s, v = linalg.svd(a)
     ur = u[:, :rank]
-    sr = np.matrix(linalg.diagsvd(s[:rank], rank, rank))
+    sr = np.diag(s[:rank])
     vr = v[:rank, :]
-    b = np.asarray(ur * sr * vr)
+    b = ur @ sr @ vr
     return Image.fromarray(np.uint8(b))
 ```
 

@@ -472,9 +472,9 @@ mono(URL)</code></pre></div>
     rank <span class="op">=</span> <span class="bu">int</span>(w <span class="op">*</span> ratio)
     u, s, v <span class="op">=</span> linalg.svd(a)
     ur <span class="op">=</span> u[:, :rank]
-    sr <span class="op">=</span> np.matrix(linalg.diagsvd(s[:rank], rank, rank))
+    sr <span class="op">=</span> np.diag(s[:rank])
     vr <span class="op">=</span> v[:rank, :]
-    b <span class="op">=</span> np.asarray(ur <span class="op">*</span> sr <span class="op">*</span> vr)
+    b <span class="op">=</span> ur <span class="op">@</span> sr <span class="op">@</span> vr
     <span class="cf">return</span> Image.fromarray(np.uint8(b))</code></pre></div>
 <p>画像データを<code>asarray</code>に渡すことでそのままNumPy配列にすることができる。その配列を<code>linalg.svd</code>に渡せば特異値分解完了である。その後、<code>ratio</code>で指定された特異値の数だけ残して画像を再構成している。</p>
 <h4 id="画像の低ランク近似の確認">7. 画像の低ランク近似の確認</h4>
