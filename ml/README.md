@@ -328,7 +328,7 @@ from apng import APNG
 ```py
 files = []
 for i in range(100):
-    filename = 'img{:04d}.png'.format(i+1)
+    filename = f"img{i+1:04d}.png"
     files.append(filename)
 
 APNG.from_files(files, delay=50).save("animation.png")
