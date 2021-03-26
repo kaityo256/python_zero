@@ -347,6 +347,7 @@ sato_info = database.info("佐藤").position() # => 課長
 まず最初のセルに、後で必要となるライブラリをインポートしておこう。
 
 ```py
+import IPython
 from graphviz import Digraph
 ```
 
@@ -607,8 +608,9 @@ def make_graph(node, g):
 
 ```py
 root = make_tree()
-g = Digraph()
+g = Digraph(format="png")
 make_graph(root, g)
+IPython.display.Image(g.render("test"))
 ```
 
 ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。
@@ -651,8 +653,9 @@ def prune(node):
 ```py
 root = make_tree()
 prune(root)
-g = Digraph()
+g = Digraph(format="png")
 make_graph(root, g)
+IPython.display.Image(g.render("test"))
 ```
 
 6つ目のセルの二行目に`prune(root)`を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。

@@ -1,93 +1,248 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title></title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="クラスとオブジェクト指向">クラスとオブジェクト指向</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="クラスとオブジェクト指向">クラスとオブジェクト指向</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -118,8 +273,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <img src="fig/message.png" alt="オブジェクトとメッセージ" />
 <p class="caption">オブジェクトとメッセージ</p>
 </div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">obj.do_somthing()</code></pre></div>
-<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので<strong>レシーバ(reciever)</strong>と呼ばれる。逆に、メッセージを送る側は<strong>センダー(sender)</strong>と言う。ピリオドの右にある<code>do_something()</code>は<strong>メソッド(method)</strong>と呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。</p>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">obj.do_something()</code></pre></div>
+<p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので<strong>レシーバ(receiver)</strong>と呼ばれる。逆に、メッセージを送る側は<strong>センダー(sender)</strong>と言う。ピリオドの右にある<code>do_something()</code>は<strong>メソッド(method)</strong>と呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。</p>
 <h3 id="カプセル化">カプセル化</h3>
 <p>なぜオブジェクト指向プログラミングをするかというと、それはオブジェクトに責任を移譲するためだ。例をあげよう。社員データをまとめたデータベースがある。社員データは以下のデータを持つ。</p>
 <ul>
@@ -308,7 +463,8 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>新しいノートブックを開き、<code>waribashi.ipynb</code>という名前をつけよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>まず最初のセルに、後で必要となるライブラリをインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
+<span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
 <h4 id="状態クラスの実装">2. 状態クラスの実装</h4>
 <h5 id="初期化関数">初期化関数</h5>
 <p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。割りばしゲームの状態としては、先手番であるか否か<code>is_first</code>、先手番の指の本数<code>f</code>、後手番の指の本数<code>s</code>がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「遷移可能な状態」<code>siblings</code>、「この状態を描画したかどうか」<code>is_drawn</code>もつけておこう。2つ目のセルに以下を入力せよ。</p>
@@ -485,8 +641,9 @@ s
 </ol>
 <p>の5つのセルができているはずだ。それぞれが実行されていることを確認した後(不安なら再度実行した後)、一番下の6つ目のセルに以下を入力、実行せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
-g <span class="op">=</span> Digraph()
-make_graph(root, g)</code></pre></div>
+g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
+make_graph(root, g)
+IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
 <h3 id="発展課題-枝刈り">発展課題: 枝刈り</h3>
 <p>さて、無事にゲーム木が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
@@ -514,8 +671,9 @@ make_graph(root, g)</code></pre></div>
 <p>8つ目のセルに、枝刈りをした後のゲーム木を表示するプログラムを書こう。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
 prune(root)
-g <span class="op">=</span> Digraph()
-make_graph(root, g)</code></pre></div>
+g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
+make_graph(root, g)
+IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
 <h4 id="後手必勝の確認">後手必勝の確認</h4>
 <p>友人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>
@@ -524,6 +682,7 @@ make_graph(root, g)</code></pre></div>
 <p>同様なことが会社組織などで起きる。工事現場で危険な目にあったことを何気なく上長に伝えたら「危ないだろ！気をつけろ！」と叱責されたとしよう。その部下は次から危険な事例を報告しなくなるだろう。頻繁に「ヒヤリハット」が発生するということは、安全性になんらかの根本的な問題があるという重要なサインなのであるが、それを言い出しづらい雰囲気の中では「危険の芽」は黙殺され、そのうち重大事故につながってしまう。このような「ネガティブな報告」をしづらい雰囲気がまずいことは感覚的にわかるであろう。逆に、「ネガティブな報告をしても責められない、初歩的な質問をしても馬鹿にされない」状態を「心理的安全性が保たれた状態」と呼ぶ。心理的安全性(Psychological Safety)は、Googleの働き方の研究、<a href="https://rework.withgoogle.com/blog/five-keys-to-a-successful-google-team/">Project Aristotle</a>の報告から広まったものだ。</p>
 <p>心理的安全性なしに数値目標の向上を目指すと、必ずまずい状態になる。例えば、あるソフトウェア開発グループでは、「バグゼロ」を目指し、バグの報告が多い部署は「目標達成度が低い」とみなされた。すると、当然のことながらバグを見つけてもそれはバグとして報告されず、例えば「機能追加の要望」などとして処理されるようになった。数字の上では全体的に「報告される」バグの数は激減したが、これが望ましい状態ではないことは明らかであろう。逆に、ある工場では、製品の完成チェック時に必ず一定数以上の問題を見つけることを強制した。すると品質管理部は、たとえほとんど問題がない製品でも言いがかりのような問題を見つけて報告するようになり、工場ではそれに対抗して、わざと目に付きやすい問題点を残すようになった。「バグが許されない職場」は「バグが報告されない職場」になり、「問題を必ず見つける職場」では「問題を必ず作る職場」になってしまった。</p>
 <p>共通するのは心理的安全性であり、もっと言えばチームの目的意識の共有である。我々は本質的なバグの数を減らしたいのであって、バグの報告を減らしてはならない。「心理的安全性なしに数字のみを重視すると、必ず数値ハックされる」ということは心に留めておきたい。</p>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>
