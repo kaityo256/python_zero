@@ -159,6 +159,7 @@ Pythonのプログラムが抽象構文木に変換される様子を観察し�
 ```py
 import ast
 import dis
+import IPython
 from graphviz import Digraph
 ```
 
@@ -186,10 +187,11 @@ def visit(node, nodes, pindex, g):
 
 ```py
 def show_ast(src):
-    graph = Digraph()
+    graph = Digraph(format="png")
     tree = ast.parse(src)
     visit(tree, [], 0, graph)
-    return graph
+    img = graph.render("test.png")
+    return IPython.display.Image(img)
 ```
 
 `ast.parse`は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを`ast.iter_child_nodes`に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に`visit`を呼び出し、子孫ノードを取得していく、というのがこのコード(`visit`及び`show_ast`関数)の仕組みである。
