@@ -257,7 +257,7 @@ from math import pi, sin, cos # この行を追加
 
 ```py
 img = Image.new("L", (256, 256), 255)
-draw = ImageDraw.Draw(im)
+draw = ImageDraw.Draw(img)
 cx = 128
 cy = 128
 r = 96
