@@ -1,94 +1,249 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title></title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="条件分岐と繰り返し処理">条件分岐と繰り返し処理</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="条件分岐と繰り返し処理">条件分岐と繰り返し処理</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本講で学ぶこと">本講で学ぶこと</h2>
 <ul>
@@ -278,7 +433,7 @@ x_{n+1} = x_n - \frac{f(x_n)}{f&#39;(x_n)}
 <p>この数列が収束するということは<span class="math inline">\(x_{n+1} = x_n\)</span>なので、<span class="math inline">\(f(x_n)=0\)</span>が満たされなければならず、それはすなわち<span class="math inline">\(x_n\)</span>が解に収束したことを示す。これを確認してみよう。</p>
 <p>いま、<span class="math inline">\(x^3 = 1\)</span>の解を知りたいとする。この時、<span class="math inline">\(f(x) = 0\)</span>の形に書きたいので、<span class="math inline">\(f(x) = x^3 - 1\)</span>である。<span class="math inline">\(f&#39;(x) = 3 x^2\)</span>であるから、対応するニュートン法のアルゴリズムは、</p>
 <p><span class="math display">\[
-x_{n+1} = x_n - \frac{x^3 -1}{3 x^2}
+x_{n+1} = x_n - \frac{x_n^3 -1}{3 x_n^2}
 \]</span></p>
 <p>である。</p>
 <p>さて、<span class="math inline">\(x^3 -1 = 0\)</span>という方程式の解は、実数の範囲なら<span class="math inline">\(x=1\)</span>の一つしかないが、複素数まで考えれば三つ存在し、それぞれ<span class="math inline">\(x=1, -1/2 \pm \sqrt{3}/2 i\)</span>である。では、複素平面上でニュートン法を実行したら、三つの解を見つけることができるだろうか？おそらくそれぞれの解に近いところからスタートすればその解に収束すると考えられるが、遠いところからスタートしたらどうなるだろう？単純に考えると、複数の解がある場合は初期値に一番近い解に収束すると期待されるが、そうなるだろうか？課題では、複素平面上の様々な場所を「初期値」としてニュートン法を実行し、どこに収束したかで色分けして「収束地図」を作ってみよう。</p>
@@ -392,7 +547,7 @@ img</code></pre></div>
 <p>先程は<span class="math inline">\(x^3 - 1 = 0\)</span>の解を考えた。次は<span class="math inline">\(x^4 - 1 = 0\)</span>の解を考えてみよう。この方程式には<span class="math inline">\(x = \pm 1\)</span>、<span class="math inline">\(x = \pm i\)</span>の4つの解が存在する。この解をニュートン法で探し、「収束地図」を描け。</p>
 <p>ヒント1：<span class="math inline">\(x^4-1\)</span>の時のニュートン法の手続きは以下の通り。</p>
 <p><span class="math display">\[
-x_{n+1} = x_n - \frac{x^4-1}{4x^3}
+x_{n+1} = x_n - \frac{x_n^4-1}{4x_n^3}
 \]</span></p>
 <p>ヒント2：以下の2つの条件による、合計4つの場合分けが必要になる。</p>
 <ul>
@@ -407,6 +562,7 @@ x_{n+1} = x_n - \frac{x^4-1}{4x^3}
 <p>値があふれるのとは逆に、値が0になってるのに引き算をすることで値が大きくなるバグもあり、こちらもオーバーフローバグと呼ばれている。有名なのは「突然キレるガンジー」であろう。Civilizationという、文明を発展させるゲームがある。歴史上の有名人をプレイヤーとして選び、世界制覇などを目指すゲームである。この中のプレイヤーにガンジーがいた。ガンジーは「非暴力、不服従」の提唱者であり、平和主義者なのであるが、文明がある程度発展すると突如として核攻撃をしかけてくるようになる。原因はオーバーフローバグであった。Civilizationでは各プレイヤーには攻撃性が設定されており、文明が民主主義を採用すると攻撃性が2下がる、という仕組みがあった。さて、ガンジーの攻撃性は最低の1なのだが、インド文明が民主主義を採用し2を引くと-1になる。しかし、攻撃性は「符号なし8ビット整数」で表現されていたため、1から2を引くと攻撃性最大の255になってしまった。こうして「突然キレるガンジー」が誕生したのである。</p>
 <p>整数の表現できる数値に最大値があることに起因するバグは根深く、発見が難しい。かくいう私も、4294967295回に一度意図しない動作をするというバグを入れたことがある。43億回に一度発生するため、研究室のPCでは再現せず、スパコンを使った時にだけ稀に発生したため、原因究明に時間がかかった。バグという概念が生まれてかなりの時間がたったが、まだ人類はバグを根絶できていない。</p>
 <p>参考：<a href="https://note.mu/ruiu/n/n89d18450b1bb">オーバーフローが引き起こした面白いバグの話</a></p>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>
