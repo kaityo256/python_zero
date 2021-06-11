@@ -8,7 +8,7 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 他に誤りや修正すべき点を見つけた方は、[GitHubのIssue](https://github.com/kaityo256/python_zero/issues)にてご指摘いただければ幸いです。
 
-最終更新日：2021年6月3日
+最終更新日：2021年6月11日
 
 以下の誤植は[Kindle版](https://www.amazon.co.jp/dp/B08Y8N7C11)でも未修正のものです。
 
@@ -17,6 +17,11 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p.21  | 数式の右辺に添字$n$が抜けている。<BR>$x_{n+1} = x_n - \frac{x^3 - 1}{3x^2}$ | $x_{n+1} = x_n - \frac{x_n^3 - 1}{3x_n^2}$ |
 | p.26  | 2.4.3発展課題の数式の右辺に添字$n$が抜けている。<BR>$x_{n+1} = x_n - \frac{x^4 - 1}{4x^3}$ | $x_{n+1} = x_n - \frac{x_n^4 - 1}{4x_n^3}$ |
 | p. 206| 2行目 「したがって、極限すれば物理学とは微分方程式を解く学問である。」| 「したがって、**極言**すれば物理学とは微分方程式を解く学問である。」|
+| p. 93 | 一番下の`Archive: popmap.zip`の記載されたボックスの色が入力を意味する青色 | ボックスの色は出力を意味するベージュ|
+| p. 140| 9.3.2の2つ目のボックスの以下の記述<BR> `data = np.array([1,2,3])` | `a = np.array([1,2,3])`|
+| p. 140| 9.3.2の下から二つ目のボックスの以下の記述<BR> `print(data)` | <BR>`print(a)`|
+| p. 141| 9.3.3の最初のボックスの以下の記述<BR>  `data.shape # => (2,2)` | <BR> `a.shape # => (2,2)`|
+| p. 177| 「4. 貪欲法の実装」の`greedy`関数の11行目<BR>`print(f"{names[i]} {price[i]} Yen {cals[i]} kcal")` | (`price`→`prices`)<BR> `print(f"{names[i]} {prices[i]} Yen {cals[i]} kcal")`
 
 以下の誤植については[Kindle版](https://www.amazon.co.jp/dp/B08Y8N7C11)では修正されています。
 

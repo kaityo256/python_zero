@@ -37,7 +37,7 @@ NumPy用の配列(NumPy配列)を作成するにはいくつか方法がある�
 
 ```py
 data = np.array([1,2,3])
-print(a)
+print(data)
 ```
 
 ```txt
@@ -48,7 +48,7 @@ print(a)
 
 ```py
 a = np.array([[1,2],[3,4]])
-print(data)
+print(a)
 ```
 
 ```txt
