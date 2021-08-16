@@ -1,4 +1,4 @@
-# 『ゼロから学ぶPythonプログラミング』第1刷 正誤表
+# 『ゼロから学ぶPythonプログラミング』 正誤表
 
 <!-- 
 pandocでHTMLを作成した後、tableのwidth指定を削除しなければならない(sedにより自動化されている)。
@@ -10,7 +10,9 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 最終更新日：2021年8月16日
 
-以下の誤植は第2刷、[Kindle版](https://www.amazon.co.jp/dp/B08Y8N7C11)でも未修正のものです。
+## 第2刷正誤表
+
+以下の誤植は第2刷及びKindle版でも未修正のものです。
 
 | ページ番号 | 誤 | 正 |
 | ---  | --- | --- |
@@ -25,7 +27,9 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p. 141| 9.3.3の最初のボックスの以下の記述<BR>  `data.shape # => (2,2)` | <BR> `a.shape # => (2,2)`|
 | p. 177| 「4. 貪欲法の実装」の`greedy`関数の11行目<BR>`print(f"{names[i]} {price[i]} Yen {cals[i]} kcal")` | (`price`→`prices`)<BR> `print(f"{names[i]} {prices[i]} Yen {cals[i]} kcal")`
 
-以下の誤植については[書籍版第1刷](https://www.amazon.co.jp/dp/4065218837/)にあるものであり、第2刷及び[Kindle版](https://www.amazon.co.jp/dp/B08Y8N7C11)では修正されています。
+## 第1刷正誤表
+
+以下の誤植については書籍版第1刷にあるものであり、第2刷及びKindle版では修正されています。
 
 | ページ番号 | 誤 | 正 |
 | ---  | --- | --- |

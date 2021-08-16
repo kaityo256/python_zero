@@ -243,14 +243,15 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="ゼロから学ぶpythonプログラミング第1刷-正誤表">『ゼロから学ぶPythonプログラミング』第1刷 正誤表</h1>
+                        <h1 id="ゼロから学ぶpythonプログラミング-正誤表">『ゼロから学ぶPythonプログラミング』 正誤表</h1>
 <!-- 
 pandocでHTMLを作成した後、tableのwidth指定を削除しなければならない(sedにより自動化されている)。
 -->
 <p>注意深く執筆したつもりですが、現時点でに以下のミスや修正点が見つかっております。ご迷惑をおかけして申し訳ありません。</p>
 <p>他に誤りや修正すべき点を見つけた方は、<a href="https://github.com/kaityo256/python_zero/issues">GitHubのIssue</a>にてご指摘いただければ幸いです。</p>
 <p>最終更新日：2021年8月16日</p>
-<p>以下の誤植は第2刷<a href="https://www.amazon.co.jp/dp/B08Y8N7C11">Kindle版</a>でも未修正のものです。</p>
+<h2 id="第2刷正誤表">第2刷正誤表</h2>
+<p>以下の誤植は第2刷及びKindle版でも未修正のものです。</p>
 <table >
 <colgroup>
 <col width="5%" />
@@ -276,43 +277,49 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 <td><span class="math inline">\(x_{n+1} = x_n - \frac{x_n^4 - 1}{4x_n^3}\)</span></td>
 </tr>
 <tr class="odd">
+<td>p. 124</td>
+<td>図8.3のインスタンス変数が<code>self.num</code>になっている。 <br> <img src="fig/fig08_3_error2.jpg" alt="図8.3誤" /></td>
+<td>正しくは<code>self.__num</code>(図はインデントも間違っているので注意) <br> <img src="fig/fig08_3_correct2.jpg" alt="図8.3正" /></td>
+</tr>
+<tr class="even">
 <td>p. 206</td>
 <td>2行目 「したがって、極限すれば物理学とは微分方程式を解く学問である。」</td>
 <td>「したがって、<strong>極言</strong>すれば物理学とは微分方程式を解く学問である。」</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>p. 93</td>
 <td>一番下の<code>Archive: popmap.zip</code>の記載されたボックスの色が入力を意味する青色</td>
 <td>ボックスの色は出力を意味するベージュ</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>p. 124</td>
 <td>図8.3のクラスのコードが<code>self.num</code>となっている<BR> <img src="fig/fig08_3_error2.png" alt="error" /></td>
 <td>正しくは <code>self.__num</code>と<code>num</code>にアンダースコアが二つ付く<BR><BR> <img src="fig/fig08_3_correct2.png" alt="error" /></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>p. 140</td>
 <td>9.3.2の2つ目のボックスの以下の記述<BR> <code>data = np.array([1,2,3])</code></td>
 <td><code>a = np.array([1,2,3])</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>p. 140</td>
 <td>9.3.2の下から二つ目のボックスの以下の記述<BR> <code>print(data)</code></td>
 <td><BR><code>print(a)</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>p. 141</td>
 <td>9.3.3の最初のボックスの以下の記述<BR> <code>data.shape # =&gt; (2,2)</code></td>
 <td><BR> <code>a.shape # =&gt; (2,2)</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>p. 177</td>
 <td>「4. 貪欲法の実装」の<code>greedy</code>関数の11行目<BR><code>print(f&quot;{names[i]} {price[i]} Yen {cals[i]} kcal&quot;)</code></td>
 <td>(<code>price</code>→<code>prices</code>)<BR> <code>print(f&quot;{names[i]} {prices[i]} Yen {cals[i]} kcal&quot;)</code></td>
 </tr>
 </tbody>
 </table>
-<p>以下の誤植については<a href="https://www.amazon.co.jp/dp/4065218837/">書籍版第1刷</a>にあるものであり、第2刷及び<a href="https://www.amazon.co.jp/dp/B08Y8N7C11">Kindle版</a>では修正されています。</p>
+<h2 id="第1刷正誤表">第1刷正誤表</h2>
+<p>以下の誤植については書籍版第1刷にあるものであり、第2刷及びKindle版では修正されています。</p>
 <table >
 <colgroup>
 <col width="5%" />
