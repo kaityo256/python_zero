@@ -521,19 +521,19 @@ x_{n+1} = x_n - \frac{x_n^3 -1}{3 x_n^2}
     条件が成立していない時に実行したいこと</code></pre></div>
 <p>例えば、<code>a</code>が正かどうかで処理を分けたいなら、</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:
-    <span class="bu">print</span>(<span class="st">&quot;aは正です&quot;</span>)
+    <span class="co"># a &gt; 0の場合の処理</span>
 <span class="cf">else</span>:
-    <span class="bu">print</span>(<span class="st">&quot;aは負か0です&quot;</span>)</code></pre></div>
-<p>と書ける。</p>
+    <span class="co"># a &lt;= 0 の場合の処理</span></code></pre></div>
+<p>と書ける。なお、<code>#</code>で始まる行はコメントであり、実際にコードを入力する場合は<code>#</code>を記載しないこと。</p>
 <p>ヒント3： <code>if</code>文は多段にできる。</p>
 <p>例えば、条件Aと条件Bがあった場合、以下のように書ける。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> A:
-    <span class="bu">print</span>(<span class="st">&quot;条件Aが成立&quot;</span>)
+    <span class="co"># 条件Aが成立時の処理</span>
 <span class="cf">else</span>:
     <span class="cf">if</span> B:
-        <span class="bu">print</span>(<span class="st">&quot;条件Aが不成立かつ条件Bが成立&quot;</span>)
+        <span class="co"># 条件Aが不成立かつ条件Bが成立時の処理</span>
     <span class="cf">else</span>:
-        <span class="bu">print</span>(<span class="st">&quot;条件Aが不成立かつ条件Bも不成立)</span></code></pre></div>
+        <span class="co"># 条件Aが不成立かつ条件Bも不成立</span></code></pre></div>
 <h4 id="画像の表示">4. 画像の表示</h4>
 <p>ここまで入力したプログラムを用いて、収束地図を作ってみよう。4つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">size <span class="op">=</span> <span class="dv">512</span>
