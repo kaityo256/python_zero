@@ -419,6 +419,7 @@ while文と関数を使ってプログラムを作ってみよう。題材とし
 
 ```py
 from graphviz import Digraph
+from PIL import Image
 ```
 
 #### 2. 関数`collatz`の実装
@@ -493,14 +494,15 @@ def collatz_graph(i, edges):
 
 ```py
 def make_graph(n):
-    g = Digraph()
+    g = Digraph(format='png')
     edges = set()
     for i in range(1, n+1):
         collatz_graph(i, edges)
     for i, j in edges:
         g.edge(str(i), str(j))
     g.attr(size="10,10")
-    return g
+    g.render("test")
+    return Image.open("test.png")
 ```
 
 これは、1から`n`までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。
@@ -516,7 +518,7 @@ make_graph(3)
 ここまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。コラッツ予想とは、このグラフがいかなる場合も木構造、つまりループ構造が無いことを主張するものである。グラフの表示に成功したら、いろんな数字を`make_graph`に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、
 
 ```py
-    g.attr(size="10,10")
+    g.attr(size="20,20")
 ```
 
 とすると、生成されるイメージが大きくなるため見やすくなる。
