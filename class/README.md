@@ -472,11 +472,10 @@ s1 == s2
 
 ```py
 s1 = State(True, [1,1],[1,1])
-s2 = State(True, [3,2],[3,1])
-s3 = State(True, [1,0],[1,1])
+s2 = State(True, [1,0],[1,1])
 print(s1.next_state((1,1)))
 print(s1.next_state((1,0)))
-print(s3.next_state((1,0)))
+print(s2.next_state((1,0)))
 ```
 
 以下のような出力が出てくれば正しく入力されている。

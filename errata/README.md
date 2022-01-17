@@ -19,6 +19,7 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p.47  | 図4.1に`a=[1]=4`とある<BR>![図4.1誤](fig/fig04_1_error.png) | 正しくは`a[1]=4` <BR>![図4.1正](fig/fig04_1_correct.png)|
 | p.49  | 図4.3に`a=[1]=4`、`a=[1] #=> 4`とある<BR>![図4.3誤](fig/fig04_3_error.png) | 正しくは`b[1]=4`、`a[1] # => 4` <BR>![図4.3正](fig/fig04_3_correct.png)|
 | p.50  | 図4.4の中央に`a=[4,5,6]`とある<BR>![図4.4誤](fig/fig04_4_error.png) | 正しくは`b=[4,5,6]` <BR>![図4.4正](fig/fig04_4_correct.png)|
+| p.132 | ページ最後のコードに使われない`s2`がある<BR> ![p132誤](fig/p132_error.png) | 正しくは以下の通り<BR> ![p132正](fig/p132_correct.png)|
 
 ## 第2刷正誤表
 

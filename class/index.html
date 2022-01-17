@@ -543,11 +543,10 @@ s1 <span class="op">==</span> s2</code></pre></div>
         <span class="cf">return</span> State(<span class="kw">not</span> <span class="va">self</span>.is_first, f2, s2)</code></pre></div>
 <p>追加したら、正しく実装できたか確認してみよう。3つ目のセルに以下を入力して出力を確認せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">3</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">1</span>])
-s3 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
+s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
 <span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">1</span>)))
 <span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))
-<span class="bu">print</span>(s3.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</code></pre></div>
+<span class="bu">print</span>(s2.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</code></pre></div>
 <p>以下のような出力が出てくれば正しく入力されている。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s
 [<span class="dv">1</span>, <span class="dv">1</span>]
