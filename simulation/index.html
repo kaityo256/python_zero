@@ -534,7 +534,7 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
 <p>2つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
 <span class="kw">def</span> calc(u, v, u2, v2):
-    (L, _) <span class="op">=</span> u.shape
+    L, _ <span class="op">=</span> u.shape
     dt <span class="op">=</span> <span class="fl">0.2</span>
     F <span class="op">=</span> <span class="fl">0.04</span>
     k <span class="op">=</span> <span class="fl">0.06075</span>
@@ -550,7 +550,7 @@ laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></d
     cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v
     u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
     v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
-<p>最初の<code>@jit</code>デコレータを忘れないこと。</p>
+<p>最初の<code>@jit</code>デコレータを忘れないこと。なお、関数の冒頭で<code>L, _ = u.shape</code>とあるのは、<code>u.shape</code>が2要素のタプルを返す際、そのうち最初の要素を<code>L</code>で受け取るが、2つ目は使わないことをアンダースコア「<code>_</code>」で表現している。宣言だけしてあとで使わない変数はバグの元なので、あとで使わないことがわかっている変数に対しては積極的に<code>_</code>を使って使わないことを明示するようにしたい。</p>
 <h4 id="シミュレーションループ">5. シミュレーションループ</h4>
 <p>1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。</p>
 <div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
