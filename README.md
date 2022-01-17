@@ -155,6 +155,10 @@
 * 数学や科学について
 * プロジェクトについて
 
+## [正誤表](errata/README.md)
+
+書籍版「[ゼロから学ぶPythonプログラミング](https://www.amazon.co.jp/dp/4065218837/)」の[正誤表](errata/README.md)です。ウェブ版では全て修正されています。
+
 ## ライセンス
 
 Copyright (C) 2018-present Hiroshi Watanabe
