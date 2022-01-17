@@ -1,93 +1,248 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title></title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="参考文献">参考文献</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="参考文献">参考文献</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <p>昨今、ウェブに大量に情報があるため、本など買わなくてもプログラムは独習できると思うかもしれない。しかし、ウェブにある情報は玉石混交であり、ある程度の知識がないと何が玉で何が石かを判断することが難しい。特にプログラム関係では誤り、誤解、意味のない情報を掲載したサイトが大量にあるため、それらをかき分けて重要な情報にたどり着く努力をするよりは、公式のドキュメントにあたったり、評価が定まっている名著と呼ばれる書籍を購入した方が結局は早い。</p>
 <p>また、本書ではPythonそのものを学ぶというよりは、Pythonを使ってカオスや統計などを体験することを重視した。本書で「数学やシミュレーションは面白い」と思ってもらえたなら望外の喜びである。本書で取りあげた「面白い数学」などのネタ元の書籍も紹介するので、是非読んでみて欲しい。</p>
@@ -114,8 +269,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>多くの場合、プログラミングとは「何かを実現するための手段」に過ぎない。素晴らしいソフトウェアも、完成しなければ意味がないし、適切なビジネスモデルと組み合わせなければ収益を上げることができない。そんな「プロジェクト」はどうあるべきかについて興味がある人向けの本。</p>
 <ul>
 <li>「闘うプログラマー パスカル ザカリー (著), 山岡 洋一 (翻訳)、日経BP」 マイクロソフトでWindows NTを開発した伝説のプログラマー「デイヴィッド・カトラー」の伝記のような本。マイクロソフトの命運をかけた巨大なプロジェクトは、超人的な努力と「デスマーチ」によって完遂された。プロジェクトとは何か、リーダーとはどうあるべきか等について考えさせられる。</li>
-<li>「ザ・ゴール　シリーズ　(エリヤフ・ゴールドラット (著), 三本木 亮 (訳), ダイヤモンド社)」　企業の目的とは何か？それはお金を稼ぐことだ。それはどのようにして達成させるべきか？「なるべく機会が動いている時間を長くする」「暇そうにしている人に仕事をさせる」そんな「あたりまえ」のことが効率を悪化させていた。「部分最適化の和は必ずしも全体最適化にならない」ことを、魅力的なストーリーとともに教えてくれる古典的名著。著者が「日本人がこの本を読んだら経済的に強くなりすぎる」と、しばらく和訳を禁じていたことでも有名。</li>
+<li>「ザ・ゴール　シリーズ　(エリヤフ・ゴールドラット (著), 三本木 亮 (訳), ダイヤモンド社)」　企業の目的とは何か？それはお金を稼ぐことだ。それはどのようにして達成させるべきか？「なるべく機械が動いている時間を長くする」「暇そうにしている人に仕事をさせる」そんな「あたりまえ」のことが効率を悪化させていた。「部分最適化の和は必ずしも全体最適化にならない」ことを、魅力的なストーリーとともに教えてくれる古典的名著。著者が「日本人がこの本を読んだら経済的に強くなりすぎる」と、しばらく和訳を禁じていたことでも有名。</li>
 </ul>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>
