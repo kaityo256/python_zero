@@ -50,6 +50,24 @@ copy-pdf: $(ASSIGNMENT)
 	cp simulation/assignment.pdf assignment13.pdf
 	cp ml/assignment.pdf assignment14.pdf
 
+copy-pptx: $(ASSIGNMENT)
+	cp hello/fig/slide.pptx python01.pptx
+	cp basic/fig/slide.pptx python02.pptx
+	cp scope/fig/slide.pptx python03.pptx
+	cp list/fig/slide.pptx python04.pptx
+	cp string/fig/slide.pptx python05.pptx
+	cp file/fig/slide.pptx python06.pptx
+	cp recursion/fig/slide.pptx python07.pptx
+	cp class/fig/slide.pptx python08.pptx
+	cp numpy/fig/slide.pptx python09.pptx
+	cp howtowork/fig/slide.pptx python10.pptx
+	cp dp/fig/slide.pptx python11.pptx
+	cp random/fig/slide.pptx python12.pptx
+	cp simulation/fig/slide.pptx python13.pptx
+	cp ml/fig/slide.pptx python14.pptx
+
+
+
 clean-pdf:
 	rm -f $(ASSIGNMENT)
 
