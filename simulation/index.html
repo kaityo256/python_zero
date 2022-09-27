@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>simulation/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -254,10 +254,9 @@
 <h2 id="数値シミュレーションとは">数値シミュレーションとは</h2>
 <p>物理学とは、我々が存在するこの宇宙を記述する学問である。そして(なぜかはわからないが)この宇宙は微分方程式で記述されている。したがって、極言すれば物理学とは微分方程式を解く学問である。幸か不幸か、ほとんどの微分方程式は解析的に解くことができない。しかし、方程式さえわかれば、それを数値的に解くことは可能である。何かの現象に着目し、それを記述する方程式を <strong>支配方程式(governing equation)</strong> と呼ぶ。この支配方程式を数値的に解くことでその振る舞いを調べることを <strong>数値シミュレーション(numerical simulation)</strong> と呼ぶ。</p>
 <p>さて、この世界の空間や時間は(おそらく)連続的であるのに対し、コンピュータは原則として離散的な値しか扱うことができない。数値シミュレーションとはこの世界の出来事をコンピュータの中に再現することであるから、計算するにあたって連続的な値を離散的な値に変換する必要がある。例えば、パソコンやスマホで動画を見ることがあるだろう。動画は、我々が目にする世界のように、空間的にも時間的にも連続的に見えるが、実際には時間方向は静止画像を高速にコマ送りすることで連続的に見せており、静止画像も拡大するとピクセル単位で離散化されている。</p>
-<div class="figure">
-<img src="fig/discretization.png" alt="時間と空間の離散化" />
-<p class="caption">時間と空間の離散化</p>
-</div>
+<figure>
+<img src="fig/discretization.png" alt="時間と空間の離散化" /><figcaption>時間と空間の離散化</figcaption>
+</figure>
 <p>このように、連続的な値をコンピュータで扱うために離散的な値にすることを <strong>離散化(discretization)</strong> と呼ぶ。以下では、時間や空間を離散化することで微分方程式を計算機が扱いやすい形にして、その振る舞いを数値シミュレーションで解析してみよう。</p>
 <h2 id="差分化">差分化</h2>
 <p>今、ある量<span class="math inline">\(f(t)\)</span>の時間微分<span class="math inline">\(f&#39;(t)\)</span>が与えられているとしよう。時間に関する離散化とは、ある小さな時間刻み<span class="math inline">\(h\)</span>に対して、<span class="math inline">\(f(t)\)</span>の値からなんとかして<span class="math inline">\(f(t+h)\)</span>の値を推定することである。時間微分<span class="math inline">\(f&#39;(t)\)</span>がわかっているので、厳密な表式は積分で与えられる。</p>
@@ -276,10 +275,9 @@ f(t + h) &amp;= f(t) + f&#39;(t)h + O(h^2) \\
 \end{aligned}
 \]</span></p>
 <p>となることから、先程の近似は<span class="math inline">\(h\)</span>の1次まで正しい。これを1次近似と呼ぶ。この式は、右辺、すなわち時刻<span class="math inline">\(t\)</span>における<span class="math inline">\(f(t)\)</span>の値と、その微係数<span class="math inline">\(f&#39;(t)\)</span>がわかっていれば、左辺、すなわち時刻<span class="math inline">\(t+h\)</span>における値<span class="math inline">\(f(t+h)\)</span>は、<span class="math inline">\(f(t) + f&#39;(t)h\)</span>で近似できる。</p>
-<div class="figure">
-<img src="fig/nextstep.png" alt="時間の差分化" />
-<p class="caption">時間の差分化</p>
-</div>
+<figure>
+<img src="fig/nextstep.png" alt="時間の差分化" /><figcaption>時間の差分化</figcaption>
+</figure>
 <p>以上から、ある時刻<span class="math inline">\(t_0\)</span>における値<span class="math inline">\(f(t_0)\)</span>がわかっているとき、</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -289,7 +287,7 @@ f(t_0+3h) &amp;= f(t_0+2h) + f&#39;(t_0+2h)h \\
 &amp; \cdots 
 \end{aligned}
 \]</span></p>
-<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(finite difference method)</strong> と呼ぶ。特に、先程のように1次近似の差分法を <strong>オイラー法 (Euler's method)</strong> と呼ぶ。</p>
+<p>と、代入を繰り返すことで任意の時刻の値を求めることができる。このように、微分を離散単位で近似することを差分化と呼び、差分化により微分方程式を扱う手法を <strong>差分法(finite difference method)</strong> と呼ぶ。特に、先程のように1次近似の差分法を <strong>オイラー法 (Euler’s method)</strong> と呼ぶ。</p>
 <h2 id="ニュートンの運動方程式">ニュートンの運動方程式</h2>
 <p>互いに重力で引き合う2つの星の軌道の形が楕円となることは知っているであろう。ではなぜ楕円となるか、答えられるだろうか？　様々な答えはあろうが、一つの答えは「距離の逆2乗に比例する力で互いに引き合う2つの物質の運動方程式を解くと、その軌道が楕円となるから」である。さて、運動方程式とはなんだったか覚えているだろうか。最も簡単な運動方程式は<span class="math inline">\(F=ma\)</span>である。これは、物質にかかる加速度と力が比例し、その比例係数が物質の質量であることを主張する。さて、加速度とは速度の時間変化である。したがって、先ほどの運動方程式は、より正確に書くと</p>
 <p><span class="math display">\[
@@ -356,10 +354,9 @@ l(\theta) = v_0 t_f \cos \theta = \frac{2 v_0^2 \sin \theta \cos \theta}{g}
 \]</span></p>
 <p>これを最大にする角度は、<span class="math inline">\(l&#39;(\theta)=0\)</span>を満たす<span class="math inline">\(\theta\)</span>であり、<span class="math inline">\(v_0\)</span>や<span class="math inline">\(g\)</span>の値によらず<span class="math inline">\(\theta = \pi/2\)</span>、すなわち45度であることがわかる。</p>
 <h3 id="高低差がある場合の弾道計算">高低差がある場合の弾道計算</h3>
-<div class="figure">
-<img src="fig/throw.png" alt="高低差がある場合の弾道" />
-<p class="caption">高低差がある場合の弾道</p>
-</div>
+<figure>
+<img src="fig/throw.png" alt="高低差がある場合の弾道" /><figcaption>高低差がある場合の弾道</figcaption>
+</figure>
 <p>さて、先程は、水平な地面から物を投げて、そのまま地面にぶつかるまでの距離を計算した。この場合、最も遠くに飛ぶ角度は45度である。では、台の上に乗って物を投げた場合はどうだろうか？なんとなく一番遠くに飛ぶ角度が45度からずれることは想像がつくであろう。では、上向きにずれるだろうか？それとも下向きにずれるだろうか？</p>
 <p>いま、初速<span class="math inline">\(v_0\)</span>、仰角<span class="math inline">\(\theta\)</span>で投げるのは同じとして、最初に高さ<span class="math inline">\(y_0\)</span>から物体を投げたとしよう。物体が従う運動方程式は地面から投げた場合と同じだが、初期条件が異なる。まず、速度については解は変わらない。</p>
 <p><span class="math display">\[
@@ -387,10 +384,9 @@ l(\theta) = v_0 t_f \cos\theta
 <h2 id="反応拡散方程式グレイスコット模型">反応拡散方程式(グレイ・スコット模型)</h2>
 <p>先程はニュートンの運動方程式を数値的に解くことで弾道計算を行った。この時、時間のみ離散化し、空間は連続のままだった。次は時間と同時に空間も離散化してみよう。そんな系の例として <strong>反応拡散系(diffusion-reaction system)</strong> を取り上げる(課題2)。</p>
 <p>等モルの塩酸と水酸化ナトリウムを混ぜると、食塩水ができることは知っているであろう。この反応は一方通行であり、混ざって食塩ができておしまいである。しかし、ある種類の化合物を混ぜて反応させると、ある物質ができたり消えたりを繰り返すことがある。最も有名な例はBZ反応(ベロウゾフ・ジャボチンスキー反応, Belousov-Zhabotinsky Reaction)であろう。これは、ある溶液を混ぜると、その後しばらく溶液の色が周期的に変動する現象である。非常に雑に説明すると、反応を記述する方程式が時間の２階微分方程式になり、振動解が出てくるのがこの現象の本質である。</p>
-<div class="figure">
-<img src="fig/bz.png" alt="BZ反応" />
-<p class="caption">BZ反応</p>
-</div>
+<figure>
+<img src="fig/bz.png" alt="BZ反応" /><figcaption>BZ反応</figcaption>
+</figure>
 <p>さて、BZ反応は時間的に変動する現象であるが、これが拡散と結びつくと、時間的な変動が空間的に伝播していく。これにより複雑な模様ができあがる。化学反応(reaction)と拡散(diffusion)が組み合わさった現象であるから反応拡散系(diffusion-reaction system)と呼ばれる。反応拡散系は様々な例が知られているが、そのうちの一つ、グレイ・スコットモデル(Gray-Scott model)を取り上げる。</p>
 <p>グレイ・スコットモデルは、以下のような連立偏微分方程式で記述される。</p>
 <p><span class="math display">\[
@@ -400,10 +396,9 @@ l(\theta) = v_0 t_f \cos\theta
 \end{aligned}
 \]</span></p>
 <p>右辺の第1項が拡散項、その後ろにあるのが反応を記述する力学系である。3次元を考えることもできるが、ここでは2次元空間を考える。</p>
-<div class="figure">
-<img src="fig/gs.png" alt="Gray-Scott模型" />
-<p class="caption">Gray-Scott模型</p>
-</div>
+<figure>
+<img src="fig/gs.png" alt="Gray-Scott模型" /><figcaption>Gray-Scott模型</figcaption>
+</figure>
 <p>まず、空間を差分化して扱うことにしよう。本来連続的な空間を、グリッドに分割することで離散的な表現に落とす。</p>
 <p><span class="math inline">\(\Delta\)</span>はラプラシアンと呼ばれる2階微分演算子で、2次元なら以下で定義される。</p>
 <p><span class="math display">\[
@@ -427,167 +422,166 @@ f&#39;&#39;(x) = \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2}
 <p>簡単のため、<span class="math inline">\(h=1\)</span>としよう。空間の離散化により<span class="math inline">\(f(m, n)\)</span>の値を2次元配列<code>s[m][n]</code>で表現する。すると、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、この配列<code>s</code>を用いて</p>
 <p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
 <p>と表現できる。これは、前後左右のセルの値の合計から、自分の値の4倍を引いたものであり、自分が「まわりの平均」よりも大きい時に負、小さい時に正となる。このように、ラプラシアンは「なるべくまわりに合わせよう、全体を平均化しよう」という働きをする。</p>
-<div class="figure">
-<img src="fig/procedure.png" alt="差分計算の流れ" />
-<p class="caption">差分計算の流れ</p>
-</div>
+<figure>
+<img src="fig/procedure.png" alt="差分計算の流れ" /><figcaption>差分計算の流れ</figcaption>
+</figure>
 <p>もともとの式のうち、時間微分は1次の差分を取ることで計算する。その時間発展にはラプラシアンという空間微分が含まれているが、それについては中央差分で近似した。これで数値計算に必要な式がすべて揃った。</p>
 <h2 id="数値シミュレーション課題">数値シミュレーション:課題</h2>
 <h3 id="課題1運動方程式">課題1:運動方程式</h3>
 <p>まずは物を投げた場合の運動を、運動方程式を解くことで数値的に追ってみよう。新しいノートブックを開き、<code>ballistic.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">from</span> math <span class="im">import</span> pi, cos, sin
-<span class="im">from</span> pylab <span class="im">import</span> rcParams</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="im">from</span> math <span class="im">import</span> pi, cos, sin</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="im">from</span> pylab <span class="im">import</span> rcParams</a></code></pre></div>
 <h4 id="プロットサイズの変更">2. プロットサイズの変更</h4>
 <p>デフォルトサイズでは、ややグラフが小さいので、少しサイズを大きくしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rcParams[<span class="st">&#39;figure.figsize&#39;</span>] <span class="op">=</span> <span class="dv">10</span>, <span class="dv">5</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">rcParams[<span class="st">&#39;figure.figsize&#39;</span>] <span class="op">=</span> <span class="dv">10</span>, <span class="dv">5</span></a></code></pre></div>
 <h4 id="運動方程式の数値解法">3. 運動方程式の数値解法</h4>
 <p>時間方向について差分化した運動方程式を数値的に解くルーチン、<code>throw</code>を実装しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> throw(theta, y0):
-    rx, ry <span class="op">=</span> <span class="fl">0.0</span>, y0
-    vx, vy <span class="op">=</span> cos(theta), sin(theta)
-    ax, ay <span class="op">=</span> [], []
-    g <span class="op">=</span> <span class="fl">1.0</span>
-    h <span class="op">=</span> <span class="fl">0.001</span>
-    <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:
-        rx <span class="op">+=</span> vx <span class="op">*</span> h
-        ry <span class="op">+=</span> vy <span class="op">*</span> h
-        vy <span class="op">-=</span> g <span class="op">*</span> h
-        ax.append(rx)
-        ay.append(ry)
-    <span class="cf">return</span> ax, ay</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">def</span> throw(theta, y0):</a>
+<a class="sourceLine" id="cb3-2" title="2">    rx, ry <span class="op">=</span> <span class="fl">0.0</span>, y0</a>
+<a class="sourceLine" id="cb3-3" title="3">    vx, vy <span class="op">=</span> cos(theta), sin(theta)</a>
+<a class="sourceLine" id="cb3-4" title="4">    ax, ay <span class="op">=</span> [], []</a>
+<a class="sourceLine" id="cb3-5" title="5">    g <span class="op">=</span> <span class="fl">1.0</span></a>
+<a class="sourceLine" id="cb3-6" title="6">    h <span class="op">=</span> <span class="fl">0.001</span></a>
+<a class="sourceLine" id="cb3-7" title="7">    <span class="cf">while</span> ry <span class="op">&gt;=</span> <span class="fl">0.0</span>:</a>
+<a class="sourceLine" id="cb3-8" title="8">        rx <span class="op">+=</span> vx <span class="op">*</span> h</a>
+<a class="sourceLine" id="cb3-9" title="9">        ry <span class="op">+=</span> vy <span class="op">*</span> h</a>
+<a class="sourceLine" id="cb3-10" title="10">        vy <span class="op">-=</span> g <span class="op">*</span> h</a>
+<a class="sourceLine" id="cb3-11" title="11">        ax.append(rx)</a>
+<a class="sourceLine" id="cb3-12" title="12">        ay.append(ry)</a>
+<a class="sourceLine" id="cb3-13" title="13">    <span class="cf">return</span> ax, ay</a></code></pre></div>
 <p>ここで、<code>theta</code>は投げる角度(仰角)、<code>y0</code>は最初に立っている「台」の高さである。</p>
 <h4 id="プロット">4. プロット</h4>
 <p>投げる角度と台の高さを受け取って、軌道をグラフにする関数<code>plot</code>を実装しよう。比較のため、複数の角度をリストで受け取り、それぞれの角度で投げた場合の軌道を重ねて表示している。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> plot(angles, y0<span class="op">=</span><span class="fl">0.0</span>):
-    <span class="cf">for</span> theta <span class="kw">in</span> angles:
-        nx, ny <span class="op">=</span> throw(theta <span class="op">/</span> <span class="fl">180.0</span> <span class="op">*</span> pi, y0)
-        plt.plot(nx, ny, label<span class="op">=</span>theta)
-    plt.legend()
-    plt.show()</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">def</span> plot(angles, y0<span class="op">=</span><span class="fl">0.0</span>):</a>
+<a class="sourceLine" id="cb4-2" title="2">    <span class="cf">for</span> theta <span class="kw">in</span> angles:</a>
+<a class="sourceLine" id="cb4-3" title="3">        nx, ny <span class="op">=</span> throw(theta <span class="op">/</span> <span class="fl">180.0</span> <span class="op">*</span> pi, y0)</a>
+<a class="sourceLine" id="cb4-4" title="4">        plt.plot(nx, ny, label<span class="op">=</span>theta)</a>
+<a class="sourceLine" id="cb4-5" title="5">    plt.legend()</a>
+<a class="sourceLine" id="cb4-6" title="6">    plt.show()</a></code></pre></div>
 <h4 id="地面から投げた場合">5. 地面から投げた場合</h4>
 <p>まず、地面から投げた場合(<code>y0=0</code>の場合)を見てみよう。40度、45度、50度で投げてみた軌道を重ねて表示する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]
-plot(angles)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]</a>
+<a class="sourceLine" id="cb5-2" title="2">plot(angles)</a></code></pre></div>
 <p>予想通り、45度がもっとも遠くに届いているだろうか？</p>
 <h4 id="台の上から投げた場合">6. 台の上から投げた場合</h4>
 <p>次に、台の上から投げてみよう。最初に高さ<span class="math inline">\(1\)</span>の台に乗ってものを投げた場合にどうなるか調べてみる。遠くに届く角度が45度から増えるか減るか、予想してから実行すること。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]
-plot(angles, <span class="fl">1.0</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">angles <span class="op">=</span> [<span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>]</a>
+<a class="sourceLine" id="cb6-2" title="2">plot(angles, <span class="fl">1.0</span>)</a></code></pre></div>
 <p>実際に一番遠くに届く角度は45度から増えただろうか、減っただろうか。入力する角度を5度刻みで変化させ、最も遠くに届く角度を調べよ。</p>
 <h3 id="発展課題初速依存性">発展課題：初速依存性</h3>
 <p>先程の運動方程式では、初速を<span class="math inline">\(1\)</span>に固定していた。関数<code>throw</code>の初速を与える箇所を、以下のように変更すると、初速を<span class="math inline">\(2\)</span>に変えることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">    vx, vy <span class="op">=</span> <span class="fl">2.0</span><span class="op">*</span>cos(theta), <span class="fl">2.0</span><span class="op">*</span>sin(theta)</a></code></pre></div>
 <p>初速を大きくした場合、「台から投げた時」の「最も遠くに届く角度」は増えるだろうか、減るだろうか？初速を<span class="math inline">\(10\)</span>にしたらどうなるだろう？初速が大きい極限でどうなるか考察せよ。</p>
 <h3 id="課題2反応拡散方程式">課題2:反応拡散方程式</h3>
 <p>反応拡散方程式を数値的に解いてみよう。新しいノートブックを開き、<code>gs.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリのインポートをしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> numba <span class="im">import</span> jit
-<span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="im">from</span> numba <span class="im">import</span> jit</a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="im">from</span> matplotlib <span class="im">import</span> animation, rc</a></code></pre></div>
 <h4 id="ラプラシアンの実装">2. ラプラシアンの実装</h4>
 <p>2次元配列<code>s[m][n]</code>の、位置<span class="math inline">\((m,n)\)</span>におけるラプラシアンは、</p>
 <p><code>s[m+1][n] + s[m-1][n] + s[m][n+1] + s[m][n-1] - 4 * s[m][n]</code></p>
 <p>と表現できる。これを用いて、2次元配列<code>s</code>と位置<code>m,n</code>を受け取って、その位置でのラプラシアンの値を返す関数<code>laplacian</code>を実装したい。以下はそれを途中まで実装したものだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> laplacian(m, n, s):
-    ts <span class="op">=</span> <span class="fl">0.0</span>
-    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]
-    ts <span class="op">+=</span> s[m<span class="op">-</span><span class="dv">1</span>][n]
-    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]
-    ts <span class="op">+=</span> s[m][n<span class="op">-</span><span class="dv">1</span>]
-    <span class="co"># ここを埋めよ</span>
-    <span class="cf">return</span> ts</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="at">@jit</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="kw">def</span> laplacian(m, n, s):</a>
+<a class="sourceLine" id="cb9-3" title="3">    ts <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb9-4" title="4">    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]</a>
+<a class="sourceLine" id="cb9-5" title="5">    ts <span class="op">+=</span> s[m<span class="dv">-1</span>][n]</a>
+<a class="sourceLine" id="cb9-6" title="6">    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb9-7" title="7">    ts <span class="op">+=</span> s[m][n<span class="dv">-1</span>]</a>
+<a class="sourceLine" id="cb9-8" title="8">    <span class="co"># ここを埋めよ</span></a>
+<a class="sourceLine" id="cb9-9" title="9">    <span class="cf">return</span> ts</a></code></pre></div>
 <p>上記がラプラシアンの値となるように、未完成の部分を完成させよ。</p>
 <p>なお、関数定義の前に<code>@jit</code>とあるのは、「この関数をJITコンパイルせよ」という指示(デコレータ)である。JITはJust in Timeの略で、実行時にコードをコンパイルすることでコードの実行を加速する。ここではJIT、デコレータともに詳細には触れない。</p>
 <h4 id="ラプラシアンのテスト">3. ラプラシアンのテスト</h4>
 <p><code>laplacian</code>を実装したらテストしてみよう。以下はすべて三つ目のセルで実行せよ。</p>
 <p>まず、<code>laplacian</code>に食わせるテスト用に、NumPyの2次元配列を作成する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
-a</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb10-2" title="2">a</a></code></pre></div>
 <p>実行すると以下のような表示になるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">array([[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],
-       [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],
-       [<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]])</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">array([[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb11-2" title="2">       [<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],</a>
+<a class="sourceLine" id="cb11-3" title="3">       [<span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>]])</a></code></pre></div>
 <p>さて、中央に着目しよう。中央の値は4であり、1,3,5,7に囲まれている。周りの4つの数字の平均は4であり、中央の値と一致するため、この地点でのラプラシアンの値は0になるはずである。確認してみよう。三つ目のセルを以下のように書き換えよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
-laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb12-2" title="2">laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</a></code></pre></div>
 <p>これは、<code>a</code>という配列の<code>(1,1)</code>地点におけるラプラシアンの中央差分の値を求めよ、という意味である。実行結果として<code>0.0</code>が返ってくれば正しい。</p>
 <p>これだけではテストとして不安なので、値を少しずらしてみよう。三つ目のテスト用セルを以下のように修正して実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
-a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
-a</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb13-2" title="2">a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb13-3" title="3">a</a></code></pre></div>
 <p>まず、入力するリストが以下のような形になる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">[[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">2</span>]
- [<span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>]
- [<span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span>]]</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">[[<span class="dv">0</span> <span class="dv">0</span> <span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb14-2" title="2"> [<span class="dv">3</span> <span class="dv">4</span> <span class="dv">5</span>]</a>
+<a class="sourceLine" id="cb14-3" title="3"> [<span class="dv">6</span> <span class="dv">7</span> <span class="dv">8</span>]]</a></code></pre></div>
 <p>4の上が1であったのが0になった。したがって、中央は平均よりも高い値になっているから、ラプラシアンは負になるはずである。実際に計算してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)
-a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span>
-laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">a <span class="op">=</span> np.arange(<span class="dv">9</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb15-2" title="2">a[<span class="dv">0</span>,<span class="dv">1</span>] <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb15-3" title="3">laplacian(<span class="dv">1</span>,<span class="dv">1</span>,a)</a></code></pre></div>
 <p>上記の実行結果が<code>-1.0</code>になれば正しく計算されている。</p>
 <h4 id="時間発展">4. 時間発展</h4>
 <p>2つの配列を受け取り、1ステップだけ時間を進める関数<code>calc</code>を実装しよう。以下を4つ目のセルに入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> calc(u, v, u2, v2):
-    L, _ <span class="op">=</span> u.shape
-    dt <span class="op">=</span> <span class="fl">0.2</span>
-    F <span class="op">=</span> <span class="fl">0.04</span>
-    k <span class="op">=</span> <span class="fl">0.06075</span>
-    Du <span class="op">=</span> <span class="fl">0.1</span>
-    Dv <span class="op">=</span> <span class="fl">0.05</span>
-    lu <span class="op">=</span> np.zeros((L, L))
-    lv <span class="op">=</span> np.zeros((L, L))
-    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
-        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="op">-</span><span class="dv">1</span>):
-            lu[ix, iy] <span class="op">=</span> Du <span class="op">*</span> laplacian(ix, iy, u)
-            lv[ix, iy] <span class="op">=</span> Dv <span class="op">*</span> laplacian(ix, iy, v)
-    cu <span class="op">=</span> <span class="op">-</span>v<span class="op">*</span>v<span class="op">*</span>u <span class="op">+</span> F<span class="op">*</span>(<span class="fl">1.0</span> <span class="op">-</span> u)
-    cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v
-    u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt
-    v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="at">@jit</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="kw">def</span> calc(u, v, u2, v2):</a>
+<a class="sourceLine" id="cb16-3" title="3">    L, _ <span class="op">=</span> u.shape</a>
+<a class="sourceLine" id="cb16-4" title="4">    dt <span class="op">=</span> <span class="fl">0.2</span></a>
+<a class="sourceLine" id="cb16-5" title="5">    F <span class="op">=</span> <span class="fl">0.04</span></a>
+<a class="sourceLine" id="cb16-6" title="6">    k <span class="op">=</span> <span class="fl">0.06075</span></a>
+<a class="sourceLine" id="cb16-7" title="7">    Du <span class="op">=</span> <span class="fl">0.1</span></a>
+<a class="sourceLine" id="cb16-8" title="8">    Dv <span class="op">=</span> <span class="fl">0.05</span></a>
+<a class="sourceLine" id="cb16-9" title="9">    lu <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb16-10" title="10">    lv <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb16-11" title="11">    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb16-12" title="12">        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, L<span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb16-13" title="13">            lu[ix, iy] <span class="op">=</span> Du <span class="op">*</span> laplacian(ix, iy, u)</a>
+<a class="sourceLine" id="cb16-14" title="14">            lv[ix, iy] <span class="op">=</span> Dv <span class="op">*</span> laplacian(ix, iy, v)</a>
+<a class="sourceLine" id="cb16-15" title="15">    cu <span class="op">=</span> <span class="op">-</span>v<span class="op">*</span>v<span class="op">*</span>u <span class="op">+</span> F<span class="op">*</span>(<span class="fl">1.0</span> <span class="op">-</span> u)</a>
+<a class="sourceLine" id="cb16-16" title="16">    cv <span class="op">=</span> v<span class="op">*</span>v<span class="op">*</span>u <span class="op">-</span> (F<span class="op">+</span>k)<span class="op">*</span>v</a>
+<a class="sourceLine" id="cb16-17" title="17">    u2[:] <span class="op">=</span> u <span class="op">+</span> (lu<span class="op">+</span>cu) <span class="op">*</span> dt</a>
+<a class="sourceLine" id="cb16-18" title="18">    v2[:] <span class="op">=</span> v <span class="op">+</span> (lv<span class="op">+</span>cv) <span class="op">*</span> dt</a></code></pre></div>
 <p>最初の<code>@jit</code>デコレータを忘れないこと。なお、関数の冒頭で<code>L, _ = u.shape</code>とあるのは、<code>u.shape</code>が2要素のタプルを返す際、そのうち最初の要素を<code>L</code>で受け取るが、2つ目は使わないことをアンダースコア「<code>_</code>」で表現している。宣言だけしてあとで使わない変数はバグの元なので、あとで使わないことがわかっている変数に対しては積極的に<code>_</code>を使って使わないことを明示するようにしたい。</p>
 <h4 id="シミュレーションループ">5. シミュレーションループ</h4>
 <p>1ステップ時間を進める関数が書けたら、それを何度も呼び出すことで時間発展をさせよう。また、初期条件として模様の「種」を作る。5つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="at">@jit</span>
-<span class="kw">def</span> simulation(L, loop):
-    u <span class="op">=</span> np.zeros((L, L))
-    u2 <span class="op">=</span> np.zeros((L, L))
-    v <span class="op">=</span> np.zeros((L, L))
-    v2 <span class="op">=</span> np.zeros((L, L))
-    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span>
-    u[h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="op">-</span><span class="dv">6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span>
-    v[h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="op">-</span><span class="dv">3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span>
-    r <span class="op">=</span> []
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(loop):
-        calc(u, v, u2, v2)
-        u, u2, v, v2 <span class="op">=</span> u2, u, v2, v
-        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:
-          r.append(v.copy())
-    <span class="cf">return</span> r</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="at">@jit</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="kw">def</span> simulation(L, loop):</a>
+<a class="sourceLine" id="cb17-3" title="3">    u <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb17-4" title="4">    u2 <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb17-5" title="5">    v <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb17-6" title="6">    v2 <span class="op">=</span> np.zeros((L, L))</a>
+<a class="sourceLine" id="cb17-7" title="7">    h <span class="op">=</span> L<span class="op">//</span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb17-8" title="8">    u[h<span class="dv">-6</span>:h<span class="op">+</span><span class="dv">6</span>, h<span class="dv">-6</span>:h<span class="op">+</span><span class="dv">6</span>] <span class="op">=</span> <span class="fl">0.9</span></a>
+<a class="sourceLine" id="cb17-9" title="9">    v[h<span class="dv">-3</span>:h<span class="op">+</span><span class="dv">3</span>, h<span class="dv">-3</span>:h<span class="op">+</span><span class="dv">3</span>] <span class="op">=</span> <span class="fl">0.7</span></a>
+<a class="sourceLine" id="cb17-10" title="10">    r <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb17-11" title="11">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(loop):</a>
+<a class="sourceLine" id="cb17-12" title="12">        calc(u, v, u2, v2)</a>
+<a class="sourceLine" id="cb17-13" title="13">        u, u2, v, v2 <span class="op">=</span> u2, u, v2, v</a>
+<a class="sourceLine" id="cb17-14" title="14">        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb17-15" title="15">          r.append(v.copy())</a>
+<a class="sourceLine" id="cb17-16" title="16">    <span class="cf">return</span> r</a></code></pre></div>
 <p>これも、最初の行の<code>@jit</code>を忘れないこと。</p>
 <h4 id="シミュレーションの実行">6. シミュレーションの実行</h4>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)
-n <span class="op">=</span> <span class="bu">len</span>(imgs)
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):
-    im <span class="op">=</span> plt.imshow(imgs[n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> i])
-    plt.show()</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">imgs <span class="op">=</span> simulation(<span class="dv">64</span>, <span class="dv">10000</span>)</a>
+<a class="sourceLine" id="cb18-2" title="2">n <span class="op">=</span> <span class="bu">len</span>(imgs)</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</a>
+<a class="sourceLine" id="cb18-4" title="4">    im <span class="op">=</span> plt.imshow(imgs[n <span class="op">//</span> <span class="dv">4</span> <span class="op">*</span> i])</a>
+<a class="sourceLine" id="cb18-5" title="5">    plt.show()</a></code></pre></div>
 <p>ここまで正しく入力されていれば、不思議な模様が4枚現れたはずである。</p>
 <h4 id="アニメーション">7. アニメーション</h4>
 <p>せっかくシミュレーションしたので、アニメーションを表示させよう。そのための準備をする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fig <span class="op">=</span> plt.figure()
-im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])
-<span class="kw">def</span> update(i):
-    im.set_array(imgs[i])</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">fig <span class="op">=</span> plt.figure()</a>
+<a class="sourceLine" id="cb19-2" title="2">im <span class="op">=</span> plt.imshow(imgs[<span class="op">-</span><span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="kw">def</span> update(i):</a>
+<a class="sourceLine" id="cb19-4" title="4">    im.set_array(imgs[i])</a></code></pre></div>
 <p>実行後、不思議な模様が出力されるはずである。</p>
 <h4 id="アニメーションの表示">8. アニメーションの表示</h4>
 <p>ではアニメーションを表示してみよう。以下を実行せよ(少し時間がかかる)。画像の下に操作パネルが出たら、再生ボタン(右向きの三角)を押してみよう。アニメーションが表示されたら成功である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)
-animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">rc(<span class="st">&#39;animation&#39;</span>, html<span class="op">=</span><span class="st">&#39;jshtml&#39;</span>)</a>
+<a class="sourceLine" id="cb20-2" title="2">animation.FuncAnimation(fig, update, interval<span class="op">=</span><span class="dv">50</span>, frames<span class="op">=</span><span class="bu">len</span>(imgs))</a></code></pre></div>
 <h2 id="余談パーソナルスーパーコンピュータ">余談：パーソナルスーパーコンピュータ</h2>
 <p>パソコンとは「パーソナルコンピュータ」の略、つまり「個人向け計算機」という意味だ。もともと計算機は貴重品かつ大型であり、組織に一つしかないものだった。それが徐々に小型化し、オフィスに一つ(オフコン)になり、さらに個人で独占して利用できるものになった。パソコンが普及するにつれて、もともと「組織に一つ」しかないような巨大な計算機は「スーパーコンピュータ(スパコン)」と呼ばれ、パソコンと区別されるようになった。スパコンは、安くて一億、高ければ数十、数百億円といったその価格もさることながら、その維持も大変である。計算するのには莫大な電気が必要で、かつ使った電気はすべて熱となるからそれを冷却するシステムも必要である。したがって、本来「パソコン」と「スパコン」は相容れない概念のはずだが、スパコンを個人で所有することでその二つを悪魔合体させ、「パーソナルスーパーコンピュータ」という狂った概念を生み出した人がいる。桑原邦郎氏である。彼は流体力学を専門とする研究者で、親から受け継いだ莫大な財産をすべてスパコンに突っ込んだ。東京大学工学部物理工学科の助手、宇宙科学研究所の助教授を経て、自宅に計算流体力学研究所という研究所を作り、そこにスパコンを購入して運用した。最盛期は七台のスパコンがフル稼働し、電気代だけで月に2000万円かかったという。1980年代後半から1990年代にかけて、計算流体力学を専門とする人はほとんど彼のパーソナルスパコンにお世話になったと思われる。自動車メーカも技術者を派遣していたそうだ。また、米国の諜報機関が「軍事目的に使っているのではないか」と疑ったとのエピソードもある。彼は親から受け継いだ莫大な遺産をすべてスパコンに突っ込み、それを惜しげもなくいろんな人に使わせた。</p>
 <p>それから紆余曲折あって、計算流体力学研究所はスパコンを手放し、技術コンサルやパソコンの組み立て、販売をする会社となった。私が大学院に進学した際に与えられたパソコンは、この計算流体力学研究所で購入したAlpha21164のマシンであった。指導教員の「せっかくだから組み立てさせてもらったら？」の言葉に甘え、目黒に行ってアルバイトのお兄さんと一緒に自分の研究に使うマシンを組み立てた。そこに社長である桑原氏が様子を見にやってきた。僕が物工の学生と知ると、興味をもっていろいろ聞いてきた。僕はまさか目の前の社長さんが元物工の助手だったなんて知らなかったので「物工のご出身なんですか？どこの研究室ですか？」と的外れな質問をした。彼はただ笑って何も答えなかったのを思い出す。その時は青二才で何もわからなかった私だが、スパコンを使って研究をするようになった今なら、彼からいろいろ興味深い話が聞けたのではないかと残念に思う。桑原氏は2008年、その豪快な生涯を閉じた。「親の遺産をもっとも有効に学術に活かした」と評されている。</p>

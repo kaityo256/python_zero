@@ -1,93 +1,248 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title>introduction/index.md</title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="はじめに">はじめに</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="はじめに">はじめに</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="プログラマ的な感覚">プログラマ的な感覚</h2>
 <p>本書ではPythonをゼロから学ぶ。しかし始める前に、なぜPythonを学ぶべきなのか？Pythonを学んでどうするのか？について少し伝えたいことがある。</p>
@@ -96,23 +251,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>なぜプログラムを覚えるべきか。それは今後プログラムが就職活動に必須スキルになるからでもなく、ましてAIがブームだからでもない。「プログラマ的な感覚」を身につけるためだ。たとえ日常的にプログラムを組んでいなくとも、「プログラマ的な感覚」を身に着けた人は、そうでない人に比べて作業能力が桁違いに上がる可能性がある。</p>
 <p>例を挙げよう。あなたは、あるフォルダの中にある100枚くらいの画像を全て半分にリサイズしなければならない。とりあえずWindowsを使っていて「ペイント」を使ってファイルを開き、「Ctrl+E」でイメージのプロパティを開けば幅と高さを調整できることは知っているとしよう。「プログラマ的な感覚」がなければ、頑張って「ペイント」で100枚修正してしまうかもしれない。</p>
 <p>ここで、本書を読んだ人は、詳細は覚えていなくとも「少なくともPythonには画像を扱うライブラリがあり、リサイズもできるはずで、またフォルダの中のファイル一覧も簡単に取れるに違いない」と思うだろう。そして「Python 画像 リサイズ」や「Python フォルダ ファイル 一覧」などのキーワードで検索し、以下のようなコードを書く。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> glob
-<span class="im">from</span> PIL <span class="im">import</span> Image
-
-<span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> glob.glob(<span class="st">&quot;*.png&quot;</span>):
-    img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="bu">file</span>)
-    (w, h) <span class="op">=</span> img.size
-    img.resize((w<span class="op">//</span><span class="dv">2</span>, h<span class="op">//</span><span class="dv">2</span>), Image.LANCZOS).save(<span class="st">&quot;resized/&quot;</span><span class="op">+</span><span class="bu">file</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> glob</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="im">from</span> PIL <span class="im">import</span> Image</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> glob.glob(<span class="st">&quot;*.png&quot;</span>):</a>
+<a class="sourceLine" id="cb1-5" title="5">    img <span class="op">=</span> Image.<span class="bu">open</span>(<span class="bu">file</span>)</a>
+<a class="sourceLine" id="cb1-6" title="6">    (w, h) <span class="op">=</span> img.size</a>
+<a class="sourceLine" id="cb1-7" title="7">    img.resize((w<span class="op">//</span><span class="dv">2</span>, h<span class="op">//</span><span class="dv">2</span>), Image.LANCZOS).save(<span class="st">&quot;resized/&quot;</span><span class="op">+</span><span class="bu">file</span>)</a></code></pre></div>
 <p>カレントディレクトリにあるPNGファイルを、半分のサイズにしては<code>resized</code>というフォルダに放り込んでいくスクリプトである。たった6行だ。</p>
 <p>もしくは、「これくらいのことならPythonを使うまでもないかもしれない」と思い、「画像　リサイズ　一括」というキーワードで検索して、ImageMagickというツールにたどり着くかもしれない。それなら一行でできる。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">mogrify</span> -path resized -resize 50% *.png</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">mogrify</span> -path resized -resize 50% *.png</a></code></pre></div>
 <p>ここで重要なのは「PythonのglobやPILというライブラリの存在や使い方を覚えていること」でも「ImageMagickというツールを知っていること」でもない。「これくらいのことなら数行でできるに違いない」という感覚である。プログラマ的な感覚を身に着けていない人は、そもそも「これは簡単にできるだろう」という発想がないため、検索もできない。</p>
 <p>もしかしたら「プログラムの素養がなくたって画像のリサイズくらいなら自動でできると思いつく」と思うかもしれない。では、こんな課題はどうだろう？あなたは卒業研究でトランジスタの特性を調べることになった。それぞれのトランジスタにはあるパラメタがあり、異なるパラメタを用いて作られている。そのトランジスタの電圧ー電流特性が、以下のようなテキストファイルに保存されているとしよう。</p>
-<pre class="txt"><code>0.0 0.0
-0.1 0.01
-0.2 0.2
-0.3 0.8
-...</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb3-1" title="1">0.0 0.0</a>
+<a class="sourceLine" id="cb3-2" title="2">0.1 0.01</a>
+<a class="sourceLine" id="cb3-3" title="3">0.2 0.2</a>
+<a class="sourceLine" id="cb3-4" title="4">0.3 0.8</a>
+<a class="sourceLine" id="cb3-5" title="5">...</a></code></pre></div>
 <p>このようなデータが、トランジスタのパラメタを含めて<code>data_48.dat</code>といった名前で保存されており、それが100個近くある。トランジスタは、ゲートにかける電圧がある「しきい値」を超えると電流が流れ始める。このデータに適当にフィッティングをかけることで、「しきい値」を求めたいとしよう。ファイルそれぞれのデータにフィッティングをかけて、ファイル名のうしろにある値(この場合は48)をx軸に、しきい値をy軸にしてプロットしたい。</p>
 <p>「画像のリサイズ」は一般的なニーズだからツールがあるが、この卒論のテーマはあなたしかやっていないからそんな便利なツールはない。ここで、もし「プログラマ的な感覚」がなければ、一つ一つエクセルでファイルを開き、スレッショルドを求めて、別のエクセルシートにパラメタとして記入していくかもしれない。そして徹夜で作業して「卒論がんばってる！」と錯覚するかもしれない。しかし、もしあなたが「プログラマ的な感覚」を持っていれば、「これはPythonを使えば、長くても数十行でできるな」と思うはずだ。</p>
 <p>くりかえしになるが、必要なのは「知識」ではなく「感覚」である。「<code>glob</code>を使ってファイル一覧を取得し、<code>SciPy</code>の<code>curve_fit</code>でフィッティングをかけることができる」ということを覚えておく必要はない。大事なのは「そういうことが簡単にできるはずだ」と思うことで、そう思うことができれば「Python フィッティング」で検索すればすぐに<code>scipy.curve_fit</code>にたどり着けるはずだし、もしかしたらPythonではなくRを使いたくなるかもしれない。調べて試してみるたびに、あなたのスキルはどんどん増えていくことになる。</p>
@@ -121,6 +276,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>細かい文法などは最初は気にせず、必要に応じて調べれば良い。「Pythonはこういうことができるんだな」「それはこれくらいの作業量でできるんだな」という「感覚」を頭の片隅に残すこと、それを目的として学習して欲しい。</p>
 <h2 id="謝辞">謝辞</h2>
 <p>本書は慶応義塾大学理工学部物理情報工学科の講義「プログラミング基礎同演習」のテキストとして執筆されました。Google Colabを利用して講義するというアイディアは、同科の内山孝憲教授によるものです。本講義にあたり、同科の國府方大喜さん、原啓太さんにはTAを担当していただきました。特に國府方さんには多数のミスを指摘していただきました。講義では学生さんから多数のフィードバックを頂きました。特にレポートの考察やコメントを読むのが毎回楽しみでした。渡辺研究室の学生さんからは、多くのミスの指摘や改善の提案をいただきました。皆様に感謝いたします。</p>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>

@@ -22,7 +22,7 @@ index.html: index.md
 	sed -i 's/assignment.md/assignment.html/' $@ 
 
 %/index.html: %/index.md
-	pandoc -s $< -o $@ $(PANDOC_HTMLOPT)
+	pandoc -s $< -o $@ $(PANDOC_HTMLOPT) --metadata pagetitle="$<"
 
 errata/index.html: errata/README.md
 	pandoc -s $< -o $@ $(PANDOC_HTMLOPT)

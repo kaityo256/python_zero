@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>ml/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -255,7 +255,7 @@
 <p>昨今、「機械学習」「ディープラーニング」「AI」といった言葉をよく聞く。TensorFlowやPyTorchなど、広く使われている機械学習のフレームワークの多くがPythonで記述されていることもあり、機械学習をする上でPythonが事実上の共通語になりつつある。機械学習による派手な結果を目にすることも多いだろう。せっかく本書でPythonを学んだのであるから、最後は機械学習を体験してみよう。今回は、ざっと機械学習の概要について触れてから、機械学習で注目されている技術の一つ、GANによる画像生成を体験してみる。</p>
 <h3 id="機械学習の種類">機械学習の種類</h3>
 <p>一口に「機械学習」と言っても、機械学習がカバーする範囲は広い。現在も様々な技術が提案されているため、その全てを厳密に分類するのは難しいが、よく言われるのは以下の三種類の分類である。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>教師あり学習</li>
 <li>教師なし学習</li>
 <li>強化学習</li>
@@ -267,10 +267,9 @@
 <h3 id="学習と最適化">学習と最適化</h3>
 <p>機械学習では、よく「学習」という言葉が出てくる。学習とは、ある量を最適化することだ。その最適化の簡単な例として、線形回帰を見てみよう。</p>
 <p>回帰とは、何かしらの入力<span class="math inline">\(x\)</span>に対して、出力<span class="math inline">\(y\)</span>が得られる時、その間の関係<span class="math inline">\(y = f(x)\)</span>を推定する問題である。例えば片方を固定されたバネに荷重をかけ、どのくらい伸びるかを調べる実験を考える。この場合の入力<span class="math inline">\(x\)</span>は荷重、出力<span class="math inline">\(y\)</span>はバネの伸びである。とりあえずいくつか重りを乗せてみて、荷重と伸びの観測値をグラフにプロットしてみたら以下のようになったとしよう。</p>
-<div class="figure">
-<img src="fig/regression.png" alt="バネの伸びと荷重の関係" />
-<p class="caption">バネの伸びと荷重の関係</p>
-</div>
+<figure>
+<img src="fig/regression.png" alt="バネの伸びと荷重の関係" /><figcaption>バネの伸びと荷重の関係</figcaption>
+</figure>
 <p>ここから、バネ定数を推定するには最小二乗法を使えば良いことは知っているであろうが、簡単におさらいしておこう。いま、<span class="math inline">\(N\)</span>回異なる荷重をかける実験を行い、荷重とバネの伸びの観測値の組<span class="math inline">\((x_i, y_i)\)</span>が得られたとする。さて、フックの法則から<span class="math inline">\(y = a x\)</span>が予想される。<span class="math inline">\(x_i\)</span>の荷重がかかった時、このモデルによる予想値は<span class="math inline">\(a x_i\)</span>だが、観測値は<span class="math inline">\(y_i\)</span>だ。そのズレ<span class="math inline">\(y_i - a x_i\)</span>を残差と呼ぶ。この残差の二乗和は<span class="math inline">\(a\)</span>の関数であり、以下のように表すことができる。</p>
 <p><span class="math display">\[
 C(a) = \sum_i^N (a x_i - y_i)^2
@@ -285,17 +284,15 @@ a = \frac{\sum_i^N x_i y_i}{\sum_i^N x_i^2}
 \]</span></p>
 <p>を得る。</p>
 <p>さて、実はこれは最も単純な機械学習の例となっている。我々は、<span class="math inline">\(y = a x\)</span>というモデルを仮定し、<span class="math inline">\(N\)</span>個の観測値の組<span class="math inline">\((x_i, y_i)\)</span>を使ってモデルパラメタ<span class="math inline">\(a\)</span>を決定した。このパラメタを決定するプロセスを「学習」と呼ぶ。「学習」では、<span class="math inline">\(C(a)\)</span>を最小化するようにモデルのパラメタ<span class="math inline">\(a\)</span>を決定した。この最小化する関数を <strong>目的関数 (cost function)</strong>と呼ぶ。目的関数を最小化するために使われた観測データを「トレーニングデータ」と呼ぶ。トレーニングデータに対する誤差を<strong>訓練誤差</strong>と呼ぶ。</p>
-<div class="figure">
-<img src="fig/error.png" alt="訓練誤差と汎化誤差" />
-<p class="caption">訓練誤差と汎化誤差</p>
-</div>
+<figure>
+<img src="fig/error.png" alt="訓練誤差と汎化誤差" /><figcaption>訓練誤差と汎化誤差</figcaption>
+</figure>
 <p>さて、我々の目的はあくまで「バネの伸び」という物理現象を記述することであって、「観測データを再現するモデルの構築」は、その手段に過ぎなかった。したがって、こうして得られた<span class="math inline">\(y = ax\)</span>というモデルは、未知の入力<span class="math inline">\(x\)</span>に対して、良い予想値<span class="math inline">\(y\)</span>を与えなくてはならない。トレーニングデータに含まれない入力<span class="math inline">\(x\)</span>に対して、我々が構築したモデルがどれくらい良いかを調べることを <strong>テスト(test)</strong> と呼ぶ。</p>
 <p>具体的には、モデルを決める時に使ったトレーニングデータとは別のデータセットを用意しておき、そのデータについてモデルがどれくらいよく予想できるかを確認する、ということがよく行われる。このような目的に使われるデータを「テストデータ」と呼び、テストデータに対する誤差を<strong>汎化誤差</strong>と呼ぶ。</p>
 <p>訓練誤差は小さいのに、汎化誤差が大きい場合、トレーニングデータに最適化され過ぎており、応用が効かない「頭でっかち」なモデルになっていることを示唆する。これを <strong>過学習(overfitting)</strong> と呼ぶ。データの数に比べてモデルパラメタが多い時によく起きる。</p>
-<div class="figure">
-<img src="fig/overfitting.png" alt="訓練誤差・汎化誤差・過学習" />
-<p class="caption">訓練誤差・汎化誤差・過学習</p>
-</div>
+<figure>
+<img src="fig/overfitting.png" alt="訓練誤差・汎化誤差・過学習" /><figcaption>訓練誤差・汎化誤差・過学習</figcaption>
+</figure>
 <p>今回の講義で用いるTensorFlowをはじめとして、機械学習は高度に完成されたライブラリやフレームワークが多数存在する。その内部で用いられている理論やアルゴリズムは難しいものが多く、それらのフレームワークを「ブラックボックス」として用いるのはある程度やむを得ないところもある。しかし、機械学習に限らないことだが、基本的な概念、用語については、簡単な例でしっかり理解しておいた方が良い。「機械学習は最小二乗法のお化けのようなものだ」というと語弊があるのだが、学習、目的関数、訓練誤差、汎化誤差、過学習といった機械学習で頻出する単語のイメージを、中身がよくわかる単純な例、例えば線形モデルの最小二乗法で理解しておく、ということは非常に重要なことである。</p>
 <p>機械学習に限らないことだが、「何かよくわからない概念が出てきたら、簡単な例で考えてみる」癖をつけておきたい。</p>
 <h2 id="重回帰分析">重回帰分析</h2>
@@ -318,10 +315,9 @@ y = a x + c z + b
 <p>通常よく使われる機械学習、例えば「植物の写真を見せて名前を答えるモデル」や「人間の写真を見せて年齢を推定するモデル」などでは、モデルは入力となるデータに対して何かしら「答え」を返すことが目的である。しかし、そういう分類や回帰ができるようになってくると、もっと難しい作業、例えば「有名な画家の絵を多数模写させることで、その画家のタッチでオリジナルの絵が書けるモデル」や、「テーマを伝えただけで映画やドラマの脚本を書けるモデル」などをやらせてみたくなるのが人情である。ここではそんな例として、GANを取り上げる(課題2)。<strong>GAN (generative adversarial networks)</strong> とは、直訳すると <strong>敵対的生成ネットワーク</strong>であり、二つのモデルを競わせることで画像を生成する手法である。</p>
 <p>GANでは、GeneratorとDiscriminatorの二つのモデルを用意する。これらはよく「偽造者」「鑑定者」にたとえられる。まず、本物のデータセット(例えば有名な画家の絵)を用意する。その後、ランダムに「本物のデータ」と「偽造者」が生成した「偽物のデータ」を「鑑定士」に見せ、それを本物か、偽物か判定させる。鑑定者から見れば、これは二値分類問題になっている。ラベルは「本物」か「偽物」である。鑑定者は大量に見せられるデータをどんどん鑑定することで「鑑定士」としての観察眼を磨いていく。</p>
 <p>逆に、偽造者は、自分が提出したデータが「偽物」と見破られたら失敗、「本物」と鑑定されたら成功であり、そのフィードバックを受けながら「偽造者」としての腕を磨いていく。</p>
-<div class="figure">
-<img src="fig/gan.png" alt="GANの概念図" />
-<p class="caption">GANの概念図</p>
-</div>
+<figure>
+<img src="fig/gan.png" alt="GANの概念図" /><figcaption>GANの概念図</figcaption>
+</figure>
 <p>こうして「偽造者」と「鑑定者」がお互いに切磋琢磨しながら学習していくと、最終的に「本物と見紛うばかりのデータを生成できる偽造者が誕生するだろう」というのがGANの要諦である。今回の課題では、適当なデータセットを用意し、偽造者と鑑定者を学習させることで、最終的に偽造者が用意したデータセットを真似た絵を生成できるようになるプロセスを観察しよう。</p>
 <h2 id="簡単な機械学習課題">簡単な機械学習：課題</h2>
 <h3 id="課題1重回帰分析">課題1：重回帰分析</h3>
@@ -329,87 +325,91 @@ y = a x + c z + b
 <p>新しいノートブックを開き<code>salary.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初にライブラリのインポートをしておこう。Pandasはデータ解析を支援するためのライブラリだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">import</span> pandas <span class="im">as</span> pd
-<span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="im">import</span> pandas <span class="im">as</span> pd</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</a></code></pre></div>
 <h4 id="給与データのダウンロード">2. 給与データのダウンロード</h4>
 <p>次に、給与データ(CSVファイル)をダウンロードしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>salary.csv</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>salary.csv</a></code></pre></div>
 <h4 id="データの読み込み">3. データの読み込み</h4>
 <p>CSVファイルをPandasで読み込んで見よう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">df <span class="op">=</span> pd.read_csv(<span class="st">&quot;salary.csv&quot;</span>)
-df</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1">df <span class="op">=</span> pd.read_csv(<span class="st">&quot;salary.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2">df</a></code></pre></div>
 <p><code>age</code>や<code>education</code>、<code>company_size</code>、<code>salary</code>といったデータが読み込まれたはずだ。これらはそれぞれ年齢、学歴、企業規模、給与(千円)である。学歴と企業規模のラベルはそれぞれ以下の通り。</p>
 <ul>
-<li>学歴(<code>education</code>)</li>
+<li>学歴(<code>education</code>)
+<ul>
 <li><code>middle</code>: 中卒</li>
 <li><code>high</code>: 高卒</li>
 <li><code>tech</code>: 高専・短大卒</li>
 <li><code>university</code>: 大学・大学院卒</li>
-<li>企業規模(<code>company_size</code>)</li>
+</ul></li>
+<li>企業規模(<code>company_size</code>)
+<ul>
 <li><code>small</code>: 小企業(従業員数10〜99人)</li>
 <li><code>medium</code>: 中企業(従業員数100〜999人)</li>
 <li><code>large</code>: 大企業(従業員数1000人以上)</li>
+</ul></li>
 </ul>
 <h4 id="大企業のみのデータ">4. 大企業のみのデータ</h4>
 <p>後でプロットするため、大企業のみのデータを抽出しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">large <span class="op">=</span> df[df[<span class="st">&#39;company_size&#39;</span>] <span class="op">==</span> <span class="st">&#39;large&#39;</span>]
-large</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">large <span class="op">=</span> df[df[<span class="st">&#39;company_size&#39;</span>] <span class="op">==</span> <span class="st">&#39;large&#39;</span>]</a>
+<a class="sourceLine" id="cb4-2" title="2">large</a></code></pre></div>
 <p><code>company_size</code>が<code>large</code>のデータのみが抽出されたはずだ。</p>
 <h4 id="データのピボット">5. データのピボット</h4>
 <p>学歴別の収入を見るため、年齢を行、学歴を列とした2次元のデータに整形しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">large <span class="op">=</span> large.pivot(index<span class="op">=</span><span class="st">&#39;age&#39;</span>, columns<span class="op">=</span><span class="st">&#39;education&#39;</span>, values<span class="op">=</span><span class="st">&#39;salary&#39;</span>)
-large</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1">large <span class="op">=</span> large.pivot(index<span class="op">=</span><span class="st">&#39;age&#39;</span>, columns<span class="op">=</span><span class="st">&#39;education&#39;</span>, values<span class="op">=</span><span class="st">&#39;salary&#39;</span>)</a>
+<a class="sourceLine" id="cb5-2" title="2">large</a></code></pre></div>
 <p>それぞれの年齢に対して、学歴別に収入が並んだデータになったはずである。</p>
 <h4 id="データのプロット">6. データのプロット</h4>
 <p>大企業に務める人の収入を学歴別にプロットしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">large.plot()</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">large.plot()</a></code></pre></div>
 <p>年齢を横軸とし、学歴別に賃金(月収、単位千円)がプロットされたはずだ。</p>
 <h4 id="回帰用データの作成">7. 回帰用データの作成</h4>
 <p>先程のデータを見ると、55歳を超えると賃金が下がるのがわかる。これでは線形近似がしづらいので、55歳以下のデータに限定してフィッティングすることにしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">df <span class="op">=</span> df[df[<span class="st">&#39;age&#39;</span>] <span class="op">&lt;</span> <span class="dv">55</span>]
-inputs <span class="op">=</span> df.drop(<span class="st">&#39;salary&#39;</span>, axis<span class="op">=</span><span class="dv">1</span>)
-inputs</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">df <span class="op">=</span> df[df[<span class="st">&#39;age&#39;</span>] <span class="op">&lt;</span> <span class="dv">55</span>]</a>
+<a class="sourceLine" id="cb7-2" title="2">inputs <span class="op">=</span> df.drop(<span class="st">&#39;salary&#39;</span>, axis<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3">inputs</a></code></pre></div>
 <p>年齢が55歳以下のデータのみを抽出した後、説明変数として<code>salary</code>以外のデータを<code>input</code>として取得している。年齢(<code>age</code>)、最終学歴(<code>education</code>)、企業規模(<code>company_size</code>)が並んだはずだ。これらから給与(<code>salary</code>)を推定するのが今回の目的である。</p>
 <h4 id="ダミー変数の作成">8. ダミー変数の作成</h4>
 <p>現在、企業規模が<code>small</code>、<code>medium</code>、<code>large</code>と「ラベル」になっている。これを「数値」にしないとフィッティングができない。そこで、これらのラベルをダミー変数に変換しよう。Pandasは<code>get_dummies</code>という命令一発でダミー変数に変換することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">inputs <span class="op">=</span> pd.get_dummies(inputs)
-inputs</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1">inputs <span class="op">=</span> pd.get_dummies(inputs)</a>
+<a class="sourceLine" id="cb8-2" title="2">inputs</a></code></pre></div>
 <p>学歴を表すために、<code>education_middle</code>や<code>education_high</code>といったダミー変数が導入された。例えば最終学歴(<code>education</code>)が高卒(<code>high</code>)だった場合は<code>education_high=1</code>、大学・大学院卒なら<code>education_university=1</code>(それ以外の<code>education</code>由来のダミー変数はゼロ)といった具合である。</p>
 <h4 id="重回帰分析-1">9. 重回帰分析</h4>
 <p>ではこのデータを重回帰分析してみよう。といっても、scikit-learnの線形回帰の<code>fit</code>関数を呼ぶだけだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">lr <span class="op">=</span> LinearRegression()
-lr.fit(inputs.values,df[<span class="st">&#39;salary&#39;</span>])</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1">lr <span class="op">=</span> LinearRegression()</a>
+<a class="sourceLine" id="cb9-2" title="2">lr.fit(inputs.values,df[<span class="st">&#39;salary&#39;</span>])</a></code></pre></div>
 <h4 id="係数の表示">10. 係数の表示</h4>
 <p>決定された回帰係数を表示してみよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">labels <span class="op">=</span> inputs.columns
-pd.DataFrame({<span class="st">&quot;Name&quot;</span>:labels, <span class="st">&quot;Coefficients&quot;</span>: lr.coef_})</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">labels <span class="op">=</span> inputs.columns</a>
+<a class="sourceLine" id="cb10-2" title="2">pd.DataFrame({<span class="st">&quot;Name&quot;</span>:labels, <span class="st">&quot;Coefficients&quot;</span>: lr.coef_})</a></code></pre></div>
 <p>それぞれのラベル(例えば<code>education_high</code>)に対して、係数(<code>Coefficents</code>)が表示されたはずだ。このうち、年齢(<code>age</code>)は「年齢が一つ増える毎に、どれだけ賃金が増えるか(単位：千円)」を表している。ダミー変数は、例えば「高卒である」ならば、<code>education_high</code>に対応する賃金が増加(マイナスなら減少)することを表している。</p>
 <p>このデータを見て、中卒と大卒で賃金がどれだけ変わるか計算せよ。大企業と小企業ではどうか？</p>
 <h4 id="フィッティング結果のプロット">11.フィッティング結果のプロット</h4>
 <p>せっかく回帰分析により「年齢」「学歴」「企業規模」から賃金が予想できるようになったはずなので、予想結果を実際のデータに重ねてプロットしてみよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dic <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(labels, lr.coef_))
-X <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22</span>,<span class="dv">55</span>)]
-a <span class="op">=</span> dic[<span class="st">&quot;age&quot;</span>]
-e1 <span class="op">=</span> dic[<span class="st">&quot;education_university&quot;</span>]
-e2 <span class="op">=</span> dic[<span class="st">&quot;education_middle&quot;</span>]
-s <span class="op">=</span> dic[<span class="st">&quot;company_size_large&quot;</span>]
-c <span class="op">=</span> lr.intercept_
-Y1 <span class="op">=</span> [x <span class="op">*</span> a <span class="op">+</span> e1 <span class="op">+</span> s <span class="op">+</span> c <span class="cf">for</span> x <span class="kw">in</span> X]
-Y2 <span class="op">=</span> [x <span class="op">*</span> a <span class="op">+</span> e2 <span class="op">+</span> s <span class="op">+</span> c <span class="cf">for</span> x <span class="kw">in</span> X]
-ax <span class="op">=</span> large.plot()
-ax.plot(X,Y1, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)
-ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">dic <span class="op">=</span> <span class="bu">dict</span>(<span class="bu">zip</span>(labels, lr.coef_))</a>
+<a class="sourceLine" id="cb11-2" title="2">X <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">22</span>,<span class="dv">55</span>)]</a>
+<a class="sourceLine" id="cb11-3" title="3">a <span class="op">=</span> dic[<span class="st">&quot;age&quot;</span>]</a>
+<a class="sourceLine" id="cb11-4" title="4">e1 <span class="op">=</span> dic[<span class="st">&quot;education_university&quot;</span>]</a>
+<a class="sourceLine" id="cb11-5" title="5">e2 <span class="op">=</span> dic[<span class="st">&quot;education_middle&quot;</span>]</a>
+<a class="sourceLine" id="cb11-6" title="6">s <span class="op">=</span> dic[<span class="st">&quot;company_size_large&quot;</span>]</a>
+<a class="sourceLine" id="cb11-7" title="7">c <span class="op">=</span> lr.intercept_</a>
+<a class="sourceLine" id="cb11-8" title="8">Y1 <span class="op">=</span> [x <span class="op">*</span> a <span class="op">+</span> e1 <span class="op">+</span> s <span class="op">+</span> c <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb11-9" title="9">Y2 <span class="op">=</span> [x <span class="op">*</span> a <span class="op">+</span> e2 <span class="op">+</span> s <span class="op">+</span> c <span class="cf">for</span> x <span class="kw">in</span> X]</a>
+<a class="sourceLine" id="cb11-10" title="10">ax <span class="op">=</span> large.plot()</a>
+<a class="sourceLine" id="cb11-11" title="11">ax.plot(X,Y1, marker<span class="op">=</span><span class="st">&#39;o&#39;</span>)</a>
+<a class="sourceLine" id="cb11-12" title="12">ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>)</a></code></pre></div>
 <p>正しく実行されていれば、大企業に務める人の賃金のグラフに、回帰による予測値(中卒と大学・大学院卒)が重ねてプロットされたはずである。どのくらい正確に予想できているだろうか？もし実際のデータとずれているなら、その原因は何か考察せよ。</p>
 <h3 id="課題2gan">課題2：GAN</h3>
 <p>機械学習の手法の一つ、敵対的生成ネットワーク、GAN (Generative Adversarial Networks)を体験してみよう。これは、偽造者(Generator)と鑑定者(Discriminator)がお互いに切磋琢磨させることで、偽造者に本物そっくりの画像を生成させるようにする手法である。ここでは、DCGAN (Deep Convolutional Generative Adversarial Network)と呼ばれる手法を用いる。</p>
 <p>新しいノートブックを開き<code>dcgan.ipynb</code>として保存せよ。また、今回の計算はかなり重いため、CPUだけでは時間がかかりすぎてしまう。そこで、GPUを使って計算することにしよう。メニューの「ランタイム」から「ランタイムのタイプを変更」をクリックせよ。ハードウェアアクセラレータが「None」になっているので、そこを「GPU」に変更して「保存」をクリックする。このとき「このノートブックを保存する際にコードセルの出力を除外する」にはチェックを入れなくて良い。その後、右上にある「接続」をクリックする。その際、「あなたはロボットですか？」と、人間であるか確認するダイアログが出る場合がある。その時には「わたしはロボットではありません」をクリックする。</p>
 <h4 id="サンプルプログラムのダウンロード">1. サンプルプログラムのダウンロード</h4>
 <p>GANのプログラムは、簡単なものでもそれなりに長いコードを記述する必要がある。今回は既に入力されたプログラムをダウンロードしよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>dcgan.py</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>ml<span class="op">/</span>dcgan.py</a></code></pre></div>
 <h4 id="インポート">2. インポート</h4>
 <p>先程ダウンロードしたプログラムをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> dcgan</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="im">import</span> dcgan</a></code></pre></div>
 <h4 id="データのダウンロード">3. データのダウンロード</h4>
 <p>GANでは、まず「正解の画像」をデータセットとして与える必要がある。偽造者は、その画像に似せて絵を描いていく。逆に、与えるデータによって「好きな画家」を模写できるように学習させることができる。今回は、二つのデータセットを用意した。</p>
 <ul>
@@ -418,32 +418,32 @@ ax.plot(X,Y2, marker<span class="op">=</span><span class="st">&#39;*&#39;</span>
 </ul>
 <p>上記のうち、好きなものを一つ選んで<code>TRAIN_DATA</code>とし、ダウンロードすること。数字は学習が容易だが、ひらがなは難しい。</p>
 <p>以下は手書きの数字(MNIST)を選んだ場合の例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> <span class="st">&quot;mnist.npy&quot;</span>
-url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/ml/&quot;</span>
-<span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>data
-<span class="op">!</span>wget $file</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">data <span class="op">=</span> <span class="st">&quot;mnist.npy&quot;</span></a>
+<a class="sourceLine" id="cb14-2" title="2">url<span class="op">=</span><span class="st">&quot;https://kaityo256.github.io/python_zero/ml/&quot;</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="bu">file</span><span class="op">=</span>url<span class="op">+</span>data</a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="op">!</span>wget $file</a></code></pre></div>
 <h4 id="学習">4. 学習</h4>
 <p>ではいよいよGANの実行をしてみよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">dcgan.run(data)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">dcgan.run(data)</a></code></pre></div>
 <p>画面には、一定時間ごとに偽造者が作成した画像が表示されていく。最初は完全なノイズにしか見えなかった画像が、学習が進むにつれて偽造者が「腕を上げていく」様子が見えるであろう。実行すると「Time for epoch 1 is xxx sec」からepochの値を増やしながら学習が進んでいき、「Time for epoch 100 is xxx sec」まで到達したら完了である。実行には10分～15分程度かかる。</p>
 <h4 id="apngのインストール">5. APNGのインストール</h4>
 <p>偽造者が徐々に腕を上げていく様子を見るため、学習を進めながら描いた絵をアニメーションにしてみよう。まずはアニメーションPNGを作るためのライブラリをインストールする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="op">!</span>pip install apng</a></code></pre></div>
 <h4 id="ライブラリのインポート-1">6. ライブラリのインポート</h4>
 <p>先ほどインストールしたライブラリをインポートしよう。また、表示に使うライブラリも併せてインポートしておく。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
-<span class="im">from</span> apng <span class="im">import</span> APNG</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="im">import</span> IPython</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="im">from</span> apng <span class="im">import</span> APNG</a></code></pre></div>
 <h4 id="アニメーションの作成">7. アニメーションの作成</h4>
 <p>作成された画像を一つにまとめて、アニメーションPNGを作成しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">files <span class="op">=</span> []
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):
-    filename <span class="op">=</span> <span class="ss">f&quot;img</span><span class="sc">{i</span><span class="op">+</span><span class="dv">1</span><span class="sc">:04d}</span><span class="ss">.png&quot;</span>
-    files.append(filename)
-
-APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">files <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</a>
+<a class="sourceLine" id="cb18-3" title="3">    filename <span class="op">=</span> <span class="ss">f&quot;img</span><span class="sc">{i</span><span class="op">+</span><span class="dv">1</span><span class="sc">:04d}</span><span class="ss">.png&quot;</span></a>
+<a class="sourceLine" id="cb18-4" title="4">    files.append(filename)</a>
+<a class="sourceLine" id="cb18-5" title="5"></a>
+<a class="sourceLine" id="cb18-6" title="6">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)</a></code></pre></div>
 <h4 id="アニメーションの表示">8. アニメーションの表示</h4>
 <p>作成されたアニメーションを表示してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</a></code></pre></div>
 <p>アニメーションが表示されれば成功である。この学習の様子を見て、偽造者はどのように学習を進めているか考察してみよ。また、GAN等の技術が今後どのように活かされるか、予想してみよ。</p>
 <h2 id="余談aiに悪意はあるか">余談：AIに悪意はあるか</h2>
 <p>AIに意識があるか、という問題は難しい。個人的には「AIはそのうち意識を持つ」と信じているが、現時点では「まだソフトウェアなんだな」と思う時と「人間と同じ問題を抱えているのでは」と思う時の両方がある。</p>
@@ -452,7 +452,7 @@ APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>)
 <p>Google翻訳がジェンダーバイアスを持つことも知られている。例えば現時点(2019年12月4日現在)では、「<strong>医者</strong>は旅行先でカバンを忘れてきた。」は「The doctor has forgotten <strong>his</strong> bag at the travel destination.」と訳すが、「<strong>看護師</strong>は旅行先で……」とすると「The nurse has forgotten <strong>her</strong> bag when traveling.」と訳す。Google翻訳は多くの翻訳例を通じて学習したモデルを用いているが、そのデータ上で「Docter」が「his」と、「Nurse」が「her」と一緒に用いらていれることが多かったのだと思われる。</p>
 <p>Google Photosの問題は「学習データに白人が多く黒人が少なかったため」に起きたことであり、Google翻訳の問題は学習用データを通じて「医者は男性が多く、看護師は女性が多い」という「偏見」も一緒に学習してしまったために起きたことだ。現時点では「AI」に罪はなく、「AIの学習過程で人間持つの差別や偏見が注入された」と認識されているが、そもそも学習で偏った情報に触れて偏見を身につけてしまうという過程は人間と全く同じである。既に自らの過ちをAIのせいにしている人も出現しており、そのうちAIが高度に発展した場合、我々はAIそのものに悪意や偏見を感じるようになるのかもしれない。</p>
 <ul>
-<li>「Notes on AI Bias」<a href="https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias" class="uri">https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias</a></li>
+<li>「Notes on AI Bias」<a href="https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias">https://www.ben-evans.com/benedictevans/2019/4/15/notes-on-ai-bias</a></li>
 </ul>
           </article>
   </body>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>numpy/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -262,86 +262,85 @@
 <p>行列の積の定義そのものは簡単だ。普通にかけば三重ループで計算できる。しかし、現代の計算機では行列の乗算の効率的な実装は非常に面倒であり、「普通」に書くとまったく性能がでない。なにしろ行列行列積は数値計算の根幹をなす演算であり、そこが遅いと非常に広範囲の計算が影響を受けてしまう。そこで、Pythonにおいて行列を効率的に扱うためのライブラリが作られた。それがNumPyである。</p>
 <h3 id="numpy配列の作り方">NumPy配列の作り方</h3>
 <p>NumPyを使うには、まず<code>numpy</code>をインポートする。<code>np</code>という別名をつけるのが慣習である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> numpy <span class="im">as</span> np</a></code></pre></div>
 <p>NumPy用の配列(NumPy配列)を作成するにはいくつか方法があるが、簡単なのは<code>np.array</code>にリストを与えることだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])
-<span class="bu">print</span>(data)</code></pre></div>
-<pre class="txt"><code>[1 2 3]</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">data <span class="op">=</span> np.array([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="bu">print</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb3-1" title="1">[1 2 3]</a></code></pre></div>
 <p>以下は二行二列の行列を作る例である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])
-<span class="bu">print</span>(a)</code></pre></div>
-<pre class="txt"><code>[[1 2]
- [3 4]]</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>]])</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="bu">print</span>(a)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">[[1 2]</a>
+<a class="sourceLine" id="cb5-2" title="2"> [3 4]]</a></code></pre></div>
 <p>要素が全てゼロの配列を作るには、<code>zeros</code>を使えばよい。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">z <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))
-<span class="bu">print</span>(z)</code></pre></div>
-<pre class="txt"><code>[[0. 0.]
- [0. 0.]]</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">z <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="bu">print</span>(z)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb8-1" title="1">[[0. 0.]</a>
+<a class="sourceLine" id="cb8-2" title="2"> [0. 0.]]</a></code></pre></div>
 <p>NumPy配列のデータには「型」がある。Pythonのリストは複数の型の混在が許されたが、NumPy配列は全て同じ型でなければならない。NumPy配列のデータの型は<code>dtype</code>で調べることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(a.dtype) <span class="co"># =&gt; int64</span>
-<span class="bu">print</span>(z.dtype) <span class="co"># =&gt; float64</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="bu">print</span>(a.dtype) <span class="co"># =&gt; int64</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="bu">print</span>(z.dtype) <span class="co"># =&gt; float64</span></a></code></pre></div>
 <p><code>np.array</code>で作った場合は、与えたリストから推定された型が使われるが、<code>np.zeros</code>の場合はデフォルトで<code>float64</code>の型になる。明示的に型を指定すれば、その型のゼロ要素行列を得ることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">z2 <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>),dtype<span class="op">=</span>np.int64)
-<span class="bu">print</span>(z2.dtype) <span class="co"># =&gt; int64</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">z2 <span class="op">=</span> np.zeros((<span class="dv">2</span>,<span class="dv">2</span>),dtype<span class="op">=</span>np.int64)</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="bu">print</span>(z2.dtype) <span class="co"># =&gt; int64</span></a></code></pre></div>
 <h3 id="numpy配列同士の演算">NumPy配列同士の演算</h3>
 <p>NumPy配列は、「形」を保持しており、<code>shape</code>でその形を知ることができる。<code>shape</code>は、タプルの形で返ってくる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">data.shape <span class="co"># =&gt; (2,2)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">data.shape <span class="co"># =&gt; (2,2)</span></a></code></pre></div>
 <p>形が同じ行列同士は四則演算ができる。ここで<code>*</code>を計算すると、行列積ではなく、「要素ごとの積」を計算することに注意。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> np.array([[<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>]])
-<span class="bu">print</span>(a<span class="op">*</span>b)</code></pre></div>
-<pre class="txt"><code>[[ 5 12]
- [21 32]]</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">b <span class="op">=</span> np.array([[<span class="dv">5</span>,<span class="dv">6</span>],[<span class="dv">7</span>,<span class="dv">8</span>]])</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="bu">print</span>(a<span class="op">*</span>b)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb13-1" title="1">[[ 5 12]</a>
+<a class="sourceLine" id="cb13-2" title="2"> [21 32]]</a></code></pre></div>
 <p>行列行列積を計算したい時には<code>dot</code>を用いる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> a.dot(b)
-<span class="bu">print</span>(c)</code></pre></div>
-<pre class="txt"><code>[[19 22]
- [43 50]]</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">c <span class="op">=</span> a.dot(b)</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="bu">print</span>(c)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb15-1" title="1">[[19 22]</a>
+<a class="sourceLine" id="cb15-2" title="2"> [43 50]]</a></code></pre></div>
 <h3 id="numpy配列の中身">NumPy配列の中身</h3>
 <p>NumPy配列は、どのような「形」でも作ることができる。通常の行列は「行」と「列」のある2次元のデータだが、3次元でも4次元でも作ることができる。しかし、NumPy配列は、実はどのような形であろうとも1次元配列として保存されている。NumPy配列は、1次元のデータ<code>shape</code>プロパティによってどのような形として解釈するかを決めている。<code>reshape</code>を使うことで、データを変更せずに「形」を変えることができる。</p>
 <p>連番の要素を持つ1次元のNumPy配列を作るには、<code>arange</code>を使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.arange(<span class="dv">8</span>)
-<span class="bu">print</span>(a)</code></pre></div>
-<pre class="txt"><code>array([0, 1, 2, 3, 4, 5, 6, 7])</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1">a <span class="op">=</span> np.arange(<span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="bu">print</span>(a)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb17-1" title="1">array([0, 1, 2, 3, 4, 5, 6, 7])</a></code></pre></div>
 <p>このデータを「4行2列の行列」として解釈したNumPy配列を得るには、以下のようにすれば良い。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">b <span class="op">=</span> a.reshape((<span class="dv">4</span>,<span class="dv">2</span>))
-<span class="bu">print</span>(b)</code></pre></div>
-<pre class="txt"><code>[[0 1]
- [2 3]
- [4 5]
- [6 7]]</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">b <span class="op">=</span> a.reshape((<span class="dv">4</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="bu">print</span>(b)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">[[0 1]</a>
+<a class="sourceLine" id="cb19-2" title="2"> [2 3]</a>
+<a class="sourceLine" id="cb19-3" title="3"> [4 5]</a>
+<a class="sourceLine" id="cb19-4" title="4"> [6 7]]</a></code></pre></div>
 <p><code>reshape</code>にはタプルを渡す。総データ数さえ等しければどのような形にもできる。例えば<code>(2,2,2)</code>という形にもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> a.reshape((<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))
-<span class="bu">print</span>(c)</code></pre></div>
-<pre class="txt"><code>[[[0 1]
-  [2 3]]
-
- [[4 5]
-  [6 7]]]</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">c <span class="op">=</span> a.reshape((<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="bu">print</span>(c)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb21-1" title="1">[[[0 1]</a>
+<a class="sourceLine" id="cb21-2" title="2">  [2 3]]</a>
+<a class="sourceLine" id="cb21-3" title="3"></a>
+<a class="sourceLine" id="cb21-4" title="4"> [[4 5]</a>
+<a class="sourceLine" id="cb21-5" title="5">  [6 7]]]</a></code></pre></div>
 <p><code>reshape</code>は、データ数が合わないとエラーとなる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a.reshape((<span class="dv">4</span>,<span class="dv">4</span>)) <span class="co"># =&gt; ValueError: cannot reshape array of size 8 into shape (4,4)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">a.reshape((<span class="dv">4</span>,<span class="dv">4</span>)) <span class="co"># =&gt; ValueError: cannot reshape array of size 8 into shape (4,4)</span></a></code></pre></div>
 <h2 id="scipy">SciPy</h2>
 <p>SciPyは、NumPyを基礎にした科学計算ライブラリだ。非常に多くのことができるが、それゆえにその全てを説明することはできない。ここでは、行列の固有値と固有ベクトルだけ求めてみよう。</p>
 <p>固有値や固有ベクトルを求めるには<code>scipy.linalg</code>をインポートすればよい。多くの場合、一緒に<code>numpy</code>もインポートするであろう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> scipy <span class="im">import</span> linalg
-<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1"><span class="im">from</span> scipy <span class="im">import</span> linalg</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a></code></pre></div>
 <p>固有値、固有ベクトルは、<code>linalg.eig</code>で求めることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">2</span>,<span class="dv">1</span>]])
-w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1">a <span class="op">=</span> np.array([[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">2</span>,<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb24-2" title="2">w, v <span class="op">=</span> linalg.eig(a)</a></code></pre></div>
 <p>これで、<code>w</code>に固有値が、<code>v</code>に固有ベクトルがそれぞれリストの形で返ってくる。</p>
 <p>例えば固有値は</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(w) <span class="co"># =&gt; [ 3.+0.j -1.+0.j]</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1"><span class="bu">print</span>(w) <span class="co"># =&gt; [ 3.+0.j -1.+0.j]</span></a></code></pre></div>
 <p>つまり「3」と「-1」である。一般に固有値は複素数となるが、今回のように入力が実対称行列(もしくはエルミート行列)であることがわかっていれば、エルミート行列向けの<code>eigh</code>が使える。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(a)
-<span class="bu">print</span>(w) <span class="co"># =&gt; [-1.  3.]</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1">w, v <span class="op">=</span> linalg.eigh(a)</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="bu">print</span>(w) <span class="co"># =&gt; [-1.  3.]</span></a></code></pre></div>
 <p>エルミート行列の固有値は常に実数であるから、返り値も実数となる。</p>
 <h2 id="シュレーディンガー方程式">シュレーディンガー方程式</h2>
 <h3 id="トンネル効果">トンネル効果</h3>
 <p>原子スケールのようなミクロの世界では、我々が普段目にする世界とは異なり、不思議なことがおきる。そのうちの一つ、「シュレーディンガーの猫」などは聞いたことがあるだろう。今回は量子力学における不思議の一つ、「トンネル効果」をNumPyを使って計算してみよう(課題1)。</p>
-<div class="figure">
-<img src="fig/tunneling.png" alt="トンネル効果" />
-<p class="caption">トンネル効果</p>
-</div>
+<figure>
+<img src="fig/tunneling.png" alt="トンネル効果" /><figcaption>トンネル効果</figcaption>
+</figure>
 <p>真っ直ぐな道の真ん中に、小さな山があるとしよう。山の高さを<span class="math inline">\(h\)</span>とする。山の麓にボールを置いて、それに初速を与えて山の方に動かす。初速が、ある程度大きい時には山を超えることができるが、それより小さい場合は山を登りきれずに帰ってくることが予想される。摩擦や回転などを無視して、重力加速度を<span class="math inline">\(g\)</span>、物体の質量を<span class="math inline">\(m\)</span>としよう。初速<span class="math inline">\(v\)</span>を与えると、物体は運動エネルギー<span class="math inline">\(mv^2/2\)</span>を得る。山の頂上に行くためには、ポテンシャルエネルギー<span class="math inline">\(mgh\)</span>が必要だ。以上から、山を登り切るためには<span class="math inline">\(mv^2/2 &gt; mgh\)</span>だけのエネルギーが必要であるため、<span class="math inline">\(v &lt; \sqrt{2gh}\)</span>の時には山を登り切ることができない。このように、量子力学が必要ないようなマクロな世界を古典系と呼ぶ。古典系では、初速が足りなければなんどトライしても山を超えることはできない。</p>
 <p>しかし、物体の波動性が効いてくるようなミクロな領域では古典系とは異なることがおきる。初期エネルギーが山を超えるのに必要なエネルギーより小さい場合でも、低確率で山をすり抜けて向こう側に行ってしまう。まるでトンネルを抜けたかのように見えるので、トンネル効果と呼ばれる。トンネル効果は、例えば走査型トンネル顕微鏡などに応用されている。</p>
 <h3 id="シュレーディンガー方程式-1">シュレーディンガー方程式</h3>
@@ -369,27 +368,23 @@ w, v <span class="op">=</span> linalg.eig(a)</code></pre></div>
 H \vec{v} = E \vec{v}
 \]</span></p>
 <p>という、行列の固有値問題になった。ただし<span class="math inline">\(H\)</span>は以下のような要素を持つ行列である。</p>
-<div class="figure">
-<img src="fig/h_matrix.png" alt="Hの行列要素" />
-<p class="caption">Hの行列要素</p>
-</div>
+<figure>
+<img src="fig/h_matrix.png" alt="Hの行列要素" /><figcaption>Hの行列要素</figcaption>
+</figure>
 <p>長々と書いたが、この式を理解する必要はない。要するに「ミクロな世界はシュレーディンガー方程式で記述され、シュレーディンガー方程式は離散化により行列の固有値問題になる」ということがわかればよい。行列の固有値問題を解くことで、任意のポテンシャル形状<span class="math inline">\(V(x)\)</span>で、電子がどのように分布するかを計算することができる。課題では井戸型ポテンシャルに閉じ込められた電子の存在確率を計算することで、トンネル効果を見てみよう。</p>
 <h2 id="特異値分解による画像圧縮">特異値分解による画像圧縮</h2>
 <p>線形代数を学んでいれば、異なる行列の積を定義できることを覚えているだろう。例えばm行n列の行列と、n行k列の行列の積をとると、新たにできる行列はm行k列となる。</p>
-<div class="figure">
-<img src="fig/mprod.png" alt="行列積の定義" />
-<p class="caption">行列積の定義</p>
-</div>
+<figure>
+<img src="fig/mprod.png" alt="行列積の定義" /><figcaption>行列積の定義</figcaption>
+</figure>
 <p><code>(m,n)</code>の形をした行列と<code>(n,k)</code>の形をした行列から<code>(m,k)</code>の形をした行列ができるのだから、例えば10行2列の行列<span class="math inline">\(A\)</span>と、2行10列の行列<span class="math inline">\(B\)</span>の積は、10行10列の行列<span class="math inline">\(C\)</span>になる。この時、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数はそれぞれ20個、合計40個だが、積をとってできる行列<span class="math inline">\(C\)</span>の要素数は100個となり、<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>の要素数の合計よりも多い。この事実を利用して、<span class="math inline">\(C\)</span>という大きな行列を、<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>という「細長い」行列の積で近似することを考えよう。</p>
-<div class="figure">
-<img src="fig/approximation.png" alt="行列の近似" />
-<p class="caption">行列の近似</p>
-</div>
+<figure>
+<img src="fig/approximation.png" alt="行列の近似" /><figcaption>行列の近似</figcaption>
+</figure>
 <p>つまり、何か行列<span class="math inline">\(X\)</span>が与えられた時、<span class="math inline">\(\tilde{X} = AB\)</span>という行列を作り、<span class="math inline">\(\tilde{X}\)</span>が元の行列<span class="math inline">\(X\)</span>をよく近似するように、なるべく「細長い」行列<span class="math inline">\(A\)</span>、<span class="math inline">\(B\)</span>を探しなさい、という問題である。このような行列は、特異値分解(Singular Value Deconposition, SVD)という方法で作ることができる。</p>
-<div class="figure">
-<img src="fig/svd.png" alt="特異値分解" />
-<p class="caption">特異値分解</p>
-</div>
+<figure>
+<img src="fig/svd.png" alt="特異値分解" /><figcaption>特異値分解</figcaption>
+</figure>
 <p>いま、<span class="math inline">\(X\)</span>というm行n列の行列が与えられた時、以下のように「分解」ができる。</p>
 <p><span class="math display">\[
 X = U \Sigma V^{\dagger}
@@ -402,92 +397,92 @@ X = U \Sigma V^{\dagger}
 <p>シュレーディンガー方程式を離散化することで数値的に解いてみよう。新しいノートブックを開き、<code>tunneling.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>最初のセルはいつもどおりライブラリのインポートである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt
-<span class="im">from</span> scipy <span class="im">import</span> linalg
-<span class="im">import</span> numpy <span class="im">as</span> np</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="im">from</span> scipy <span class="im">import</span> linalg</a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="im">import</span> numpy <span class="im">as</span> np</a></code></pre></div>
 <h4 id="行列の作成">2. 行列の作成</h4>
 <p>次に、ポテンシャル<span class="math inline">\(V(x)\)</span>に対応するベクトル<code>V</code>と、微分方程式を差分化した行列<code>H</code>を作成する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">32</span>
-V <span class="op">=</span> np.zeros(N)
-V[N <span class="op">//</span> <span class="dv">4</span>:<span class="dv">3</span> <span class="op">*</span> N <span class="op">//</span> <span class="dv">4</span>] <span class="op">=</span> <span class="op">-</span><span class="fl">5.0</span>
-H <span class="op">=</span> np.zeros((N, N))
-<span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):
-    i1 <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> N
-    i2 <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> N) <span class="op">%</span> N
-    H[i][i] <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> V[i]
-    H[i][i1] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>
-    H[i][i2] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1">N <span class="op">=</span> <span class="dv">32</span></a>
+<a class="sourceLine" id="cb28-2" title="2">V <span class="op">=</span> np.zeros(N)</a>
+<a class="sourceLine" id="cb28-3" title="3">V[N <span class="op">//</span> <span class="dv">4</span>:<span class="dv">3</span> <span class="op">*</span> N <span class="op">//</span> <span class="dv">4</span>] <span class="op">=</span> <span class="fl">-5.0</span></a>
+<a class="sourceLine" id="cb28-4" title="4">H <span class="op">=</span> np.zeros((N, N))</a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</a>
+<a class="sourceLine" id="cb28-6" title="6">    i1 <span class="op">=</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">%</span> N</a>
+<a class="sourceLine" id="cb28-7" title="7">    i2 <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span> <span class="op">+</span> N) <span class="op">%</span> N</a>
+<a class="sourceLine" id="cb28-8" title="8">    H[i][i] <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> V[i]</a>
+<a class="sourceLine" id="cb28-9" title="9">    H[i][i1] <span class="op">=</span> <span class="dv">-1</span></a>
+<a class="sourceLine" id="cb28-10" title="10">    H[i][i2] <span class="op">=</span> <span class="dv">-1</span></a></code></pre></div>
 <h4 id="固有値と最低固有エネルギー">3. 固有値と最低固有エネルギー</h4>
 <p>得られた行列の固有値、固有ベクトルを求め、さらに固有値の中でもっとも値が小さいもののインデックスを求めよう。3つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">w, v <span class="op">=</span> linalg.eigh(H)
-i0 <span class="op">=</span> np.argmin(w)
-<span class="bu">print</span>(w[i0])</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1">w, v <span class="op">=</span> linalg.eigh(H)</a>
+<a class="sourceLine" id="cb29-2" title="2">i0 <span class="op">=</span> np.argmin(w)</a>
+<a class="sourceLine" id="cb29-3" title="3"><span class="bu">print</span>(w[i0])</a></code></pre></div>
 <p>最小値を求めるだけなら<code>np.min(w)</code>で良いが、後で対応する固有ベクトルを使うのにインデックスが必要なので、<code>np.argmin(w)</code>を利用している。</p>
 <p>実行してみると、-5よりも若干大きな値が表示されたはずである。これが「閉じ込めエネルギー」と呼ばれるものだ。なぜ「閉じ込め」と呼ばれるかは次のステップで可視化することで明らかとなる。</p>
 <h4 id="波動関数の可視化">4. 波動関数の可視化</h4>
 <p>井戸型ポテンシャルに閉じ込められた波動関数の可視化をしてみよう。波動関数は、その二乗が電子の「存在確率」を表す。先ほど得た「最低固有エネルギー」に対応する固有ベクトルを二乗したものを、ポテンシャルと一緒にプロットしてみよう。4つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">v <span class="op">=</span> v[:, i0]
-v <span class="op">=</span> v <span class="op">*</span> v
-plt.plot(v <span class="op">*</span> <span class="dv">20</span> <span class="op">+</span> w[i0])
-plt.plot(V)</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1">v <span class="op">=</span> v[:, i0]</a>
+<a class="sourceLine" id="cb30-2" title="2">v <span class="op">=</span> v <span class="op">*</span> v</a>
+<a class="sourceLine" id="cb30-3" title="3">plt.plot(v <span class="op">*</span> <span class="dv">20</span> <span class="op">+</span> w[i0])</a>
+<a class="sourceLine" id="cb30-4" title="4">plt.plot(V)</a></code></pre></div>
 <p>波動関数とポテンシャルが同時にプロットされたはずである。波動関数は「そこに電子が存在する確率」である。その存在確率が少しだけ井戸の外にしみだしていることがわかるはずである。これが「トンネル効果」と呼ばれるものだ。</p>
 <h3 id="課題2行列の低ランク近似による画像処理">課題2：行列の低ランク近似による画像処理</h3>
 <p>特異値分解による行列の近似を利用して、画像圧縮をしてみよう。高さhピクセル、幅wピクセルのモノクロ画像は、それぞれのピクセルの値を要素だとおもえば、h行w列の行列と思うことができる。それを特異値分解し、「細長い」二つの行列に分離することでデータを圧縮する。「細長い行列」の行列積をとると元の大きさに戻るので、それを可視化することで復元された画像を得ることができる。</p>
 <p>新しいノートブックを開き、<code>svd.ipynb</code>という名前で保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>1つ目のセルにで、必要なライブラリをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> urllib.request
-<span class="im">import</span> numpy <span class="im">as</span> np
-<span class="im">from</span> PIL <span class="im">import</span> Image
-<span class="im">from</span> scipy <span class="im">import</span> linalg
-<span class="im">from</span> io <span class="im">import</span> BytesIO</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1"><span class="im">import</span> urllib.request</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="im">import</span> numpy <span class="im">as</span> np</a>
+<a class="sourceLine" id="cb31-3" title="3"><span class="im">from</span> PIL <span class="im">import</span> Image</a>
+<a class="sourceLine" id="cb31-4" title="4"><span class="im">from</span> scipy <span class="im">import</span> linalg</a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="im">from</span> io <span class="im">import</span> BytesIO</a></code></pre></div>
 <h4 id="画像のダウンロード関数">2. 画像のダウンロード関数</h4>
 <p>圧縮する元の画像をダウンロードする関数を実装しよう。2つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> download(url):
-    <span class="cf">with</span> urllib.request.urlopen(url) <span class="im">as</span> f:
-        data <span class="op">=</span> f.read()
-        <span class="cf">return</span> Image.<span class="bu">open</span>(BytesIO(data))</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">def</span> download(url):</a>
+<a class="sourceLine" id="cb32-2" title="2">    <span class="cf">with</span> urllib.request.urlopen(url) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb32-3" title="3">        data <span class="op">=</span> f.read()</a>
+<a class="sourceLine" id="cb32-4" title="4">        <span class="cf">return</span> Image.<span class="bu">open</span>(BytesIO(data))</a></code></pre></div>
 <h4 id="画像の表示">3. 画像の表示</h4>
 <p>ダウンロード関数のテストをしよう。3つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
-download(URL)</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span></a>
+<a class="sourceLine" id="cb33-2" title="2">download(URL)</a></code></pre></div>
 <p>カラー画像が表示されれば成功である。</p>
 <h4 id="モノクロへの変換">4. モノクロへの変換</h4>
 <p>先ほどダウンロードした画像はカラー画像であり、各ピクセルにR、G、Bの値が紐づけられている。このままでは行列とみなすことができないので、モノクロ化する関数を実装しよう。4つ目のセルに以下を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> mono(url):
-    img <span class="op">=</span> download(url)
-    gray_img <span class="op">=</span> img.convert(<span class="st">&#39;L&#39;</span>)
-    <span class="cf">return</span> gray_img</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">def</span> mono(url):</a>
+<a class="sourceLine" id="cb34-2" title="2">    img <span class="op">=</span> download(url)</a>
+<a class="sourceLine" id="cb34-3" title="3">    gray_img <span class="op">=</span> img.convert(<span class="st">&#39;L&#39;</span>)</a>
+<a class="sourceLine" id="cb34-4" title="4">    <span class="cf">return</span> gray_img</a></code></pre></div>
 <h4 id="モノクロ変換のテスト">5. モノクロ変換のテスト</h4>
 <p>モノクロに変換できるか確認しよう。5つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
-mono(URL)</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span></a>
+<a class="sourceLine" id="cb35-2" title="2">mono(URL)</a></code></pre></div>
 <p>モノクロ画像が表示されれば成功である。</p>
 <h4 id="画像の低ランク近似">6. 画像の低ランク近似</h4>
 <p>画像を特異値分解により低ランク近似する関数を実装しよう。6つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> svd(url, ratio):
-    gray_img <span class="op">=</span> mono(url)
-    a <span class="op">=</span> np.asarray(gray_img)
-    w, _ <span class="op">=</span> a.shape
-    rank <span class="op">=</span> <span class="bu">int</span>(w <span class="op">*</span> ratio)
-    u, s, v <span class="op">=</span> linalg.svd(a)
-    ur <span class="op">=</span> u[:, :rank]
-    sr <span class="op">=</span> np.diag(s[:rank])
-    vr <span class="op">=</span> v[:rank, :]
-    b <span class="op">=</span> ur <span class="op">@</span> sr <span class="op">@</span> vr
-    <span class="cf">return</span> Image.fromarray(np.uint8(b))</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">def</span> svd(url, ratio):</a>
+<a class="sourceLine" id="cb36-2" title="2">    gray_img <span class="op">=</span> mono(url)</a>
+<a class="sourceLine" id="cb36-3" title="3">    a <span class="op">=</span> np.asarray(gray_img)</a>
+<a class="sourceLine" id="cb36-4" title="4">    w, _ <span class="op">=</span> a.shape</a>
+<a class="sourceLine" id="cb36-5" title="5">    rank <span class="op">=</span> <span class="bu">int</span>(w <span class="op">*</span> ratio)</a>
+<a class="sourceLine" id="cb36-6" title="6">    u, s, v <span class="op">=</span> linalg.svd(a)</a>
+<a class="sourceLine" id="cb36-7" title="7">    ur <span class="op">=</span> u[:, :rank]</a>
+<a class="sourceLine" id="cb36-8" title="8">    sr <span class="op">=</span> np.diag(s[:rank])</a>
+<a class="sourceLine" id="cb36-9" title="9">    vr <span class="op">=</span> v[:rank, :]</a>
+<a class="sourceLine" id="cb36-10" title="10">    b <span class="op">=</span> ur <span class="op">@</span> sr <span class="op">@</span> vr</a>
+<a class="sourceLine" id="cb36-11" title="11">    <span class="cf">return</span> Image.fromarray(np.uint8(b))</a></code></pre></div>
 <p>画像データを<code>asarray</code>に渡すことでそのままNumPy配列にすることができる。その配列を<code>linalg.svd</code>に渡せば特異値分解完了である。その後、<code>ratio</code>で指定された特異値の数だけ残して画像を再構成している。</p>
 <h4 id="画像の低ランク近似の確認">7. 画像の低ランク近似の確認</h4>
 <p>先程実装した低ランク近似関数を確認しよう。7つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span>
-ratio <span class="op">=</span> <span class="fl">0.1</span>
-svd(URL, ratio)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://kaityo256.github.io/python_zero/numpy/stop.jpg&quot;</span></a>
+<a class="sourceLine" id="cb37-2" title="2">ratio <span class="op">=</span> <span class="fl">0.1</span></a>
+<a class="sourceLine" id="cb37-3" title="3">svd(URL, ratio)</a></code></pre></div>
 <p>上記を実行すると、画像のピクセル値を行列要素だと思って、行列を特異値分解により低ランク近似してから再構成した画像が表示される。<code>ratio</code>は、使う情報の割合であり、その数字を増やすとたくさん情報を使うので近似精度が高くなり、減らすと低くなる。<code>ratio = 0.05</code>の場合と、<code>ratio = 0.2</code>の場合も確認し、画像がどうなるか確認せよ。</p>
 <h3 id="発展課題">発展課題</h3>
 <p>インターネットで適当な画像を探し、上記の手続きで低ランク近似をせよ。適当な画像で右クリックし、「画像アドレスをコピー」等でアドレスを取得できる。そのアドレスを<code>URL</code>に指定せよ。画像フォーマットはJPG形式とし、あまり大きな画像でない方がよい。また、文字を含む画像である方が圧縮の精度がわかりやすい。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="co"># ここを指定せよ</span>
-ratio <span class="op">=</span> <span class="fl">0.1</span>
-svd(URL, ratio)</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1">URL <span class="op">=</span> <span class="co"># ここを指定せよ</span></a>
+<a class="sourceLine" id="cb38-2" title="2">ratio <span class="op">=</span> <span class="fl">0.1</span></a>
+<a class="sourceLine" id="cb38-3" title="3">svd(URL, ratio)</a></code></pre></div>
 <p>いくつかの<code>ratio</code>の値を試してみて、画像の「近似のしやすさ」「再現性が良いところ、悪いところ」等について気づいたことがあれば記述せよ。また、圧縮画像に「黒い斑点」のようなものが現れる場合があるのはなぜか、考察せよ。</p>
 <h2 id="余談人外">余談：人外</h2>
 <p>「人外」という言葉がある。「じんがい」と読む。主にファンタジーなどの世界において、獣人や精霊、妖精など、人としての外見を持つが、基本的に人よりも高次の存在を「人外」と呼ぶことが多い。世界観にもよるが、基本的に「人外」は人間より優れた能力を持ち、通常の人間が敵う相手ではない、強大な存在として描かれることが多い。いつの頃からか、この「人外」という言葉が「同じ人間とは思えないような、卓越した成果を挙げている人間」を指すようになった。筆者は「同じ人とは思えないプログラム能力を持つ存在」という意味で使っている。この意味での用例の初出がどこかはわからない。おそらく「競技プログラム」界隈から言われるようになったのではないかと思われる。</p>

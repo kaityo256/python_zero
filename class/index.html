@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>class/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -269,11 +269,10 @@
 <p>という文章がだいたい理解できていればそれでよい。</p>
 <h3 id="オブジェクトとは">オブジェクトとは</h3>
 <p>オブジェクト指向には、<strong>オブジェクト(object)</strong>という概念が出てくる。これは「データ(内部状態)」と「振る舞い」をまとめたものだ。オブジェクト指向プログラミングでは、オブジェクトに何か処理を「依頼」することでなんらかの処理をする。この「依頼」を<strong>メッセージ (message)</strong>と呼ぶ。Pythonでは、次のような形でオブジェクトにメッセージを送る。</p>
-<div class="figure">
-<img src="fig/message.png" alt="オブジェクトとメッセージ" />
-<p class="caption">オブジェクトとメッセージ</p>
-</div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">obj.do_something()</code></pre></div>
+<figure>
+<img src="fig/message.png" alt="オブジェクトとメッセージ" /><figcaption>オブジェクトとメッセージ</figcaption>
+</figure>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1">obj.do_something()</a></code></pre></div>
 <p>ここで、ピリオドの左にある<code>obj</code>がオブジェクトであり、メッセージを受け取るので<strong>レシーバ(receiver)</strong>と呼ばれる。逆に、メッセージを送る側は<strong>センダー(sender)</strong>と言う。ピリオドの右にある<code>do_something()</code>は<strong>メソッド(method)</strong>と呼ばれる。Pythonでは、オブジェクトの持つメソッドを呼び出すことでメッセージを送る。オブジェクトは、自分の「状態」を持ち、メソッドという外部インタフェースを持つ。</p>
 <h3 id="カプセル化">カプセル化</h3>
 <p>なぜオブジェクト指向プログラミングをするかというと、それはオブジェクトに責任を移譲するためだ。例をあげよう。社員データをまとめたデータベースがある。社員データは以下のデータを持つ。</p>
@@ -290,50 +289,49 @@
 </ul>
 <p>さらに、データはウェブから入力されたり、ファイルから追加されたりと、複数の新規作成パスがあるとする。</p>
 <p>この状態で、まずウェブルーチンで何かしらチェックをする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:
-  <span class="co"># エラー処理</span>
-<span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:
-  <span class="co"># エラー処理</span>
-<span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span>
-<span class="st">  # エラー処理</span>
-<span class="st">#データ追加処理</span>
-<span class="st">data.add(name, age, group)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:</a>
+<a class="sourceLine" id="cb2-2" title="2">  <span class="co"># エラー処理</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb2-4" title="4">  <span class="co"># エラー処理</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="st">  # エラー処理</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="st">#データ追加処理</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="st">data.add(name, age, group)</span></a></code></pre></div>
 <p>同様に、ファイルからの入力でもチェックをしなければならない。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:
-  <span class="co"># エラー処理</span>
-<span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:
-  <span class="co"># エラー処理</span>
-<span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span>
-<span class="st">  # エラー処理</span>
-<span class="st">#データ追加処理</span>
-<span class="st">data.add(name, age, group)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="cf">if</span> <span class="bu">len</span>(name) <span class="op">&gt;</span> <span class="dv">20</span>:</a>
+<a class="sourceLine" id="cb3-2" title="2">  <span class="co"># エラー処理</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="cf">if</span> age <span class="op">&lt;</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="co"># エラー処理</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="cf">if</span> group <span class="kw">not</span> <span class="kw">in</span> [<span class="st">&quot;A課&quot;, &quot;</span>B課&quot;, <span class="st">&quot;C課&quot;]:</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="st">  # エラー処理</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="st">#データ追加処理</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="st">data.add(name, age, group)</span></a></code></pre></div>
 <p>さて、この状態で、将来「D課」が増えた時、両方のルーチンを修正しなければならない。このように似たような処理を複数回記述していたら危険信号である。今はデータはウェブとファイルのみから入力されると思っているが、実はいつのまにか別のパスが増えているかもしれない。そこに気が付かないと修正漏れが生じて、それはそのままバグの原因となる。</p>
 <p>ここで問題だったのは「どこでデータがいじられているかわからない」ということだ。そこで、考え方を変えて「社員データが正しいかどうかは、社員データ自身が知っているべき」と考えよう。そこで、社員データ「オブジェクト」というものを作る。そして、社員データが正当なものであるかの判断は社員データに問い合わせ、問題なければデータを追加する形にしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">person <span class="op">=</span> EmployeeData(name, age, group)
-<span class="cf">if</span> person.is_valid():
-    data.add(person)</code></pre></div>
-<div class="figure">
-<img src="fig/person_isvalid.png" alt="データの正しさをオブジェクト自身に問い合わせる" />
-<p class="caption">データの正しさをオブジェクト自身に問い合わせる</p>
-</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">person <span class="op">=</span> EmployeeData(name, age, group)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="cf">if</span> person.is_valid():</a>
+<a class="sourceLine" id="cb4-3" title="3">    data.add(person)</a></code></pre></div>
+<figure>
+<img src="fig/person_isvalid.png" alt="データの正しさをオブジェクト自身に問い合わせる" /><figcaption>データの正しさをオブジェクト自身に問い合わせる</figcaption>
+</figure>
 <p>データの正しさは、<code>person.is_valid()</code>という関数(メソッド)の中で行うことにする。もちろんその中身は自分で記述しなければならないが、プログラムを見ると、「データが正しいことを確認する責任が、呼び出し側から、オブジェクト側に移譲されている」ことがわかるであろう。これにより、データが正しいかどうかのチェックは必ず<code>person.is_valid()</code>で行われることが保証されるため、将来、データの整合性の条件が変更されても、修正箇所は<code>person.is_valid()</code>一箇所だけでよく、呼び出し側の修正は不要となる。</p>
 <p>このように、「データ」を外から見えないようにして、そのデータの修正や追加のためのインタフェースを作って外に公開することを<strong>カプセル化(encapsulation)</strong>と呼ぶ。カプセル化は、オブジェクトの内部状態を外から隠蔽し、修正する「窓口」を一元化することで、知らない間にデータが修正されている、という事態を防ぐ方法論だ。</p>
-<p>今回、カプセル化したのは「各所に散らかっていた似たようなコードを一つにまとめるため」であった。「同じ情報は一箇所にまとめる」という原則を Don't Repeat Yourselfの頭文字をとって「DRY原則」と呼ぶ。DRY原則はプログラムだけでなく、一般的な作業フローにおいても有用な概念なので覚えておくと良い。</p>
+<p>今回、カプセル化したのは「各所に散らかっていた似たようなコードを一つにまとめるため」であった。「同じ情報は一箇所にまとめる」という原則を Don’t Repeat Yourselfの頭文字をとって「DRY原則」と呼ぶ。DRY原則はプログラムだけでなく、一般的な作業フローにおいても有用な概念なので覚えておくと良い。</p>
 <h3 id="howとwhat">HowとWhat</h3>
 <p>オブジェクト指向プログラミングの例をもう一つ挙げよう。ウェブで、入力ミスのある項目のラベルを赤字にしていたとする。例えばこんなコードになるだろう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.color <span class="op">=</span> red</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1">label.color <span class="op">=</span> red</a></code></pre></div>
 <p>その後、もっと目立たせるために、さらに太字にすることにした。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.color <span class="op">=</span> red
-label.face <span class="op">=</span> bold</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">label.color <span class="op">=</span> red</a>
+<a class="sourceLine" id="cb6-2" title="2">label.face <span class="op">=</span> bold</a></code></pre></div>
 <p>さて、赤太字にしてみたら、あまりに色が強いので、もう少し違う色にすることにした。この時、ラベルの色を変更している場所全てを変更しなければならない。これはDRY原則に反する。</p>
 <p>我々がやりたいこと(What)は、「ラベルを目立たせたい」ということであって、ラベルの色を変えたり太字にしたりするのは、その実現手段(How)であったのだが、もとのコードではWhatとHowが一体化していたのが問題であった。そこで、やりたいこと(What)と、その実現手段(How)がより明確に分かれるようにしよう。</p>
 <p>具体的には、ラベルに<code>alert()</code>というメソッドを作り、ラベルを目立たせたい時には<code>label.alert()</code>を呼ぶ、と約束する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">label.alert()</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">label.alert()</a></code></pre></div>
 <p>そして、目立たせるための実装は、ラベルクラスの<code>alert</code>メソッド内に記述する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Label:
-    <span class="kw">def</span> alert(<span class="va">self</span>):
-        <span class="va">self</span>.color <span class="op">=</span> red
-        <span class="va">self</span>.face <span class="op">=</span> bold</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">class</span> Label:</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="kw">def</span> alert(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb8-3" title="3">        <span class="va">self</span>.color <span class="op">=</span> red</a>
+<a class="sourceLine" id="cb8-4" title="4">        <span class="va">self</span>.face <span class="op">=</span> bold</a></code></pre></div>
 <p>オブジェクト指向であろうかなんであろうが、同じことを実現しているのだから、結局は同じプログラムを書かなければならない。しかし、このような形にすることで、呼び出し側はラベルに「目立ってね」と依頼し、その目立ち方はラベルに任せる、という気持ちでプログラムが組める。こうして置くと、後で「目立たせ方」を変えたい、と思ったときに修正箇所は一箇所で済むため、仕様変更に強いコードになる。</p>
 <p>すなわち、オブジェクト指向プログラミングとは</p>
 <ul>
@@ -350,85 +348,82 @@ label.face <span class="op">=</span> bold</code></pre></div>
 <p>Pythonはクラスベースの言語であるため、まずクラスを定義し、そのクラスをインスタンス化することでオブジェクトを作る。</p>
 <p>クラスは<code>class クラス名:</code>という形で宣言する。</p>
 <p>例えば、呼び出されるたびに、呼び出した回数を返すようなカウンターオブジェクトを作ってみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.__num <span class="op">=</span> <span class="dv">0</span>
-
-    <span class="kw">def</span> count(<span class="va">self</span>):
-        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span>
-        <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">class</span> Counter:</a>
+<a class="sourceLine" id="cb9-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-3" title="3">        <span class="va">self</span>.__num <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb9-4" title="4"></a>
+<a class="sourceLine" id="cb9-5" title="5">    <span class="kw">def</span> count(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-6" title="6">        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-7" title="7">        <span class="bu">print</span>(<span class="va">self</span>.__num)</a></code></pre></div>
 <p><code>class</code>というキーワードがクラスを作る宣言である。<code>__init__</code>というのはクラスの初期化のためのメソッドで、<strong>コンストラクタ(constructor)</strong>と呼ばれる(正確には<code>__init__</code>はコンストラクタから呼ばれる初期化関数であるが、ここではコンストラクタと同一視しておいて良い)。第一引数に<code>self</code>を指定するのが慣例となっている。ここで<code>self.__num</code>という変数を宣言し、0に初期化している。<code>self.</code>をつけることで、このクラスの状態を保持する変数になる。このクラスに何かさせるためには、メッセージを送るためのメソッドが必要だ。ここでは<code>count</code>というメソッドを作った。やはり引数として<code>self</code>を指定し、<code>self.__num</code>で呼ばれた回数をインクリメント(値を1足すこと)してから、その数字を表示している。</p>
 <p>このクラスからオブジェクトを作ってみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c <span class="op">=</span> Counter()</code></pre></div>
-<div class="figure">
-<img src="fig/class.png" alt="クラスからのオブジェクトの生成" />
-<p class="caption">クラスからのオブジェクトの生成</p>
-</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">c <span class="op">=</span> Counter()</a></code></pre></div>
+<figure>
+<img src="fig/class.png" alt="クラスからのオブジェクトの生成" /><figcaption>クラスからのオブジェクトの生成</figcaption>
+</figure>
 <p>クラス名を関数のように呼び出すと、このクラスのオブジェクトが作られ、それが返される。この時、内部的に<code>__init__</code>が呼ばれている。こうして作られたオブジェクトを、元になったクラスのインスタンスと呼ぶ。</p>
 <p>コンストラクタから返された<code>c</code>がカウンターオブジェクトだ。このオブジェクトのメソッドを呼ぶことでメッセージを送ることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c.count() <span class="co"># =&gt; 1</span>
-c.count() <span class="co"># =&gt; 2</span>
-c.count() <span class="co"># =&gt; 3</span></code></pre></div>
-<div class="figure">
-<img src="fig/c_count.png" alt="メソッド呼び出し" />
-<p class="caption">メソッド呼び出し</p>
-</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">c.count() <span class="co"># =&gt; 1</span></a>
+<a class="sourceLine" id="cb11-2" title="2">c.count() <span class="co"># =&gt; 2</span></a>
+<a class="sourceLine" id="cb11-3" title="3">c.count() <span class="co"># =&gt; 3</span></a></code></pre></div>
+<figure>
+<img src="fig/c_count.png" alt="メソッド呼び出し" /><figcaption>メソッド呼び出し</figcaption>
+</figure>
 <p><code>c.count()</code>呼ぶ度に表示される数字が増えていくのがわかる。クラスから別のオブジェクトを作ることもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">c2 <span class="op">=</span> Counter()
-c2.count() <span class="co"># =&gt; 1</span>
-c2.count() <span class="co"># =&gt; 2</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">c2 <span class="op">=</span> Counter()</a>
+<a class="sourceLine" id="cb12-2" title="2">c2.count() <span class="co"># =&gt; 1</span></a>
+<a class="sourceLine" id="cb12-3" title="3">c2.count() <span class="co"># =&gt; 2</span></a></code></pre></div>
 <p>新たに作られたカウンターオブジェクト<code>c2</code>は、自分自身の内部状態を持つ。</p>
 <p>さて、こうして作ったカウンターの初期値はつねに0だが、任意の初期値を与えたくなったとしよう。この時、<code>__init__</code>に引数を渡すことで、初期値を与えるようにできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Counter:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ini <span class="op">=</span> <span class="dv">0</span>):
-        <span class="va">self</span>.__num <span class="op">=</span> ini
-
-    <span class="kw">def</span> count(<span class="va">self</span>):
-        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span>
-        <span class="bu">print</span>(<span class="va">self</span>.__num)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="co"># 何も指定しなかった場合、初期値が0になる</span>
-c <span class="op">=</span> Counter()
-c.count() <span class="co"># =&gt; 1</span>
-<span class="co"># 初期値を指定することもできる</span>
-c2 <span class="op">=</span> Counter(<span class="dv">10</span>)
-c2.count() <span class="co"># =&gt; 11</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">class</span> Counter:</a>
+<a class="sourceLine" id="cb13-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ini <span class="op">=</span> <span class="dv">0</span>):</a>
+<a class="sourceLine" id="cb13-3" title="3">        <span class="va">self</span>.__num <span class="op">=</span> ini</a>
+<a class="sourceLine" id="cb13-4" title="4"></a>
+<a class="sourceLine" id="cb13-5" title="5">    <span class="kw">def</span> count(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb13-6" title="6">        <span class="va">self</span>.__num <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb13-7" title="7">        <span class="bu">print</span>(<span class="va">self</span>.__num)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># 何も指定しなかった場合、初期値が0になる</span></a>
+<a class="sourceLine" id="cb14-2" title="2">c <span class="op">=</span> Counter()</a>
+<a class="sourceLine" id="cb14-3" title="3">c.count() <span class="co"># =&gt; 1</span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co"># 初期値を指定することもできる</span></a>
+<a class="sourceLine" id="cb14-5" title="5">c2 <span class="op">=</span> Counter(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb14-6" title="6">c2.count() <span class="co"># =&gt; 11</span></a></code></pre></div>
 <p>オブジェクト.メソッド名(引数)という形で呼ぶと、暗黙に第一引数としてオブジェクト自身が渡され、それを慣習として<code>self</code>という名前で受け取る。</p>
 <p>さて、ここで、カウンタークラスはカウント値を属性として持ち、それを修正するメソッド<code>count()</code>を公開しており、カプセル化の例となっている。ここで、属性<code>__num</code>は外からアクセスできない。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(c.__num)
-<span class="co"># =&gt; AttributeError: &#39;Counter&#39; object has no attribute &#39;__num&#39;</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">print</span>(c.__num)</a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co"># =&gt; AttributeError: &#39;Counter&#39; object has no attribute &#39;__num&#39;</span></a></code></pre></div>
 <p>これは、変数の名前の頭にアンダースコア二つ「<code>__</code>」がついているためだ。アンダースコアがついていない属性は普通にアクセスができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> Hoge:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):
-        <span class="va">self</span>.value <span class="op">=</span> <span class="dv">123</span>
-
-h <span class="op">=</span> Hoge()
-<span class="bu">print</span>(h.value) <span class="co"># =&gt; 123</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">class</span> Hoge:</a>
+<a class="sourceLine" id="cb16-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb16-3" title="3">        <span class="va">self</span>.value <span class="op">=</span> <span class="dv">123</span></a>
+<a class="sourceLine" id="cb16-4" title="4"></a>
+<a class="sourceLine" id="cb16-5" title="5">h <span class="op">=</span> Hoge()</a>
+<a class="sourceLine" id="cb16-6" title="6"><span class="bu">print</span>(h.value) <span class="co"># =&gt; 123</span></a></code></pre></div>
 <p>実は、Pythonではアンダースコアが二つつけられた属性は、名前が<code>_クラス名__属性名</code>に変更される。これを<strong>マングリング(mangling)</strong> と呼ぶ。マングリングされた名前を直接指定すれば隠し属性にアクセスできるが、バグのもとなのでやらない方が良い。メソッドでも同様なことができる。</p>
 <h2 id="オブジェクト指向プログラミングの実例">オブジェクト指向プログラミングの実例</h2>
 <p>オブジェクト指向プログラミングの意義を短時間で伝えるのは難しい。しかし、より学びたい人のために簡単な実例を挙げておこう。</p>
 <p>いま、株式会社「Hoge」があり、その社員の名簿がある。社員は社員IDとメールアドレス(例えば<code>sato@hoge.co.jp</code>)を持っている。プログラマである田中君は、それをリストで実装した。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">name <span class="op">=</span> [<span class="st">&quot;佐藤&quot;</span>,<span class="st">&quot;鈴木&quot;</span>,<span class="st">&quot;高橋&quot;</span>,<span class="st">&quot;田中&quot;</span>]
-address <span class="op">=</span> [<span class="st">&quot;sato&quot;</span>, <span class="st">&quot;suzuki&quot;</span>, <span class="st">&quot;takahashi&quot;</span>,<span class="st">&quot;tanaka&quot;</span>]</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1">name <span class="op">=</span> [<span class="st">&quot;佐藤&quot;</span>,<span class="st">&quot;鈴木&quot;</span>,<span class="st">&quot;高橋&quot;</span>,<span class="st">&quot;田中&quot;</span>]</a>
+<a class="sourceLine" id="cb17-2" title="2">address <span class="op">=</span> [<span class="st">&quot;sato&quot;</span>, <span class="st">&quot;suzuki&quot;</span>, <span class="st">&quot;takahashi&quot;</span>,<span class="st">&quot;tanaka&quot;</span>]</a></code></pre></div>
 <p>メールアドレスの<code>@</code>の右側は全員同じなので、<code>@</code>の左側の部分だけ保存されている。例えば鈴木さんは社員番号1番であり、メールアドレスは</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_address <span class="op">=</span> address[<span class="dv">1</span>] <span class="op">+</span> <span class="st">&#39;@hoge.co.jp&#39;</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">sato_address <span class="op">=</span> address[<span class="dv">1</span>] <span class="op">+</span> <span class="st">&#39;@hoge.co.jp&#39;</span></a></code></pre></div>
 <p>で取得できる。さて、この会社が戦略的な理由により、子会社「Fuga」を作成し、高橋さんが社長としてその会社に移ることになった。田中くんは「メールアドレスの<code>@</code>の右側は全社員同じ」という前提でプログラムを作ってしまっていたので、全プログラムの社員アドレスを取得している箇所を修正しなければならない。</p>
 <p>また、子会社ができたことにより、社員番号の扱いも変えなければならない。高橋さんは子会社<code>Fuga</code>の社員番号0番であるべきだ。どうしよう？別に所属会社と社員番号のリストを作るべきだろうか？今後両方に所属する人が出てきたら？今後何か変更があるたびにプログラムを全部書き直しなければならないだろうか？</p>
 <p>上記のプログラムは、「名前やアドレスを管理したい」という「目的」と、「それをどう実現するか」という「実装」がべったりくっついているところに問題があった。オブジェクト指向プログラミングでは、「目的(振る舞い)」と「実装」を分離する。</p>
 <p>実装はともかく、社員データベース<code>database</code>があり、そこに社員名を問い合わせればアドレスを教えてくれるようになっているとしよう。イメージはこんな感じである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co"># =&gt; takahashi@fuga.co.jp</span>
-tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co"># =&gt; tanaka@hoge.co.jp</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">takahashi_address <span class="op">=</span> database.address(<span class="st">&quot;高橋&quot;</span>) <span class="co"># =&gt; takahashi@fuga.co.jp</span></a>
+<a class="sourceLine" id="cb19-2" title="2">tanaka_address <span class="op">=</span> database.address(<span class="st">&quot;田中&quot;</span>) <span class="co"># =&gt; tanaka@hoge.co.jp</span></a></code></pre></div>
 <p>こうしておくと、将来子会社が増えた時、<code>database</code>の内部実装は変更する必要があるが、<code>database</code>に問い合わせている上記の部分のプログラムを修正しなくて良い。</p>
 <p>このプログラムは全社員に通し番号で社員番号を付与しているかもしれないし、会社ごとに異なるデータベースを持っているかもしれない。しかし、そんなことはプログラマは気にしなくて良い。</p>
 <p>さて、今度は佐藤さんの役職も知りたいとしよう。こう書きたくなるだろうか？</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_position <span class="op">=</span> database.position(<span class="st">&quot;佐藤&quot;</span>) <span class="co"># =&gt; 課長</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">sato_position <span class="op">=</span> database.position(<span class="st">&quot;佐藤&quot;</span>) <span class="co"># =&gt; 課長</span></a></code></pre></div>
 <p>オブジェクト指向に慣れた人なら、上記のプログラムに違和感を感じるだろう。「データベースに聞けばなんでも教えてくれる」ということは、「データベースが全ての情報を把握している」ということである。会社で「とにかくなんでもこの人に聞け」という人がいたら、その人の責任が過大であり、危険信号であることは想像できるであろう。</p>
 <p>そこで、データベースは名前から「社員情報」というオブジェクトを返すことにして、細かい情報はそのオブジェクトに教えてもらおう。総合受付から担当秘書を教えてもらい、詳細は担当秘書に教えてもらうイメージだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>)
-sato_position <span class="op">=</span> sato_info.position() <span class="co"># =&gt; 課長</span></code></pre></div>
-<div class="figure">
-<img src="fig/responsibility.png" alt="オブジェクトの責任の分離" />
-<p class="caption">オブジェクトの責任の分離</p>
-</div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>)</a>
+<a class="sourceLine" id="cb21-2" title="2">sato_position <span class="op">=</span> sato_info.position() <span class="co"># =&gt; 課長</span></a></code></pre></div>
+<figure>
+<img src="fig/responsibility.png" alt="オブジェクトの責任の分離" /><figcaption>オブジェクトの責任の分離</figcaption>
+</figure>
 <p>一度、社員情報というオブジェクトを挟むことで、</p>
 <ul>
 <li>データベースオブジェクト(総合受付)は、名前から社員情報を返すのが仕事</li>
@@ -436,12 +431,12 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 </ul>
 <p>と、「誰がどこまで責任をもっているか」が明確になり、かつ「オブジェクト同士の責任が重なる」こともない。</p>
 <p>ちなみに<code>sato_info</code>を消して、メソッド呼び出しをピリオドでつなげることもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co"># =&gt; 課長</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">sato_info <span class="op">=</span> database.info(<span class="st">&quot;佐藤&quot;</span>).position() <span class="co"># =&gt; 課長</span></a></code></pre></div>
 <p>オブジェクト指向に慣れたプログラマは「こういうオブジェクトはこういう振る舞いをして欲しい」とか「このオブジェクト(クラス)の責任が多すぎるな」といった「お気持ち」を持つ。この「お気持ち」に沿ってプログラムを組むと、バグが少なかったり、将来の仕様変更に強いプログラムができる。オブジェクト指向はそういう「プログラミングノウハウ」を形として具現化したものだ。ある程度大きなプログラムを組んでみないと、このあたりの感覚を身につけることは難しい。</p>
 <p>本稿も含めて、巷にあるオブジェクト指向の説明においては「たとえ話」が頻出する。たとえ話はなんとなくイメージを掴むのには有用であるが、オブジェクト指向がプログラミング技法である以上、いくらわかった気になっても実際に使えなければ意味がない。あくまでもプログラムの具体例に数多く触れ、経験を積み重ねていくのがオブジェクト指向の理解の早道であろう。</p>
 <h2 id="割りばしゲーム">割りばしゲーム</h2>
 <p>「割りばし」という二人で行う指遊びがある。地方によって名前やルールは様々だが、基本ルールは以下のようなものだ。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>じゃんけんなどで先行、後攻を決め、お互い両手の人差し指を立てる</li>
 <li>先行は、自分の好きな手で相手の好きな手を攻撃する</li>
 <li>攻撃された側は、攻撃された手の指を、攻撃した手の指の本数だけ増やす</li>
@@ -463,98 +458,98 @@ sato_position <span class="op">=</span> sato_info.position() <span class="co"># 
 <p>新しいノートブックを開き、<code>waribashi.ipynb</code>という名前をつけよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>まず最初のセルに、後で必要となるライブラリをインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
-<span class="im">from</span> graphviz <span class="im">import</span> Digraph</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1"><span class="im">import</span> IPython</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</a></code></pre></div>
 <h4 id="状態クラスの実装">2. 状態クラスの実装</h4>
 <h5 id="初期化関数">初期化関数</h5>
 <p>まず、割りばしゲームの「状態」を表すクラス<code>State</code>を実装しよう。割りばしゲームの状態としては、先手番であるか否か<code>is_first</code>、先手番の指の本数<code>f</code>、後手番の指の本数<code>s</code>がある。また、「自分から遷移可能な状態」のリストも持っておこう。後で描画に必要となるので「遷移可能な状態」<code>siblings</code>、「この状態を描画したかどうか」<code>is_drawn</code>もつけておこう。2つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
-        <span class="va">self</span>.is_first <span class="op">=</span> is_first
-        <span class="va">self</span>.f <span class="op">=</span> [<span class="bu">max</span>(f), <span class="bu">min</span>(f)]
-        <span class="va">self</span>.s <span class="op">=</span> [<span class="bu">max</span>(s), <span class="bu">min</span>(s)]
-        <span class="va">self</span>.siblings <span class="op">=</span> []
-        <span class="va">self</span>.is_drawn <span class="op">=</span> <span class="va">False</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">class</span> State:</a>
+<a class="sourceLine" id="cb24-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):</a>
+<a class="sourceLine" id="cb24-3" title="3">        <span class="va">self</span>.is_first <span class="op">=</span> is_first</a>
+<a class="sourceLine" id="cb24-4" title="4">        <span class="va">self</span>.f <span class="op">=</span> [<span class="bu">max</span>(f), <span class="bu">min</span>(f)]</a>
+<a class="sourceLine" id="cb24-5" title="5">        <span class="va">self</span>.s <span class="op">=</span> [<span class="bu">max</span>(s), <span class="bu">min</span>(s)]</a>
+<a class="sourceLine" id="cb24-6" title="6">        <span class="va">self</span>.siblings <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb24-7" title="7">        <span class="va">self</span>.is_drawn <span class="op">=</span> <span class="va">False</span></a></code></pre></div>
 <p>入力したら、インスタンスを作れることを確認しよう。3つ目のセルに以下のように入力、実行し、エラーが出なければ成功である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1">s <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a></code></pre></div>
 <p>確認が終わったら、3つ目のセルを削除しておくこと。</p>
 <h5 id="文字列変換メソッド">文字列変換メソッド</h5>
 <p>次に、状態を文字列に変換するメソッドを追加しよう。2つ目セルの<code>State</code>クラスの<code>__init__</code>メソッドの後に<code>__str__</code>というメソッドを追加する。この時、<code>__init__</code>と同じインデントにすること。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">class</span> State:
-    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):
-        <span class="va">self</span>.is_first <span class="op">=</span> is_first
-        <span class="va">self</span>.f <span class="op">=</span> [<span class="bu">max</span>(f), <span class="bu">min</span>(f)]
-        <span class="va">self</span>.s <span class="op">=</span> [<span class="bu">max</span>(s), <span class="bu">min</span>(s)]
-        <span class="va">self</span>.siblings <span class="op">=</span> []
-        <span class="va">self</span>.is_drawn <span class="op">=</span> <span class="va">False</span>
-
-    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):
-        s <span class="op">=</span> <span class="bu">str</span>(<span class="va">self</span>.f) <span class="op">+</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.s)
-        <span class="cf">if</span> <span class="va">self</span>.is_first:
-            <span class="cf">return</span> <span class="st">&quot;f</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s
-        <span class="cf">else</span>:
-            <span class="cf">return</span> <span class="st">&quot;s</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1"><span class="kw">class</span> State:</a>
+<a class="sourceLine" id="cb26-2" title="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, is_first, f, s):</a>
+<a class="sourceLine" id="cb26-3" title="3">        <span class="va">self</span>.is_first <span class="op">=</span> is_first</a>
+<a class="sourceLine" id="cb26-4" title="4">        <span class="va">self</span>.f <span class="op">=</span> [<span class="bu">max</span>(f), <span class="bu">min</span>(f)]</a>
+<a class="sourceLine" id="cb26-5" title="5">        <span class="va">self</span>.s <span class="op">=</span> [<span class="bu">max</span>(s), <span class="bu">min</span>(s)]</a>
+<a class="sourceLine" id="cb26-6" title="6">        <span class="va">self</span>.siblings <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb26-7" title="7">        <span class="va">self</span>.is_drawn <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb26-8" title="8"></a>
+<a class="sourceLine" id="cb26-9" title="9">    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb26-10" title="10">        s <span class="op">=</span> <span class="bu">str</span>(<span class="va">self</span>.f) <span class="op">+</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.s)</a>
+<a class="sourceLine" id="cb26-11" title="11">        <span class="cf">if</span> <span class="va">self</span>.is_first:</a>
+<a class="sourceLine" id="cb26-12" title="12">            <span class="cf">return</span> <span class="st">&quot;f</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s</a>
+<a class="sourceLine" id="cb26-13" title="13">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb26-14" title="14">            <span class="cf">return</span> <span class="st">&quot;s</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> s</a></code></pre></div>
 <p>追加したらこのセルを再度実行してから、3つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">False</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s3 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">3</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">4</span>])
-<span class="bu">print</span>(s1)
-<span class="bu">print</span>(s2)
-<span class="bu">print</span>(s3)</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1">s1 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb27-2" title="2">s2 <span class="op">=</span> State(<span class="va">False</span>,[<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb27-3" title="3">s3 <span class="op">=</span> State(<span class="va">True</span>,[<span class="dv">3</span>,<span class="dv">1</span>],[<span class="dv">2</span>,<span class="dv">4</span>])</a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="bu">print</span>(s1)</a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="bu">print</span>(s2)</a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="bu">print</span>(s3)</a></code></pre></div>
 <p>以下のように表示されれば成功である。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">1</span>, <span class="dv">1</span>]
-s
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">1</span>, <span class="dv">1</span>]
-f
-[<span class="dv">3</span>, <span class="dv">1</span>]
-[<span class="dv">4</span>, <span class="dv">2</span>]</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1">f</a>
+<a class="sourceLine" id="cb28-2" title="2">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb28-3" title="3">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb28-4" title="4">s</a>
+<a class="sourceLine" id="cb28-5" title="5">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb28-6" title="6">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb28-7" title="7">f</a>
+<a class="sourceLine" id="cb28-8" title="8">[<span class="dv">3</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb28-9" title="9">[<span class="dv">4</span>, <span class="dv">2</span>]</a></code></pre></div>
 <p>上記が正しく表示されたら、3つ目のセルを消しておこう。</p>
 <h5 id="比較メソッド">比較メソッド</h5>
 <p>次に、オブジェクトの比較メソッド<code>__eq__</code>を作ってみよう。比較メソッドとは<code>a == b</code>とした際に、<code>a</code>と<code>b</code>が等しいか判定するのにつかわれるメソッドだ。2つ目のセルの<code>State</code>クラスの<code>__str__</code>の後に以下のように追加しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> params(<span class="va">self</span>):
-        <span class="cf">return</span> (<span class="va">self</span>.is_first, <span class="va">self</span>.f, <span class="va">self</span>.s)
-
-    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):
-        <span class="cf">return</span> <span class="va">self</span>.params() <span class="op">==</span> other.params()</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1">    <span class="kw">def</span> params(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb29-2" title="2">        <span class="cf">return</span> (<span class="va">self</span>.is_first, <span class="va">self</span>.f, <span class="va">self</span>.s)</a>
+<a class="sourceLine" id="cb29-3" title="3"></a>
+<a class="sourceLine" id="cb29-4" title="4">    <span class="kw">def</span> <span class="fu">__eq__</span>(<span class="va">self</span>, other):</a>
+<a class="sourceLine" id="cb29-5" title="5">        <span class="cf">return</span> <span class="va">self</span>.params() <span class="op">==</span> other.params()</a></code></pre></div>
 <p><code>params</code>は、自分の状態をタプルとして返す関数で、<code>__eq__</code>は、二つのオブジェクトの<code>params()</code>の返り値を比較して等しいかどうかを判定している。これを実装後、3つ目のセルで以下を実行してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s1 <span class="op">==</span> s2</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb30-2" title="2">s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb30-3" title="3">s1 <span class="op">==</span> s2</a></code></pre></div>
 <p>結果として<code>True</code>と出てくれば成功である。動作確認が終わったら3つ目のセルを消しておくこと。</p>
 <h5 id="次の状態の生成">次の状態の生成</h5>
 <p>現在の状態から次の状態を生成するメソッドを作ろう。現在の状態に対して「先手側の手の左右」と「後手側の手の左右」を選べば、次の状態が決まる。先手側の手を<code>fi</code>、後手側の手を<code>si</code>としよう。それぞれ0と1の値をとる変数で、0が左手、1が右手である。ただし、指の本数が大きいほうを必ず左手にするように入れ替える。例えば現在先手番で、<code>(fi, si)==(0,0)</code>ならば、先手が左手で後手番の左手を攻撃したという意味になり、現在後手番で<code>(fi, si)==(0,1)</code>ならば、後手番が右手で先手番の左手を攻撃した、という意味になる。</p>
 <p>以上を実装してみよう。2つ目のセルの<code>State</code>クラスに以下のメソッドを追加せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">    <span class="kw">def</span> next_state(<span class="va">self</span>, index):
-        fi, si <span class="op">=</span> index
-        <span class="cf">if</span> <span class="va">self</span>.f[fi] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.s[si] <span class="op">==</span> <span class="dv">0</span>:
-            <span class="cf">return</span> <span class="va">None</span>
-        d <span class="op">=</span> <span class="va">self</span>.f[fi] <span class="op">+</span> <span class="va">self</span>.s[si]
-        f2 <span class="op">=</span> <span class="va">self</span>.f.copy()
-        s2 <span class="op">=</span> <span class="va">self</span>.s.copy()
-        <span class="cf">if</span> d <span class="op">&gt;=</span> <span class="dv">5</span>:
-            d <span class="op">=</span> <span class="dv">0</span>
-        <span class="cf">if</span> <span class="va">self</span>.is_first:
-            s2[si] <span class="op">=</span> d
-        <span class="cf">else</span>:
-            f2[fi] <span class="op">=</span> d
-        <span class="cf">return</span> State(<span class="kw">not</span> <span class="va">self</span>.is_first, f2, s2)</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1">    <span class="kw">def</span> next_state(<span class="va">self</span>, index):</a>
+<a class="sourceLine" id="cb31-2" title="2">        fi, si <span class="op">=</span> index</a>
+<a class="sourceLine" id="cb31-3" title="3">        <span class="cf">if</span> <span class="va">self</span>.f[fi] <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> <span class="va">self</span>.s[si] <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb31-4" title="4">            <span class="cf">return</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb31-5" title="5">        d <span class="op">=</span> <span class="va">self</span>.f[fi] <span class="op">+</span> <span class="va">self</span>.s[si]</a>
+<a class="sourceLine" id="cb31-6" title="6">        f2 <span class="op">=</span> <span class="va">self</span>.f.copy()</a>
+<a class="sourceLine" id="cb31-7" title="7">        s2 <span class="op">=</span> <span class="va">self</span>.s.copy()</a>
+<a class="sourceLine" id="cb31-8" title="8">        <span class="cf">if</span> d <span class="op">&gt;=</span> <span class="dv">5</span>:</a>
+<a class="sourceLine" id="cb31-9" title="9">            d <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-10" title="10">        <span class="cf">if</span> <span class="va">self</span>.is_first:</a>
+<a class="sourceLine" id="cb31-11" title="11">            s2[si] <span class="op">=</span> d</a>
+<a class="sourceLine" id="cb31-12" title="12">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb31-13" title="13">            f2[fi] <span class="op">=</span> d</a>
+<a class="sourceLine" id="cb31-14" title="14">        <span class="cf">return</span> State(<span class="kw">not</span> <span class="va">self</span>.is_first, f2, s2)</a></code></pre></div>
 <p>追加したら、正しく実装できたか確認してみよう。3つ目のセルに以下を入力して出力を確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])
-<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">1</span>)))
-<span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))
-<span class="bu">print</span>(s2.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1">s1 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">1</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb32-2" title="2">s2 <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>,<span class="dv">0</span>],[<span class="dv">1</span>,<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb32-3" title="3"><span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb32-4" title="4"><span class="bu">print</span>(s1.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</a>
+<a class="sourceLine" id="cb32-5" title="5"><span class="bu">print</span>(s2.next_state((<span class="dv">1</span>,<span class="dv">0</span>)))</a></code></pre></div>
 <p>以下のような出力が出てくれば正しく入力されている。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">2</span>, <span class="dv">1</span>]
-s
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">2</span>, <span class="dv">1</span>]
-<span class="va">None</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1">s</a>
+<a class="sourceLine" id="cb33-2" title="2">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb33-3" title="3">[<span class="dv">2</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb33-4" title="4">s</a>
+<a class="sourceLine" id="cb33-5" title="5">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb33-6" title="6">[<span class="dv">2</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="va">None</span></a></code></pre></div>
 <p>最終的に2つ目のセルにある<code>State</code>クラスには、以下の5つのメソッドが実装されたはずである。</p>
 <ul>
 <li><code>__init__</code></li>
@@ -566,7 +561,7 @@ s
 <p>ここまで正しい動作が確認できていれば、確認のための3つ目のセルは削除して良い。</p>
 <h3 id="課題2状態遷移図の可視化">課題2:状態遷移図の可視化</h3>
 <p>割りばしゲームの状態遷移図(ゲーム木)を作るには、</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>まず状態(ノード)が与えられた時、その状態から遷移可能な状態を生成する</li>
 <li>その状態が合法手であれば、自分にそれを追加する</li>
 <li>追加したすべての状態について、再帰的に以上を繰り返す</li>
@@ -575,20 +570,20 @@ s
 <p>ただし、異なるパスで同じ状態に遷移する可能性があり、それらを「同じノード」としてまとめたいため、それをハッシュで実装する。具体的には、生成された状態の文字列をキーとしてハッシュに登録し、ハッシュに登録済みの状態ならその状態を、そうでなければ登録する、という処理を加える。</p>
 <h4 id="関数moveの実装">3. 関数<code>move</code>の実装</h4>
 <p>「次の合法手」を探索する関数<code>move</code>を3つ目のセルに入力せよ(3つ目のセルが残っていたらまず削除すること)。<code>State</code>クラスのメソッドではないことに注意。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> move(parent, is_first, nodes):
-    <span class="cf">for</span> i <span class="kw">in</span> [(<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>)]:
-        child <span class="op">=</span> parent.next_state(i)
-        <span class="cf">if</span> child <span class="kw">is</span> <span class="va">None</span>:
-            <span class="cf">continue</span>
-        <span class="cf">if</span> child <span class="kw">in</span> parent.siblings:
-            <span class="cf">continue</span>
-        s <span class="op">=</span> <span class="bu">str</span>(child)
-        child <span class="op">=</span> nodes.get(s, child)
-        nodes[s] <span class="op">=</span> child
-        parent.siblings.append(child)
-        move(child, <span class="kw">not</span> is_first, nodes)</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">def</span> move(parent, is_first, nodes):</a>
+<a class="sourceLine" id="cb34-2" title="2">    <span class="cf">for</span> i <span class="kw">in</span> [(<span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>), (<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">1</span>, <span class="dv">1</span>)]:</a>
+<a class="sourceLine" id="cb34-3" title="3">        child <span class="op">=</span> parent.next_state(i)</a>
+<a class="sourceLine" id="cb34-4" title="4">        <span class="cf">if</span> child <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb34-5" title="5">            <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb34-6" title="6">        <span class="cf">if</span> child <span class="kw">in</span> parent.siblings:</a>
+<a class="sourceLine" id="cb34-7" title="7">            <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb34-8" title="8">        s <span class="op">=</span> <span class="bu">str</span>(child)</a>
+<a class="sourceLine" id="cb34-9" title="9">        child <span class="op">=</span> nodes.get(s, child)</a>
+<a class="sourceLine" id="cb34-10" title="10">        nodes[s] <span class="op">=</span> child</a>
+<a class="sourceLine" id="cb34-11" title="11">        parent.siblings.append(child)</a>
+<a class="sourceLine" id="cb34-12" title="12">        move(child, <span class="kw">not</span> is_first, nodes)</a></code></pre></div>
 <p>やっていることは以下の通り。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>現在の状態から遷移可能な4状態を生成する</li>
 <li>それぞれが合法手であるか確認し、合法手でなければスキップ</li>
 <li>もしすでに自分に追加されている状態ならスキップ</li>
@@ -597,41 +592,41 @@ s
 </ol>
 <h4 id="状態木を作成する関数make_treeの実装">4. 状態木を作成する関数<code>make_tree</code>の実装</h4>
 <p>次に、<code>move</code>に最初の状態を与えて、ゲーム木の「根(root)」を作って返す関数を作る。4つ目のセルに以下の関数を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_tree():
-    nodes <span class="op">=</span> {}
-    root <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>, <span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">1</span>])
-    nodes[<span class="bu">str</span>(root)] <span class="op">=</span> root
-    move(root, <span class="va">True</span>, nodes)
-    <span class="cf">return</span> root</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">def</span> make_tree():</a>
+<a class="sourceLine" id="cb35-2" title="2">    nodes <span class="op">=</span> {}</a>
+<a class="sourceLine" id="cb35-3" title="3">    root <span class="op">=</span> State(<span class="va">True</span>, [<span class="dv">1</span>, <span class="dv">1</span>], [<span class="dv">1</span>, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb35-4" title="4">    nodes[<span class="bu">str</span>(root)] <span class="op">=</span> root</a>
+<a class="sourceLine" id="cb35-5" title="5">    move(root, <span class="va">True</span>, nodes)</a>
+<a class="sourceLine" id="cb35-6" title="6">    <span class="cf">return</span> root</a></code></pre></div>
 <p>ここまで入力したら、5つ目のセルに以下を入力して実行し、エラーがでないことを確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
-<span class="bu">print</span>(root)</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1">root <span class="op">=</span> make_tree()</a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="bu">print</span>(root)</a></code></pre></div>
 <p>最初の状態が以下のように表示されるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">f
-[<span class="dv">1</span>, <span class="dv">1</span>]
-[<span class="dv">1</span>, <span class="dv">1</span>]</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1">f</a>
+<a class="sourceLine" id="cb37-2" title="2">[<span class="dv">1</span>, <span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb37-3" title="3">[<span class="dv">1</span>, <span class="dv">1</span>]</a></code></pre></div>
 <p>動作確認が終わったら、5つ目のセルは消してかまわない。</p>
 <h4 id="ゲーム木の可視化関数make_graphの実装">5. ゲーム木の可視化関数<code>make_graph</code>の実装</h4>
 <p>先ほど<code>root = make_tree()</code>で作成した<code>root</code>は子ノードがぶら下がっており、さらに子ノードには孫ノードが・・・と木構造を作っている。これをGraphvizで可視化しよう。</p>
 <p>5番目のセルに、以下のプログラムを入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_graph(node, g):
-    <span class="cf">if</span> node.is_drawn:
-        <span class="cf">return</span>
-    node.is_drawn <span class="op">=</span> <span class="va">True</span>
-    ns <span class="op">=</span> <span class="bu">str</span>(node)
-    <span class="cf">if</span> <span class="bu">max</span>(node.f) <span class="op">==</span> <span class="dv">0</span>:
-        g.node(ns, color<span class="op">=</span><span class="st">&quot;#FF9999&quot;</span>, style<span class="op">=</span><span class="st">&quot;filled&quot;</span>)
-    <span class="cf">elif</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:
-        g.node(ns, color<span class="op">=</span><span class="st">&quot;#9999FF&quot;</span>, style<span class="op">=</span><span class="st">&quot;filled&quot;</span>)
-    <span class="cf">else</span>:
-        g.node(ns)
-    <span class="cf">for</span> n <span class="kw">in</span> node.siblings:
-        g.edge(ns, <span class="bu">str</span>(n))
-        make_graph(n, g)
-    <span class="cf">return</span> g</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1"><span class="kw">def</span> make_graph(node, g):</a>
+<a class="sourceLine" id="cb38-2" title="2">    <span class="cf">if</span> node.is_drawn:</a>
+<a class="sourceLine" id="cb38-3" title="3">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb38-4" title="4">    node.is_drawn <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb38-5" title="5">    ns <span class="op">=</span> <span class="bu">str</span>(node)</a>
+<a class="sourceLine" id="cb38-6" title="6">    <span class="cf">if</span> <span class="bu">max</span>(node.f) <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb38-7" title="7">        g.node(ns, color<span class="op">=</span><span class="st">&quot;#FF9999&quot;</span>, style<span class="op">=</span><span class="st">&quot;filled&quot;</span>)</a>
+<a class="sourceLine" id="cb38-8" title="8">    <span class="cf">elif</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb38-9" title="9">        g.node(ns, color<span class="op">=</span><span class="st">&quot;#9999FF&quot;</span>, style<span class="op">=</span><span class="st">&quot;filled&quot;</span>)</a>
+<a class="sourceLine" id="cb38-10" title="10">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb38-11" title="11">        g.node(ns)</a>
+<a class="sourceLine" id="cb38-12" title="12">    <span class="cf">for</span> n <span class="kw">in</span> node.siblings:</a>
+<a class="sourceLine" id="cb38-13" title="13">        g.edge(ns, <span class="bu">str</span>(n))</a>
+<a class="sourceLine" id="cb38-14" title="14">        make_graph(n, g)</a>
+<a class="sourceLine" id="cb38-15" title="15">    <span class="cf">return</span> g</a></code></pre></div>
 <h4 id="ゲーム木の可視化">6. ゲーム木の可視化</h4>
 <p>ここまでで上から</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><code>import</code>文</li>
 <li><code>State</code>クラスの宣言</li>
 <li><code>move</code>関数</li>
@@ -639,40 +634,40 @@ s
 <li><code>make_graph</code>関数</li>
 </ol>
 <p>の5つのセルができているはずだ。それぞれが実行されていることを確認した後(不安なら再度実行した後)、一番下の6つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
-g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
-make_graph(root, g)
-IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1">root <span class="op">=</span> make_tree()</a>
+<a class="sourceLine" id="cb39-2" title="2">g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)</a>
+<a class="sourceLine" id="cb39-3" title="3">make_graph(root, g)</a>
+<a class="sourceLine" id="cb39-4" title="4">IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</a></code></pre></div>
 <p>ここまで正しく実装されていれば、ゲーム木が表示されるはずである。青が先手勝利、赤が後手勝利である。大きすぎて見づらい場合は、右クリックから「新しいタブで画像を開く」を選ぶと見やすいかもしれない。</p>
 <h3 id="発展課題-枝刈り">発展課題: 枝刈り</h3>
 <p>さて、無事にゲーム木が表示されたが、そのグラフを見ても何がなんだかわからないであろう。そこで、このゲームが後手必勝であることをプログラムで確認してみよう。</p>
 <p>引き分けがないのだから、負けにつながる手を打たなければ勝てるはずである。先手に勝ち筋がある場合、当然先手はその手を打つ。したがって、後手は「先手に勝ち筋があるような状態につながる手」を打ってはならない。そこで、そこにつながる手を自分の子ノードリストから削除しよう。また、そうして削除していった結果、打てる手がなくなってしまうノードが出てくる(その状態になった時点で敗北確定)。このようなノードにつながる手も打ってはならないので、それも枝刈りする。こうして後手の負けにつながる枝を全て刈れば、後手必勝の手筋のみが残るはずである。</p>
 <h4 id="枝刈り関数pruneの実装">7. 枝刈り関数<code>prune</code>の実装</h4>
 <p>7つ目のセルに、枝を刈るための関数<code>prune</code>を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> prune(node):
-    <span class="cf">if</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:
-        <span class="cf">return</span> <span class="va">True</span>
-    <span class="cf">if</span> node.is_first:
-        <span class="cf">for</span> n <span class="kw">in</span> node.siblings:
-            <span class="cf">if</span> prune(n):
-                <span class="cf">return</span> <span class="va">True</span>
-        <span class="cf">return</span> <span class="va">False</span>
-    <span class="cf">if</span> <span class="kw">not</span> node.is_first:
-        sib <span class="op">=</span> node.siblings.copy()
-        <span class="cf">for</span> n <span class="kw">in</span> sib:
-            <span class="cf">if</span> prune(n):
-                node.siblings.remove(n)
-        <span class="cf">if</span> <span class="kw">not</span> node.siblings:
-            <span class="cf">return</span> <span class="va">True</span>
-    <span class="cf">return</span> <span class="va">False</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">def</span> prune(node):</a>
+<a class="sourceLine" id="cb40-2" title="2">    <span class="cf">if</span> <span class="bu">max</span>(node.s) <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb40-3" title="3">        <span class="cf">return</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb40-4" title="4">    <span class="cf">if</span> node.is_first:</a>
+<a class="sourceLine" id="cb40-5" title="5">        <span class="cf">for</span> n <span class="kw">in</span> node.siblings:</a>
+<a class="sourceLine" id="cb40-6" title="6">            <span class="cf">if</span> prune(n):</a>
+<a class="sourceLine" id="cb40-7" title="7">                <span class="cf">return</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb40-8" title="8">        <span class="cf">return</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb40-9" title="9">    <span class="cf">if</span> <span class="kw">not</span> node.is_first:</a>
+<a class="sourceLine" id="cb40-10" title="10">        sib <span class="op">=</span> node.siblings.copy()</a>
+<a class="sourceLine" id="cb40-11" title="11">        <span class="cf">for</span> n <span class="kw">in</span> sib:</a>
+<a class="sourceLine" id="cb40-12" title="12">            <span class="cf">if</span> prune(n):</a>
+<a class="sourceLine" id="cb40-13" title="13">                node.siblings.remove(n)</a>
+<a class="sourceLine" id="cb40-14" title="14">        <span class="cf">if</span> <span class="kw">not</span> node.siblings:</a>
+<a class="sourceLine" id="cb40-15" title="15">            <span class="cf">return</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb40-16" title="16">    <span class="cf">return</span> <span class="va">False</span></a></code></pre></div>
 <p>先程のアルゴリズムの通りに実装しただけだが、再帰に慣れていないと理解しづらいかもしれない。もしわからなくても「そういうものだ」と思って今はスルーしてかまわない。</p>
 <h4 id="枝刈り後のゲーム木の表示">8. 枝刈り後のゲーム木の表示</h4>
 <p>8つ目のセルに、枝刈りをした後のゲーム木を表示するプログラムを書こう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">root <span class="op">=</span> make_tree()
-prune(root)
-g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)
-make_graph(root, g)
-IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1">root <span class="op">=</span> make_tree()</a>
+<a class="sourceLine" id="cb41-2" title="2">prune(root)</a>
+<a class="sourceLine" id="cb41-3" title="3">g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)</a>
+<a class="sourceLine" id="cb41-4" title="4">make_graph(root, g)</a>
+<a class="sourceLine" id="cb41-5" title="5">IPython.display.Image(g.render(<span class="st">&quot;test&quot;</span>))</a></code></pre></div>
 <p>6つ目のセルの二行目に<code>prune(root)</code>を追加しただけなので、6つ目のセルの内容をコピペして編集しても良い。正しく実装できてれば、青い状態、つまり先手勝利の状態が消え、赤い状態しかない木、つまり後手必勝の遷移図が出てきたはずである。これを見ると、先手がどのような手を打とうとも、後手が最善手を打つと、必ず後手勝利になることがわかる。</p>
 <h4 id="後手必勝の確認">後手必勝の確認</h4>
 <p>友人と実際にこの図に従って「割りばし」ゲームをやってみて、どのようにしても後手必勝であることを確認せよ。</p>

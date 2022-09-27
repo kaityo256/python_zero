@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>recursion/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -251,10 +251,9 @@
 </ul>
 <h2 id="再帰呼び出しとは">再帰呼び出しとは</h2>
 <p>例えばパソコンを使っているとフォルダを扱うであろう。フォルダを開くと、その中にはやはりフォルダとファイルが含まれる。この事実をもって「フォルダ」という言葉を定義しようとすると「フォルダとは、フォルダとファイルを含むものである」となる。「フォルダ」の記述に、定義したい言葉である「フォルダ」が含まれていることがわかる。このように、何かの中に、その何かそのものが現れることを <strong>再帰(recursion)</strong> と呼び、何かの定義に自分自身が現れることを <strong>再帰的定義(recursive definition)</strong> と呼ぶ。</p>
-<div class="figure">
-<img src="fig/folder.png" alt="フォルダの再帰的定義" />
-<p class="caption">フォルダの再帰的定義</p>
-</div>
+<figure>
+<img src="fig/folder.png" alt="フォルダの再帰的定義" /><figcaption>フォルダの再帰的定義</figcaption>
+</figure>
 <p>プログラムにおける再帰とは、簡単に言ってしまえば「自分自身を呼び出す関数」のことである。プログラムにおいて関数の実装は「この関数が呼び出されたらこのような処理をせよ」という、定義にほかならない。ある関数の定義に、その関数そのものが含まれるので、これは再帰的な記述になっている。このように関数が自分自身を呼び出すことを <strong>再帰呼び出し(recursive call)</strong> と呼ぶ。以下、再帰予び出しを用いるアルゴリズムやプログラムを総称して単に「再帰」と呼ぶ。</p>
 <p>再帰は慣れると極めて強力なアルゴリズムであり、中級以上のプログラマになるためには必須のプログラミング技法である。しかし、プログラムの初学者にとって再帰はループ構造や制御構造に比べてその動作ステップをイメージしづらく、「初学者の壁」となっている。今回はそんな「再帰呼出し」を学ぶが、再帰はなんども組んでいるうちにおぼろげに感覚を掴んでくるものであって、一度に理解することは難しい。とりあえず、以下の「再帰三カ条」だけを覚えておいて欲しい。</p>
 <p>再帰三カ条</p>
@@ -269,54 +268,57 @@
 n! = 1 \cdot 2 \cdots n-1 \cdot n
 \]</span></p>
 <p>これをプログラムで計算したい。もちろん、以下のようにループを回してしまうのが簡単だ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
-    a <span class="op">=</span> <span class="dv">1</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):
-        a <span class="op">*=</span> i
-    <span class="cf">return</span> a</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">def</span> fact(n):</a>
+<a class="sourceLine" id="cb1-2" title="2">    a <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb1-4" title="4">        a <span class="op">*=</span> i</a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="cf">return</span> a</a></code></pre></div>
 <p>しかし、ここでは再帰の考え方を学ぶためにあえて再帰で書いてみよう。</p>
 <p>再帰プログラムの基本は「今解きたい問題よりも小さな問題の答えがすべてわかっている場合、いま解きたい問題の答えはどう記述できるだろうか？」という考え方である。</p>
 <p>nの階乗の値、<code>fact(n)</code>の値を知りたい時、もし(n-1)の階乗の値<code>fact(n-1)</code>がわかっているとしよう。すると、欲しい値はそれにnをかけたものだ。つまり、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">fact(n) <span class="op">=</span> n <span class="op">*</span> fact(n<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">fact(n) <span class="op">=</span> n <span class="op">*</span> fact(n<span class="dv">-1</span>)</a></code></pre></div>
 <p>である。関数のある値を得るのに、その関数自身を使っている、再帰的な記述になっているのがわかるであろう。</p>
 <p>さて、<code>fact(n-1)</code>の値は<code>fact(n-2)</code>にn-1をかけたものであり、<code>fact(n-2)</code>は<code>fact(n-3)</code>の値にn-2をかけたもの、とどんんどん<code>fact</code>の中身が小さくなり、いつかは<code>fact(1)</code>になるであろう。1の階乗は1であり、ここで終了である。以上から、階乗を求めるプログラムを再帰を使って書くとこうなる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> fact(n):
-    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:
-        <span class="cf">return</span> <span class="dv">1</span>
-    <span class="cf">return</span> n <span class="op">*</span> fact(n<span class="op">-</span><span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">def</span> fact(n):</a>
+<a class="sourceLine" id="cb3-2" title="2">    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb3-3" title="3">        <span class="cf">return</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb3-4" title="4">    <span class="cf">return</span> n <span class="op">*</span> fact(n<span class="dv">-1</span>)</a></code></pre></div>
 <p>これが、先ほどの「再帰三カ条」に従っていることを確認しよう。</p>
 <ul>
-<li>再帰とは、自分自身を呼び出す関数である</li>
+<li>再帰とは、自分自身を呼び出す関数である
+<ul>
 <li><code>fact</code>の定義に、<code>fact</code>自身が使われている</li>
-<li>関数の最初に「終端条件」を記述する</li>
+</ul></li>
+<li>関数の最初に「終端条件」を記述する
+<ul>
 <li>引数<code>n</code>として1が指定されたら1を返して終了</li>
-<li>「解きたい問題より小さな問題」に分解して自分自身を呼び出す</li>
+</ul></li>
+<li>「解きたい問題より小さな問題」に分解して自分自身を呼び出す
+<ul>
 <li>自分が受け取った引数<code>n</code>に対して、<code>n-1</code>を引数として自身を呼び出している</li>
+</ul></li>
 </ul>
-<div class="figure">
-<img src="fig/recursion3.png" alt="再帰三カ条" />
-<p class="caption">再帰三カ条</p>
-</div>
+<figure>
+<img src="fig/recursion3.png" alt="再帰三カ条" /><figcaption>再帰三カ条</figcaption>
+</figure>
 <p>実際にこの関数<code>fact</code>の動作を見てみよう。例えば<code>fact(3)</code>として呼び出すことを考える。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>まず3は1ではないので終端条件にはマッチせず、<code>fact(2)</code>が呼ばれる</li>
 <li>同様に<code>fact(1)</code>が呼ばれる</li>
 <li><code>n</code>として1が代入されて呼ばれた<code>fact(1)</code>は、終端条件にマッチして1を返す</li>
 <li><code>fact(1)</code>を呼んだ<code>fact(2)</code>は、<code>fact(1)</code>の返り値1に2をかけた2を返す</li>
 <li><code>fact(2)</code>を呼んだ<code>fact(3)</code>は、<code>fact(2)</code>の返り値2に3をかけた6を返して値が確定</li>
 </ol>
-<div class="figure">
-<img src="fig/roundtrip.png" alt="再帰の動作" />
-<p class="caption">再帰の動作</p>
-</div>
+<figure>
+<img src="fig/roundtrip.png" alt="再帰の動作" /><figcaption>再帰の動作</figcaption>
+</figure>
 <p>つまり、再帰関数はどんどん問題を小さくしながら自分自身を呼び出していき、どこかで「終端条件」に達すると、そこから呼び出し履歴を逆にたどりながら帰ってくる。標語的に言えば「再帰は行って帰って」くる。この「問題を棚上げしながら単純化していき、どこかで終端条件に達したら、これまで棚上げにした問題を解決しながら戻ってくる」という感覚を身につけることが再帰プログラムの肝である。</p>
 <h2 id="階段の登り方問題">階段の登り方問題</h2>
 <p>先程の階乗を求める問題は、あまりに簡単過ぎて再帰を使うメリットが感じられなかったであろう。そこで、もう少し複雑な問題として「階段の登り方問題」を考えよう(課題1)。</p>
 <p>いま、目の前に<span class="math inline">\(n\)</span>段の階段があるとする。一度に1段、もしくは2段登るやり方を混ぜて登る時、「登り方の総数」は全部で何通りあるだろうか？</p>
-<div class="figure">
-<img src="fig/kaidan.png" alt="階段の登り方問題" />
-<p class="caption">階段の登り方問題</p>
-</div>
+<figure>
+<img src="fig/kaidan.png" alt="階段の登り方問題" /><figcaption>階段の登り方問題</figcaption>
+</figure>
 <p>まずは<span class="math inline">\(n\)</span>が小さい時の場合を考えてみよう。<span class="math inline">\(n=1\)</span>の時、つまり1段しかない時には、1段で登るしかないので1通りである。2段ある場合は、1段ずつ2回で登るか、2段で一度に登るかの2通りである。ここで、1もしくは2をいくつか足して、その合計をNにするようなやり方を数えれば良い、ということに気がつくであろう。例えば<span class="math inline">\(n=3\)</span>なら、</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -347,10 +349,9 @@ F_n = F_{n-1} + F_{n-2}
 <p>再帰のもう一つの例として、迷路を解くプログラムを考えよう(課題2)。迷路が与えられた時に、スタート地点からゴール地点までの経路を探索するのが目的である。</p>
 <p>このような探索で問題となるのが、「分かれ道」の存在である。いま、分かれ道に直面したとしよう。どちらが正解かわからないので、とりあえず現在地を覚えておいて、片方の道を試し、もしその先が行き止まりなら先程覚えておいた位置まで戻ってきて、別の道を試す必要がある。もし試しに選んだ片方の道の先にまた分かれ道があったら、また現在地を覚えておいて、片方を試す、という行動を繰り返す。</p>
 <p>このように「とりあえずあっちへ進んで、ダメなら戻る」という行動を繰り返すようなアルゴリズムを <strong>バックトラック(backtracking)</strong> と呼ぶ。将棋や囲碁のようなゲームで「先の手を読む」場合や、ナンプレなどのようなゲームで数字を仮り置きして矛盾したら戻ってやりなおす場合など、広く使われるアルゴリズムなので、これまでも無意識に使ったことはあるだろう。</p>
-<div class="figure">
-<img src="fig/backtracking.png" alt="バックトラックアルゴリズム" />
-<p class="caption">バックトラックアルゴリズム</p>
-</div>
+<figure>
+<img src="fig/backtracking.png" alt="バックトラックアルゴリズム" /><figcaption>バックトラックアルゴリズム</figcaption>
+</figure>
 <p>このような「とりあえずあっちへ進んで、ダメなら戻る」というバックトラックは、再帰を使うときれいに書ける。このバックトラックを使って迷路を解くアルゴリズムを考えよう。</p>
 <p>単にゴールにたどり着くだけなら、「矢印」を残しながら進んでいけば良い。例えばこんなアルゴリズムになる。</p>
 <ul>
@@ -359,35 +360,33 @@ F_n = F_{n-1} + F_{n-2}
 <li>進んだ先が行き止まりになったら、矢印を逆向きに戻る</li>
 <li>戻っている時に、まだ試していない道があったらそちらを選ぶ</li>
 </ul>
-<div class="figure">
-<img src="fig/bt_maze1.png" alt="バックトラックによる迷路探索" />
-<p class="caption">バックトラックによる迷路探索</p>
-</div>
+<figure>
+<img src="fig/bt_maze1.png" alt="バックトラックによる迷路探索" /><figcaption>バックトラックによる迷路探索</figcaption>
+</figure>
 <p>戻る時、つまり矢印と逆向きに進んでいる時にまだ試してない道を見つけたら必ずそこを試すのがポイントである。これにより、「戻っている時には、その後ろにある経路はすべて探索済みである」つまり、「道の見落としが無い」ということが保証される。バックトラックによる迷路探索とは、要するに「見落としが無いようにしらみつぶしに探しましょう」ということを言っているに過ぎない。</p>
 <p>このように、とりあえず進めるだけ進んで、行き止まりに行き当たったら戻ってくる、というような探索アルゴリズムを <strong>深さ優先探索(depth-first search)</strong> と呼ぶ。逆に、自分がいまいる地点から徐々に探索範囲を広げながら探索する方法を <strong>幅優先探索(breadth first search)</strong> と呼ぶ。</p>
 <p>さて、単にゴールにたどり着くだけなら上記の方法で良いが、ゴールまでの経路を求めるには少し工夫が必要だ。方針としては、「スタート地点からの距離」を各部屋に記しながら進んで行く。探索が終わったら、全ての場所に「スタート地点からの距離」があるはずである。この状態でゴールから、「数字が減るように」進んでいく。分かれ道では「カウントが減る方」がスタートに至る道であるから、そちらを選び続ければ「ゴールからスタートへの道」が完成する。</p>
-<div class="figure">
-<img src="fig/bt_maze2.png" alt="バックトラックによる迷路探索" />
-<p class="caption">バックトラックによる迷路探索</p>
-</div>
+<figure>
+<img src="fig/bt_maze2.png" alt="バックトラックによる迷路探索" /><figcaption>バックトラックによる迷路探索</figcaption>
+</figure>
 <p>課題では、指定された迷路について、「スタート地点からの距離地図」の作成、及び「距離地図が完成した後に解の経路作成」のそれぞれの処理を再帰で実装しよう。</p>
 <h2 id="再帰呼び出し課題">再帰呼び出し：課題</h2>
 <h3 id="課題1-1階段の登り方問題">課題1-1：階段の登り方問題</h3>
 <p>階段を、一度に1段、もしくは2段登るやり方を混ぜて登る時、「<span class="math inline">\(n\)</span>段の階段の登り方の総数」を返す関数<code>kaidan(n)</code>を作り、その動作を可視化してみよう。新しいノートブックを開き、<code>kaidan.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>直接再帰には関係ないが、後で再帰木を可視化をするために必要なライブラリをインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> graphviz <span class="im">import</span> Digraph
-<span class="im">from</span> PIL <span class="im">import</span> Image</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="im">from</span> PIL <span class="im">import</span> Image</a></code></pre></div>
 <h4 id="再帰関数kaidanの実装">2. 再帰関数<code>kaidan</code>の実装</h4>
 <p>2つ目のセルに、<code>n</code>段の階段の登り方を返す関数<code>kaidan(n)</code>を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan(n):
-    <span class="co"># 終端条件</span>
-    <span class="cf">if</span> 条件1:
-        <span class="cf">return</span> 値1
-    <span class="cf">if</span> 条件2:
-        <span class="cf">return</span> 値2
-    <span class="co"># 再帰部分</span>
-    <span class="cf">return</span> 自分自身を使った式</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">def</span> kaidan(n):</a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="co"># 終端条件</span></a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="cf">if</span> 条件1:</a>
+<a class="sourceLine" id="cb5-4" title="4">        <span class="cf">return</span> 値1</a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="cf">if</span> 条件2:</a>
+<a class="sourceLine" id="cb5-6" title="6">        <span class="cf">return</span> 値2</a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="co"># 再帰部分</span></a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="cf">return</span> 自分自身を使った式</a></code></pre></div>
 <p>実装すべきは終端条件と再帰部分である。以下を参考にせよ。</p>
 <ul>
 <li>階段の段数が1の場合と2の場合が終端条件に該当する。それぞれどんな値を返すべきか？</li>
@@ -395,81 +394,81 @@ F_n = F_{n-1} + F_{n-2}
 </ul>
 <h4 id="kaidanの確認">3. <code>kaidan</code>の確認</h4>
 <p>関数<code>kaidan</code>が実装できたら動作確認をしてみよう。3つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">kaidan(<span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">kaidan(<span class="dv">3</span>)</a></code></pre></div>
 <p>答えが3になっただろうか？また、<code>kaidan(4)</code>が5に、<code>kaidan(5)</code>が8になることを確認せよ。<code>kaidan(10)</code>の値はどうなるだろうか？</p>
 <h3 id="課題1-2再帰木の表示">課題1-2：再帰木の表示</h3>
 <p>再帰プログラムの難しさは、「プログラムがどのように実行されるかが分かりづらい」という点にある。繰り返すや条件分岐はそのままたどれば良いのだが、再帰プログラムは何度も自分を呼び出し、そして呼び出し先から返ってくる。この振る舞いを可視化してみよう。</p>
 <h4 id="再帰木の可視化関数kaidan_gの実装">4. 再帰木の可視化関数<code>kaidan_g</code>の実装</h4>
 <p>4つ目のセルに以下を実装しよう。これはグラフオブジェクト<code>g</code>を受け取り、階段の登り方がどのように呼び出されているかを可視化する関数だ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> kaidan_g(n, g, nodes, parent<span class="op">=</span><span class="va">None</span>):
-    index <span class="op">=</span> <span class="bu">str</span>(<span class="bu">len</span>(nodes))
-    nodes.append(index)
-    g.node(index, <span class="bu">str</span>(n))
-
-    <span class="cf">if</span> parent <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:
-        g.edge(index, parent)
-
-    <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>):
-        <span class="cf">return</span>
-    kaidan_g(n<span class="op">-</span><span class="dv">1</span>, g, nodes, index)
-    kaidan_g(n<span class="op">-</span><span class="dv">2</span>, g, nodes, index)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">def</span> kaidan_g(n, g, nodes, parent<span class="op">=</span><span class="va">None</span>):</a>
+<a class="sourceLine" id="cb7-2" title="2">    index <span class="op">=</span> <span class="bu">str</span>(<span class="bu">len</span>(nodes))</a>
+<a class="sourceLine" id="cb7-3" title="3">    nodes.append(index)</a>
+<a class="sourceLine" id="cb7-4" title="4">    g.node(index, <span class="bu">str</span>(n))</a>
+<a class="sourceLine" id="cb7-5" title="5"></a>
+<a class="sourceLine" id="cb7-6" title="6">    <span class="cf">if</span> parent <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb7-7" title="7">        g.edge(index, parent)</a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">    <span class="cf">if</span> n <span class="kw">in</span> (<span class="dv">1</span>, <span class="dv">2</span>):</a>
+<a class="sourceLine" id="cb7-10" title="10">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb7-11" title="11">    kaidan_g(n<span class="dv">-1</span>, g, nodes, index)</a>
+<a class="sourceLine" id="cb7-12" title="12">    kaidan_g(n<span class="dv">-2</span>, g, nodes, index)</a></code></pre></div>
 <h4 id="再帰木の可視化">5. 再帰木の可視化</h4>
 <p>では、先程実装した<code>kaidan_g</code>を利用して、再帰木を可視化してみよう。5つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">n <span class="op">=</span> <span class="dv">5</span>
-graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)
-graph.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)
-kaidan_g(n, graph, [])
-graph
-graph.render(<span class="st">&quot;test&quot;</span>)
-Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1">n <span class="op">=</span> <span class="dv">5</span></a>
+<a class="sourceLine" id="cb8-2" title="2">graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3">graph.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</a>
+<a class="sourceLine" id="cb8-4" title="4">kaidan_g(n, graph, [])</a>
+<a class="sourceLine" id="cb8-5" title="5">graph</a>
+<a class="sourceLine" id="cb8-6" title="6">graph.render(<span class="st">&quot;test&quot;</span>)</a>
+<a class="sourceLine" id="cb8-7" title="7">Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</a></code></pre></div>
 <p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
 <p>もし正しく表示されたら、1行目を<code>n=8</code>などとして、少し大きな再帰木も表示してみよ。</p>
 <h3 id="課題2-1-迷路探索">課題2-1 迷路探索</h3>
 <p>再帰で迷路を解いて、その答えや探索の過程を可視化してみよう。新しいノートブックを開き、<code>maze.ipynb</code>として保存せよ。</p>
 <h4 id="必要なライブラリのインポート">1.必要なライブラリのインポート</h4>
 <p>最初のセルで、必要なライブラリをインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> pickle
-<span class="im">import</span> IPython
-<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw
-<span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="im">import</span> pickle</a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="im">import</span> IPython</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</a></code></pre></div>
 <h4 id="迷路データのダウンロード">2. 迷路データのダウンロード</h4>
 <p>次に、迷路データをダウンロードする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>maze.pickle</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>maze.pickle</a></code></pre></div>
 <p>これは2次元リストをPickle(漬物)という方法で保存したものだ。</p>
 <h4 id="迷路データの可視化">3. 迷路データの可視化</h4>
 <p>迷路の状態を可視化し、ファイルに保存する関数<code>save_image</code>を実装しよう。3つ目のセルに以下を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> save_image(maze, filename <span class="op">=</span> <span class="st">&quot;test.png&quot;</span>):
-    w <span class="op">=</span> <span class="bu">len</span>(maze)
-    h <span class="op">=</span> <span class="bu">len</span>(maze[<span class="dv">0</span>])
-    g <span class="op">=</span> <span class="bu">int</span>(<span class="dv">400</span> <span class="op">/</span> w)
-    white <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>)
-    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (w<span class="op">*</span>g, h<span class="op">*</span>g), white)
-    draw <span class="op">=</span> ImageDraw.Draw(im)
-    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(w):
-        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(h):
-            x <span class="op">=</span> ix<span class="op">*</span>g
-            y <span class="op">=</span> iy <span class="op">*</span> g
-            s <span class="op">=</span> maze[ix][iy]
-            color <span class="op">=</span> white
-            <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
-                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;S&#39;</span>:
-                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)
-            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;G&#39;</span>:
-                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)
-            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;+&#39;</span>:
-                color <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)
-            <span class="cf">if</span> <span class="bu">isinstance</span>(maze[ix][iy], <span class="bu">int</span>):
-                color <span class="op">=</span> (<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">128</span>)
-            draw.rectangle((x, y, x<span class="op">+</span>g, y<span class="op">+</span>g), fill<span class="op">=</span>color)
-    im.save(filename)
-    plt.imshow(Image.<span class="bu">open</span>(filename))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">def</span> save_image(maze, filename <span class="op">=</span> <span class="st">&quot;test.png&quot;</span>):</a>
+<a class="sourceLine" id="cb11-2" title="2">    w <span class="op">=</span> <span class="bu">len</span>(maze)</a>
+<a class="sourceLine" id="cb11-3" title="3">    h <span class="op">=</span> <span class="bu">len</span>(maze[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb11-4" title="4">    g <span class="op">=</span> <span class="bu">int</span>(<span class="dv">400</span> <span class="op">/</span> w)</a>
+<a class="sourceLine" id="cb11-5" title="5">    white <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6">    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (w<span class="op">*</span>g, h<span class="op">*</span>g), white)</a>
+<a class="sourceLine" id="cb11-7" title="7">    draw <span class="op">=</span> ImageDraw.Draw(im)</a>
+<a class="sourceLine" id="cb11-8" title="8">    <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(w):</a>
+<a class="sourceLine" id="cb11-9" title="9">        <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(h):</a>
+<a class="sourceLine" id="cb11-10" title="10">            x <span class="op">=</span> ix<span class="op">*</span>g</a>
+<a class="sourceLine" id="cb11-11" title="11">            y <span class="op">=</span> iy <span class="op">*</span> g</a>
+<a class="sourceLine" id="cb11-12" title="12">            s <span class="op">=</span> maze[ix][iy]</a>
+<a class="sourceLine" id="cb11-13" title="13">            color <span class="op">=</span> white</a>
+<a class="sourceLine" id="cb11-14" title="14">            <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</a>
+<a class="sourceLine" id="cb11-15" title="15">                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb11-16" title="16">            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;S&#39;</span>:</a>
+<a class="sourceLine" id="cb11-17" title="17">                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb11-18" title="18">            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;G&#39;</span>:</a>
+<a class="sourceLine" id="cb11-19" title="19">                color <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb11-20" title="20">            <span class="cf">elif</span> s <span class="op">==</span> <span class="st">&#39;+&#39;</span>:</a>
+<a class="sourceLine" id="cb11-21" title="21">                color <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb11-22" title="22">            <span class="cf">if</span> <span class="bu">isinstance</span>(maze[ix][iy], <span class="bu">int</span>):</a>
+<a class="sourceLine" id="cb11-23" title="23">                color <span class="op">=</span> (<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">128</span>)</a>
+<a class="sourceLine" id="cb11-24" title="24">            draw.rectangle((x, y, x<span class="op">+</span>g, y<span class="op">+</span>g), fill<span class="op">=</span>color)</a>
+<a class="sourceLine" id="cb11-25" title="25">    im.save(filename)</a>
+<a class="sourceLine" id="cb11-26" title="26">    plt.imshow(Image.<span class="bu">open</span>(filename))</a></code></pre></div>
 <p>インデントに注意せよ。<code>im.save</code>と<code>plt.imshow</code>の高さは<code>for ix in range(w)</code>の行と同じ高さになる。</p>
 <h4 id="迷路データの読み込み">4. 迷路データの読み込み</h4>
 <p><code>save_image</code>が正しく実装できたか確認しよう。Pickle(漬物)になっている迷路データを読み込み、表示してみる。以下を4番目のセルで実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
-    maze <span class="op">=</span> pickle.load(f)
-save_image(maze)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb12-2" title="2">    maze <span class="op">=</span> pickle.load(f)</a>
+<a class="sourceLine" id="cb12-3" title="3">save_image(maze)</a></code></pre></div>
 <p>左上にスタート地点(青)、右下にゴール地点(緑)がある迷路が表示されたはずだ。</p>
 <h4 id="迷路を解くルーチン">5. 迷路を解くルーチン</h4>
 <p>ではさっそく迷路を解く(実際には距離地図を作る)関数<code>solve</code>を書いてみよう。やるべきことは単純で、</p>
@@ -478,36 +477,36 @@ save_image(maze)</code></pre></div>
 <li>すでに足跡が残っている(<code>maze[x][y]</code>に数字が入っている)なら、そこは探索済みなので行かない</li>
 </ul>
 <p>というのが終端条件であり、終端条件に該当しない場合は、その場所に足跡を残し、上下左右へ探索すれば良い。以上をそのまま実装すると以下のようになる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve(x, y, step, maze):
-    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
-        <span class="cf">return</span>
-    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
-        <span class="cf">return</span>
-    maze[x][y] <span class="op">=</span> step
-    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze) <span class="co"># 右を探索</span>
-    <span class="co"># 残りを埋めよ</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">def</span> solve(x, y, step, maze):</a>
+<a class="sourceLine" id="cb13-2" title="2">    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</a>
+<a class="sourceLine" id="cb13-3" title="3">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb13-4" title="4">    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):</a>
+<a class="sourceLine" id="cb13-5" title="5">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb13-6" title="6">    maze[x][y] <span class="op">=</span> step</a>
+<a class="sourceLine" id="cb13-7" title="7">    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze) <span class="co"># 右を探索</span></a>
+<a class="sourceLine" id="cb13-8" title="8">    <span class="co"># 残りを埋めよ</span></a></code></pre></div>
 <p><code>isinstance</code>は、与えられたオブジェクト(変数)がどういうタイプかを調べる関数であり、<code>isinstance(a, int)</code>などとすると、オブジェクト<code>a</code>が整数であるかどうかを調べる。ここでは、迷路の指定の場所<code>maze[x][y]</code>に整数が入っているかどうかを調べている。</p>
 <p>再帰部分については一部だけ記載されている。これを参考に再帰部分を完成させること。<code>solve</code>には現在地<code>(x,y)</code>が渡されている。<code>x+1</code>は右方向である。残りの左と上下の探索を追加せよ。</p>
 <h4 id="迷路を解く">6. 迷路を解く</h4>
 <p>6つ目のセルで、迷路を解くルーチンを呼び出してみよう。迷路を解いた(<code>solve</code>を呼んだ)後に迷路の状況を可視化するコードである。なお、ここで再度ファイルからデータを読み込んでいるのは、プログラムをミスしたときに<code>maze</code>というリストに余計な情報が残ってしまい、修正後も正しく実行されなくなるのを防ぐためだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
-    maze <span class="op">=</span> pickle.load(f)
-solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)
-save_image(maze)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb14-2" title="2">    maze <span class="op">=</span> pickle.load(f)</a>
+<a class="sourceLine" id="cb14-3" title="3">solve(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, maze)</a>
+<a class="sourceLine" id="cb14-4" title="4">save_image(maze)</a></code></pre></div>
 <p>正しく実行できていれば、すべてのセルが灰色(探索済み)になったはずである。逆に、全てのセルが灰色になっていなければ、何か間違っているのでコードを確認すること。</p>
 <h4 id="経路探索">7. 経路探索</h4>
 <p>さて、探索済みの迷路は、全ての部屋に「入り口からの距離」が書いてある。それを逆にゴールからカウントダウンしながらたどっていけば、それが答えだ。7つ目のセルに以下を実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> draw_path(x, y, count, maze):
-    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
-        <span class="cf">return</span>
-    <span class="cf">if</span> maze[x][y] <span class="op">!=</span> count:
-        <span class="cf">return</span>
-    maze[x][y] <span class="op">=</span> <span class="st">&#39;+&#39;</span>
-    count <span class="op">-=</span> <span class="dv">1</span>
-    draw_path(x<span class="op">+</span><span class="dv">1</span>, y, count, maze)
-    draw_path(x<span class="op">-</span><span class="dv">1</span>, y, count, maze)
-    draw_path(x, y<span class="op">+</span><span class="dv">1</span>, count, maze)
-    draw_path(x, y<span class="op">-</span><span class="dv">1</span>, count, maze)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">def</span> draw_path(x, y, count, maze):</a>
+<a class="sourceLine" id="cb15-2" title="2">    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):</a>
+<a class="sourceLine" id="cb15-3" title="3">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb15-4" title="4">    <span class="cf">if</span> maze[x][y] <span class="op">!=</span> count:</a>
+<a class="sourceLine" id="cb15-5" title="5">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb15-6" title="6">    maze[x][y] <span class="op">=</span> <span class="st">&#39;+&#39;</span></a>
+<a class="sourceLine" id="cb15-7" title="7">    count <span class="op">-=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb15-8" title="8">    draw_path(x<span class="op">+</span><span class="dv">1</span>, y, count, maze)</a>
+<a class="sourceLine" id="cb15-9" title="9">    draw_path(x<span class="dv">-1</span>, y, count, maze)</a>
+<a class="sourceLine" id="cb15-10" title="10">    draw_path(x, y<span class="op">+</span><span class="dv">1</span>, count, maze)</a>
+<a class="sourceLine" id="cb15-11" title="11">    draw_path(x, y<span class="dv">-1</span>, count, maze)</a></code></pre></div>
 <p>やはり再帰で書いてあるが、ゴールから「目標カウント」を減らしながら進むコードであり、</p>
 <ul>
 <li>もし足跡のある部屋でなければそこには行かない</li>
@@ -516,52 +515,52 @@ save_image(maze)</code></pre></div>
 <p>というのが終端条件である。終端条件に該当しなかった場合は「目標カウント」を残してカウントを減らし、「答えの経路」となるマーク(<code>+</code>)を残して、上下左右の部屋に探索に行く。</p>
 <h4 id="解の確認">8. 解の確認</h4>
 <p>では解答を表示してみよう。8つ目のセルに以下を入力、実行せよ。解答となるパスが赤く表示されたはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">draw_path(<span class="dv">39</span>, <span class="dv">19</span>, maze[<span class="dv">39</span>][<span class="dv">19</span>], maze)
-save_image(maze)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1">draw_path(<span class="dv">39</span>, <span class="dv">19</span>, maze[<span class="dv">39</span>][<span class="dv">19</span>], maze)</a>
+<a class="sourceLine" id="cb16-2" title="2">save_image(maze)</a></code></pre></div>
 <h3 id="発展課題迷路を解く様子の可視化">発展課題：迷路を解く様子の可視化</h3>
 <p>せっかくプログラムが迷路をうろうろ探索しているので、その探索の様子を可視化してみよう。なお、作成されたアニメーションをレポートに添付する必要はない。</p>
 <h4 id="アニメーション用ライブラリのロード">9. アニメーション用ライブラリのロード</h4>
 <p>まず、アニメーション用のライブラリをインストール、ロードする。以下は上から数えて9つ目のセルになるはずだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install apng
-<span class="im">from</span> apng <span class="im">import</span> APNG</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="op">!</span>pip install apng</a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="im">from</span> apng <span class="im">import</span> APNG</a></code></pre></div>
 <h4 id="アニメーション用のソルバ">10. アニメーション用のソルバ</h4>
 <p>次に、アニメーション用の探索ルーチンを書く。ほとんど<code>solve</code>と同じだが、毎ステップの状態をファイルに保存する処理が追加されている。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> solve_anime(x, y, step, maze, files):
-    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:
-        <span class="cf">return</span>
-    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):
-        <span class="cf">return</span>
-    maze[x][y] <span class="op">=</span> step
-    index <span class="op">=</span> <span class="bu">len</span>(files)
-    filename <span class="op">=</span> <span class="st">&quot;file</span><span class="sc">%03d</span><span class="st">.png&quot;</span> <span class="op">%</span> index
-    save_image(maze,filename)
-    files.append(filename)
-    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files) <span class="co"># 右を探索</span>
-    <span class="co"># 残りを埋めよ</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">def</span> solve_anime(x, y, step, maze, files):</a>
+<a class="sourceLine" id="cb18-2" title="2">    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</a>
+<a class="sourceLine" id="cb18-3" title="3">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb18-4" title="4">    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):</a>
+<a class="sourceLine" id="cb18-5" title="5">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb18-6" title="6">    maze[x][y] <span class="op">=</span> step</a>
+<a class="sourceLine" id="cb18-7" title="7">    index <span class="op">=</span> <span class="bu">len</span>(files)</a>
+<a class="sourceLine" id="cb18-8" title="8">    filename <span class="op">=</span> <span class="st">&quot;file</span><span class="sc">%03d</span><span class="st">.png&quot;</span> <span class="op">%</span> index</a>
+<a class="sourceLine" id="cb18-9" title="9">    save_image(maze,filename)</a>
+<a class="sourceLine" id="cb18-10" title="10">    files.append(filename)</a>
+<a class="sourceLine" id="cb18-11" title="11">    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files) <span class="co"># 右を探索</span></a>
+<a class="sourceLine" id="cb18-12" title="12">    <span class="co"># 残りを埋めよ</span></a></code></pre></div>
 <h4 id="アニメーションの保存">11. アニメーションの保存</h4>
 <p>先程読み込んだ迷路データは「探索済み」になっているため、ファイルから読み込み直して、<code>solve_anime</code>を使って探索しなおそう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
-    maze <span class="op">=</span> pickle.load(f)
-files <span class="op">=</span> []
-solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;maze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb19-2" title="2">    maze <span class="op">=</span> pickle.load(f)</a>
+<a class="sourceLine" id="cb19-3" title="3">files <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb19-4" title="4">solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</a></code></pre></div>
 <p>上記を実行することで、探索の様子が連番のファイル(file000.png, file001.png, …)に保存され、そのファイルリストが<code>files</code>に帰ってくる。</p>
 <h4 id="アニメーションの表示">12. アニメーションの表示</h4>
 <p>得られたファイルリストを使ってアニメーションを作成しよう。以下を実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)</a>
+<a class="sourceLine" id="cb20-2" title="2">IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</a></code></pre></div>
 <p>ここまで正しく組めていれば、探索の様子がアニメーションで表示されたはずである。アニメーションの様子を見て、この迷路をどのように探索しているか考察せよ。特に、探索が最後まで後回しになるパスがあるが、これはなぜか？そのような場所はどのように決まっているだろうか？</p>
 <h4 id="大きな迷路">13. 大きな迷路</h4>
 <p>もし時間があるなら、もう少し大きな迷路も解いてみよう。以下を順番に実行せよ。</p>
 <p>大きな迷路ファイルのダウンロード。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>largemaze.pickle</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1"><span class="op">!</span>wget https:<span class="op">//</span>kaityo256.github.io<span class="op">/</span>python_zero<span class="op">/</span>recursion<span class="op">/</span>largemaze.pickle</a></code></pre></div>
 <p>大きな迷路のアニメーション用データの作成(数分待たされる)。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;largemaze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:
-    maze <span class="op">=</span> pickle.load(f)
-files <span class="op">=</span> []
-solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;largemaze.pickle&#39;</span>, <span class="st">&#39;rb&#39;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb22-2" title="2">    maze <span class="op">=</span> pickle.load(f)</a>
+<a class="sourceLine" id="cb22-3" title="3">files <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb22-4" title="4">solve_anime(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,maze,files)</a></code></pre></div>
 <p>大きな迷路のアニメーション作成(これは数秒で終わるはず)。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1">APNG.from_files(files, delay<span class="op">=</span><span class="dv">50</span>).save(<span class="st">&quot;animation.png&quot;</span>)</a>
+<a class="sourceLine" id="cb23-2" title="2">IPython.display.Image(<span class="st">&quot;animation.png&quot;</span>)</a></code></pre></div>
 <p>大きな迷路のアニメーションが表示されれば成功である。</p>
 <h2 id="余談進化するオセロaiを作った話">余談：進化するオセロAIを作った話</h2>
 <p>再帰プログラムは、パズルを解いたり、将棋などの思考ルーチンに使うことができる。私が高校生の頃、再帰を使ってナンプレやイラストロジックといったペンシルパズルをプログラムで解いて遊んでいたが、そのうち「オセロの思考ルーチンを進化させる」ということを思いついた。オセロでは「なるべく端や角を取りたい」「端や角の隣は取りたくない」という戦略があるのを知っているであろう。これを数値化し、「角に石がおけたら+10点、角の両隣の場所に石をおいたら-5点」といった「得点マップ」を作り、そのマップの値を「遺伝子」として変化させることで強いオセロAIを作ることを考えたのだ。</p>

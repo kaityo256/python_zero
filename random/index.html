@@ -1,94 +1,249 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title></title>
-  <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
 
-<style>
-    .btn-square {
-      display: inline-block;
-      padding: 0.5em 0.5em;
-      text-decoration: none;
-      background: #668ad8;
-      color: #FFF;
-      border-bottom: solid 4px #626295;
-      border-radius: 5px;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title>random/index.md</title>
+    <style type="text/css">
+      code {
+        white-space: pre;
+      }
+    </style>
+        <style type="text/css">
+      div.sourceCode {
+        overflow-x: auto;
+      }
 
-    .btn-square:active {
-      -webkit-transform: translateY(4px);
-      transform: translateY(4px);
-      border-bottom: none;
-    }
-  .markdown-body {
-    box-sizing: border-box;
-    min-width: 200px;
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 45px;
-  }
-  p.caption{
-    display:none;
-  }
-  img {width: 100%}
+      table.sourceCode,
+      tr.sourceCode,
+      td.lineNumbers,
+      td.sourceCode {
+        margin: 0;
+        padding: 0;
+        vertical-align: baseline;
+        border: none;
+      }
 
-  @media (max-width: 767px) {
-    .markdown-body {
-      padding: 15px;
-    }
-  }
-</style>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
-  <!--[if lt IE 9]>
+      table.sourceCode {
+        width: 100%;
+        line-height: 100%;
+      }
+
+      td.lineNumbers {
+        text-align: right;
+        padding-right: 4px;
+        padding-left: 4px;
+        color: #aaaaaa;
+        border-right: 1px solid #aaaaaa;
+      }
+
+      td.sourceCode {
+        padding-left: 5px;
+      }
+
+      code>span.kw {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* Keyword */
+      code>span.dt {
+        color: #902000;
+      }
+
+      /* DataType */
+      code>span.dv {
+        color: #40a070;
+      }
+
+      /* DecVal */
+      code>span.bn {
+        color: #40a070;
+      }
+
+      /* BaseN */
+      code>span.fl {
+        color: #40a070;
+      }
+
+      /* Float */
+      code>span.ch {
+        color: #4070a0;
+      }
+
+      /* Char */
+      code>span.st {
+        color: #4070a0;
+      }
+
+      /* String */
+      code>span.co {
+        color: #60a0b0;
+        font-style: italic;
+      }
+
+      /* Comment */
+      code>span.ot {
+        color: #007020;
+      }
+
+      /* Other */
+      code>span.al {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Alert */
+      code>span.fu {
+        color: #06287e;
+      }
+
+      /* Function */
+      code>span.er {
+        color: #ff0000;
+        font-weight: bold;
+      }
+
+      /* Error */
+      code>span.wa {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Warning */
+      code>span.cn {
+        color: #880000;
+      }
+
+      /* Constant */
+      code>span.sc {
+        color: #4070a0;
+      }
+
+      /* SpecialChar */
+      code>span.vs {
+        color: #4070a0;
+      }
+
+      /* VerbatimString */
+      code>span.ss {
+        color: #bb6688;
+      }
+
+      /* SpecialString */
+      code>span.va {
+        color: #19177c;
+      }
+
+      /* Variable */
+      code>span.cf {
+        color: #007020;
+        font-weight: bold;
+      }
+
+      /* ControlFlow */
+      code>span.op {
+        color: #666666;
+      }
+
+      /* Operator */
+      code>span.pp {
+        color: #bc7a00;
+      }
+
+      /* Preprocessor */
+      code>span.at {
+        color: #7d9029;
+      }
+
+      /* Attribute */
+      code>span.do {
+        color: #ba2121;
+        font-style: italic;
+      }
+
+      /* Documentation */
+      code>span.an {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Annotation */
+      code>span.cv {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* CommentVar */
+      code>span.in {
+        color: #60a0b0;
+        font-weight: bold;
+        font-style: italic;
+      }
+
+      /* Information */
+    </style>
+
+    <style>
+      .btn-square {
+        display: inline-block;
+        padding: 0.5em 0.5em;
+        text-decoration: none;
+        background: #668ad8;
+        color: #FFF;
+        border-bottom: solid 4px #626295;
+        border-radius: 5px;
+      }
+
+      .btn-square:active {
+        -webkit-transform: translateY(4px);
+        transform: translateY(4px);
+        border-bottom: none;
+      }
+
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      p.caption {
+        display: none;
+      }
+
+      img {
+        width: 100%
+      }
+
+
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="https://kaityo256.github.io/python_zero/github-markdown.css" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-</head>
-<body>
-<article class="markdown-body">
-<h1 id="乱数を使ったプログラム">乱数を使ったプログラム</h1>
+        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                        <h1 id="乱数を使ったプログラム">乱数を使ったプログラム</h1>
 <p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
 <h2 id="本稿で学ぶこと">本稿で学ぶこと</h2>
 <ul>
@@ -99,42 +254,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>大勢で「じゃんけん」をしたとき、なかなか勝負が決まらない経験をしたことがないだろうか。じゃんけんに参加する人数が増えるほど、「あいこ」の確率が増え、勝負が決まらなくなる気がする。それでは、<span class="math inline">\(N\)</span>人が参加するじゃんけんで、「あいこ」になる確率はいったいどれくらいだろうか？</p>
 <p>もちろんこれは理論的に計算できる。しかし、特に確率の問題は、計算した答えが合っているかどうか不安になるだろう。そこで、実際に計算機でシミュレーションして「答え合わせ」をしたくなる。というわけで、このじゃんけん問題をプログラムで表現することを考えてみよう。</p>
 <p>じゃんけんで「あいこ」になるのは、みんなのだした手がすべて同じ(1種類)か、全て異なる(3種類)かなので、出した手の種類の数を数えれば良い。したがって、こんなプログラムになるだろう。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li><span class="math inline">\(N\)</span>人が「グー」「チョキ」「パー」のどれかを1/3の確率で選ぶ</li>
 <li>選んだ<span class="math inline">\(N\)</span>個の「手」が、1種類か3種類の時には「あいこ」</li>
 <li>1と2を繰り返して確率を求める</li>
 </ol>
 <p>ここで問題となるのは1.の「<span class="math inline">\(N\)</span>人が「グー」「チョキ」「パー」のどれかを1/3の確率で選ぶ」というところだ。そのためには「グー」「チョキ」「パー」から「ランダム」にどれかを選ぶ、という処理が必要になる。このようなランダムな事象を扱うために、Pythonには<code>random</code>というライブラリが用意されている。今回のケースでは、リストの要素をランダムに選ぶ<code>random.choice</code>という関数を使えば簡単に実装できる。</p>
 <p>例えば、「グー」「チョキ」「パー」をそれぞれ<code>G</code>、<code>C</code>、<code>P</code>で表現しよう。この三要素を持つリストは<code>['G','C','P']</code>で表現できる。そして、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>])</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb1-2" title="2">random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>])</a></code></pre></div>
 <p>とすると、実行するたびに<code>G</code>、<code>C</code>、<code>P</code>のどれかがランダムに選ばれる。先ほどの<code>random.choice</code>とリストの内包表記を使うと、例えば10人のじゃんけんの手のリストは、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">N <span class="op">=</span> <span class="dv">10</span>
-[random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">N <span class="op">=</span> <span class="dv">10</span></a>
+<a class="sourceLine" id="cb2-2" title="2">[random.choice([<span class="st">&#39;G&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]</a></code></pre></div>
 <p>で作ることができる。実行結果は例えば</p>
-<pre class="txt"><code>[&#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;P&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;P&#39;]</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb3-1" title="1">[&#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;G&#39;, &#39;P&#39;, &#39;G&#39;, &#39;C&#39;, &#39;G&#39;, &#39;C&#39;, &#39;P&#39;]</a></code></pre></div>
 <p>などとなる(実行するたびに異なる)。</p>
 <p>さて、<code>set</code>という関数を使うと、リストのうち重複する要素を削除することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">set</span>([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;P&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>])</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="bu">set</span>([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;P&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>])</a></code></pre></div>
 <p>上記の実行結果は以下の通り。</p>
-<pre class="txt"><code>{&#39;C&#39;, &#39;G&#39;, &#39;P&#39;}</code></pre>
-<div class="figure">
-<img src="fig/janken.png" alt="じゃんけんの勝負判定" />
-<p class="caption">じゃんけんの勝負判定</p>
-</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">{&#39;C&#39;, &#39;G&#39;, &#39;P&#39;}</a></code></pre></div>
+<figure>
+<img src="fig/janken.png" alt="じゃんけんの勝負判定" /><figcaption>じゃんけんの勝負判定</figcaption>
+</figure>
 <p>こうして、<span class="math inline">\(N\)</span>人の「手」のリストを作り、重複する要素を削除すれば、それが「手」の種類であり、勝負がつくのは「手が2種類」の時のみなので、それ以外は「あいこ」としてカウントすれば良い。以上を愚直にコードに落とすとこんな感じになるだろう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-
-trial <span class="op">=</span> <span class="dv">100000</span>
-N <span class="op">=</span> <span class="dv">6</span>
-aiko <span class="op">=</span> <span class="dv">0</span>
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
-    a <span class="op">=</span> [random.choice([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]
-    <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">set</span>(a)) <span class="kw">is</span> <span class="kw">not</span> <span class="dv">2</span>:
-        aiko <span class="op">+=</span> <span class="dv">1</span>
-<span class="bu">print</span>(aiko<span class="op">/</span>trial)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3">trial <span class="op">=</span> <span class="dv">100000</span></a>
+<a class="sourceLine" id="cb6-4" title="4">N <span class="op">=</span> <span class="dv">6</span></a>
+<a class="sourceLine" id="cb6-5" title="5">aiko <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):</a>
+<a class="sourceLine" id="cb6-7" title="7">    a <span class="op">=</span> [random.choice([<span class="st">&#39;G&#39;</span>, <span class="st">&#39;C&#39;</span>, <span class="st">&#39;P&#39;</span>]) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N)]</a>
+<a class="sourceLine" id="cb6-8" title="8">    <span class="cf">if</span> <span class="bu">len</span>(<span class="bu">set</span>(a)) <span class="kw">is</span> <span class="kw">not</span> <span class="dv">2</span>:</a>
+<a class="sourceLine" id="cb6-9" title="9">        aiko <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="bu">print</span>(aiko<span class="op">/</span>trial)</a></code></pre></div>
 <p>6人で100000回じゃんけんをさせて、あいこになった数をカウントし、その確率を求めるものだ。実行結果は、例えば以下のようになるだろう。</p>
-<pre class="txt"><code>0.74684</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb7-1" title="1">0.74684</a></code></pre></div>
 <p>厳密解は</p>
 <p><span class="math display">\[
 1 - \frac{2^N - 2}{3^{N-1}} = \frac{181}{243} \sim 0.745
@@ -150,92 +304,92 @@ aiko <span class="op">=</span> <span class="dv">0</span>
 <h4 id="random.randint"><code>random.randint</code></h4>
 <p>例えば1から6までの整数の乱数が欲しければ、<code>random.randint</code>が使える。</p>
 <p>以下のコードを書いて実行してみよう。これは6面サイコロを10回ふることをシミュレーションしたものだ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
-    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb8-2" title="2"></a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</a>
+<a class="sourceLine" id="cb8-4" title="4">    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</a></code></pre></div>
 <p>これは実行するたびに異なる結果が得られる。例えば以下のような結果が得られる。</p>
 <p>1回目の実行結果。</p>
-<pre class="txt"><code>2
-6
-6
-3
-6</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb9-1" title="1">2</a>
+<a class="sourceLine" id="cb9-2" title="2">6</a>
+<a class="sourceLine" id="cb9-3" title="3">6</a>
+<a class="sourceLine" id="cb9-4" title="4">3</a>
+<a class="sourceLine" id="cb9-5" title="5">6</a></code></pre></div>
 <p>2回目の実行結果。</p>
-<pre class="txt"><code>5
-1
-1
-3
-5</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb10-1" title="1">5</a>
+<a class="sourceLine" id="cb10-2" title="2">1</a>
+<a class="sourceLine" id="cb10-3" title="3">1</a>
+<a class="sourceLine" id="cb10-4" title="4">3</a>
+<a class="sourceLine" id="cb10-5" title="5">5</a></code></pre></div>
 <h4 id="random.seed"><code>random.seed</code></h4>
 <p>先程のコードは実行するたびに異なる結果が得られた。しかし、以下のようにすると、何度実行しても同じ乱数列が得られる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-
-random.seed(<span class="dv">1</span>)
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):
-    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3">random.seed(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</a>
+<a class="sourceLine" id="cb11-5" title="5">    <span class="bu">print</span>(random.randint(<span class="dv">1</span>,<span class="dv">6</span>))</a></code></pre></div>
 <p>このコードは何度実行しても以下の結果になる。</p>
-<pre class="txt"><code>2
-5
-1
-3
-1</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb12-1" title="1">2</a>
+<a class="sourceLine" id="cb12-2" title="2">5</a>
+<a class="sourceLine" id="cb12-3" title="3">1</a>
+<a class="sourceLine" id="cb12-4" title="4">3</a>
+<a class="sourceLine" id="cb12-5" title="5">1</a></code></pre></div>
 <p>これは<code>random.seed</code>により乱数の「種」を固定したためだ。計算機は、漸化式により乱数列を作ることが多い。漸化式は、生成した乱数を入力として次の乱数を作る方法だが、その一番最初に与える値を乱数の <strong>種(seed)</strong> と呼ぶ。同じ種からは同じ乱数列が生まれる。これでは乱数としては不都合であるので、「現在時刻」等を乱数の種とすることが多い。こうすると実行するたびに異なる乱数列が得られる。しかし、主にデバッグ目的などで、毎回同じ乱数の種を与えたいときもあり、<code>random.seed</code>は、そのような場合に用いる。</p>
 <h4 id="random.random"><code>random.random</code></h4>
 <p><code>random.randint</code>を用いると整数の乱数列が得られたが、実数の乱数列が欲しければ<code>random.random</code>を用いる。これは0から1未満のランダムな実数を返してくれる関数だ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(random.random())</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb13-3" title="3">    <span class="bu">print</span>(random.random())</a></code></pre></div>
 <p>例えば実行結果はこんな感じになる。</p>
-<pre class="txt"><code>0.2293093032885165
-0.7225401496925509
-0.4118307989719816
-0.4352123667218194
-0.5182296930788952
-0.6598049756657662
-0.5928754652967204
-0.35716459244689625
-0.7115734931703437
-0.9442876247500515</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb14-1" title="1">0.2293093032885165</a>
+<a class="sourceLine" id="cb14-2" title="2">0.7225401496925509</a>
+<a class="sourceLine" id="cb14-3" title="3">0.4118307989719816</a>
+<a class="sourceLine" id="cb14-4" title="4">0.4352123667218194</a>
+<a class="sourceLine" id="cb14-5" title="5">0.5182296930788952</a>
+<a class="sourceLine" id="cb14-6" title="6">0.6598049756657662</a>
+<a class="sourceLine" id="cb14-7" title="7">0.5928754652967204</a>
+<a class="sourceLine" id="cb14-8" title="8">0.35716459244689625</a>
+<a class="sourceLine" id="cb14-9" title="9">0.7115734931703437</a>
+<a class="sourceLine" id="cb14-10" title="10">0.9442876247500515</a></code></pre></div>
 <p>出現する可能性のある乱数の、それぞれの出現確率がすべて等しい場合、その乱数を <strong>一様乱数(uniform random number)</strong> と呼ぶ。ある分布に従うような非一様な乱数が生成できると便利な場合もあるが、本書では一様乱数のみを扱うことにする。</p>
 <h4 id="random.choice"><code>random.choice</code></h4>
 <p>リストが与えられた時、そのリストの要素をランダムに選びたいことがある。これはリストのサイズと<code>random.randint</code>を使って書くこともできるが、最初に紹介した<code>random.choice</code>という関数が便利なのでそれを利用しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(random.choice(a))</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb15-2" title="2">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb15-4" title="4">    <span class="bu">print</span>(random.choice(a))</a></code></pre></div>
 <p>例えば実行結果は以下のようになる。</p>
-<pre class="txt"><code>A
-A
-B
-A
-C
-B
-C
-C
-C
-B</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb16-1" title="1">A</a>
+<a class="sourceLine" id="cb16-2" title="2">A</a>
+<a class="sourceLine" id="cb16-3" title="3">B</a>
+<a class="sourceLine" id="cb16-4" title="4">A</a>
+<a class="sourceLine" id="cb16-5" title="5">C</a>
+<a class="sourceLine" id="cb16-6" title="6">B</a>
+<a class="sourceLine" id="cb16-7" title="7">C</a>
+<a class="sourceLine" id="cb16-8" title="8">C</a>
+<a class="sourceLine" id="cb16-9" title="9">C</a>
+<a class="sourceLine" id="cb16-10" title="10">B</a></code></pre></div>
 <p>ちなみに<code>random.randint</code>を使うとこのようになる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    i <span class="op">=</span> random.randint(<span class="dv">0</span>,<span class="bu">len</span>(a)<span class="op">-</span><span class="dv">1</span>)
-    <span class="bu">print</span>(a[i])</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb17-2" title="2">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb17-4" title="4">    i <span class="op">=</span> random.randint(<span class="dv">0</span>,<span class="bu">len</span>(a)<span class="op">-</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb17-5" title="5">    <span class="bu">print</span>(a[i])</a></code></pre></div>
 <p>0から<code>len(a)-1</code>の範囲の乱数<code>i</code>を生成し、それをインデックスとして<code>a[i]</code>にアクセスしている。</p>
 <h2 id="モンテカルロ法による数値積分">モンテカルロ法による数値積分</h2>
 <p>今回の講義では詳細は扱わないが、モンテカルロ法は数値積分にも用いられるので、簡単に紹介しておこう。モンテカルロ法による数値積分で有名なのは、円周率の計算であろう。ダーツの要領でランダムに「矢」を投げ、当たった数で円周率を推定する方法である。以下は<span class="math inline">\(n\)</span>回ダーツを投げて円周率を推定するプログラムである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> random
-
-<span class="kw">def</span> calc_pi(n):
-    r <span class="op">=</span> <span class="dv">0</span>
-    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
-        x <span class="op">=</span> random()
-        y <span class="op">=</span> random()
-        <span class="cf">if</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">&lt;</span> <span class="fl">1.0</span>:
-            r <span class="op">+=</span> <span class="dv">1</span>
-    <span class="cf">return</span> <span class="dv">4</span> <span class="op">*</span> r <span class="op">/</span> n
-
-calc_pi(<span class="dv">10000</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="im">from</span> random <span class="im">import</span> random</a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">def</span> calc_pi(n):</a>
+<a class="sourceLine" id="cb18-4" title="4">    r <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb18-5" title="5">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</a>
+<a class="sourceLine" id="cb18-6" title="6">        x <span class="op">=</span> random()</a>
+<a class="sourceLine" id="cb18-7" title="7">        y <span class="op">=</span> random()</a>
+<a class="sourceLine" id="cb18-8" title="8">        <span class="cf">if</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">&lt;</span> <span class="fl">1.0</span>:</a>
+<a class="sourceLine" id="cb18-9" title="9">            r <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb18-10" title="10">    <span class="cf">return</span> <span class="dv">4</span> <span class="op">*</span> r <span class="op">/</span> n</a>
+<a class="sourceLine" id="cb18-11" title="11"></a>
+<a class="sourceLine" id="cb18-12" title="12">calc_pi(<span class="dv">10000</span>)</a></code></pre></div>
 <p>これは、実は以下のような2次元の数値積分をしていることと等価である。</p>
 <p><span class="math display">\[
 \pi \sim 4 \int_0^1 \int_0^1 \Theta(1-x^2-y^2) dx dy
@@ -254,14 +408,14 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <p><img src="fig/mh1.png" alt="モンティ・ホール問題" /> <img src="fig/mh2.png" alt="モンティ・ホール問題の手順" /></p>
 <p>この問題は有名なので、答えを知っている人も多いだろう。しかし、ここは答えを全く知らないとして、シミュレーションをしよう。</p>
 <p>まずは、司会者が選ばれなかった箱のうち1つを開け、「選んだ箱を変えてよい」と言った時に「最初に選んだ箱を変えない」戦略を考えよう。これをKeep派と呼ぶ。Keep派は司会者の影響を受けないので、シミュレーションは簡単だ。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>3つの箱を用意し、どれが正解かをランダムに決める</li>
 <li>プレイヤーは、3つの箱をランダムに選ぶ</li>
 <li>正解の箱と、プレイヤーが選んだ箱が一致したら、「一致した回数」を+1する。</li>
 </ol>
 <p>以上、1〜3を何度も繰り返して、「一致した回数」を「試行回数」で割ったものがKeep派の正解確率である。</p>
 <p>次に、司会者が「選んだ箱を変えて良い」と言われたら「必ず変える」戦略を考えよう。これをChange派と呼ぶ。Change派のシミュレーションは以下のようになるだろう。</p>
-<ol style="list-style-type: decimal">
+<ol type="1">
 <li>3つの箱を用意し、どれが正解かをランダムに決める</li>
 <li>プレイヤーは、3つの箱をランダムに選ぶ</li>
 <li>司会者は、残った箱のうち「正解で無い方」をランダムに選ぶ</li>
@@ -271,27 +425,24 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <h2 id="パーコレーション">パーコレーション</h2>
 <p>乱数を使うプログラムのもう一つの例としてパーコレーションを取り上げる(課題2)。</p>
 <h3 id="パーコレーションとは">パーコレーションとは</h3>
-<div class="figure">
-<img src="fig/percolation.png" alt="パーコレーション" />
-<p class="caption">パーコレーション</p>
-</div>
+<figure>
+<img src="fig/percolation.png" alt="パーコレーション" /><figcaption>パーコレーション</figcaption>
+</figure>
 <p>札幌の市街のような、碁盤の目のような道路があるとしよう。ところがある日、大雪が降って、道がところどころ通行止めになってしまった。いま、道が通行可能な確率を<span class="math inline">\(p\)</span>としよう。通行可能な道だけを通って「こっち側」から「向こう側」に通過できる確率<span class="math inline">\(C\)</span>を知りたい。確率<span class="math inline">\(C\)</span>は確率<span class="math inline">\(p\)</span>の関数となる。当然、<span class="math inline">\(p\)</span>が小さければ渡れる確率は低く、大きければ渡れる確率は高くなると思われるが、どんな関数になるか想像できるだろうか？</p>
 <p>これは <strong>ボンド・パーコレーション(bond percolation)</strong> と呼ばれるモデルとなり、十分大きなシステムでは「<span class="math inline">\(p\)</span>がある値<span class="math inline">\(p_c\)</span>未満ではほぼ確実に渡ることができず、<span class="math inline">\(p_c\)</span>より大きければほぼ確実に渡ることができる」という振る舞いを見せる。つまり、系の振る舞いがパラメタのある一点を境に大きく変化する。このように、あるパラメタを変化させていったときに、ある点で系の性質が大きく変化することを <strong>相転移(phase transition)</strong> と呼び、性質が変わるパラメタの境目<span class="math inline">\(p_c\)</span>を <strong>臨界点(critical point)</strong> と呼ぶ。</p>
 <p>パーコレーションは、相転移を示す最も簡単なモデルのひとつだ。身近な相転移としては、水の沸騰などが挙げられる。水を一気圧の条件で温度を徐々に挙げていくと、摂氏100度で沸騰し、水蒸気になる。水も水蒸気も水分子から構成されており、それは全く変化していない。しかし、水分子の集団としての振る舞いが大きく変化するのである。0度以下に冷やすと凍るのも相転移である。</p>
 <p>このパーコレーションをプログラムで解析してみよう。以下、道路の交差点を <strong>サイト(site)</strong> と呼ぶ。各サイトは別のサイトと道でつながっているが、その道は確率<span class="math inline">\(p\)</span>で通行可能、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。あるサイトから別のサイトに通行可能ならば、それらのサイトは「つながっている」と定義し、「つながっているサイト」のまとまりを <strong>クラスター(cluster)</strong> と呼ぶ。</p>
-<div class="figure">
-<img src="fig/clustering.png" alt="クラスタリング" />
-<p class="caption">クラスタリング</p>
-</div>
+<figure>
+<img src="fig/clustering.png" alt="クラスタリング" /><figcaption>クラスタリング</figcaption>
+</figure>
 <p>通行可能確率<span class="math inline">\(p=0\)</span>の時には、全ての道が通行止めになっているので、各サイトはすべて孤立している。逆に<span class="math inline">\(p=1\)</span>の時には、全ての道が通行可能なので、全てのサイトが一つのクラスターとなる。その中間の値の時には、各サイトが複数のクラスターに分離するであろう。このように、お互いにつながっているサイトをまとめることを <strong>クラスタリング(clustering)</strong> と呼ぶ(機械学習などで耳にするクラスタリングとは意味が異なるので注意)。このクラスタリングを行うために、Union-Findアルゴリズムを用いる。</p>
 <h3 id="union-findアルゴリズム">Union-Findアルゴリズム</h3>
 <p>あるサイトAから、あるサイトBに到達可能であったとする。サイトBからサイトCに通行可能であるならば、AからCに到達可能である。今、サイトXからサイトYに到達可能であることを「X 〜 Y」と表記すると、「〜」は同値類を作る。同値類というと難しそうだが、要するに「『友達の友達』は友達である」と定義した時に、お友達グループに分類しましょう、ということである。先程のパーコレーションならば、「お互いに到達可能なサイト」は同値類を作る。</p>
 <p>さて、AとBがつながっており、BとCがつながっていることがわかった時、AとCがつながっている、ということをどうやって知ればよいだろうか？この問題は単純そうに見えて意外に面倒くさい。次々とサイトをつなげてクラスターを作っていくとき、大きなクラスター同士が「つながった」時に、それぞれに属すサイトをすべてつなげる、という処理をしなければならない。このような処理に便利なのが「Union-Find」と呼ばれるアルゴリズムだ。</p>
 <p>Union-Findは、Union-Find木と呼ばれる木構造を作るアルゴリズムで、その名の通り「Union」処理と「Find」の二つの処理からなる。Union-Find木は「上司」「部下」の関係を表現するようなデータ構造だ。</p>
-<div class="figure">
-<img src="fig/union-find.png" alt="Union-Find" />
-<p class="caption">Union-Find</p>
-</div>
+<figure>
+<img src="fig/union-find.png" alt="Union-Find" /><figcaption>Union-Find</figcaption>
+</figure>
 <p>まず、Findは、「自分の属す会社の社長」を探す処理である。各サイトは「自分の上司」を覚えている。その上司にはさらに上司がいて・・・とたどっていくと、最終的に「自分自身が上司」となるサイトに到達する。この「自分自身が上司」となるサイトを社長としよう。例えば上の図で、6番の所属する会社の社長を探してみる。6の上司は3、3の上司は1であり、1の上司は自分自身であるため、6の所属する会社の社長は1とわかる。</p>
 <p>次にUnionは「二つの会社の合併処理」をする。いま、先程の図で3の所属する会社と5の所属する会社を合併したいとする。しかし、3も5も平社員だ。そこでそれぞれの所属する会社の社長である1と4に相談する。相談の結果、1の会社が4を吸収合併することに決まった。それまで4の上司は自分自身だったが、新たに1を上司としてつなぎ替える。この状態で「6」の所属する会社の社長を探すと、「6の上司は4」「4の上司は1」となり、直接合併に携わらなかった6も正しく1の会社に所属していることがわかる。</p>
 <p>課題では、このUnion-Findアルゴリズムを用いて、パーコレーションのクラスタリングを行ってみよう。</p>
@@ -301,32 +452,32 @@ calc_pi(<span class="dv">10000</span>)</code></pre></div>
 <p>まずはKeep派のシミュレーションをしよう。</p>
 <h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
 <p>何はともあれ、まずはライブラリのインポートである。後で使うライブラリをまとめてインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> random <span class="im">import</span> choice, seed
-<span class="im">from</span> copy <span class="im">import</span> copy</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1"><span class="im">from</span> random <span class="im">import</span> choice, seed</a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="im">from</span> copy <span class="im">import</span> copy</a></code></pre></div>
 <h4 id="keep派のアルゴリズムkeepを実装">2. Keep派のアルゴリズム<code>keep</code>を実装</h4>
 <p>まずは箱の中身のリストを渡されたときに、正解の箱とプレイヤーの選ぶ箱をランダムに選び、一致するかどうかを返す関数<code>keep</code>を作ってみる。二つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> keep(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    first_choice <span class="op">=</span> choice(boxes)
-    <span class="cf">return</span> answer <span class="op">==</span> first_choice</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1"><span class="kw">def</span> keep(boxes):</a>
+<a class="sourceLine" id="cb20-2" title="2">    answer <span class="op">=</span> choice(boxes)</a>
+<a class="sourceLine" id="cb20-3" title="3">    first_choice <span class="op">=</span> choice(boxes)</a>
+<a class="sourceLine" id="cb20-4" title="4">    <span class="cf">return</span> answer <span class="op">==</span> first_choice</a></code></pre></div>
 <p><code>answer</code>が正解の箱、<code>first_choice</code>がプレイヤーの最初の選択である。Keep派は最初の選択から箱を変えないので、これが最終決定となる。</p>
 <h4 id="keepの動作確認">3. <code>keep</code>の動作確認</h4>
 <p>入力・実行したら、適当な箱リストを与えて<code>keep</code>を呼んでみよう。3つ目のセルに以下を入力し、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
-boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(keep(boxes))</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1">seed(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb21-2" title="2">boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="bu">print</span>(keep(boxes))</a></code></pre></div>
 <p>このような結果が得られるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">False</span>
-<span class="ex">False</span>
-<span class="ex">False</span>
-<span class="ex">True</span>
-<span class="ex">False</span>
-<span class="ex">True</span>
-<span class="ex">False</span>
-<span class="ex">True</span>
-<span class="ex">False</span>
-<span class="ex">False</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-3" title="3"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="ex">True</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-6" title="6"><span class="ex">True</span></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="ex">True</span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="ex">False</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="ex">False</span></a></code></pre></div>
 <p>正解の箱とプレイヤーの選んだ箱が一致したら<code>True</code>、そうでなければ<code>False</code>と表示されている。</p>
 <h3 id="課題1-2change派">課題1-2：Change派</h3>
 <p>さて、先ほどとは逆に「選んだ箱を変えてよい」と言われた時に、必ず箱を変える戦略を考えよう。これをChange派と呼ぶ。</p>
@@ -338,16 +489,16 @@ boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</s
 <li>もしプレイヤーが最初に選んだ箱が答えでないのなら、残りの2箱には必ず正解が含まれる。司会者は正解ではない箱を開けるため、Change派のプレイヤーの2度目の選択は正解の箱となる</li>
 </ul>
 <p>以上の処理をそのままプログラムに落とすことにしよう。以下の「ここを埋めよ」のところで、プレイヤーが2度目に選択する箱<code>second_choice</code>を決めるコードを書け。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> change(boxes):
-    answer <span class="op">=</span> choice(boxes)
-    first_choice <span class="op">=</span> choice(boxes)
-    rest_boxes <span class="op">=</span> boxes.copy()
-    rest_boxes.remove(answer)
-    <span class="cf">if</span> first_choice <span class="op">==</span> answer:
-      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(1)</span>
-    <span class="cf">else</span>:
-      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(2)</span>
-    <span class="cf">return</span> answer <span class="op">==</span> second_choice</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">def</span> change(boxes):</a>
+<a class="sourceLine" id="cb23-2" title="2">    answer <span class="op">=</span> choice(boxes)</a>
+<a class="sourceLine" id="cb23-3" title="3">    first_choice <span class="op">=</span> choice(boxes)</a>
+<a class="sourceLine" id="cb23-4" title="4">    rest_boxes <span class="op">=</span> boxes.copy()</a>
+<a class="sourceLine" id="cb23-5" title="5">    rest_boxes.remove(answer)</a>
+<a class="sourceLine" id="cb23-6" title="6">    <span class="cf">if</span> first_choice <span class="op">==</span> answer:</a>
+<a class="sourceLine" id="cb23-7" title="7">      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(1)</span></a>
+<a class="sourceLine" id="cb23-8" title="8">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb23-9" title="9">      second_choice <span class="op">=</span> <span class="co"># ここを埋めよ(2)</span></a>
+<a class="sourceLine" id="cb23-10" title="10">    <span class="cf">return</span> answer <span class="op">==</span> second_choice</a></code></pre></div>
 <ul>
 <li>ヒント1：最初に選んだ箱(<code>first_choice</code>)が正解かどうかで条件分岐している。</li>
 <li>ヒント2：<code>rest_boxes</code>は、「正解を除いた」二つ箱のリストである。</li>
@@ -356,97 +507,97 @@ boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</s
 </ul>
 <h4 id="changeの動作確認">5. <code>change</code>の動作確認</h4>
 <p>5つ目のセルで<code>change</code>関数の動作確認しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
-boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):
-    <span class="bu">print</span>(change(boxes))</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1">seed(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb24-2" title="2">boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb24-4" title="4">    <span class="bu">print</span>(change(boxes))</a></code></pre></div>
 <p>実行するとこのような結果が得られるはずである。</p>
-<pre class="txt"><code>True
-True
-True
-False
-False
-True
-True
-True
-False
-True</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb25-1" title="1">True</a>
+<a class="sourceLine" id="cb25-2" title="2">True</a>
+<a class="sourceLine" id="cb25-3" title="3">True</a>
+<a class="sourceLine" id="cb25-4" title="4">False</a>
+<a class="sourceLine" id="cb25-5" title="5">False</a>
+<a class="sourceLine" id="cb25-6" title="6">True</a>
+<a class="sourceLine" id="cb25-7" title="7">True</a>
+<a class="sourceLine" id="cb25-8" title="8">True</a>
+<a class="sourceLine" id="cb25-9" title="9">False</a>
+<a class="sourceLine" id="cb25-10" title="10">True</a></code></pre></div>
 <h4 id="確率の計算">6. 確率の計算</h4>
 <p>Keep派、Change派の行動が両方シミュレートできるようになったので、それぞれの「正解確率」を計算してみよう。 6つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">seed(<span class="dv">1</span>)
-boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]
-k <span class="op">=</span> <span class="dv">0</span>
-c <span class="op">=</span> <span class="dv">0</span>
-n <span class="op">=</span> <span class="dv">10000</span>
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):
-    <span class="cf">if</span> keep(boxes):
-        k <span class="op">+=</span> <span class="dv">1</span>
-    <span class="cf">if</span> change(boxes):
-        c <span class="op">+=</span> <span class="dv">1</span>
-<span class="bu">print</span>(<span class="ss">f&quot;Keep  : </span><span class="sc">{k</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)
-<span class="bu">print</span>(<span class="ss">f&quot;Change: </span><span class="sc">{c</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1">seed(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb26-2" title="2">boxes <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
+<a class="sourceLine" id="cb26-3" title="3">k <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb26-4" title="4">c <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb26-5" title="5">n <span class="op">=</span> <span class="dv">10000</span></a>
+<a class="sourceLine" id="cb26-6" title="6"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n):</a>
+<a class="sourceLine" id="cb26-7" title="7">    <span class="cf">if</span> keep(boxes):</a>
+<a class="sourceLine" id="cb26-8" title="8">        k <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb26-9" title="9">    <span class="cf">if</span> change(boxes):</a>
+<a class="sourceLine" id="cb26-10" title="10">        c <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb26-11" title="11"><span class="bu">print</span>(<span class="ss">f&quot;Keep  : </span><span class="sc">{k</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)</a>
+<a class="sourceLine" id="cb26-12" title="12"><span class="bu">print</span>(<span class="ss">f&quot;Change: </span><span class="sc">{c</span><span class="op">/</span><span class="sc">n}</span><span class="ss">&quot;</span>)</a></code></pre></div>
 <p><code>n</code>が試行回数、<code>k</code>がKeep派の正解数、<code>c</code>がChange派の正解数であるから、<code>k/n</code>がKeep派の、<code>c/n</code>がChange派の正解確率である。どちらが正解確率が高かっただろうか？また、それはなぜか考察せよ。</p>
 <h3 id="課題2パーコレーション">課題2：パーコレーション</h3>
 <p>乱数を使ったシミュレーションの例として、パーコレーションを考える。<code>L</code>×<code>L</code>の碁盤の目上の道が、確率<span class="math inline">\(p\)</span>で通行できて、<span class="math inline">\(1-p\)</span>で通行止めになっているとする。この時、通行可能な道を通過してお互いに行き来できる場所を色分けしてみよう。</p>
 <p>新しいノートブックを開き、<code>percolation.ipynb</code>として保存せよ。</p>
 <h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
 <p>最初のセルでは、いつもどおりライブラリのインポートをする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random
-<span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</a></code></pre></div>
 <h4 id="find関数">2. <code>find</code>関数</h4>
 <p>2つ目のセルで、自分が所属するクラスタ番号を調べる<code>find</code>関数を実装しよう。自分の番号が親の番号と一致する<code>i = parent[i]</code>まで、親をたどっていくプログラムである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> find(i, parent):
-    <span class="cf">while</span> i <span class="op">!=</span> parent[i]:
-        i <span class="op">=</span> parent[i]
-    <span class="cf">return</span> i</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">def</span> find(i, parent):</a>
+<a class="sourceLine" id="cb28-2" title="2">    <span class="cf">while</span> i <span class="op">!=</span> parent[i]:</a>
+<a class="sourceLine" id="cb28-3" title="3">        i <span class="op">=</span> parent[i]</a>
+<a class="sourceLine" id="cb28-4" title="4">    <span class="cf">return</span> i</a></code></pre></div>
 <h4 id="union関数">3. <code>union</code>関数</h4>
 <p>3つ目のセルで、二つのサイトを確率的につなぐ<code>union</code>関数を実装しよう。サイト<code>i</code>とサイト<code>j</code>のクラスター番号を<code>find</code>で取得し、サイト<code>j</code>の所属するクラスタの親をサイト<code>i</code>が所属するクラスタにすることで、二つのサイトをつなぐことができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> union(i, j, parent):
-    i <span class="op">=</span> find(i, parent)
-    j <span class="op">=</span> find(j, parent)
-    parent[j] <span class="op">=</span> i</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">def</span> union(i, j, parent):</a>
+<a class="sourceLine" id="cb29-2" title="2">    i <span class="op">=</span> find(i, parent)</a>
+<a class="sourceLine" id="cb29-3" title="3">    j <span class="op">=</span> find(j, parent)</a>
+<a class="sourceLine" id="cb29-4" title="4">    parent[j] <span class="op">=</span> i</a></code></pre></div>
 <h4 id="状態の作成">4. 状態の作成</h4>
 <p><code>find</code>と<code>union</code>の実装ができたら、サイトの状態を作るのは難しくない。4つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> make_conf(L, p):
-    parent <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L <span class="op">*</span> L)]
-    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">-</span><span class="dv">1</span>):
-        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">-</span><span class="dv">1</span>):
-            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L
-            j <span class="op">=</span> ix<span class="op">+</span><span class="dv">1</span> <span class="op">+</span> iy <span class="op">*</span> L
-            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:
-                union(i, j, parent)
-            j <span class="op">=</span> ix <span class="op">+</span> (iy<span class="op">+</span><span class="dv">1</span>) <span class="op">*</span> L
-            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:
-                union(i, j, parent)
-    <span class="cf">return</span> parent</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">def</span> make_conf(L, p):</a>
+<a class="sourceLine" id="cb30-2" title="2">    parent <span class="op">=</span> [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(L <span class="op">*</span> L)]</a>
+<a class="sourceLine" id="cb30-3" title="3">    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L<span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb30-4" title="4">        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L<span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb30-5" title="5">            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L</a>
+<a class="sourceLine" id="cb30-6" title="6">            j <span class="op">=</span> ix<span class="op">+</span><span class="dv">1</span> <span class="op">+</span> iy <span class="op">*</span> L</a>
+<a class="sourceLine" id="cb30-7" title="7">            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:</a>
+<a class="sourceLine" id="cb30-8" title="8">                union(i, j, parent)</a>
+<a class="sourceLine" id="cb30-9" title="9">            j <span class="op">=</span> ix <span class="op">+</span> (iy<span class="op">+</span><span class="dv">1</span>) <span class="op">*</span> L</a>
+<a class="sourceLine" id="cb30-10" title="10">            <span class="cf">if</span> random.random() <span class="op">&lt;</span> p:</a>
+<a class="sourceLine" id="cb30-11" title="11">                union(i, j, parent)</a>
+<a class="sourceLine" id="cb30-12" title="12">    <span class="cf">return</span> parent</a></code></pre></div>
 <p>最初に「親」の情報<code>parent</code>を作成しておく。最初はすべて<code>parent[i] = i</code>、つまり自分の親が自分自身である状態にしておく。そして、右端と下端を除く全てのサイトについて「右」と「下」のサイトと確率的につなぐ処理を記述している。<code>if random.random() &lt; p:</code>というセンテンスは「確率pでif文の中身が実行される」という処理で、確率的な処理の基本となるので覚えておくと良い。</p>
 <h4 id="状態の可視化関数">5. 状態の可視化関数</h4>
 <p>5つ目のセルに、サイトの親の情報を受け取って可視化する関数<code>show_image</code>を実装しよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_image(parent, L):
-    size <span class="op">=</span> <span class="dv">512</span>
-    s <span class="op">=</span> size <span class="op">//</span> L
-    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))
-    colors <span class="op">=</span> []
-    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">*</span>L):
-        r <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
-        g <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
-        b <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)
-        colors.append((r, g, b))
-    draw <span class="op">=</span> ImageDraw.Draw(im)
-    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L):
-        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L):
-            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L
-            i <span class="op">=</span> find(i, parent)
-            c <span class="op">=</span> colors[i]
-            draw.rectangle((ix<span class="op">*</span>s, iy<span class="op">*</span>s, ix<span class="op">*</span>s<span class="op">+</span>s, iy<span class="op">*</span>s<span class="op">+</span>s), fill<span class="op">=</span>c)
-    <span class="cf">return</span> im</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">def</span> show_image(parent, L):</a>
+<a class="sourceLine" id="cb31-2" title="2">    size <span class="op">=</span> <span class="dv">512</span></a>
+<a class="sourceLine" id="cb31-3" title="3">    s <span class="op">=</span> size <span class="op">//</span> L</a>
+<a class="sourceLine" id="cb31-4" title="4">    im <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size), (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</a>
+<a class="sourceLine" id="cb31-5" title="5">    colors <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb31-6" title="6">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(L<span class="op">*</span>L):</a>
+<a class="sourceLine" id="cb31-7" title="7">        r <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb31-8" title="8">        g <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb31-9" title="9">        b <span class="op">=</span> random.randint(<span class="dv">0</span>, <span class="dv">255</span>)</a>
+<a class="sourceLine" id="cb31-10" title="10">        colors.append((r, g, b))</a>
+<a class="sourceLine" id="cb31-11" title="11">    draw <span class="op">=</span> ImageDraw.Draw(im)</a>
+<a class="sourceLine" id="cb31-12" title="12">    <span class="cf">for</span> iy <span class="kw">in</span> <span class="bu">range</span>(L):</a>
+<a class="sourceLine" id="cb31-13" title="13">        <span class="cf">for</span> ix <span class="kw">in</span> <span class="bu">range</span>(L):</a>
+<a class="sourceLine" id="cb31-14" title="14">            i <span class="op">=</span> ix <span class="op">+</span> iy <span class="op">*</span> L</a>
+<a class="sourceLine" id="cb31-15" title="15">            i <span class="op">=</span> find(i, parent)</a>
+<a class="sourceLine" id="cb31-16" title="16">            c <span class="op">=</span> colors[i]</a>
+<a class="sourceLine" id="cb31-17" title="17">            draw.rectangle((ix<span class="op">*</span>s, iy<span class="op">*</span>s, ix<span class="op">*</span>s<span class="op">+</span>s, iy<span class="op">*</span>s<span class="op">+</span>s), fill<span class="op">=</span>c)</a>
+<a class="sourceLine" id="cb31-18" title="18">    <span class="cf">return</span> im</a></code></pre></div>
 <p>あらかじめ、ランダムにクラスター番号と色の対応表<code>colors</code>を作っておき、それぞれのサイトのクラスター番号で色を塗ることで「同じクラスターは同じ色で塗る」を実現している。</p>
 <h4 id="シミュレーション">6. シミュレーション</h4>
 <p>では、早速シミュレーションをしてみよう。まずは通行確率pが0、つまり全ての区間が孤立している状態を可視化してみる。6つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">L <span class="op">=</span> <span class="dv">256</span>
-p <span class="op">=</span> <span class="fl">0.0</span>
-sites <span class="op">=</span> make_conf(L, p)
-show_image(sites, L)</code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1">L <span class="op">=</span> <span class="dv">256</span></a>
+<a class="sourceLine" id="cb32-2" title="2">p <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb32-3" title="3">sites <span class="op">=</span> make_conf(L, p)</a>
+<a class="sourceLine" id="cb32-4" title="4">show_image(sites, L)</a></code></pre></div>
 <p>ここまで正しく実装されていれば、ノイズのような画面が表示されたはずである。</p>
 <p>では、次に<code>p = 0.4</code>を試してみよ。お互いに通行可能な区間が同じ色で表示されるため、同じ色で塗られた領域(クラスター)が出現したはずである。</p>
 <p><code>p=0.49</code>と、<code>p=0.51</code>をそれぞれ何度か試し、気づいたことを報告せよ。例えば、同じ色のクラスターだけをたどって「左から右」へ到達できるだろうか？無事な道のみを通って「左から右」に通過できる確率<span class="math inline">\(P\)</span>は、通過可能確率<span class="math inline">\(p\)</span>の関数であるはずだが、<span class="math inline">\(P(p)\)</span>はどのような関数となるか考察せよ。</p>
@@ -460,16 +611,16 @@ show_image(sites, L)</code></pre></div>
 <p>というものである。例えば、あるアーティストのCDを購入すると、44種類あるポスターのうちどれかがランダムにあたる特典があり、44種類のポスター全てをコンプリートしたらイベントに招待する、という事例があったとしよう。全種類揃えるのに平均で何枚CDを購入する必要があるか、すぐにわかるだろうか？これを計算してみよう。新しいPython3 ノートブックを開き、<code>gacha.ipynb</code>という名前で保存せよ。</p>
 <h4 id="インポート">1. インポート</h4>
 <p>まずは<code>random</code>をインポートしておこう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> random</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1"><span class="im">import</span> random</a></code></pre></div>
 <h4 id="シミュレーション-1">2. シミュレーション</h4>
 <p>n種類のポスターを揃えるのに何枚CDが必要になるかを試してみる関数<code>gacha</code>を実装しよう。以下の「条件」と「ポスター追加処理」を埋めてコードを完成させよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> gacha(n):
-    cd <span class="op">=</span> <span class="dv">0</span>
-    posters <span class="op">=</span> []
-    <span class="cf">while</span> 条件 <span class="op">&lt;</span> n:
-        <span class="co"># ポスター追加処理</span>
-        cd <span class="op">+=</span> <span class="dv">1</span>
-    <span class="cf">return</span> cd</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="kw">def</span> gacha(n):</a>
+<a class="sourceLine" id="cb34-2" title="2">    cd <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb34-3" title="3">    posters <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb34-4" title="4">    <span class="cf">while</span> 条件 <span class="op">&lt;</span> n:</a>
+<a class="sourceLine" id="cb34-5" title="5">        <span class="co"># ポスター追加処理</span></a>
+<a class="sourceLine" id="cb34-6" title="6">        cd <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb34-7" title="7">    <span class="cf">return</span> cd</a></code></pre></div>
 <p><code>cd</code>は購入したCDの枚数、<code>posters</code>は、当たったポスターのリストであり、このコードでは<code>n</code>種類のポスターを揃えるまでCDを購入し続け、揃った段階で購入したCDの枚数を返す関数である。</p>
 <ul>
 <li>ヒント1：これまでに得られたポスターの「種類」は<code>len(set(posters))</code>で得ることができる。</li>
@@ -478,26 +629,27 @@ show_image(sites, L)</code></pre></div>
 </ul>
 <h4 id="実行">3. 実行</h4>
 <p><code>gacha</code>が完成したら、それをなんども実行して「購入CD枚数の期待値」を計算しよう。3つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">trial <span class="op">=</span> <span class="dv">100</span>
-cd <span class="op">=</span> <span class="dv">0</span>
-N <span class="op">=</span> <span class="dv">44</span>
-<span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):
-    cd <span class="op">+=</span> gacha(N)
-<span class="bu">print</span>(cd <span class="op">/</span> trial)</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1">trial <span class="op">=</span> <span class="dv">100</span></a>
+<a class="sourceLine" id="cb35-2" title="2">cd <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb35-3" title="3">N <span class="op">=</span> <span class="dv">44</span></a>
+<a class="sourceLine" id="cb35-4" title="4"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(trial):</a>
+<a class="sourceLine" id="cb35-5" title="5">    cd <span class="op">+=</span> gacha(N)</a>
+<a class="sourceLine" id="cb35-6" title="6"><span class="bu">print</span>(cd <span class="op">/</span> trial)</a></code></pre></div>
 <p>CDの平均購入枚数はどれくらいであっただろうか？</p>
 <h4 id="厳密解">4. 厳密解</h4>
 <p><code>n</code>種類のコンプガチャを揃えるための試行回数の厳密解は以下で計算できる。実行し、シミュレーションによって得られた結果が近い値かどうか確認せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> p(n):
-    r <span class="op">=</span> <span class="fl">0.0</span>
-    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):
-        r <span class="op">+=</span> n<span class="op">/</span>(i<span class="op">+</span><span class="dv">1</span>)
-    <span class="cf">return</span> r
-
-p(<span class="dv">44</span>)</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">def</span> p(n):</a>
+<a class="sourceLine" id="cb36-2" title="2">    r <span class="op">=</span> <span class="fl">0.0</span></a>
+<a class="sourceLine" id="cb36-3" title="3">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</a>
+<a class="sourceLine" id="cb36-4" title="4">        r <span class="op">+=</span> n<span class="op">/</span>(i<span class="op">+</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb36-5" title="5">    <span class="cf">return</span> r</a>
+<a class="sourceLine" id="cb36-6" title="6"></a>
+<a class="sourceLine" id="cb36-7" title="7">p(<span class="dv">44</span>)</a></code></pre></div>
 <p>「44種類ある絵柄が等確率で当たり、44種類揃えたら景品を渡す」という文面に嘘がなく、確率操作などをせず全くその通りに実施するとしても、これは違法となる可能性がある。これは違法とすべきか、そうでないのか、その理由を考えよ。</p>
 <h2 id="余談疑似乱数とゲーム">余談：疑似乱数とゲーム</h2>
 <p>ゲームには乱数がつきものである。RPGなどでは、どの敵が現れるか、攻撃が成功するか、失敗するかなど、全てランダムに決めたい。「はぐれメタル」などのレアなモンスターに、「会心の一撃」などのレアな攻撃が当たって興奮した、などの経験があるだろう。しかし、ゲームは計算機であり、計算機における乱数は疑似乱数である以上、理論上乱数は予想可能である。例えばあるゲームでは「ゲーム機が稼働開始してからの時間」を乱数の種に使っていたため、ゲーム機の電源を落とすと敵の出現テーブルがリセットされたり、レアな敵が出たときにセーブしてリセットすると、また同じ敵が現れてしまうなどの仕様があった。これを利用してレアな敵を狩りまくり、貴重なアイテムを多数手に入れるという「技」があった(古い例で恐縮だが、例えば初代ゲームボーイのRPG「Sa・Ga2 秘宝伝説」の「はにわ狩り」等)。また、動画などを見ていて「TAS」という言葉を見かけたことはないだろうか。これは「Tool Assisted Speedrun」の略で、もともとゲームをエミュレータ上で実行し、理論上可能だが人間には不可能な速度でクリアすることを指したが、そのうちタイムアタック以外についてもTASと呼ばれるようになった。例えばTASによるRPGのタイムアタック動画では、「はぐれメタル」ばかり出て、それに「会心の一撃」ばかりあたるようなことが起きる。次にこういう動画を見るとき、一見無駄な動作が混ざっていないか注意してみてみよう。これは乱数調整といわれる手法である。例えばサイコロで「6」が出たら「会心の一撃」が出ることがわかっており、かつこれからのサイコロの目が「2,4,1,3,6」という順番であることもわかっている場合、戦闘の自分の番で「6」が出るように、事前にサイコロを振るのである。</p>
 <p>疑似乱数とゲームといえば、面白いのが「質の悪い乱数」によるバグだろう。「カルドセプトサーガ」というXbox360のゲームがある。カルドセプトは、モノポリーのようなボードゲームに、マジック・ザ・ギャザリングのようなカードによるクリーチャー同士の戦いを組み合わせたようなゲームで、その戦略性から人気のあるシリーズであった。しかし「カルドセプトサーガ」は、サイコロの出目が非常に偏っており、例えば偶数と奇数が交互に出る問題があった。このようなサイコロゲームで、次の目が予想できるというのは致命的である。例えば「他のプレイヤーがサイコロで偶数の目を出すまで行動不能」という呪いがあるのだが、うまく行動することでずっと奇数の目を出し続け、相手の行動不能状態を維持し続けることができたようだ(後にパッチにより改善された)。この問題が発覚したのち、ネットで「サイコロくらい簡単だろ」と「正しい」サンプルプログラムを書いた人がいたが、それもことごとくカルドセプトサーガと同じ過ちを犯していたそうである。「ネットに書き込む前に一呼吸」を意識しよう。</p>
-</article>
-</body>
-</html>
+          </article>
+  </body>
+
+  </html>

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title></title>
+                <title>string/index.md</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -258,10 +258,9 @@
 <p>今回は文字列処理を扱う。文字列処理とは文字列を何か処理することであり、文字列とは文字の列であるから、文字列処理のためには、「そもそも文字とは何か」を知らなければならない。プログラムの世界において「文字とは何か？」は極めて非自明で難しい問題であり、筆者もきちんと説明できる自信がない。ここでの説明は必ずしも実際の歴史に沿っていないことに注意されたい。</p>
 <p>例えば今、画面上に「あ」というひらがなが表示されているとしよう。計算機が扱えるのは数字だけである。したがって、メモリ上になんらかの数字が格納されており、それを処理することで画面に対応する文字が表示される仕組みがある。以前、「型」とはメモリ上のデータをどのように表現するかを約束する役割があると学んだ。例えば<code>test</code>という文字列は、メモリ上では「0x74 65 73 74」という4バイトの文字列として表現される。このように、アルファベットや数字は、7ビットの数字で表現される。7ビットの情報が表現できるのは<span class="math inline">\(2^7\)</span>個、すなわち128個までである。アルファベットの大文字小文字、数字、記号などはこれで収めることができる。これらを<strong>ASCII (American Standard Code for Information Interchange、アスキー)</strong> 文字、ASCII文字に対応する「数字」を <strong>ASCIIコード (ASCII code)</strong> と呼ぶ。メモリに格納されるのはアスキーコードである。</p>
 <p>さて、計算機で日本語、すなわちひらがなやカタカナ、漢字を表示したい、というニーズがある。どうすればよいだろうか？そのためには、なんらかの方法で文字に数字を割り当てなければならない。そして、割り当てた数字をメモリに格納する必要がある。さらに、文字を表示するためには、「どの文字がどんな形をしているか」を計算機が知っていなければならない。以上の概念をまとめてみよう。</p>
-<div class="figure">
-<img src="fig/glyph.png" alt="文字とはなにか" />
-<p class="caption">文字とはなにか</p>
-</div>
+<figure>
+<img src="fig/glyph.png" alt="文字とはなにか" /><figcaption>文字とはなにか</figcaption>
+</figure>
 <p>まず、我々が「あ」文字を思い浮かべる時、もしかしたら自分の思い浮かべている「あ」と他人の思い浮かべている「あ」の形は違うかもしれない。しかし、紙に書かれた「あ」を見れば、よほど汚い字でなければ誰もが「あ」であると認識するであろう。このように「ある文字の持つ共通的な特徴」を <strong>字体 (glyph)</strong> と呼ぶ。言ってみれば字体は「字のイデア」である。</p>
 <p>次に、その字体になんらかの番号を振る必要がある。日本語はひらがな、カタカナ、漢字と多くの文字を持つので、使う番号の種類も多くなる。例えばUnicodeでは、日本語の「あ」に3042番という番号を与え、これを「U+3042」と表記する。これを <strong>文字コード(character code)</strong> 、もしくは <strong>コードポイント(code point)</strong> と呼ぶ。</p>
 <p>コードポイントが決まったら、それをどのようにメモリに格納するかを決めなくてはいけない。これを <strong>符号化(encoding)</strong> と呼ぶ。文字コードと符号化方法が一体化している場合もあるが、Unicodeにおいては、UTF-8、UTF-16、UTF-32と、異なる符号化方法が用意されている。昨今のマシンの1バイトは8ビットであり、8ビットで表現できるのは256種類であるが、当然ながら日本語は256種類に入り切らないので、必然的に複数のバイト列を用いて日本語を表現することになる。例えば「あ」は、UTF-8を用いると「E3 81 82」の3バイトで表現される。</p>
@@ -271,122 +270,122 @@
 <p>まず、シフトJISはMicrosoft等が規定した文字コードで、MS-DOS、そしてWindowsで採用されている。日本語を2バイトで表現するため、「2バイト文字」と呼ばれることが多い。ASCII文字と日本語が混在する文書においてもエスケープ文字を挿入しないで済むなどの利点があるが、2バイト文字の2バイト目に重要な記号(円記号もしくはバックスラッシュ)が出現することがあり、これがディレクトリの区切りやエスケープ文字と解釈されて誤動作を起こすことがあった。特に「表」という文字は、シフトJISでは<code>0x955c</code>となるが、この<code>5c</code>が円記号ないしバックスラッシュと同じアスキーコードであるため、よく文字化けの原因となった。</p>
 <p>EUC-JPはExtended UNIX Code Packed Format for Japaneseの略であり、その名の通りUNIXで広く使われた。こちらは日本語文字の範囲が0x80 - 0xFFの範囲にある。これはビットで表現すると、最上位ビットが必ず1になっていることから、最上位ビットが0となるアスキー文字と区別がしやすかった。ただし、半角カナはシフトJISでは1バイトで表現できたが、EUC-JPでは2バイトを要し、漢字の中には3バイト必要とするものもあった。</p>
 <p>JISコードは、正式には「ISO-2022-JP」と呼ばれ、電子メール等のために広く使われた文字コードである。こちらは、文字列を表すバイト列の最上位ビットが必ず0になる、という特徴を持っている。太古の昔、インターネットを流れる「文字列」は、最上位ビットが0でなければならない、というルールがあった。インターネットは情報を「リレー」することで世界中のどことでも通信が可能となるネットワークだが、その途中で「8ビット目を落とす」マシンがあったらしい(筆者はよく知らない)。そのため、8ビット目が0でない文字コードを使うと文字化けの原因となるため、「電子メールはISO-2022-JPを使わなければならない」というルールがあった。</p>
-<div class="figure">
-<img src="fig/encoding.png" alt="文字コード" />
-<p class="caption">文字コード</p>
-</div>
+<figure>
+<img src="fig/encoding.png" alt="文字コード" /><figcaption>文字コード</figcaption>
+</figure>
 <p>このように、日本語ですら様々な文字の符号化方式があり、文字コードは混乱していた。他にも世界でそれぞれ独自のコードがあり、それらを切り替えながら表示する必要があった。特に、複数種類の文字コードが混在する文書の表示には問題があった。そこで、「世界で統一した符号化方法を作ろう」という動きが出てくるのは自然であろう。これが「ユニコード(Unicode)」である。文字コードは無限に面倒事があり、厳密な話をするのが難しいので、以下はざっくりした話だと承知されたい。まず、文字を表現するためには、「文字に背番号をつける」「背番号をつけた後で、それをどのようなバイナリに落とすか、エンコード方法を指定する」の2ステップを踏む必要がある。</p>
 <p>ユニコードは、まず文字に背番号をつける。この背番号をコードポイントと呼ぶ。例えばひらがなの「あ」のコードポイントは3042であり、これを「U+3042」と表記する。</p>
 <p>次に、この数字をどのようなバイナリ列に表すか(エンコード方法)だが、ここではUTF-8を例に取ろう。UTF-8では、よく使われる日本語は3バイトで表現される。UTF-8では、一番最初に「この文字を何バイトで表現するか」を、連続するビット列で表現する。例えば3バイトならば「1110」というビット列である。その後、2バイト目以降は頭の「10」が予約されており、それ以降が文字を表現するビットとなる。つまり、ビット構造としては以下のようになっている。</p>
-<pre class="txt"><code>1110AAAA
-10BBBBCC
-10CCDDDD</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb1-1" title="1">1110AAAA</a>
+<a class="sourceLine" id="cb1-2" title="2">10BBBBCC</a>
+<a class="sourceLine" id="cb1-3" title="3">10CCDDDD</a></code></pre></div>
 <p>AAAABBBBCCCCDDDDは、ユニコード4桁のビット表現である。例えばひらがなの「あ」は「U+3042」だが、その4つの数字をそれぞれビット表現すると、</p>
-<pre class="txt"><code>0011
-0000
-0100
-0010</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb2-1" title="1">0011</a>
+<a class="sourceLine" id="cb2-2" title="2">0000</a>
+<a class="sourceLine" id="cb2-3" title="3">0100</a>
+<a class="sourceLine" id="cb2-4" title="4">0010</a></code></pre></div>
 <p>これを先ほどのAAAABBBBCCCCDDDDにはめ込むと、「E3 81 82」となり、これがひらがなの「あ」、コードポイントU+3042をUTF-8で符号化したものとなる。ユニコードの符号化方法には、他にもUTF-16やUTF-32などがあるが、仕様はともかく、そのあたりの事情は入り組んでいるのでここでは深入りしない。</p>
-<div class="figure">
-<img src="fig/utf8_a.png" alt="UTF-8による「あ」の表現" />
-<p class="caption">UTF-8による「あ」の表現</p>
-</div>
+<figure>
+<img src="fig/utf8_a.png" alt="UTF-8による「あ」の表現" /><figcaption>UTF-8による「あ」の表現</figcaption>
+</figure>
 <h2 id="辞書">辞書</h2>
 <p>Pythonにはリストという、複数の要素をまとめるデータ構造があった。リストは、要素をインデックスと呼ばれる数字でアクセスする。すなわち、リストは「数字」と「要素」を結びつけるデータ構造であると言える。それに対して、数字以外の何かと要素を結びつけるデータ構造が <strong>ハッシュ(hash)</strong> である。スクリプト言語ではリストに加えて、ハッシュ、もしくは連想配列というデータ構造がデフォルトで用意されていることが多い。ハッシュはPythonでは <strong>辞書(dictionary)</strong> と呼ばれる。リストは、要素が順番に並んでおり、要素はインデックスでアクセスできた。それに対して、辞書は <strong>キー(key)</strong> と呼ばれるもので要素にアクセスする。数字、文字列の他、タプルなど様々ななものをキーにできる(キーはイミュータブルでなければならないという制約があるが、ここでは触れない)。また、リストと同様になんでも要素にできる。</p>
 <h3 id="辞書型の使い方">辞書型の使い方</h3>
 <p>辞書型は中カッコ<code>{}</code>で初期化する。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d <span class="op">=</span> {}</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1">d <span class="op">=</span> {}</a></code></pre></div>
 <p>辞書は例えば「文字列」と「整数」を結びつけることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d[<span class="st">&quot;Apple&quot;</span>] <span class="op">=</span> <span class="dv">158</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">d[<span class="st">&quot;Apple&quot;</span>] <span class="op">=</span> <span class="dv">158</span></a></code></pre></div>
 <p>結びつけたデータは、キーを入力することで取得することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="bu">print</span>(d[<span class="st">&quot;Apple&quot;</span>]) <span class="co"># =&gt; 158</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">print</span>(d[<span class="st">&quot;Apple&quot;</span>]) <span class="co"># =&gt; 158</span></a></code></pre></div>
 <p>初期化時にキーと要素を指定することができる。この時「キー: 値」という形で与える。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d <span class="op">=</span> {<span class="st">&quot;Apple&quot;</span>: <span class="dv">158</span>, <span class="st">&quot;Banana&quot;</span> : <span class="dv">198</span>, <span class="st">&quot;Orange&quot;</span> : <span class="dv">100</span>}</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">d <span class="op">=</span> {<span class="st">&quot;Apple&quot;</span>: <span class="dv">158</span>, <span class="st">&quot;Banana&quot;</span> : <span class="dv">198</span>, <span class="st">&quot;Orange&quot;</span> : <span class="dv">100</span>}</a></code></pre></div>
 <p>数字でもタプルでもなんでもキーにすることができる。また、なんでも要素にすることができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d[<span class="dv">1</span>] <span class="op">=</span> <span class="st">&quot;one&quot;</span>
-d[(<span class="dv">1</span>,<span class="dv">2</span>)] <span class="op">=</span> (<span class="dv">2</span>,<span class="dv">4</span>)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">d[<span class="dv">1</span>] <span class="op">=</span> <span class="st">&quot;one&quot;</span></a>
+<a class="sourceLine" id="cb7-2" title="2">d[(<span class="dv">1</span>,<span class="dv">2</span>)] <span class="op">=</span> (<span class="dv">2</span>,<span class="dv">4</span>)</a></code></pre></div>
 <p>辞書に対して<code>for</code>文を回すと、キーを取得することができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> k <span class="kw">in</span> d:
-    <span class="bu">print</span>(k)</code></pre></div>
-<pre class="txt"><code>key
-1
-(1,2)</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="cf">for</span> k <span class="kw">in</span> d:</a>
+<a class="sourceLine" id="cb8-2" title="2">    <span class="bu">print</span>(k)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb9-1" title="1">key</a>
+<a class="sourceLine" id="cb9-2" title="2">1</a>
+<a class="sourceLine" id="cb9-3" title="3">(1,2)</a></code></pre></div>
 <p>このキー<code>k</code>を使って、<code>d[k]</code>とすれば要素を取得することもできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> k <span class="kw">in</span> d:
-    <span class="bu">print</span>(d[k])</code></pre></div>
-<pre class="txt"><code>data
-one
-(2, 4)</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="cf">for</span> k <span class="kw">in</span> d:</a>
+<a class="sourceLine" id="cb10-2" title="2">    <span class="bu">print</span>(d[k])</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb11-1" title="1">data</a>
+<a class="sourceLine" id="cb11-2" title="2">one</a>
+<a class="sourceLine" id="cb11-3" title="3">(2, 4)</a></code></pre></div>
 <p>キーと要素を両方同時に取得するには、<code>items()</code>を用いる</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">for</span> k,v <span class="kw">in</span> d.items():
-    <span class="bu">print</span>(k,v)</code></pre></div>
-<pre class="txt"><code>key data
-1 one
-(1, 2) (2, 4)</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1"><span class="cf">for</span> k,v <span class="kw">in</span> d.items():</a>
+<a class="sourceLine" id="cb12-2" title="2">    <span class="bu">print</span>(k,v)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb13-1" title="1">key data</a>
+<a class="sourceLine" id="cb13-2" title="2">1 one</a>
+<a class="sourceLine" id="cb13-3" title="3">(1, 2) (2, 4)</a></code></pre></div>
 <h3 id="defaultdict">defaultdict</h3>
 <p>辞書は、「存在しないキー」を指定するとエラーになる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d[<span class="st">&quot;new&quot;</span>]</code></pre></div>
-<pre class="txt"><code>KeyError: &#39;new&#39;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">d[<span class="st">&quot;new&quot;</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb15-1" title="1">KeyError: &#39;new&#39;</a></code></pre></div>
 <p>しかし、「存在しないキー」を指定した時に、デフォルトの値があると便利なことがある。そういう場合に使うのが<code>collections.defaultdict</code>だ。以下のようにインポートして使う。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> defaultdict</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="im">from</span> collections <span class="im">import</span> defaultdict</a></code></pre></div>
 <p>例えば、デフォルトの値として「0」を持つような辞書を作るには以下のようにする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">d <span class="op">=</span> defaultdict(<span class="bu">int</span>)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1">d <span class="op">=</span> defaultdict(<span class="bu">int</span>)</a></code></pre></div>
 <p><code>defaultdict</code>には、「実行時に初期化する関数」を渡すことで辞書型を作るのだが、ここでは詳細は触れない。デフォルトの値として「0」を持つ辞書型を作れると、例えば「出現するものの頻度をカウントする」ことが簡単にできる。例を挙げよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> defaultdict
-d <span class="op">=</span> defaultdict(<span class="bu">int</span>)
-s <span class="op">=</span> <span class="st">&quot;すもももももももものうち&quot;</span>
-<span class="cf">for</span> c <span class="kw">in</span> <span class="bu">list</span>(s):
-    d[c] <span class="op">+=</span> <span class="dv">1</span>
-<span class="cf">for</span> k, v <span class="kw">in</span> d.items():
-    <span class="bu">print</span>(k, v)</code></pre></div>
-<pre class="txt"><code>す 1
-も 8
-の 1
-う 1
-ち 1</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="im">from</span> collections <span class="im">import</span> defaultdict</a>
+<a class="sourceLine" id="cb18-2" title="2">d <span class="op">=</span> defaultdict(<span class="bu">int</span>)</a>
+<a class="sourceLine" id="cb18-3" title="3">s <span class="op">=</span> <span class="st">&quot;すもももももももものうち&quot;</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="cf">for</span> c <span class="kw">in</span> <span class="bu">list</span>(s):</a>
+<a class="sourceLine" id="cb18-5" title="5">    d[c] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="cf">for</span> k, v <span class="kw">in</span> d.items():</a>
+<a class="sourceLine" id="cb18-7" title="7">    <span class="bu">print</span>(k, v)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">す 1</a>
+<a class="sourceLine" id="cb19-2" title="2">も 8</a>
+<a class="sourceLine" id="cb19-3" title="3">の 1</a>
+<a class="sourceLine" id="cb19-4" title="4">う 1</a>
+<a class="sourceLine" id="cb19-5" title="5">ち 1</a></code></pre></div>
 <p>辞書を使って単語や何かの頻度を数えるというシチュエーションにはわりと出会うので、覚えておくと役に立つことが年に数回くらいあることだろう。</p>
 <h2 id="正規表現">正規表現</h2>
 <p>正規表現(Regular expression)という言葉を聞いたことがあるだろうか。もしかしたら、身近にちょっと「つよめ」のプログラマがいて、正規表現で文字列の置換をしているのを見たことがあるかもしれない。例えば、Vim等を使っており、「#」で始まる行を削除するのに、慣れたプログラマなら以下を実行する。</p>
 <pre class="vim"><code>:%g/^#/d</code></pre>
 <p>他にも、以下のような文章があったとしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span></code></pre></div>
-<p>これは中島敦という作家の「山月記」という小説の冒頭だが、途中で「《...》」という形でルビが降ってある。これをテキストから削除したいとしよう。ナイーブに実装するなら</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1">text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span></a></code></pre></div>
+<p>これは中島敦という作家の「山月記」という小説の冒頭だが、途中で「《…》」という形でルビが降ってある。これをテキストから削除したいとしよう。ナイーブに実装するなら</p>
 <ul>
 <li>文字を一文字ずつ処理し</li>
-<li>《と》に囲まれた状態であるかを判定し</li>
+<li>《と》に囲まれた状態であるかを判定し
+<ul>
 <li>囲まれた状態ならスキップ</li>
 <li>囲まれていなければ表示する</li>
+</ul></li>
 </ul>
 <p>といったアルゴリズムになるだろう。例えばプログラムは以下のようになる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">in_bracket <span class="op">=</span> <span class="va">False</span>
-<span class="cf">for</span> s <span class="kw">in</span> <span class="bu">list</span>(text):
-    <span class="cf">if</span> in_bracket:
-        <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;》&#39;</span>:
-            in_bracket <span class="op">=</span> <span class="va">False</span>
-        <span class="cf">continue</span>
-    <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;《&#39;</span>:
-        in_bracket <span class="op">=</span> <span class="va">True</span>
-        <span class="cf">continue</span>
-    <span class="bu">print</span>(s, end<span class="op">=</span><span class="st">&quot;&quot;</span>)
-<span class="bu">print</span>()</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">in_bracket <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">list</span>(text):</a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="cf">if</span> in_bracket:</a>
+<a class="sourceLine" id="cb22-4" title="4">        <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;》&#39;</span>:</a>
+<a class="sourceLine" id="cb22-5" title="5">            in_bracket <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb22-6" title="6">        <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb22-7" title="7">    <span class="cf">if</span> s <span class="op">==</span> <span class="st">&#39;《&#39;</span>:</a>
+<a class="sourceLine" id="cb22-8" title="8">        in_bracket <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb22-9" title="9">        <span class="cf">continue</span></a>
+<a class="sourceLine" id="cb22-10" title="10">    <span class="bu">print</span>(s, end<span class="op">=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="bu">print</span>()</a></code></pre></div>
 <p>しかし、正規表現を用いると以下のように簡単に実現できる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
-<span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.*?》&#39;</span>, <span class="st">&#39;&#39;</span>, text))</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1"><span class="im">import</span> re</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.*?》&#39;</span>, <span class="st">&#39;&#39;</span>, text))</a></code></pre></div>
 <p>以下が実行結果だ。</p>
 <blockquote>
 <p>隴西の李徴は博学｜才穎、天宝の末年、若くして名を虎榜に連ね、ついで江南尉に補せられたが、性、狷介、自ら恃むところ&gt; 頗る厚く、賤吏に甘んずるを潔しとしなかった。</p>
 </blockquote>
 <p>これらに出てきた呪文のような文字列「<code>^#</code>」や「<code>《.*?》</code>」が正規表現である。文字列処理をする上で、正規表現は欠かせない。正規表現を使えるとちょっとかっこいい(※個人の感想です)ので、ぜひマスターしよう。</p>
 <p>正規表現には、 <strong>マッチ(match)</strong> という概念がある。文字列をパターンとして与え、入力文字列の中でそのパターンにマッチする場所を探す、というのが正規表現の基本動作となる。例えば、文字列そのものは、同じ文字列にマッチする。マッチする場所を探すには、<code>re</code>モジュールの<code>search</code>を用いる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">text <span class="op">=</span> <span class="st">&#39;hanamogera&#39;</span>
-m <span class="op">=</span> re.search(<span class="vs">r&#39;moge&#39;</span>, text)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1">text <span class="op">=</span> <span class="st">&#39;hanamogera&#39;</span></a>
+<a class="sourceLine" id="cb24-2" title="2">m <span class="op">=</span> re.search(<span class="vs">r&#39;moge&#39;</span>, text)</a></code></pre></div>
 <p>上記の例は、「hanamogera」という文字列から、「moge」という文字列を探せ、という命令である。正規表現を表す文字列の頭には<code>r</code>をつけるが、ここでは深入りしないので、そういうものだと思っていて欲しい。<code>search</code>はマッチした場合、Matchオブジェクトを返すが、その<code>span()</code>メソッドによりマッチした場所がわかる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.span() <span class="co"># =&gt; (4, 8)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1">m.span() <span class="co"># =&gt; (4, 8)</span></a></code></pre></div>
 <p><code>span()</code>はマッチした場所をタプルとして返すため、それを使って部分文字列を抜き出すことができる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">s, e <span class="op">=</span> m.span()
-text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1">s, e <span class="op">=</span> m.span()</a>
+<a class="sourceLine" id="cb26-2" title="2">text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></a></code></pre></div>
 <p>もしくは単に、<code>group()</code>でマッチした文字列を取り出すこともできる。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m.group() <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1">m.group() <span class="co"># =&gt; &#39;moge&#39;</span></a></code></pre></div>
 <p><code>group()</code>を用いると、グループ化させた場合、それぞれのグループにアクセスできるのだが、ここでは詳細には立ち入らない。</p>
 <p>さて、より柔軟なパターン検索のために、正規表現には様々な特殊な文字、 <strong>メタ文字(metacharacter)</strong> が用意されている。まずよく使うのが「どのような一文字にでもマッチする」メタ文字、「<code>.</code>」である。例えば「<code>.bc</code>」というパターンは、「<code>abc</code>」という文字列にも「<code>xbc</code>」という文字列にもマッチする。</p>
 <p>次によく使うのが、繰り返しを表す「<code>*?+</code>」だ。それぞれ以下のような意味を持つ。</p>
@@ -397,49 +396,56 @@ text[s:e] <span class="co"># =&gt; &#39;moge&#39;</span></code></pre></div>
 </ul>
 <p>正規表現にはこれらのメタ文字が頻出するため、一見「呪文」のように見えるが、ゆっくり読み解いていけば難しくはない。いくつか例を挙げよう。</p>
 <ul>
-<li>「<code>.*bc</code>」: なんでも良いが、何か文字が0個以上あり、その後「bc」という文字列が続くような文字列。</li>
+<li>「<code>.*bc</code>」: なんでも良いが、何か文字が0個以上あり、その後「bc」という文字列が続くような文字列。
+<ul>
 <li><code>bc</code> → <code>bc</code>にマッチ</li>
 <li><code>xxxbc</code> → <code>xxxbc</code>にマッチ</li>
 <li><code>xxxbcyyy</code> → <code>xxxbc</code>にマッチ</li>
-<li>「<code>.?bc</code>」：なんでも良いが、何か文字が0個か1個あり、その後「bc」という文字列が続くような文字列。</li>
+</ul></li>
+<li>「<code>.?bc</code>」：なんでも良いが、何か文字が0個か1個あり、その後「bc」という文字列が続くような文字列。
+<ul>
 <li><code>bc</code> → <code>bc</code>にマッチ</li>
 <li><code>xxxbc</code> → <code>xbc</code>にマッチ</li>
 <li><code>xxxbcyyy</code> → <code>xbc</code>にマッチ</li>
-<li>「<code>.+bc</code>」：なんでも良いが、何か文字が1個以上、その後「bc」という文字列が続くような文字列。</li>
+</ul></li>
+<li>「<code>.+bc</code>」：なんでも良いが、何か文字が1個以上、その後「bc」という文字列が続くような文字列。
+<ul>
 <li><code>bc</code> → マッチしない</li>
 <li><code>xxxbc</code> → <code>xxxbc</code>にマッチ</li>
 <li><code>xxxbcyyy</code> → <code>xxxbc</code>にマッチ</li>
+</ul></li>
 </ul>
-<div class="figure">
-<img src="fig/re.png" alt="正規表現の例" />
-<p class="caption">正規表現の例</p>
-</div>
+<figure>
+<img src="fig/re.png" alt="正規表現の例" /><figcaption>正規表現の例</figcaption>
+</figure>
 <p>他によく使うメタ文字は「行頭」と「行末」を表す<code>^</code>と<code>$</code>である。例を挙げよう。</p>
 <ul>
-<li><code>^#.*</code>: 文頭に「#」があり、それ以後は何があっても良いような文字列。</li>
+<li><code>^#.*</code>: 文頭に「#」があり、それ以後は何があっても良いような文字列。
+<ul>
 <li><code>#hoge fuga</code> → <code>#hoge fuga</code>にマッチ</li>
 <li><code>hoge #fuga</code> → 文頭に<code>#</code>が無いのでマッチしない</li>
-<li><code>fuga$</code>: 文末に<code>fuga</code>があるような文字列</li>
+</ul></li>
+<li><code>fuga$</code>: 文末に<code>fuga</code>があるような文字列
+<ul>
 <li><code>hoge fuga</code> → <code>fuga</code>にマッチ</li>
 <li><code>fuga hoge</code> → マッチしない</li>
+</ul></li>
 </ul>
 <p>正規表現には他にも様々なメタ文字や機能が存在するがここでは深入りしない。興味を持ったら調べてみて欲しい。</p>
-<div class="figure">
-<img src="fig/regexp.png" alt="正規表現のイメージ" />
-<p class="caption">正規表現のイメージ</p>
-</div>
+<figure>
+<img src="fig/regexp.png" alt="正規表現のイメージ" /><figcaption>正規表現のイメージ</figcaption>
+</figure>
 <p>正規表現とは、一言でいえば「あるパターンを持つ文字列の集合を、一つの文字列で表現する手段」のことである。ここで、正規表現について覚える必要は全くない。ただ、正規表現で表された文字列が、多数の文字列を含む文字列集合を表現しており、その文字列集合の一つを発見した時に「マッチする」と呼ぶ、とぼんやり覚えておけばよい。</p>
 <p>正規表現がよく使われるのは置換である。特定の文字列にマッチした場合、マッチした部分を別の文字列に置換したい、ということがよくある。この時、<code>re</code>モジュールの<code>sub</code>を用いる。<code>sub</code>は、置換したい文字列のパターン、置換文字列、入力文字列を与える。最初の例を見てみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> re
-text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span>
-<span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.*?》&#39;</span>,<span class="st">&#39;&#39;</span>,text))</code></pre></div>
-<p>これは、「《と》に囲まれた文字列」にマッチし、それを空文字列''に置換、すなわち削除することで、ルビの情報を削除している。ただし、<code>《.*》</code>とすると最初の《から最後の》までマッチしてしまうので、<code>?</code>をつけて最短マッチを指定している。</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1"><span class="im">import</span> re</a>
+<a class="sourceLine" id="cb28-2" title="2">text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の李徴《りちょう》は博学｜才穎《さいえい》、天宝の末年、若くして名を虎榜《こぼう》に連ね、ついで江南尉《こうなんい》に補せられたが、性、狷介《けんかい》、自《みずか》ら恃《たの》むところ頗《すこぶ》る厚く、賤吏《せんり》に甘んずるを潔《いさぎよ》しとしなかった。&#39;</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="bu">print</span>(re.sub(<span class="vs">r&#39;《.*?》&#39;</span>,<span class="st">&#39;&#39;</span>,text))</a></code></pre></div>
+<p>これは、「《と》に囲まれた文字列」にマッチし、それを空文字列’’に置換、すなわち削除することで、ルビの情報を削除している。ただし、<code>《.*》</code>とすると最初の《から最後の》までマッチしてしまうので、<code>?</code>をつけて最短マッチを指定している。</p>
 <h2 id="ワードクラウド">ワードクラウド</h2>
 <p>文字列処理を利用し、ワードクラウドを作ってみよう。ワードクラウドとはタグクラウドとも呼ばれ、文中の出現頻度の高い単語を強調して表示しつつ、多くの単語を詰め込んで、重要なキーワードをわかりやすく可視化する手法である。例えば、本書の最初の「Pythonの概要とGoogle Colabの使い方」の文章から単語を取り出してワードクラウドを作るとこんな感じになる。</p>
-<div class="figure">
-<img src="fig/wc.png" alt="ワードクラウドの例" />
-<p class="caption">ワードクラウドの例</p>
-</div>
+<figure>
+<img src="fig/wc.png" alt="ワードクラウドの例" /><figcaption>ワードクラウドの例</figcaption>
+</figure>
 <p>単語を羅列しているだけなのだが、重要な単語が大きく強調されており、なんとなく文章のキーワードが読み取れる気がしてくるであろう。本書では、青空文庫からテキストを取得してワードクラウドを作成してみよう。</p>
 <h2 id="文字列処理課題">文字列処理：課題</h2>
 <h3 id="課題1形態素解析">課題1：形態素解析</h3>
@@ -456,149 +462,155 @@ text <span class="op">=</span> <span class="st">&#39;隴西《ろうさい》の
 <p>新しいノートブックを開き、<code>aozora.ipynb</code>として保存し、以下の課題を実行せよ。</p>
 <h4 id="aptitudeのインストール">1. aptitudeのインストール</h4>
 <p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt install aptitude</code></pre></div>
-<p>最後に「Processing triggers for libc-bin ...」などと表示され、実行が終了したら完了である。</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="op">!</span>apt install aptitude</a></code></pre></div>
+<p>最後に「Processing triggers for libc-bin …」などと表示され、実行が終了したら完了である。</p>
 <h4 id="mecabのインストール">2. MeCabのインストール</h4>
 <p>次に、先程インストールしたaptitudeを使ってMeCabと必要なライブラリをインストールする。最後の<code>-y</code>を忘れないように。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>aptitude install git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y
-<span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 <span class="op">-</span>y</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1"><span class="op">!</span>aptitude install git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y</a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 <span class="op">-</span>y</a></code></pre></div>
 <p>出力の最後に</p>
-<pre class="txt"><code>done!
-Setting up mecab-jumandic (7.0-20130310-4) ...</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb31-1" title="1">done!</a>
+<a class="sourceLine" id="cb31-2" title="2">Setting up mecab-jumandic (7.0-20130310-4) ...</a></code></pre></div>
 <p>などと表示されれば完了である。</p>
 <h4 id="mecabのpythonバインディングのインストール">3. MeCabのPythonバインディングのインストール</h4>
 <p>最後に、MeCabのPythonバインディングをインストールする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>pip install mecab<span class="op">-</span>python3<span class="op">==</span><span class="fl">0.7</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1"><span class="op">!</span>pip install mecab<span class="op">-</span>python3<span class="op">==</span><span class="fl">0.7</span></a></code></pre></div>
 <p>最新版は不具合があるようなので、バージョン0.7を指定してインストールする。</p>
-<pre class="txt"><code>Successfully installed mecab-python3-0.7</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb33-1" title="1">Successfully installed mecab-python3-0.7</a></code></pre></div>
 <p>と表示されれば完了である。</p>
 <h4 id="mecabのインポート">4. MeCabのインポート</h4>
 <p>先程まででインストールしたライブラリを早速importしてみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> MeCab</code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="im">import</span> MeCab</a></code></pre></div>
 <p>これを実行してエラーがでなければインストールに成功している。</p>
 <h4 id="形態素解析のテスト">5. 形態素解析のテスト</h4>
 <p>次のセルに以下を入力してみよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">m <span class="op">=</span> MeCab.Tagger()
-<span class="bu">print</span>(m.parse(<span class="st">&quot;すもももももももものうち&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1">m <span class="op">=</span> MeCab.Tagger()</a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="bu">print</span>(m.parse(<span class="st">&quot;すもももももももものうち&quot;</span>))</a></code></pre></div>
 <p>品詞情報が出力されれば形態素解析に成功している。</p>
 <h3 id="課題2青空文庫からのデータ取得">課題2：青空文庫からのデータ取得</h3>
 <p>青空文庫のデータを取得して解析する。同じノートブックに続けてプログラムを書くこと。</p>
 <h4 id="ライブラリのインポート">6. ライブラリのインポート</h4>
 <p>追加で必要なライブラリをインポートしよう。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">from</span> collections <span class="im">import</span> defaultdict
-<span class="im">import</span> re
-<span class="im">import</span> io
-<span class="im">import</span> urllib.request
-<span class="im">from</span> zipfile <span class="im">import</span> ZipFile</code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1"><span class="im">from</span> collections <span class="im">import</span> defaultdict</a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="im">import</span> re</a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="im">import</span> io</a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="im">import</span> urllib.request</a>
+<a class="sourceLine" id="cb36-5" title="5"><span class="im">from</span> zipfile <span class="im">import</span> ZipFile</a></code></pre></div>
 <h4 id="ウェブからデータ取得する関数">7. ウェブからデータ取得する関数</h4>
 <p>次のセルに、ウェブからデータを取得する関数<code>load_from_url</code>を以下のように実装せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> load_from_url(url):
-    data <span class="op">=</span> urllib.request.urlopen(url).read()
-    zipdata <span class="op">=</span> ZipFile(io.BytesIO(data))
-    filename <span class="op">=</span> zipdata.namelist()[<span class="dv">0</span>]
-    text <span class="op">=</span> zipdata.read(filename).decode(<span class="st">&quot;shift-jis&quot;</span>)
-    text <span class="op">=</span> re.sub(<span class="vs">r&#39;［.*?］&#39;</span>, <span class="st">&#39;&#39;</span>, text)
-    text <span class="op">=</span> re.sub(<span class="vs">r&#39;《.*?》&#39;</span>, <span class="st">&#39;&#39;</span>, text)
-    <span class="cf">return</span> text</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">def</span> load_from_url(url):</a>
+<a class="sourceLine" id="cb37-2" title="2">    data <span class="op">=</span> urllib.request.urlopen(url).read()</a>
+<a class="sourceLine" id="cb37-3" title="3">    zipdata <span class="op">=</span> ZipFile(io.BytesIO(data))</a>
+<a class="sourceLine" id="cb37-4" title="4">    filename <span class="op">=</span> zipdata.namelist()[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb37-5" title="5">    text <span class="op">=</span> zipdata.read(filename).decode(<span class="st">&quot;shift-jis&quot;</span>)</a>
+<a class="sourceLine" id="cb37-6" title="6">    text <span class="op">=</span> re.sub(<span class="vs">r&#39;［.*?］&#39;</span>, <span class="st">&#39;&#39;</span>, text)</a>
+<a class="sourceLine" id="cb37-7" title="7">    text <span class="op">=</span> re.sub(<span class="vs">r&#39;《.*?》&#39;</span>, <span class="st">&#39;&#39;</span>, text)</a>
+<a class="sourceLine" id="cb37-8" title="8">    <span class="cf">return</span> text</a></code></pre></div>
 <p>ファイルをダウンロードし、zipを展開してから正規表現による文字列処理を行っている。ここで、正規表現に入力するカギカッコは、それぞれ<code>［］</code>全角の角カッコと、<code>《》</code>全角の二重山括弧であることに注意。どちらも日本語入力モードで<code>「</code>や<code>」</code>を変換すると候補に出てくると思われる。ここで出てくる正規表現の意味は、「全角の角カッコや二重山括弧に囲まれた文字列を削除せよ」である。それぞれ注釈やルビに対応する。</p>
 <h4 id="青空文庫からのデータ取得テスト">8. 青空文庫からのデータ取得テスト</h4>
 <p><code>load_from_url</code>を実装して実行したら、以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
-text <span class="op">=</span> load_from_url(URL)
-text.split()[<span class="dv">0</span>]</code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></a>
+<a class="sourceLine" id="cb38-2" title="2">text <span class="op">=</span> load_from_url(URL)</a>
+<a class="sourceLine" id="cb38-3" title="3">text.split()[<span class="dv">0</span>]</a></code></pre></div>
 <p>以下のようにタイトルが出力されれば成功である。</p>
 <p><code>山月記</code></p>
 <p>これは、中島敦という作家の「山月記」という小説である。</p>
 <h4 id="出現頻度解析をする関数">9. 出現頻度解析をする関数</h4>
 <p>ではいよいよ形態素解析をしてみよう。といってもMeCabを使えば楽勝である。MeCabを使って、文中に出現する名詞の出現頻度トップ10を抽出してみよう。以下を入力せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> show_top10(text):
-    m <span class="op">=</span> MeCab.Tagger()
-    node <span class="op">=</span> m.parseToNode(text)
-    dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)
-    <span class="cf">while</span> node:
-        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)
-        key <span class="op">=</span> node.surface
-        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span> <span class="kw">and</span> key <span class="op">!=</span> <span class="st">&quot;&quot;</span>:
-            dic[key] <span class="op">+=</span> <span class="dv">1</span>
-        node <span class="op">=</span> node.<span class="bu">next</span>
-    <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:
-        <span class="bu">print</span>(k <span class="op">+</span> <span class="st">&quot;:&quot;</span> <span class="op">+</span> <span class="bu">str</span>(v))</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1"><span class="kw">def</span> show_top10(text):</a>
+<a class="sourceLine" id="cb39-2" title="2">    m <span class="op">=</span> MeCab.Tagger()</a>
+<a class="sourceLine" id="cb39-3" title="3">    node <span class="op">=</span> m.parseToNode(text)</a>
+<a class="sourceLine" id="cb39-4" title="4">    dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)</a>
+<a class="sourceLine" id="cb39-5" title="5">    <span class="cf">while</span> node:</a>
+<a class="sourceLine" id="cb39-6" title="6">        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</a>
+<a class="sourceLine" id="cb39-7" title="7">        key <span class="op">=</span> node.surface</a>
+<a class="sourceLine" id="cb39-8" title="8">        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span> <span class="kw">and</span> key <span class="op">!=</span> <span class="st">&quot;&quot;</span>:</a>
+<a class="sourceLine" id="cb39-9" title="9">            dic[key] <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb39-10" title="10">        node <span class="op">=</span> node.<span class="bu">next</span></a>
+<a class="sourceLine" id="cb39-11" title="11">    <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:</a>
+<a class="sourceLine" id="cb39-12" title="12">        <span class="bu">print</span>(k <span class="op">+</span> <span class="st">&quot;:&quot;</span> <span class="op">+</span> <span class="bu">str</span>(v))</a></code></pre></div>
 <h4 id="出現頻度解析の実行">10. 出現頻度解析の実行</h4>
 <p>テキストをダウンロードし、形態素解析をしてみよう。以下を入力、実行せよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
-text <span class="op">=</span> load_from_url(URL)
-show_top10(text)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></a>
+<a class="sourceLine" id="cb40-2" title="2">text <span class="op">=</span> load_from_url(URL)</a>
+<a class="sourceLine" id="cb40-3" title="3">show_top10(text)</a></code></pre></div>
 <p>文章に使われている一般名詞の頻度トップ10が、回数とともに出力されたはずである。</p>
 <h3 id="課題3ワードクラウド">課題3：ワードクラウド</h3>
 <p>先程得られた青空文庫の単語リストを使って、青空文庫のワードクラウドを作ってみよう。</p>
 <h4 id="フォントのインストール">11. フォントのインストール</h4>
 <p>日本語表示に使うフォント(IPAゴシック)をインストールする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="op">!</span>apt<span class="op">-</span>get <span class="op">-</span>y install fonts<span class="op">-</span>ipafont<span class="op">-</span>gothic</code></pre></div>
-<pre class="txt"><code>Processing triggers for fontconfig (2.12.6-0ubuntu2) ...</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1"><span class="op">!</span>apt<span class="op">-</span>get <span class="op">-</span>y install fonts<span class="op">-</span>ipafont<span class="op">-</span>gothic</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb42-1" title="1">Processing triggers for fontconfig (2.12.6-0ubuntu2) ...</a></code></pre></div>
 <p>と表示されれば成功である。</p>
 <h4 id="ライブラリのインポート-1">12. ライブラリのインポート</h4>
 <p>必要な追加ライブラリをインポートする。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="im">import</span> IPython
-<span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" title="1"><span class="im">import</span> IPython</a>
+<a class="sourceLine" id="cb43-2" title="2"><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</a></code></pre></div>
 <h4 id="名詞を抽出する関数">13. 名詞を抽出する関数</h4>
 <p>WordCloundに入力するデータは、半角空白で区切られた文字列である。そこで、与えられた文章を解析して、一般名詞だけを空白文字列を区切り文字としてつないだ文字列を返す関数、<code>get_words</code>を実装しよう。<code>return w</code>のインデント位置(<code>while</code>と同じ高さ)に気をつけよ。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="kw">def</span> get_words(text):
-    w <span class="op">=</span> <span class="st">&quot;&quot;</span>
-    m <span class="op">=</span> MeCab.Tagger()
-    node <span class="op">=</span> m.parseToNode(text)
-    <span class="cf">while</span> node:
-        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)
-        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span>:
-            w <span class="op">+=</span> node.surface <span class="op">+</span> <span class="st">&quot; &quot;</span>
-        node <span class="op">=</span> node.<span class="bu">next</span>
-    <span class="cf">return</span> w</code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">def</span> get_words(text):</a>
+<a class="sourceLine" id="cb44-2" title="2">    w <span class="op">=</span> <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb44-3" title="3">    m <span class="op">=</span> MeCab.Tagger()</a>
+<a class="sourceLine" id="cb44-4" title="4">    node <span class="op">=</span> m.parseToNode(text)</a>
+<a class="sourceLine" id="cb44-5" title="5">    <span class="cf">while</span> node:</a>
+<a class="sourceLine" id="cb44-6" title="6">        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</a>
+<a class="sourceLine" id="cb44-7" title="7">        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span>:</a>
+<a class="sourceLine" id="cb44-8" title="8">            w <span class="op">+=</span> node.surface <span class="op">+</span> <span class="st">&quot; &quot;</span></a>
+<a class="sourceLine" id="cb44-9" title="9">        node <span class="op">=</span> node.<span class="bu">next</span></a>
+<a class="sourceLine" id="cb44-10" title="10">    <span class="cf">return</span> w</a></code></pre></div>
 <h4 id="ワードクラウドの作成">14. ワードクラウドの作成</h4>
 <p>ではいよいよワードクラウドを作ろう。以下を入力、実行せよ。上から14番目のセルになるはずである。</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span>
-text <span class="op">=</span> load_from_url(URL)
-words <span class="op">=</span> get_words(text)
-fpath<span class="op">=</span><span class="st">&#39;/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf&#39;</span>
-wc <span class="op">=</span> WordCloud(background_color<span class="op">=</span><span class="st">&quot;white&quot;</span>, width<span class="op">=</span><span class="dv">480</span>, height<span class="op">=</span><span class="dv">320</span>, font_path<span class="op">=</span>fpath)
-wc.generate(words)
-wc.to_file(<span class="st">&quot;wc.png&quot;</span>)
-IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></a>
+<a class="sourceLine" id="cb45-2" title="2">text <span class="op">=</span> load_from_url(URL)</a>
+<a class="sourceLine" id="cb45-3" title="3">words <span class="op">=</span> get_words(text)</a>
+<a class="sourceLine" id="cb45-4" title="4">fpath<span class="op">=</span><span class="st">&#39;/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf&#39;</span></a>
+<a class="sourceLine" id="cb45-5" title="5">wc <span class="op">=</span> WordCloud(background_color<span class="op">=</span><span class="st">&quot;white&quot;</span>, width<span class="op">=</span><span class="dv">480</span>, height<span class="op">=</span><span class="dv">320</span>, font_path<span class="op">=</span>fpath)</a>
+<a class="sourceLine" id="cb45-6" title="6">wc.generate(words)</a>
+<a class="sourceLine" id="cb45-7" title="7">wc.to_file(<span class="st">&quot;wc.png&quot;</span>)</a>
+<a class="sourceLine" id="cb45-8" title="8">IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</a></code></pre></div>
 <p>日本語表示のため、フォントの場所を指定してやる必要があることに注意。しかし、あとは<code>WordCloud</code>が勝手にやってくれる。実際にワードクラウドが出力されれば成功である。</p>
 <h3 id="発展課題自分の好きな小説でワードクラウド">発展課題：自分の好きな小説でワードクラウド</h3>
 <p>青空文庫で好きな小説を探し、ワードクラウドを作成して、その感想を述べよ。</p>
 <p>「小説名　青空文庫」で検索し、出てきたページの下の方にある「図書カード」のリンクをたどると、「ファイルのダウンロード」の箇所に「テキストファイル(ルビあり)」というzipファイルがあるはずである。ブラウザによるが、右クリックで「リンクのアドレスをコピー」できるはずなので、それをURLに指定してやってみよ。</p>
 <p>例えば中島敦の「名人伝」ならば、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" title="1">URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span></a></code></pre></div>
 <p>として実行してみよう。実行の度に結果は変わるが、おそらく中央に大きく「名人」と表示されたことと思う。</p>
 <p>どうしても小説が思いつかない場合は、以下から選んで良い。</p>
 <ul>
-<li>「<a href="https://www.aozora.gr.jp/cards/000296/card47061.html">学問のすすめ</a>」(福沢 諭吉)</li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000296/card47061.html">学問のすすめ</a>」(福沢 諭吉)
+<ul>
 <li><a href="https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip"><code>https://www.aozora.gr.jp/cards/000296/files/47061_ruby_28378.zip</code></a></li>
-<li>「<a href="https://www.aozora.gr.jp/cards/000035/card1567.html">走れメロス</a>」(太宰治)</li>
+</ul></li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000035/card1567.html">走れメロス</a>」(太宰治)
+<ul>
 <li><a href="https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip"><code>https://www.aozora.gr.jp/cards/000035/files/1567_ruby_4948.zip</code></a></li>
-<li>「<a href="https://www.aozora.gr.jp/cards/000148/card789.html">吾輩は猫である</a>」(夏目 漱石)</li>
+</ul></li>
+<li>「<a href="https://www.aozora.gr.jp/cards/000148/card789.html">吾輩は猫である</a>」(夏目 漱石)
+<ul>
 <li><a href="https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip"><code>https://www.aozora.gr.jp/cards/000148/files/789_ruby_5639.zip</code></a></li>
+</ul></li>
 </ul>
 <p>レポートには、自分が選んだ小説の作者とタイトル、そして出てきたワードクラウドを貼り付け、簡単な感想を書くこと。</p>
 <h2 id="余談国際化は難しい">余談：国際化は難しい</h2>
 <p>スマホアプリを作って公開したら人気が出たとしよう。せっかくだから全世界に展開したい。その時に直面するのが国際化対応である。英語でInternationalizationと呼ぶが、20文字と長いので中間の18文字を略して「I18N」と呼ぶ。少しでも経験のある人は「I18Nは悪夢だ」と思うであろう。まず、文字コードはどうするのか？日本語だけでも文字コードは何種類もあるのだ。面倒だからUnicodeしかサポートしない？よろしい。でも地獄はここからだ。</p>
 <p>有名なところでは、アラビア語は「右から左」に文字を書く。メニューなどが左寄せになっている場合、アラビア語に対応するためには「右寄せ」にしなければならない。Twitterにアカウントを持っている人は<code>https://twitter.com/home?lang=ar</code>にアクセスしてみよ。左右が反転するのがわかるだろう。</p>
 <p>数詞も頭が痛い問題だ。英語には単数、複数の区別があることは知っているであろう。例えばある検索条件で何個ファイルを見つけたかを表示したい場合、</p>
-<div class="sourceCode"><pre class="sourceCode py"><code class="sourceCode python"><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:
-    <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)
-<span class="cf">else</span>:
-    <span class="bu">print</span>(<span class="ss">f&quot;Found </span><span class="sc">{</span>files<span class="sc">}</span><span class="ss"> files.&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1"><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb47-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)</a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb47-4" title="4">    <span class="bu">print</span>(<span class="ss">f&quot;Found </span><span class="sc">{</span>files<span class="sc">}</span><span class="ss"> files.&quot;</span>)</a></code></pre></div>
 <p>などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、</p>
-<pre class="txt"><code>a file.
-2 files.
-5 files.
-22 files.
-25 files.</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb48-1" title="1">a file.</a>
+<a class="sourceLine" id="cb48-2" title="2">2 files.</a>
+<a class="sourceLine" id="cb48-3" title="3">5 files.</a>
+<a class="sourceLine" id="cb48-4" title="4">22 files.</a>
+<a class="sourceLine" id="cb48-5" title="5">25 files.</a></code></pre></div>
 <p>を翻訳してみよ。</p>
-<pre class="txt"><code>plik.
-2 pliki.
-5 plików.
-22 pliki.
-25 plików.</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb49-1" title="1">plik.</a>
+<a class="sourceLine" id="cb49-2" title="2">2 pliki.</a>
+<a class="sourceLine" id="cb49-3" title="3">5 plików.</a>
+<a class="sourceLine" id="cb49-4" title="4">22 pliki.</a>
+<a class="sourceLine" id="cb49-5" title="5">25 plików.</a></code></pre></div>
 <p>となるはずだ。ここから「31 files.」や「32 files.」はどうなるか予想できるだろうか？101や102は？今コンピュータで日本語が使えるのも先人たちの血のにじむような努力あってのことだ。「○○はおかしい」「○○は非合理的だ」などと思ってはならない。国際化とは、まず世界の多様性を認めることからスタートしなければならない。</p>
 <p>参考：<a href="https://qiita.com/yugui/items/55f2529c5a731badeff7">ぼくたちのかんがえたさいきょうのi18n国家</a></p>
           </article>
