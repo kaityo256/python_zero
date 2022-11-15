@@ -234,7 +234,6 @@ n = 5
 graph = Digraph(format='png')
 graph.attr(size="10,10")
 kaidan_g(n, graph, [])
-graph
 graph.render("test")
 Image.open("test.png")
 ```
