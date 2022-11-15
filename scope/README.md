@@ -536,7 +536,7 @@ make_graph(3)
 
 課題2で作成した`collatz.ipynb`をコピーして使おう。「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2.ipynb」という名前にしよう。「collatz2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。
 
-「collatz2.ipynb」がGoogle Colabで開かれたら、
+「collatz2.ipynb」がGoogle Colabで開かれたら、「ランタイム」メニューの「すべてのセルを実行」を選び、すべてのセルを実行済みにしよう。その後、
 
 * 数字が1か3になったら終了とする
 * 奇数だったら3倍して3を足す
