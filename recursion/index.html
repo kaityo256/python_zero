@@ -418,9 +418,8 @@ F_n = F_{n-1} + F_{n-2}
 <a class="sourceLine" id="cb8-2" title="2">graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)</a>
 <a class="sourceLine" id="cb8-3" title="3">graph.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</a>
 <a class="sourceLine" id="cb8-4" title="4">kaidan_g(n, graph, [])</a>
-<a class="sourceLine" id="cb8-5" title="5">graph</a>
-<a class="sourceLine" id="cb8-6" title="6">graph.render(<span class="st">&quot;test&quot;</span>)</a>
-<a class="sourceLine" id="cb8-7" title="7">Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb8-5" title="5">graph.render(<span class="st">&quot;test&quot;</span>)</a>
+<a class="sourceLine" id="cb8-6" title="6">Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</a></code></pre></div>
 <p>無事に再帰木が表示されただろうか？数字が<code>kaidan(n)</code>として呼び出された<code>n</code>の値である。<code>kaidan(5)</code>は<code>kaidan(4)</code>と<code>kaidan(3)</code>を呼び出し、<code>kaidan(4)</code>は<code>kaidan(3)</code>と<code>kaidan(2)</code>を呼び出し・・・と、再帰的に呼び出しが続いていき、<code>n=1</code>もしくは<code>n=2</code>で呼び出しが止まる(終端条件)ことがわかるであろう。</p>
 <p>もし正しく表示されたら、1行目を<code>n=8</code>などとして、少し大きな再帰木も表示してみよ。</p>
 <h3 id="課題2-1-迷路探索">課題2-1 迷路探索</h3>
@@ -532,7 +531,7 @@ F_n = F_{n-1} + F_{n-2}
 <a class="sourceLine" id="cb18-5" title="5">        <span class="cf">return</span></a>
 <a class="sourceLine" id="cb18-6" title="6">    maze[x][y] <span class="op">=</span> step</a>
 <a class="sourceLine" id="cb18-7" title="7">    index <span class="op">=</span> <span class="bu">len</span>(files)</a>
-<a class="sourceLine" id="cb18-8" title="8">    filename <span class="op">=</span> <span class="st">&quot;file</span><span class="sc">%03d</span><span class="st">.png&quot;</span> <span class="op">%</span> index</a>
+<a class="sourceLine" id="cb18-8" title="8">    filename <span class="op">=</span> <span class="ss">f&quot;file</span><span class="sc">{</span>index<span class="sc">:03}</span><span class="ss">.png&quot;</span></a>
 <a class="sourceLine" id="cb18-9" title="9">    save_image(maze,filename)</a>
 <a class="sourceLine" id="cb18-10" title="10">    files.append(filename)</a>
 <a class="sourceLine" id="cb18-11" title="11">    solve_anime(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze, files) <span class="co"># 右を探索</span></a>
