@@ -234,7 +234,6 @@ n = 5
 graph = Digraph(format='png')
 graph.attr(size="10,10")
 kaidan_g(n, graph, [])
-graph
 graph.render("test")
 Image.open("test.png")
 ```
@@ -411,7 +410,7 @@ def solve_anime(x, y, step, maze, files):
         return
     maze[x][y] = step
     index = len(files)
-    filename = "file%03d.png" % index
+    filename = f"file{index:03}.png"
     save_image(maze,filename)
     files.append(filename)
     solve_anime(x+1, y, step+1, maze, files) # 右を探索
