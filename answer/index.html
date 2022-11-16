@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title>answer/index.md</title>
+                <title>略解と解説</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -242,215 +242,243 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="略解と解説">略解と解説</h1>
-<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="第1章">第1章</h2>
-<h3 id="発展課題">発展課題</h3>
-<p>六芒星の描画。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb1-2" title="2">draw <span class="op">=</span> ImageDraw.Draw(img)</a>
-<a class="sourceLine" id="cb1-3" title="3">cx <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb1-4" title="4">cy <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb1-5" title="5">r <span class="op">=</span> <span class="dv">96</span></a>
-<a class="sourceLine" id="cb1-6" title="6">draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</a>
-<a class="sourceLine" id="cb1-7" title="7">N <span class="op">=</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb1-8" title="8">s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> pi <span class="op">/</span> N</a>
-<a class="sourceLine" id="cb1-9" title="9"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</a>
-<a class="sourceLine" id="cb1-10" title="10">    s1 <span class="op">=</span> s<span class="op">*</span>i <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</a>
-<a class="sourceLine" id="cb1-11" title="11">    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</a>
-<a class="sourceLine" id="cb1-12" title="12">    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb1-13" title="13">    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb1-14" title="14">    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb1-15" title="15">    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb1-16" title="16">    draw.line((x1, y1, x2, y2))</a>
-<a class="sourceLine" id="cb1-17" title="17">    s1 <span class="op">=</span> s<span class="op">*</span>(i<span class="fl">+0.5</span>) <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</a>
-<a class="sourceLine" id="cb1-18" title="18">    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</a>
-<a class="sourceLine" id="cb1-19" title="19">    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb1-20" title="20">    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb1-21" title="21">    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb1-22" title="22">    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb1-23" title="23">    draw.line((x1, y1, x2, y2))</a></code></pre></div>
-<h2 id="第2章">第2章</h2>
-<h3 id="課題2">課題2</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">def</span> plot(draw, s):</a>
-<a class="sourceLine" id="cb2-2" title="2">    hs <span class="op">=</span> s <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb2-3" title="3">    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb2-4" title="4">    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb2-5" title="5">    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb2-6" title="6">    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):</a>
-<a class="sourceLine" id="cb2-7" title="7">        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):</a>
-<a class="sourceLine" id="cb2-8" title="8">            z <span class="op">=</span> <span class="bu">complex</span>(x <span class="op">-</span> hs <span class="op">+</span> <span class="fl">0.5</span>, <span class="op">-</span>y <span class="op">+</span> hs <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> s <span class="op">*</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb2-9" title="9">            z <span class="op">=</span> newton(z)</a>
-<a class="sourceLine" id="cb2-10" title="10">            <span class="co"># ここを埋めよ</span></a>
-<a class="sourceLine" id="cb2-11" title="11">            <span class="cf">if</span> z.real <span class="op">&gt;</span> <span class="fl">0.0</span>:</a>
-<a class="sourceLine" id="cb2-12" title="12">              c <span class="op">=</span> red</a>
-<a class="sourceLine" id="cb2-13" title="13">            <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb2-14" title="14">              <span class="cf">if</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</a>
-<a class="sourceLine" id="cb2-15" title="15">                c <span class="op">=</span> green</a>
-<a class="sourceLine" id="cb2-16" title="16">              <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb2-17" title="17">                c <span class="op">=</span> blue</a>
-<a class="sourceLine" id="cb2-18" title="18">            draw.rectangle([x, y, x <span class="op">+</span> <span class="dv">1</span>, y <span class="op">+</span> <span class="dv">1</span>], fill<span class="op">=</span>c)</a></code></pre></div>
-<h3 id="発展課題-1">発展課題</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">def</span> newton(x):</a>
-<a class="sourceLine" id="cb3-2" title="2">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb3-3" title="3">        x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">4</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> (<span class="dv">4</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb3-4" title="4">    <span class="cf">return</span> x</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6"><span class="kw">def</span> plot(draw, s):</a>
-<a class="sourceLine" id="cb3-7" title="7">    hs <span class="op">=</span> s <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb3-8" title="8">    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb3-9" title="9">    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb3-10" title="10">    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb3-11" title="11">    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb3-12" title="12">    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):</a>
-<a class="sourceLine" id="cb3-13" title="13">        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):</a>
-<a class="sourceLine" id="cb3-14" title="14">            z <span class="op">=</span> <span class="bu">complex</span>(x <span class="op">-</span> hs <span class="op">+</span> <span class="fl">0.5</span>, <span class="op">-</span>y <span class="op">+</span> hs <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> s <span class="op">*</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb3-15" title="15">            z <span class="op">=</span> newton(z)</a>
-<a class="sourceLine" id="cb3-16" title="16">            <span class="co"># ここを埋めよ</span></a>
-<a class="sourceLine" id="cb3-17" title="17">            <span class="cf">if</span> z.real <span class="op">+</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</a>
-<a class="sourceLine" id="cb3-18" title="18">              <span class="cf">if</span> z.real <span class="op">-</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</a>
-<a class="sourceLine" id="cb3-19" title="19">                c <span class="op">=</span> red</a>
-<a class="sourceLine" id="cb3-20" title="20">              <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb3-21" title="21">                c <span class="op">=</span> purple</a>
-<a class="sourceLine" id="cb3-22" title="22">            <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb3-23" title="23">              <span class="cf">if</span> z.real <span class="op">-</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</a>
-<a class="sourceLine" id="cb3-24" title="24">                c <span class="op">=</span> green</a>
-<a class="sourceLine" id="cb3-25" title="25">              <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb3-26" title="26">                c <span class="op">=</span> blue</a>
-<a class="sourceLine" id="cb3-27" title="27">            draw.rectangle([x, y, x <span class="op">+</span> <span class="dv">1</span>, y <span class="op">+</span> <span class="dv">1</span>], fill<span class="op">=</span>c)</a></code></pre></div>
-<h2 id="第3章">第3章</h2>
-<h3 id="課題2-1">課題2</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">def</span> collatz(i):</a>
-<a class="sourceLine" id="cb4-2" title="2">    <span class="bu">print</span>(i)</a>
-<a class="sourceLine" id="cb4-3" title="3">    <span class="cf">while</span> (i<span class="op">!=</span><span class="dv">1</span>):</a>
-<a class="sourceLine" id="cb4-4" title="4">        <span class="cf">if</span> (i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>):</a>
-<a class="sourceLine" id="cb4-5" title="5">            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb4-6" title="6">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb4-7" title="7">            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb4-8" title="8">        <span class="bu">print</span>(i)</a></code></pre></div>
-<h3 id="発展課題-2">発展課題</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">def</span> collatz_graph(i, edges):</a>
-<a class="sourceLine" id="cb5-2" title="2">    <span class="cf">while</span> (i<span class="op">!=</span><span class="dv">1</span> <span class="kw">and</span> i<span class="op">!=</span><span class="dv">3</span>):</a>
-<a class="sourceLine" id="cb5-3" title="3">        j <span class="op">=</span> i</a>
-<a class="sourceLine" id="cb5-4" title="4">        <span class="cf">if</span> (i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>):</a>
-<a class="sourceLine" id="cb5-5" title="5">            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb5-6" title="6">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb5-7" title="7">            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">3</span></a>
-<a class="sourceLine" id="cb5-8" title="8">        edges.add((j, i))</a></code></pre></div>
-<h2 id="第7章">第7章</h2>
-<h3 id="課題1-1">課題1-1</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">def</span> kaidan(n):</a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="co"># 終端条件</span></a>
-<a class="sourceLine" id="cb6-3" title="3">    <span class="cf">if</span> n<span class="op">==</span><span class="dv">1</span>:</a>
-<a class="sourceLine" id="cb6-4" title="4">        <span class="cf">return</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb6-5" title="5">    <span class="cf">if</span> n<span class="op">==</span><span class="dv">2</span>:</a>
-<a class="sourceLine" id="cb6-6" title="6">        <span class="cf">return</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb6-7" title="7">    <span class="co"># 再帰部分</span></a>
-<a class="sourceLine" id="cb6-8" title="8">    <span class="cf">return</span> kaidan(n<span class="dv">-1</span>)<span class="op">+</span>kaidan(n<span class="dv">-2</span>)</a></code></pre></div>
-<h3 id="課題2-1-1">課題2-1</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">def</span> solve(x, y, step, maze):</a>
-<a class="sourceLine" id="cb7-2" title="2">    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</a>
-<a class="sourceLine" id="cb7-3" title="3">        <span class="cf">return</span></a>
-<a class="sourceLine" id="cb7-4" title="4">    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):</a>
-<a class="sourceLine" id="cb7-5" title="5">        <span class="cf">return</span></a>
-<a class="sourceLine" id="cb7-6" title="6">    maze[x][y] <span class="op">=</span> step</a>
-<a class="sourceLine" id="cb7-7" title="7">    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze) <span class="co"># 右を探索</span></a>
-<a class="sourceLine" id="cb7-8" title="8">    <span class="co"># 残りを埋めよ</span></a>
-<a class="sourceLine" id="cb7-9" title="9">    solve(x<span class="dv">-1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)</a>
-<a class="sourceLine" id="cb7-10" title="10">    solve(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</a>
-<a class="sourceLine" id="cb7-11" title="11">    solve(x, y<span class="dv">-1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</a></code></pre></div>
-<h2 id="第9章">第9章</h2>
-<p>そのまま実行すると、以下のように画像のところどころに黒い点が現れる「黒飛び」が発生する。</p>
-<figure>
-<img src="fig/numpy_without_clip.png" alt="黒飛びのある画像" /><figcaption>黒飛びのある画像</figcaption>
-</figure>
-<p>近似画像の「黒飛び」が発生するのは、画像のピクセルの値が0から255の範囲から超えてしまうためだ。関数<code>svd</code>において、近似値を構成しているところで、以下のように最小値と最大値を指定してやると「黒飛び」がなくなる。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1">    b <span class="op">=</span> np.asarray(ur <span class="op">*</span> sr <span class="op">*</span> vr)</a>
-<a class="sourceLine" id="cb8-2" title="2">    b <span class="op">=</span> np.clip(b, <span class="dv">0</span>,<span class="dv">255</span>)        <span class="co"># 最小値と最大値を指定</span></a></code></pre></div>
-<figure>
-<img src="fig/numpy_with_clip.png" alt="黒飛びのない画像" /><figcaption>黒飛びのない画像</figcaption>
-</figure>
-<p>講義では「なぜ黒飛びが発生するか」を考察させると良い。</p>
-<h2 id="第10章">第10章</h2>
-<h3 id="課題2-2">課題2-2</h3>
-<p>電卓に乗除算を追加する。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">def</span> calc(code):</a>
-<a class="sourceLine" id="cb9-2" title="2">    data <span class="op">=</span> code.split()</a>
-<a class="sourceLine" id="cb9-3" title="3">    stack <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb9-4" title="4">    <span class="cf">for</span> x <span class="kw">in</span> data:</a>
-<a class="sourceLine" id="cb9-5" title="5">        <span class="bu">print</span>(stack, x, end<span class="op">=</span><span class="st">&quot; =&gt; &quot;</span>)</a>
-<a class="sourceLine" id="cb9-6" title="6">        <span class="cf">if</span> x <span class="op">==</span> <span class="st">&#39;+&#39;</span>:</a>
-<a class="sourceLine" id="cb9-7" title="7">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-8" title="8">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-9" title="9">            stack.append(a<span class="op">+</span>b)</a>
-<a class="sourceLine" id="cb9-10" title="10">        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;-&#39;</span>:</a>
-<a class="sourceLine" id="cb9-11" title="11">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-12" title="12">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-13" title="13">            stack.append(a<span class="op">-</span>b)</a>
-<a class="sourceLine" id="cb9-14" title="14">        <span class="co"># 以下を追加</span></a>
-<a class="sourceLine" id="cb9-15" title="15">        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</a>
-<a class="sourceLine" id="cb9-16" title="16">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-17" title="17">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-18" title="18">            stack.append(a<span class="op">*</span>b)</a>
-<a class="sourceLine" id="cb9-19" title="19">        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;/&#39;</span>:</a>
-<a class="sourceLine" id="cb9-20" title="20">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-21" title="21">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb9-22" title="22">            stack.append(a<span class="op">//</span>b)</a>
-<a class="sourceLine" id="cb9-23" title="23">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb9-24" title="24">            stack.append(<span class="bu">int</span>(x))</a>
-<a class="sourceLine" id="cb9-25" title="25">        <span class="bu">print</span>(stack)</a>
-<a class="sourceLine" id="cb9-26" title="26">    <span class="bu">print</span>(stack.pop())</a></code></pre></div>
-<h3 id="発展課題-3">発展課題</h3>
-<p>例えば「1 + 2 * 3 - 4」の例であれば、まず以下を実行する。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">dis.dis(<span class="st">&quot;a + b * c - d&quot;</span>)</a></code></pre></div>
-<p>すると、以下のような結果が得られる。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb11-1" title="1">  1           0 LOAD_NAME                0 (a)</a>
-<a class="sourceLine" id="cb11-2" title="2">              2 LOAD_NAME                1 (b)</a>
-<a class="sourceLine" id="cb11-3" title="3">              4 LOAD_NAME                2 (c)</a>
-<a class="sourceLine" id="cb11-4" title="4">              6 BINARY_MULTIPLY</a>
-<a class="sourceLine" id="cb11-5" title="5">              8 BINARY_ADD</a>
-<a class="sourceLine" id="cb11-6" title="6">             10 LOAD_NAME                3 (d)</a>
-<a class="sourceLine" id="cb11-7" title="7">             12 BINARY_SUBTRACT</a>
-<a class="sourceLine" id="cb11-8" title="8">             14 RETURN_VALUE</a></code></pre></div>
-<p>これを見ながら、逆ポーランド記法を組み立てる。<code>LOAD_NAME</code>はそのまま値を、<code>BINARY_MULITPLY</code>は乗算記号<code>*</code>をと書いていくと<code>1 2 3 * + 4 -</code>という文字列を作ることができる。「電卓」に入力してみると</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">calc(<span class="st">&quot;1 2 3 * + 4 -&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb13-1" title="1">[] 1 =&gt; [1]</a>
-<a class="sourceLine" id="cb13-2" title="2">[1] 2 =&gt; [1, 2]</a>
-<a class="sourceLine" id="cb13-3" title="3">[1, 2] 3 =&gt; [1, 2, 3]</a>
-<a class="sourceLine" id="cb13-4" title="4">[1, 2, 3] * =&gt; [1, 6]</a>
-<a class="sourceLine" id="cb13-5" title="5">[1, 6] + =&gt; [7]</a>
-<a class="sourceLine" id="cb13-6" title="6">[7] 4 =&gt; [7, 4]</a>
-<a class="sourceLine" id="cb13-7" title="7">[7, 4] - =&gt; [3]</a>
-<a class="sourceLine" id="cb13-8" title="8">3</a></code></pre></div>
-<p>と、正しい答え3が得られる。「(1 + 2 * 3) / 4」の場合も同様。</p>
-<h2 id="第12章">第12章</h2>
-<h3 id="課題1">課題1</h3>
-<p>最初に選んだ箱が正解だった場合は、残りの箱からランダムに選ぶので、</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">      second_choice <span class="op">=</span> choice(rest_boxes) <span class="co"># ここを埋めよ(1)</span></a></code></pre></div>
-<p>また、最初に選んだ箱が正解ではなかった場合は、次に選ぶ箱は必ず正解になるので</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">      second_choice <span class="op">=</span> answer <span class="co"># ここを埋めよ(2)</span></a></code></pre></div>
-<h3 id="課題2-3">課題2</h3>
-<p>左から右に通行可能な確率は、道路の通行可能確率pが0.5より小さいとほとんどゼロ、0.5より大きいとほぼ1という、ステップ関数のような関数になる。このように、パラメタを変えた時、あるところで系の状態が劇的に変化する現象を相転移と呼ぶ。パーコレーションは相転移を起こす最も簡単なモデルの一つである。</p>
-<h3 id="発展課題-4">発展課題</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">def</span> gacha(n):</a>
-<a class="sourceLine" id="cb16-2" title="2">    cd <span class="op">=</span> <span class="dv">0</span></a>
-<a class="sourceLine" id="cb16-3" title="3">    posters <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb16-4" title="4">    <span class="cf">while</span> <span class="bu">len</span>(<span class="bu">set</span>(posters)) <span class="op">&lt;</span> n:</a>
-<a class="sourceLine" id="cb16-5" title="5">        posters.append(random.randint(<span class="dv">1</span>, n))</a>
-<a class="sourceLine" id="cb16-6" title="6">        cd <span class="op">+=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb16-7" title="7">    <span class="cf">return</span> cd</a></code></pre></div>
-<h2 id="第13章">第13章</h2>
-<h3 id="課題2-4">課題2</h3>
-<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="at">@jit</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="kw">def</span> laplacian(m, n, s):</a>
-<a class="sourceLine" id="cb17-3" title="3">    ts <span class="op">=</span> <span class="fl">0.0</span></a>
-<a class="sourceLine" id="cb17-4" title="4">    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]</a>
-<a class="sourceLine" id="cb17-5" title="5">    ts <span class="op">+=</span> s[m<span class="dv">-1</span>][n]</a>
-<a class="sourceLine" id="cb17-6" title="6">    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb17-7" title="7">    ts <span class="op">+=</span> s[m][n<span class="dv">-1</span>]</a>
-<a class="sourceLine" id="cb17-8" title="8">    <span class="co"># ここを埋めよ</span></a>
-<a class="sourceLine" id="cb17-9" title="9">    ts <span class="op">-=</span> <span class="dv">4</span><span class="op">*</span>s[m][n]</a>
-<a class="sourceLine" id="cb17-10" title="10">    <span class="cf">return</span> ts</a></code></pre></div>
+                  <header>
+        <h1 class="title">略解と解説</h1>
+                              </header>
+                  <p><a href="../index.html">[Up]</a> <a
+                  href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+                  <h1 id="第1章">第1章</h1>
+                  <h2 id="発展課題">発展課題</h2>
+                  <p>六芒星の描画。</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cy <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="dv">96</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> pi <span class="op">/</span> N</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    s1 <span class="op">=</span> s<span class="op">*</span>i <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    draw.line((x1, y1, x2, y2))</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    s1 <span class="op">=</span> s<span class="op">*</span>(i<span class="op">+</span><span class="fl">0.5</span>) <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    draw.line((x1, y1, x2, y2))</span></code></pre></div>
+                  <h1 id="第2章">第2章</h1>
+                  <h2 id="課題2">課題2</h2>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot(draw, s):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    hs <span class="op">=</span> s <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            z <span class="op">=</span> <span class="bu">complex</span>(x <span class="op">-</span> hs <span class="op">+</span> <span class="fl">0.5</span>, <span class="op">-</span>y <span class="op">+</span> hs <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> s <span class="op">*</span> <span class="dv">4</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            z <span class="op">=</span> newton(z)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="co"># ここを埋めよ</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> z.real <span class="op">&gt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>              c <span class="op">=</span> red</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> green</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>              <span class="cf">else</span>:</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> blue</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            draw.rectangle([x, y, x <span class="op">+</span> <span class="dv">1</span>, y <span class="op">+</span> <span class="dv">1</span>], fill<span class="op">=</span>c)</span></code></pre></div>
+                  <h2 id="発展課題-1">発展課題</h2>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> newton(x):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x <span class="op">-</span> (x<span class="op">**</span><span class="dv">4</span> <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> (<span class="dv">4</span> <span class="op">*</span> x<span class="op">**</span><span class="dv">3</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot(draw, s):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    hs <span class="op">=</span> s <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    red <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    green <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    blue <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    purple <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">0</span> ,<span class="dv">255</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(s):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(s):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            z <span class="op">=</span> <span class="bu">complex</span>(x <span class="op">-</span> hs <span class="op">+</span> <span class="fl">0.5</span>, <span class="op">-</span>y <span class="op">+</span> hs <span class="op">+</span> <span class="fl">0.5</span>) <span class="op">/</span> s <span class="op">*</span> <span class="dv">4</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            z <span class="op">=</span> newton(z)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="co"># ここを埋めよ</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> z.real <span class="op">+</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> z.real <span class="op">-</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> red</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>              <span class="cf">else</span>:</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> purple</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>              <span class="cf">if</span> z.real <span class="op">-</span> z.imag <span class="op">&gt;</span> <span class="fl">0.0</span>:</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> green</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>              <span class="cf">else</span>:</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                c <span class="op">=</span> blue</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>            draw.rectangle([x, y, x <span class="op">+</span> <span class="dv">1</span>, y <span class="op">+</span> <span class="dv">1</span>], fill<span class="op">=</span>c)</span></code></pre></div>
+                  <h1 id="第3章">第3章</h1>
+                  <h2 id="課題2-1">課題2</h2>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collatz(i):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (i<span class="op">!=</span><span class="dv">1</span>):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(i)</span></code></pre></div>
+                  <h2 id="発展課題-2">発展課題</h2>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collatz_graph(i, edges):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (i<span class="op">!=</span><span class="dv">1</span> <span class="kw">and</span> i<span class="op">!=</span><span class="dv">3</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        j <span class="op">=</span> i</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">3</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        edges.add((j, i))</span></code></pre></div>
+                  <h1 id="第7章">第7章</h1>
+                  <h2 id="課題1-1">課題1-1</h2>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> kaidan(n):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 終端条件</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n<span class="op">==</span><span class="dv">1</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n<span class="op">==</span><span class="dv">2</span>:</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 再帰部分</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> kaidan(n<span class="op">-</span><span class="dv">1</span>)<span class="op">+</span>kaidan(n<span class="op">-</span><span class="dv">2</span>)</span></code></pre></div>
+                  <h2 id="課題2-1-1">課題2-1</h2>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve(x, y, step, maze):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> maze[x][y] <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(maze[x][y], <span class="bu">int</span>):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    maze[x][y] <span class="op">=</span> step</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    solve(x<span class="op">+</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze) <span class="co"># 右を探索</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 残りを埋めよ</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    solve(x<span class="op">-</span><span class="dv">1</span>, y, step<span class="op">+</span><span class="dv">1</span>, maze)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    solve(x, y<span class="op">+</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    solve(x, y<span class="op">-</span><span class="dv">1</span>, step<span class="op">+</span><span class="dv">1</span>, maze)</span></code></pre></div>
+                  <h1 id="第9章">第9章</h1>
+                  <p>そのまま実行すると、以下のように画像のところどころに黒い点が現れる「黒飛び」が発生する。</p>
+                  <figure>
+                  <img src="fig/numpy_without_clip.png"
+                  alt="黒飛びのある画像" />
+                  <figcaption
+                  aria-hidden="true">黒飛びのある画像</figcaption>
+                  </figure>
+                  <p>近似画像の「黒飛び」が発生するのは、画像のピクセルの値が0から255の範囲から超えてしまうためだ。関数<code>svd</code>において、近似値を構成しているところで、以下のように最小値と最大値を指定してやると「黒飛び」がなくなる。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.asarray(ur <span class="op">*</span> sr <span class="op">*</span> vr)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> np.clip(b, <span class="dv">0</span>,<span class="dv">255</span>)        <span class="co"># 最小値と最大値を指定</span></span></code></pre></div>
+                  <figure>
+                  <img src="fig/numpy_with_clip.png"
+                  alt="黒飛びのない画像" />
+                  <figcaption
+                  aria-hidden="true">黒飛びのない画像</figcaption>
+                  </figure>
+                  <p>講義では「なぜ黒飛びが発生するか」を考察させると良い。</p>
+                  <h1 id="第10章">第10章</h1>
+                  <h2 id="課題2-2">課題2-2</h2>
+                  <p>電卓に乗除算を追加する。</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc(code):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> code.split()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    stack <span class="op">=</span> []</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> data:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(stack, x, end<span class="op">=</span><span class="st">&quot; =&gt; &quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">==</span> <span class="st">&#39;+&#39;</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">+</span>b)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;-&#39;</span>:</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">-</span>b)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 以下を追加</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;*&#39;</span>:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">*</span>b)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;/&#39;</span>:</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">//</span>b)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            stack.append(<span class="bu">int</span>(x))</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(stack)</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(stack.pop())</span></code></pre></div>
+                  <h2 id="発展課題-3">発展課題</h2>
+                  <p>例えば「1 + 2 * 3 -
+                  4」の例であれば、まず以下を実行する。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b * c - d&quot;</span>)</span></code></pre></div>
+                  <p>すると、以下のような結果が得られる。</p>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  1           0 LOAD_NAME                0 (a)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>              2 LOAD_NAME                1 (b)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                2 (c)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>              6 BINARY_MULTIPLY</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>              8 BINARY_ADD</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>             10 LOAD_NAME                3 (d)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>             12 BINARY_SUBTRACT</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>             14 RETURN_VALUE</span></code></pre></div>
+                  <p>これを見ながら、逆ポーランド記法を組み立てる。<code>LOAD_NAME</code>はそのまま値を、<code>BINARY_MULITPLY</code>は乗算記号<code>*</code>をと書いていくと<code>1 2 3 * + 4 -</code>という文字列を作ることができる。「電卓」に入力してみると</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>calc(<span class="st">&quot;1 2 3 * + 4 -&quot;</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>[] 1 =&gt; [1]</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>[1] 2 =&gt; [1, 2]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>[1, 2] 3 =&gt; [1, 2, 3]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>[1, 2, 3] * =&gt; [1, 6]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>[1, 6] + =&gt; [7]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>[7] 4 =&gt; [7, 4]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>[7, 4] - =&gt; [3]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>3</span></code></pre></div>
+                  <p>と、正しい答え3が得られる。「(1 + 2 * 3) /
+                  4」の場合も同様。</p>
+                  <h1 id="第12章">第12章</h1>
+                  <h2 id="課題1">課題1</h2>
+                  <p>最初に選んだ箱が正解だった場合は、残りの箱からランダムに選ぶので、</p>
+                  <div class="sourceCode" id="cb14"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>      second_choice <span class="op">=</span> choice(rest_boxes) <span class="co"># ここを埋めよ(1)</span></span></code></pre></div>
+                  <p>また、最初に選んだ箱が正解ではなかった場合は、次に選ぶ箱は必ず正解になるので</p>
+                  <div class="sourceCode" id="cb15"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>      second_choice <span class="op">=</span> answer <span class="co"># ここを埋めよ(2)</span></span></code></pre></div>
+                  <h2 id="課題2-3">課題2</h2>
+                  <p>左から右に通行可能な確率は、道路の通行可能確率pが0.5より小さいとほとんどゼロ、0.5より大きいとほぼ1という、ステップ関数のような関数になる。このように、パラメタを変えた時、あるところで系の状態が劇的に変化する現象を相転移と呼ぶ。パーコレーションは相転移を起こす最も簡単なモデルの一つである。</p>
+                  <h2 id="発展課題-4">発展課題</h2>
+                  <div class="sourceCode" id="cb16"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gacha(n):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    cd <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    posters <span class="op">=</span> []</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="bu">len</span>(<span class="bu">set</span>(posters)) <span class="op">&lt;</span> n:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        posters.append(random.randint(<span class="dv">1</span>, n))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        cd <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> cd</span></code></pre></div>
+                  <h1 id="第13章">第13章</h1>
+                  <h2 id="課題2-4">課題2</h2>
+                  <div class="sourceCode" id="cb17"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="at">@jit</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> laplacian(m, n, s):</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">+=</span> s[m<span class="op">+</span><span class="dv">1</span>][n]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">+=</span> s[m<span class="op">-</span><span class="dv">1</span>][n]</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">+=</span> s[m][n<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">+=</span> s[m][n<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ここを埋めよ</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    ts <span class="op">-=</span> <span class="dv">4</span><span class="op">*</span>s[m][n]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ts</span></code></pre></div>
           </article>
   </body>
 

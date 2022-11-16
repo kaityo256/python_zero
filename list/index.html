@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title>list/index.md</title>
+                <title>リストとタプル</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -243,418 +245,559 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="リストとタプル">リストとタプル</h1>
-<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
-<ul>
-<li>リスト</li>
-<li>タプル</li>
-<li>値のコピーとリストのコピーの違い</li>
-<li>参照の値渡し</li>
-<li>リスト内包表記</li>
-</ul>
-<h2 id="リスト">リスト</h2>
-<p>プログラムを組んでいると、何かひとまとまりのデータをまとめて保持し、処理したい場合がある。 そのようなデータ構造を表現するのが<strong>リスト(list)</strong>である。他の言語では<strong>配列(array)</strong>と呼ばれることもある。</p>
-<p>リストは<code>[]</code>の中に、カンマで区切って表現する。例えば、</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a></code></pre></div>
-<p>とすると、整数の1,2,3を含むリストができる。</p>
-<p>また、</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">[<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</a></code></pre></div>
-<p>とすると、文字列のリストができる。リストにはどんなものも入れることができる。また、異なる種類のものを混ぜて入れることもできる。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1">[<span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="fl">1.0</span>]</a></code></pre></div>
-<p>変数にリストを代入することもできる。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</a></code></pre></div>
-<p>リストの要素には、<code>[]</code>でアクセスできる。例えば<code>a</code>の最初の要素が欲しい場合は<code>a[0]</code>とする。カッコの中の数字を <strong>添え字(index)</strong> と呼ぶ。言語によって、添え字が0始まりの場合と1始まりの場合がある。Pythonは0始まりである。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb5-2" title="2">a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></a></code></pre></div>
-<p>要素に値を代入することができる。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb6-2" title="2">a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb6-3" title="3">a <span class="co"># =&gt; [1,4,3]</span></a></code></pre></div>
-<p>リストは入れ子にすることもできる。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</a></code></pre></div>
-<p>入れ子になったリストは、添え字を複数指定することで要素を得ることができる。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1">a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</a>
-<a class="sourceLine" id="cb8-2" title="2">a[<span class="dv">0</span>] <span class="co"># =&gt; [1,2]</span></a>
-<a class="sourceLine" id="cb8-3" title="3">a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co"># =&gt; 2</span></a></code></pre></div>
-<p>リストの長さは<code>len</code>という関数で取得できる。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></a></code></pre></div>
-<p>二つのリストを結合することができる。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1">[<span class="dv">1</span>,<span class="dv">2</span>] <span class="op">+</span> [<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>] <span class="co"># =&gt; [1,2,3,4,5]</span></a></code></pre></div>
-<p>要素を追加する場合は<code>append</code>を使う。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb11-2" title="2">a.append(<span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb11-3" title="3">a <span class="co"># =&gt; [1,2,3]</span></a></code></pre></div>
-<p>リストを<code>append</code>する場合には注意が必要である。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">a <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb12-2" title="2">b <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb12-3" title="3">a.append(b)</a>
-<a class="sourceLine" id="cb12-4" title="4">a.append(b)</a></code></pre></div>
-<p>とすると、見かけ上<code>a</code>は2行2列の行列のように見える。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="bu">print</span>(a) <span class="co"># =&gt; [[1, 2], [1, 2]]</span></a></code></pre></div>
-<p>しかし、要素に含まれる二つのリストは同じものであるから、一方を修正するともう一方も影響を受ける。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">a[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="bu">print</span>(a) <span class="co"># =&gt; [[4, 2], [4, 2]]</span></a></code></pre></div>
-<p>なぜこうなるかは、後述する「リストのメモリ上での表現」を知れば理解できるであろう。</p>
-<p>リストに要素が含まれるかどうかは、<code>in</code>で調べることができる。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="dv">4</span> <span class="kw">in</span> a <span class="co"># =&gt; False</span></a></code></pre></div>
-<p>リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、<code>for</code>と<code>in</code>を使う。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]</a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="cf">for</span> i <span class="kw">in</span> a:</a>
-<a class="sourceLine" id="cb16-3" title="3">    <span class="bu">print</span>(i)</a></code></pre></div>
-<h2 id="タプル">タプル</h2>
-<p><strong>タプル(tuple)</strong> は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span></a>
-<a class="sourceLine" id="cb17-2" title="2">a <span class="co"># =&gt; (1, 2, 3)</span></a></code></pre></div>
-<p>タプルはリストと同様に<code>len</code>で長さを得たり、添え字で要素を得ることができる。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span></a>
-<a class="sourceLine" id="cb18-2" title="2">a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></a></code></pre></div>
-<p>タプルの結合もできる。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">+</span> (<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># =&gt; (1,2,3,4)</span></a></code></pre></div>
-<p>このようにタプルはリストに似ているが、一度作成されたタプルは修正できない。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">a <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb20-2" title="2">a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co"># =&gt; &#39;tuple&#39; object does not support item assignment</span></a></code></pre></div>
-<p>タプルは関数で複数の値を返したい場合によく使われる。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">def</span> func():</a>
-<a class="sourceLine" id="cb21-2" title="2">    <span class="cf">return</span> <span class="dv">1</span>, <span class="dv">2</span></a>
-<a class="sourceLine" id="cb21-3" title="3"></a>
-<a class="sourceLine" id="cb21-4" title="4">func()  <span class="co"># =&gt; (1,2)</span></a></code></pre></div>
-<p>タプルを使って、複数の変数を一度に初期化することができる。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span></a>
-<a class="sourceLine" id="cb22-2" title="2">a <span class="co"># =&gt; 1</span></a>
-<a class="sourceLine" id="cb22-3" title="3">b <span class="co"># =&gt; 2</span></a></code></pre></div>
-<p>以下のようにすると、変数の値の交換ができる。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1">a, b <span class="op">=</span> b, a</a></code></pre></div>
-<p>タプルのリストを作ることもできる。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]</a></code></pre></div>
-<p>その場合、例えば0番目の要素を以下のように変数に代入できる。</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]</a>
-<a class="sourceLine" id="cb25-2" title="2">x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x = 1, y = 2になる</span></a></code></pre></div>
-<h2 id="enumerate">enumerate</h2>
-<p><code>for x in a:</code>という構文で、リスト<code>a</code>のそれぞれの要素<code>x</code>について処理をすることができる。しかし、たまに「要素の値」と、「その要素がリストの何番目にあるか」の情報が両方欲しい場合がある。その時に使うのが<code>enumerate</code>だ。リスト<code>a</code>について、<code>enumerate(a)</code>とすると、要素のインデックスと要素の内容をペアで受け取ることができる。</p>
-<p>例えば、こんなことができる。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1">a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]</a>
-<a class="sourceLine" id="cb26-2" title="2"><span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(a):</a>
-<a class="sourceLine" id="cb26-3" title="3">    <span class="bu">print</span>(i, x)</a></code></pre></div>
-<p>ここでは、インデックスを<code>i</code>で、要素を<code>x</code>で受け取っている。実行結果はこうなる。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb27-1" title="1">0 A</a>
-<a class="sourceLine" id="cb27-2" title="2">1 B</a>
-<a class="sourceLine" id="cb27-3" title="3">2 C</a></code></pre></div>
-<p>リストとタプルについて覚えて起きたいことは他にもいろいろあるが、それは必要に応じて説明していくことにしよう。</p>
-<h2 id="メモリ上でのリストの表現">メモリ上でのリストの表現</h2>
-<p>さて、リストがメモリ上でどのように表現されているか見てみよう。すでに、「変数とはラベルである」と学んだ。これはリストにおいても変わらないが、リストは複数の要素を含むため、リストを表すラベルは「リストの先頭位置」を指す。</p>
-<figure>
-<img src="fig/list.png" alt="リストのメモリ上での表現" /><figcaption>リストのメモリ上での表現</figcaption>
-</figure>
-<p>例えば、<code>a = [1, 2, 3]</code>という命令を見てみよう。これは、</p>
-<ul>
-<li>メモリ上に<code>[1, 2, 3]</code>というリストを作成し、</li>
-<li>その先頭位置を指す場所を作成して、そこに<code>a</code>というラベルをつける</li>
-</ul>
-<p>という操作から構成される。ここで、<code>a</code>が「リストの先頭そのもの」ではなく、「リストの先頭を指す場所」を指していることに注意。この仕様から、リストをコピーする際には注意が必要となる。</p>
-<figure>
-<img src="fig/copy_value.png" alt="値のコピー" /><figcaption>値のコピー</figcaption>
-</figure>
-<p>まず、普通の変数のコピーを見てみよう。例えば<code>10</code>という値を指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b</code>に<code>20</code>を代入する操作を考える。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb28-2" title="2">b <span class="op">=</span> a</a>
-<a class="sourceLine" id="cb28-3" title="3">b <span class="op">=</span> <span class="dv">20</span></a></code></pre></div>
-<p>この時、</p>
-<ul>
-<li><code>a = 10</code>：メモリ上に「10」を表現する場所が作られて、そこに<code>a</code>というラベルを貼る</li>
-<li><code>b = a</code> ：<code>a</code>の指す値をコピーしてから、そこに<code>b</code>というラベルを貼る</li>
-<li><code>b = 20</code> : <code>b</code>の指す値を<code>20</code>に書き換える</li>
-</ul>
-<p>という操作が行われている。</p>
-<p>次に、リストのコピーを見てみよう。<code>[1, 2, 3]</code>というリストを指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b[1] = 4</code>と、リストを修正する操作を考える。すると、実際にはコピー元の<code>a</code>が指すリストも修正されている。この操作のメモリ上での表現を見てみよう。</p>
-<p>まず、<code>b = a</code>として他の変数にリストをコピーすると、整数等の場合と同様に、「ラベルの指している場所の値をコピーして、そこにラベルを貼る」という操作が行われる。この時コピーされるのは「リストの先頭の場所」という情報であるから、<code>a</code>と<code>b</code>のラベルは同じリストを指すことになる。したがって、<code>b</code>を通じてリストを修正すると、<code>a</code>が指すリストも修正されることになる。</p>
-<figure>
-<img src="fig/copy_list.png" alt="リストのコピー" /><figcaption>リストのコピー</figcaption>
-</figure>
-<p>さて、同じリストを指している変数<code>a</code>、<code>b</code>がある時、<code>b</code>に異なるリストを代入する。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1">a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb29-2" title="2">b <span class="op">=</span> a</a>
-<a class="sourceLine" id="cb29-3" title="3">b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</a></code></pre></div>
-<p>以後、<code>a</code>と<code>b</code>は異なるリストを指すようになるため、<code>b</code>を修正しても<code>a</code>は影響を受けなくなる。</p>
-<p>これは<code>b = a</code>を実行した時点では<code>a</code>と<code>b</code>は同じリストを指しているが、<code>b = [4, 5, 6]</code>を実行すると、まずメモリ上に<code>[4, 5, 6]</code>を表現するデータが作られ、その後<code>b</code>の指す内容が新しく作られたリストの先頭の場所となるため、<code>a</code>と<code>b</code>が無関係となるためである。</p>
-<figure>
-<img src="fig/copy_list2.png" alt="コピー後のリストの代入" /><figcaption>コピー後のリストの代入</figcaption>
-</figure>
-<p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。このように、値そのものではなく、「この場所を見よ」というような情報を <strong>参照(reference)</strong> と呼ぶ。</p>
-<h2 id="参照の値渡し">参照の値渡し</h2>
-<p>前回「関数」を学び、今回「リスト」を学んだ。これにより、関数の引数としてリストを受け渡せるようになった。この時、注意すべきことがある。まず、関数の引数は、関数が作るブロック内だけで有効なローカル変数である。グローバル変数と同じ名前をつけても、別の変数として扱われる。</p>
-<p>こんなコードを見てみよう。</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">def</span> func(a):</a>
-<a class="sourceLine" id="cb30-2" title="2">    a <span class="op">=</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb30-3" title="3"></a>
-<a class="sourceLine" id="cb30-4" title="4">a <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb30-5" title="5">func(a)</a>
-<a class="sourceLine" id="cb30-6" title="6"><span class="bu">print</span>(a) <span class="co"># =&gt; 1</span></a></code></pre></div>
-<p>関数<code>func</code>は、引数として変数<code>a</code>を受け取る。この時、<code>a</code>の値がコピーされ、「関数内のローカル変数<code>a</code>」が作成される。この変数<code>a</code>は関数内だけで有効なので、関数内で値を変更しても、外部の変数である<code>a</code>に影響は与えない。このような情報の渡し方を <strong>値渡し (call by value)</strong> と呼ぶ。</p>
-<figure>
-<img src="fig/ref1.png" alt="関数の引数の受け渡し" /><figcaption>関数の引数の受け渡し</figcaption>
-</figure>
-<p>このように、関数の引数としてグローバル変数と同じ名前を使ったり、関数内でグローバル変数と同じ名前のローカル変数を宣言しても、グローバル変数とは別の変数として扱われる(バグの原因となるので推奨されない)。また「関数の引数は値がコピーされてから渡される」ことは覚えておいて欲しい。</p>
-<p>次に、関数の引数としてリストを渡してみよう。リストを表す変数は、リストの「先頭」を指していることは既に説明した。それ以外は先程と同じで、関数の引数は、値がコピーされて渡される。</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">def</span> func(a):</a>
-<a class="sourceLine" id="cb31-2" title="2">    a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span></a>
-<a class="sourceLine" id="cb31-3" title="3"></a>
-<a class="sourceLine" id="cb31-4" title="4">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb31-5" title="5">func(a)</a>
-<a class="sourceLine" id="cb31-6" title="6"><span class="bu">print</span>(a) <span class="co"># =&gt; [1,4,3]</span></a></code></pre></div>
-<figure>
-<img src="fig/ref2.png" alt="リストを関数に渡した場合" /><figcaption>リストを関数に渡した場合</figcaption>
-</figure>
-<p>先程説明した、リストのコピーをした時とまったく同じことが起きて、関数内でリストを修正すると、関数の外部でもリストが修正される。</p>
-<p>また、引数として受け取ったリストに、あらたにリストを代入すると、それは関数ローカルだけで有効になり、外部のリストに影響を与えなくなるのも理解できるであろう。</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1"><span class="kw">def</span> func(b):</a>
-<a class="sourceLine" id="cb32-2" title="2">    b <span class="op">=</span> [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>] <span class="co"># bにあらたなリストを代入</span></a>
-<a class="sourceLine" id="cb32-3" title="3"></a>
-<a class="sourceLine" id="cb32-4" title="4">a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</a>
-<a class="sourceLine" id="cb32-5" title="5">func(a)</a>
-<a class="sourceLine" id="cb32-6" title="6"><span class="bu">print</span>(a) <span class="co"># =&gt; [1,2,3] aは影響を受けない</span></a></code></pre></div>
-<figure>
-<img src="fig/ref3.png" alt="関数内で引数にリストを代入した場合" /><figcaption>関数内で引数にリストを代入した場合</figcaption>
-</figure>
-<p>このように、関数の引数に値をコピーして渡す方法を<strong>値渡し(call by value)</strong>と呼ぶ。Pythonは関数には値がコピーして渡されるため、値渡しとなる。また、リストを指す変数は、リストの値そのものではなく、リストの先頭の場所を指している。このような値の持ち方を <strong>参照(reference)</strong>と呼ぶ。</p>
-<p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、<strong>参照の値渡し (call by sharing)</strong>と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来この問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
-<h2 id="リスト内包表記">リスト内包表記</h2>
-<figure>
-<img src="fig/report.png" alt="大量のレポートを採点する教員" /><figcaption>大量のレポートを採点する教員</figcaption>
-</figure>
-<p>日常業務において、何かまとまったデータを受け取り、それに何か処理をして、まとまったデータとして返す、という処理は非常に多い。例えば講義でレポートを出したら、全員分のレポートを受け取り、それを採点して、それぞれに成績をつける、という処理をしなければならない。同様に、プログラムでも、何かリストを受け取り、そのリストに何か処理をして、新しいリストを作成する、という処理をすることが多い。</p>
-<p>簡単な例として、整数のリストを受け取って、要素をすべて二倍にしたリストを作成するようなコードを書こう。普通にループを回すとこんな感じに書けるであろう。</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1">source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb33-2" title="2">result <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb33-3" title="3"><span class="cf">for</span> i <span class="kw">in</span> source:</a>
-<a class="sourceLine" id="cb33-4" title="4">    result.append(i<span class="op">*</span><span class="dv">2</span>)</a></code></pre></div>
-<p>Pythonには<strong>リスト内包表記 (list comprehension)</strong>という表記法があり、上記のコードは以下のように書ける。</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1">source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb34-2" title="2">result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</a></code></pre></div>
-<p>リスト内包表記は</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1">[新しいリストの要素 <span class="cf">for</span> 元のリストの要素 <span class="kw">in</span> 元のリスト]</a></code></pre></div>
-<p>という書き方をする。リスト内包表記は「後ろから」読むのがコツである。</p>
-<p>つまり、</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1">[<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</a></code></pre></div>
-<p>という内包表記は、</p>
-<ul>
-<li><code>source</code>というリストに含まれる</li>
-<li>それぞれの要素<code>i</code>について</li>
-<li><code>2*i</code>を要素とするような新しいリストを作ってください</li>
-</ul>
-<p>という意味となる。</p>
-<figure>
-<img src="fig/list_comp.png" alt="リスト内包表記" /><figcaption>リスト内包表記</figcaption>
-</figure>
-<p>もちろん<code>source</code>のところに直接リストを入れてしまって、</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1">result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]]</a></code></pre></div>
-<p>としてもかまわない。また、<code>range</code>を使って</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1">result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</a></code></pre></div>
-<p>と書くこともできる。リスト内包表記は「Pythonらしい」書き方で、使い方によってはスマートに書けるが、使いすぎると可読性を損なうこともあるため、バランスよく使って欲しい。</p>
-<h2 id="コッホ曲線">コッホ曲線</h2>
-<p>リストやタプルについて学んだので、それを利用して「コッホ曲線」を描画してみよう。コッホ曲線とはこんな図形である。</p>
-<figure>
-<img src="fig/koch.png" alt="コッホ曲線" /><figcaption>コッホ曲線</figcaption>
-</figure>
-<p>名前を知らなくても、その形は見たことがあるかと思う。この曲線は、以下のような手続きで作成される。</p>
-<ol type="1">
-<li>まず線分を用意する</li>
-<li>線分を三等分する</li>
-<li>中央の線分を、正三角形の形に盛り上げる</li>
-</ol>
-<p>この手続きをすると、一本の線分が4本の線分に変換される。こうしてできた4本の線分のそれぞれに同様な手続きを繰り返すと、コッホ曲線ができあがる。</p>
-<figure>
-<img src="fig/koch2.png" alt="コッホ曲線の作り方" /><figcaption>コッホ曲線の作り方</figcaption>
-</figure>
-<p>コッホ曲線は、再帰を使って描画するのが自然だが、今回はリストとタプルを駆使してコッホ曲線を描くプログラムを組んでみよう。</p>
-<p>コッホ曲線は、すべてつながった線分から構成されている。したがって、ある点から、次の点へのベクトルの集合とみなすことができる。さて、あるベクトルが与えられたとき、それをどのように変換したいかを表現したベクトルのリストを与えて変換することを考える。</p>
-<figure>
-<img src="fig/koch3.png" alt="ベクトルの変換" /><figcaption>ベクトルの変換</figcaption>
-</figure>
-<p>コッホ曲線では、最初にx方向に伸びた長さ1の線分がある。これを2次元ベクトル<span class="math inline">\((1,0)\)</span>で表現する。これを入力したら<span class="math inline">\((1/3, 0), (1/6, \sqrt{3}/6), (1/6, -\sqrt{3}/6), (1/3,0)\)</span>の4つのベクトルに変換したい。ここで、最初に与えたベクトルと、変換で与えたベクトルの始点から終点の長さが等しいことに注意せよ。ただ、変換リストを、長さを考えながら与えるのは面倒だ。変換リストとして<span class="math inline">\((1, 0), (1/2, \sqrt{3}/2), (1/2, -\sqrt{3}/2), (1,0)\)</span>を与えたら、長さを自動調節するようにしよう。 また、傾いたベクトルを入力したら、傾いた4つのベクトルにする。</p>
-<p>このような変換プログラムを書いたら、最初にタプルのリスト<code>[(1,0)]</code>を入力すると、それを変換した4つのタプルのリストに変換され、さらにそれを変換したら16個のタプルのリストに変換され……と、この処理を繰り返すことでコッホ曲線を表現するベクトルのリストを作ることができる。以下、そのプログラムを少しずつ作っていこう。</p>
-<h2 id="リストとタプル課題">リストとタプル：課題</h2>
-<h3 id="課題1コッホ曲線の描画">課題1：コッホ曲線の描画</h3>
-<p>新しいノートブックを開き、<code>koch.ipynb</code>という名前にせよ。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
-<p>1つ目のセルでは、必要なライブラリをインポートする。ここでは<code>math</code>ライブラリの平方根<code>sqrt</code>と、描画に必要なライブラリをインポートしている。</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1"><span class="im">from</span> math <span class="im">import</span> sqrt</a>
-<a class="sourceLine" id="cb39-2" title="2"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</a></code></pre></div>
-<h4 id="ベクトルの和の長さ">2. ベクトルの和の長さ</h4>
-<p>長さの自動調節のため、変換ベクトルのリストが与えられたら、始点と終点を結ぶベクトルの長さを求めよう。変換ベクトルリストは、タプルのリストとして与える。例えば<code>[(1,0),(0,1)]</code>のようなリストが与えられた時に、<span class="math inline">\(\sqrt{2} \sim 1.414\)</span>を返すような関数<code>length</code>を実装したい。</p>
-<p>これは要するにベクトルのリストを受けとって、そのベクトルの和を計算してから、得られたベクトルの長さを返す関数を作ればよい。2つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">def</span> length(a):</a>
-<a class="sourceLine" id="cb40-2" title="2">    x, y <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></a>
-<a class="sourceLine" id="cb40-3" title="3">    <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:</a>
-<a class="sourceLine" id="cb40-4" title="4">        x <span class="op">+=</span> dx</a>
-<a class="sourceLine" id="cb40-5" title="5">        y <span class="op">+=</span> dy</a>
-<a class="sourceLine" id="cb40-6" title="6">    <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</a></code></pre></div>
-<p>ここで<code>a</code>は、タプルのリスト、例えば<code>[(1,0),(0,1)]</code>のような入力を想定している。<code>for (dx, dy) in a:</code>は、リスト<code>a</code>に含まれるタプルを直接<code>(dx, dy)</code>というタプルで受け取るという意味で、冗長に書けば</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1"><span class="cf">for</span> ai <span class="kw">in</span> a:</a>
-<a class="sourceLine" id="cb41-2" title="2">    dx, dy <span class="op">=</span> ai</a></code></pre></div>
-<p>と同じ意味である。</p>
-<p>入力したら、3つ目のセルを使って動作確認をしよう。以下を実行してみよ。</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" title="1">a <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>)]</a>
-<a class="sourceLine" id="cb42-2" title="2">length(a)</a></code></pre></div>
-<p>次のような表示がなされれば正しく入力されている。</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb43-1" title="1">1.4142135623730951</a></code></pre></div>
-<p>確認が終わったら、3つ目のセルを削除すること。</p>
-<h4 id="タプルからリストを作成">3. タプルからリストを作成</h4>
-<p>次に、入力ベクトルを、変換ベクトルリストに基づいて変換することを考えよう。処理は以下の通りである。</p>
-<ul>
-<li>入力ベクトルの長さと変換ベクトルリストの長さの比<code>scale</code>を求める</li>
-<li>入力ベクトルの傾き角度<span class="math inline">\(\theta\)</span>の<span class="math inline">\(\sin\)</span>と<span class="math inline">\(\cos\)</span>の値を求める</li>
-<li>変換ベクトルリストに含まれるベクトルそれぞれについて、<code>scale</code>倍して<span class="math inline">\(\theta\)</span>だけ傾けたものをリストに追加する</li>
-</ul>
-<p>以上を実現する以下のコードを、3つ目のセルに入力せよ。</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">def</span> convert(a, b):</a>
-<a class="sourceLine" id="cb44-2" title="2">    ax, ay <span class="op">=</span> a</a>
-<a class="sourceLine" id="cb44-3" title="3">    alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb44-4" title="4">    c <span class="op">=</span> ax<span class="op">/</span>alen</a>
-<a class="sourceLine" id="cb44-5" title="5">    s <span class="op">=</span> ay<span class="op">/</span>alen</a>
-<a class="sourceLine" id="cb44-6" title="6">    scale <span class="op">=</span> alen<span class="op">/</span>length(b)</a>
-<a class="sourceLine" id="cb44-7" title="7">    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb44-8" title="8">    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb44-9" title="9">    <span class="cf">return</span> b</a></code></pre></div>
-<p>上記を実装したら、4つ目のセルで動作確認をしよう。</p>
-<p>例えば入力として<code>(0,1)</code>というベクトルを、変換リストとして<code>[(1,1),(1,-1)]</code>というリストを与えたら、<code>[(-0.5, 0.5), (0.5, 0.5)]</code>という出力が得られなくてはならない。</p>
-<p>入力</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1">a <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb45-2" title="2">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)]</a>
-<a class="sourceLine" id="cb45-3" title="3">convert(a,b)</a></code></pre></div>
-<p>出力</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb46-1" title="1">[(-0.5, 0.5), (0.5, 0.5)]</a></code></pre></div>
-<p>正しい動作が確認できたら、テスト用のセルを削除しておこう。</p>
-<h4 id="タプルのリストそれぞれに適用">4. タプルのリストそれぞれに適用</h4>
-<p>今、「ベクトルをタプルとして与えられたら、変換ベクトルリストに従って、タプルのリストに変換する関数」を<code>convert</code>として実装した。これを使えば、「タプルのリスト」が与えられたとき、それぞれのタプルに<code>convert</code>を適用した結果をまとめたリストを作る関数<code>apply</code>は簡単に実装できる。以下を4つ目のセルに入力せよ。</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1"><span class="kw">def</span> <span class="bu">apply</span>(a, b):</a>
-<a class="sourceLine" id="cb47-2" title="2">    r <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb47-3" title="3">    <span class="cf">for</span> i <span class="kw">in</span> a:</a>
-<a class="sourceLine" id="cb47-4" title="4">        r <span class="op">+=</span> convert(i, b)</a>
-<a class="sourceLine" id="cb47-5" title="5">    <span class="cf">return</span> r</a></code></pre></div>
-<p>入力したら動作確認しよう。5つ目のセルに以下を実行し、結果が正しいことを確認せよ。</p>
-<p>入力</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" title="1">a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>)]</a>
-<a class="sourceLine" id="cb48-2" title="2">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)]</a>
-<a class="sourceLine" id="cb48-3" title="3"><span class="bu">apply</span>(a,b)</a></code></pre></div>
-<p>出力</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb49-1" title="1">[(0.5, 0.5), (0.5, -0.5), (0.5, -0.5), (-0.5, -0.5)]</a></code></pre></div>
-<p>動作確認ができたら、テスト用のコード(5つ目のセル)は削除してよい。</p>
-<h4 id="線の描画">5. 線の描画</h4>
-<p>ベクトルのリストが与えられたら、描画するのは難しくない。与えられたベクトルの通りに線を描画すればよい。ただし、線を描画したら、次に描画する始点を、現在の終点に取り直す必要がある。</p>
-<p>以下のプログラムを、5つ目のセルに入力せよ。</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" title="1"><span class="kw">def</span> draw_line(draw, a, size):</a>
-<a class="sourceLine" id="cb50-2" title="2">    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></a>
-<a class="sourceLine" id="cb50-3" title="3">    <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:</a>
-<a class="sourceLine" id="cb50-4" title="4">        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</a>
-<a class="sourceLine" id="cb50-5" title="5">        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</a>
-<a class="sourceLine" id="cb50-6" title="6">        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</a>
-<a class="sourceLine" id="cb50-7" title="7">        x1, y1 <span class="op">=</span> x2, y2</a></code></pre></div>
-<p>これは、ベクトルのリストを受け取り、そのベクトルの通りに線を描画する関数である。</p>
-<h4 id="画像の表示">6. 画像の表示</h4>
-<p>では、最後に描画してみよう。以下のコードを6つ目のセルに入力せよ。</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb51-1" title="1">size <span class="op">=</span> <span class="dv">512</span></a>
-<a class="sourceLine" id="cb51-2" title="2">N <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb51-3" title="3">img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</a>
-<a class="sourceLine" id="cb51-4" title="4">draw <span class="op">=</span> ImageDraw.Draw(img)</a>
-<a class="sourceLine" id="cb51-5" title="5">a <span class="op">=</span> [(size, <span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb51-6" title="6">b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb51-7" title="7"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</a>
-<a class="sourceLine" id="cb51-8" title="8">    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</a>
-<a class="sourceLine" id="cb51-9" title="9">draw_line(draw, a, size)</a>
-<a class="sourceLine" id="cb51-10" title="10">img</a></code></pre></div>
-<p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
-<p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
-<h3 id="課題2オリジナルのフラクタル曲線">課題2：オリジナルのフラクタル曲線</h3>
-<p>6つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
-<p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb52-1" title="1">b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</a></code></pre></div>
-<p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
-<h3 id="発展課題色付きフラクタル曲線">発展課題：色付きフラクタル曲線</h3>
-<p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。まずは一色で塗るプログラムを書く。</p>
-<h4 id="線に色を塗る">7. 線に色を塗る</h4>
-<p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb53-1" title="1"><span class="kw">def</span> draw_line_color(draw, a, colors, size):</a>
-<a class="sourceLine" id="cb53-2" title="2">    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></a>
-<a class="sourceLine" id="cb53-3" title="3">    <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):</a>
-<a class="sourceLine" id="cb53-4" title="4">        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</a>
-<a class="sourceLine" id="cb53-5" title="5">        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</a>
-<a class="sourceLine" id="cb53-6" title="6">        c <span class="op">=</span> colors[<span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb53-7" title="7">        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c)</a>
-<a class="sourceLine" id="cb53-8" title="8">        x1, y1 <span class="op">=</span> x2, y2</a></code></pre></div>
-<p>これは、色のリスト<code>colors</code>を受け取るが、その最初の要素<code>colors[0]</code>だけを使って色を塗るコードになっている。</p>
-<h4 id="色付きのフラクタル図形">8. 色付きのフラクタル図形</h4>
-<p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb54-1" title="1">size <span class="op">=</span> <span class="dv">512</span></a>
-<a class="sourceLine" id="cb54-2" title="2">N <span class="op">=</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb54-3" title="3">img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</a>
-<a class="sourceLine" id="cb54-4" title="4">draw <span class="op">=</span> ImageDraw.Draw(img)</a>
-<a class="sourceLine" id="cb54-5" title="5">a <span class="op">=</span> [(size, <span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb54-6" title="6">b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</a>
-<a class="sourceLine" id="cb54-7" title="7">c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)]</a>
-<a class="sourceLine" id="cb54-8" title="8"><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</a>
-<a class="sourceLine" id="cb54-9" title="9">    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</a>
-<a class="sourceLine" id="cb54-10" title="10">draw_line_color(draw, a, c, size)</a>
-<a class="sourceLine" id="cb54-11" title="11">img</a></code></pre></div>
-<p>成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。</p>
-<ul>
-<li>ヒント1： 修正するのは<code>draw_line_color</code>関数である</li>
-<li>ヒント2： リスト<code>colors</code>のサイズは<code>len(colors)</code>で取得できる</li>
-<li>ヒント3： ループカウンタ<code>i</code>を、リスト<code>colors</code>のサイズで割った余りを活用せよ</li>
-<li>ヒント4： ある数<code>i</code>を3で割ったあまりは<code>i % 3</code>で得ることができる</li>
-</ul>
-<p>完成したら、オリジナルのフラクタル図形も色付きにしてみよ。</p>
-<h3 id="内包表記">内包表記</h3>
-<p>リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb55-1" title="1"><span class="kw">def</span> convert(a, b):</a>
-<a class="sourceLine" id="cb55-2" title="2">    ax, ay <span class="op">=</span> a</a>
-<a class="sourceLine" id="cb55-3" title="3">    alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb55-4" title="4">    c <span class="op">=</span> ax<span class="op">/</span>alen</a>
-<a class="sourceLine" id="cb55-5" title="5">    s <span class="op">=</span> ay<span class="op">/</span>alen</a>
-<a class="sourceLine" id="cb55-6" title="6">    scale <span class="op">=</span> alen<span class="op">/</span>length(b)</a>
-<a class="sourceLine" id="cb55-7" title="7">    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb55-8" title="8">    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb55-9" title="9">    <span class="cf">return</span> b</a></code></pre></div>
-<p><code>b</code>に関してリスト内包表記を使っている部分がある。</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb56-1" title="1">    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb56-2" title="2">    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</a>
-<a class="sourceLine" id="cb56-3" title="3">    <span class="cf">return</span> b</a></code></pre></div>
-<p>これは、</p>
-<ul>
-<li>タプルのリスト<code>b</code>の要素<code>(x,y)</code>それぞれについて、まず<code>(x,y)</code>をそれぞれ<code>scale</code>倍したリストを作成せよ</li>
-<li>そうしてできた新しいリスト<code>b</code>の要素<code>(x,y)</code>それぞれについて、<code>(c * x - s* y, s *x + c * y)</code>という変換(回転行列の演算)をしたリストを作成せよ</li>
-<li>できたリストを<code>b</code>に返せ</li>
-</ul>
-<p>という意味だ。毎回<code>b</code>に上書き代入していることに注意。</p>
-<p>これを、<code>for</code>文で書くとこのようになるだろう。</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb57-1" title="1">    r <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb57-2" title="2">    <span class="cf">for</span> (bx, by) <span class="kw">in</span> b:</a>
-<a class="sourceLine" id="cb57-3" title="3">        bx <span class="op">*=</span> scale</a>
-<a class="sourceLine" id="cb57-4" title="4">        by <span class="op">*=</span> scale</a>
-<a class="sourceLine" id="cb57-5" title="5">        nx <span class="op">=</span> c <span class="op">*</span> bx <span class="op">-</span> s <span class="op">*</span> by</a>
-<a class="sourceLine" id="cb57-6" title="6">        ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by</a>
-<a class="sourceLine" id="cb57-7" title="7">        r.append((nx, ny))</a>
-<a class="sourceLine" id="cb57-8" title="8">    <span class="cf">return</span> r</a></code></pre></div>
-<p>これは</p>
-<ul>
-<li><code>r</code>という空リストを作成しておく</li>
-<li><code>b</code>の要素を<code>(bx, by)</code>というタプルで受け取る</li>
-<li><code>bx, by</code>の要素をそれぞれ<code>scale</code>倍する</li>
-<li><code>nx = c * bx - s * by、ny = s * bx + c*by</code>という変換(回転行列の演算)をして</li>
-<li>得られた<code>(nx, ny)</code>というタプルを<code>r</code>に追加し</li>
-<li><code>r</code>を返す</li>
-</ul>
-<p>という処理をしている。リスト内包表記を使うと、<code>for</code>文が消え、かつ「リストにどのような処理を施しているのか」が明確になったのがわかるであろう。しかし、なんでも内包表記を使いすぎると、逆に何をやっているかの手続きがわかりづらくなる場合もある。リスト内包表記を使った方が良いか、素直に<code>for</code>で回した方が良いかは場合によるので、なんでもかんでも内包表記を使おうとせず、どちらが良いか毎回考えながら決めること。</p>
-<h2 id="余談osを作ってミュージシャンになった人">余談：OSを作ってミュージシャンになった人</h2>
-<p>普段、Windowsが入っているパソコンを使うことが多いであろう。WindowsとはOS (Operating System)の一種である。OSとは基本ソフトとも言われ、ユーザとハードウェアの仲立ちをする非常に重要なソフトウェアだ。マイクロソフトはMS-DOSというOSの成功から急成長した会社だが、現在はWindows というOSを開発している。さて、Windowsには様々な種類があるが、2006年にリリースされた「Windows Vista」というOSがあった。私はVistaがプリインストールされたノートPCを購入したが、Vistaのあまりのひどさに「これを開発したのは誰だ？」と思って調べてみたら、開発責任者はVistaの発売翌日にマイクロソフトを退職し、ミュージシャンになっていた。彼の名前はジム・オールチン。Windows 95を作るはずの人物であった。</p>
-<p>1994年。マイクロソフトのCEO、ビル・ゲイツは「指先で情報を」という基調講演を行った。当時マイクロソフトはWindows 3.1の後継となり、Appleの洗練されたOSに対抗できる次世代OSがぜひとも必要であった。そのために進められていたのが「Cairo」というプロジェクトであり、そのリーダーがジム・オールチンであった。しかし、Cairoの進捗は悪く、別に「Chicago」というプロジェクトが走り出した。最終的にCairoはChicagoに破れ、Chicagoが「Windows 95」としてリリース。Windows 95は大ヒットし、市場におけるマイクロソフトの立場を盤石なものにした。</p>
-<p>マイクロソフトはコンシューマ向けであるWindows 95とは別に、サーバ向けに安定動作するWindows NTの開発も進めていた。そのストーリーは「闘うプログラマー」に詳しいので是非読んでみてほしい。コンシューマ向けに使いやすい95ファミリと、サーバ向けに安定しているNT、その両方の良さを受け継いだOSがWindows XPで、これまたヒット、Windowsユーザを一気に増やすことに成功した。</p>
-<p>2001年、XPのリリースと同時に、ジム・オールチンをリーダーとしてXPの後継となるOS開発プロジェクトが始まった。コードネームはLonghorn、後のVistaである。Vistaは当初、XPのマイナーバージョンアップという位置付けであったが、いつのまにか野心的な機能が次々と追加され、プロジェクトは膨れ上がっていった。もともと2001年にリリースされたXPの後を継いで2003年頃にリリースされるはずだったが、リリース延期を重ねていく。そして2005年頃にどうにもならなくなり、プログラムの作り直しを決断する(Longhorn Reset)。そこから一年でなんとかVistaはリリースされたが、約束された先進的な機能はほとんど実装されず、VistaプリインストールマシンはWindows XPへダウングレードができるようにされるなど市場からも不評であり、マイクロソフトはOSのリリース計画を大幅に変更せざるを得なくなった。</p>
-<p>ジム・オールチンは、Cairoで実現できなかった「指先で情報を」というスローガンをVistaで実現しようとしたのだろうか。Vistaで約束され、実装されなかった機能の多くは、Cairoで実現しようとしていたものと重なるものが多い。ジム・オールチンの公式サイトには「私のマイクロソフトでの最大の貢献はサーバービジネスだ」とあり、その経歴には、キャリアのほぼすべてで関わったはずのCairoとVistaの名前はない。</p>
+                  <header>
+        <h1 class="title">リストとタプル</h1>
+                              </header>
+                  <p><a href="../index.html">[Up]</a> <a
+                  href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+                  <h1 id="本講で学ぶこと">本講で学ぶこと</h1>
+                  <ul>
+                  <li>リスト</li>
+                  <li>タプル</li>
+                  <li>値のコピーとリストのコピーの違い</li>
+                  <li>参照の値渡し</li>
+                  <li>リスト内包表記</li>
+                  </ul>
+                  <h1 id="リスト">リスト</h1>
+                  <p>プログラムを組んでいると、何かひとまとまりのデータをまとめて保持し、処理したい場合がある。
+                  そのようなデータ構造を表現するのが<strong>リスト(list)</strong>である。他の言語では<strong>配列(array)</strong>と呼ばれることもある。</p>
+                  <p>リストは<code>[]</code>の中に、カンマで区切って表現する。例えば、</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span></code></pre></div>
+                  <p>とすると、整数の1,2,3を含むリストができる。</p>
+                  <p>また、</p>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>]</span></code></pre></div>
+                  <p>とすると、文字列のリストができる。リストにはどんなものも入れることができる。また、異なる種類のものを混ぜて入れることもできる。</p>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">&quot;A&quot;</span>, <span class="dv">1</span>, <span class="fl">1.0</span>]</span></code></pre></div>
+                  <p>変数にリストを代入することもできる。</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span></code></pre></div>
+                  <p>リストの要素には、<code>[]</code>でアクセスできる。例えば<code>a</code>の最初の要素が欲しい場合は<code>a[0]</code>とする。カッコの中の数字を
+                  <strong>添え字(index)</strong>
+                  と呼ぶ。言語によって、添え字が0始まりの場合と1始まりの場合がある。Pythonは0始まりである。</p>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></span></code></pre></div>
+                  <p>要素に値を代入することができる。</p>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>a <span class="co"># =&gt; [1,4,3]</span></span></code></pre></div>
+                  <p>リストは入れ子にすることもできる。</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</span></code></pre></div>
+                  <p>入れ子になったリストは、添え字を複数指定することで要素を得ることができる。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [[<span class="dv">1</span>,<span class="dv">2</span>],[<span class="dv">3</span>,<span class="dv">4</span>],<span class="dv">5</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">0</span>] <span class="co"># =&gt; [1,2]</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">0</span>][<span class="dv">1</span>] <span class="co"># =&gt; 2</span></span></code></pre></div>
+                  <p>リストの長さは<code>len</code>という関数で取得できる。</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></span></code></pre></div>
+                  <p>二つのリストを結合することができる。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>,<span class="dv">2</span>] <span class="op">+</span> [<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>] <span class="co"># =&gt; [1,2,3,4,5]</span></span></code></pre></div>
+                  <p>要素を追加する場合は<code>append</code>を使う。</p>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>a.append(<span class="dv">3</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>a <span class="co"># =&gt; [1,2,3]</span></span></code></pre></div>
+                  <p>リストを<code>append</code>する場合には注意が必要である。</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> []</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>a.append(b)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>a.append(b)</span></code></pre></div>
+                  <p>とすると、見かけ上<code>a</code>は2行2列の行列のように見える。</p>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co"># =&gt; [[1, 2], [1, 2]]</span></span></code></pre></div>
+                  <p>しかし、要素に含まれる二つのリストは同じものであるから、一方を修正するともう一方も影響を受ける。</p>
+                  <div class="sourceCode" id="cb14"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co"># =&gt; [[4, 2], [4, 2]]</span></span></code></pre></div>
+                  <p>なぜこうなるかは、後述する「リストのメモリ上での表現」を知れば理解できるであろう。</p>
+                  <p>リストに要素が含まれるかどうかは、<code>in</code>で調べることができる。</p>
+                  <div class="sourceCode" id="cb15"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="kw">in</span> a <span class="co"># =&gt; True</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="kw">in</span> a <span class="co"># =&gt; False</span></span></code></pre></div>
+                  <p>リストの要素を順番に取り出しながら、すべての要素について処理をしたい場合、<code>for</code>と<code>in</code>を使う。</p>
+                  <div class="sourceCode" id="cb16"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> a:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+                  <h1 id="タプル">タプル</h1>
+                  <p><strong>タプル(tuple)</strong>
+                  は、複数の値の組を表現するデータ構造である。タプルはカンマで区切られた値で表現されるが、紛らわしいときには丸カッコ<code>()</code>で囲む。</p>
+                  <div class="sourceCode" id="cb17"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>a <span class="co"># =&gt; (1, 2, 3)</span></span></code></pre></div>
+                  <p>タプルはリストと同様に<code>len</code>で長さを得たり、添え字で要素を得ることができる。</p>
+                  <div class="sourceCode" id="cb18"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">0</span>] <span class="co"># =&gt; 1</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(a) <span class="co"># =&gt; 3</span></span></code></pre></div>
+                  <p>タプルの結合もできる。</p>
+                  <div class="sourceCode" id="cb19"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span>,<span class="dv">2</span>) <span class="op">+</span> (<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># =&gt; (1,2,3,4)</span></span></code></pre></div>
+                  <p>このようにタプルはリストに似ているが、一度作成されたタプルは修正できない。</p>
+                  <div class="sourceCode" id="cb20"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span> <span class="co"># =&gt; &#39;tuple&#39; object does not support item assignment</span></span></code></pre></div>
+                  <p>タプルは関数で複数の値を返したい場合によく使われる。</p>
+                  <div class="sourceCode" id="cb21"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func():</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span>, <span class="dv">2</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>func()  <span class="co"># =&gt; (1,2)</span></span></code></pre></div>
+                  <p>タプルを使って、複数の変数を一度に初期化することができる。</p>
+                  <div class="sourceCode" id="cb22"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>a <span class="co"># =&gt; 1</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>b <span class="co"># =&gt; 2</span></span></code></pre></div>
+                  <p>以下のようにすると、変数の値の交換ができる。</p>
+                  <div class="sourceCode" id="cb23"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> b, a</span></code></pre></div>
+                  <p>タプルのリストを作ることもできる。</p>
+                  <div class="sourceCode" id="cb24"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]</span></code></pre></div>
+                  <p>その場合、例えば0番目の要素を以下のように変数に代入できる。</p>
+                  <div class="sourceCode" id="cb25"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">2</span>), (<span class="dv">3</span>,<span class="dv">4</span>)]</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> a[<span class="dv">0</span>] <span class="co"># x = 1, y = 2になる</span></span></code></pre></div>
+                  <h1 id="enumerate">enumerate</h1>
+                  <p><code>for x in a:</code>という構文で、リスト<code>a</code>のそれぞれの要素<code>x</code>について処理をすることができる。しかし、たまに「要素の値」と、「その要素がリストの何番目にあるか」の情報が両方欲しい場合がある。その時に使うのが<code>enumerate</code>だ。リスト<code>a</code>について、<code>enumerate(a)</code>とすると、要素のインデックスと要素の内容をペアで受け取ることができる。</p>
+                  <p>例えば、こんなことができる。</p>
+                  <div class="sourceCode" id="cb26"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>]</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i, x)</span></code></pre></div>
+                  <p>ここでは、インデックスを<code>i</code>で、要素を<code>x</code>で受け取っている。実行結果はこうなる。</p>
+                  <div class="sourceCode" id="cb27"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>0 A</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>1 B</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>2 C</span></code></pre></div>
+                  <p>リストとタプルについて覚えて起きたいことは他にもいろいろあるが、それは必要に応じて説明していくことにしよう。</p>
+                  <h1
+                  id="メモリ上でのリストの表現">メモリ上でのリストの表現</h1>
+                  <p>さて、リストがメモリ上でどのように表現されているか見てみよう。すでに、「変数とはラベルである」と学んだ。これはリストにおいても変わらないが、リストは複数の要素を含むため、リストを表すラベルは「リストの先頭位置」を指す。</p>
+                  <figure>
+                  <img src="fig/list.png"
+                  alt="リストのメモリ上での表現" />
+                  <figcaption
+                  aria-hidden="true">リストのメモリ上での表現</figcaption>
+                  </figure>
+                  <p>例えば、<code>a = [1, 2, 3]</code>という命令を見てみよう。これは、</p>
+                  <ul>
+                  <li>メモリ上に<code>[1, 2, 3]</code>というリストを作成し、</li>
+                  <li>その先頭位置を指す場所を作成して、そこに<code>a</code>というラベルをつける</li>
+                  </ul>
+                  <p>という操作から構成される。ここで、<code>a</code>が「リストの先頭そのもの」ではなく、「リストの先頭を指す場所」を指していることに注意。この仕様から、リストをコピーする際には注意が必要となる。</p>
+                  <figure>
+                  <img src="fig/copy_value.png" alt="値のコピー" />
+                  <figcaption aria-hidden="true">値のコピー</figcaption>
+                  </figure>
+                  <p>まず、普通の変数のコピーを見てみよう。例えば<code>10</code>という値を指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b</code>に<code>20</code>を代入する操作を考える。</p>
+                  <div class="sourceCode" id="cb28"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">20</span></span></code></pre></div>
+                  <p>この時、</p>
+                  <ul>
+                  <li><code>a = 10</code>：メモリ上に「10」を表現する場所が作られて、そこに<code>a</code>というラベルを貼る</li>
+                  <li><code>b = a</code>
+                  ：<code>a</code>の指す値をコピーしてから、そこに<code>b</code>というラベルを貼る</li>
+                  <li><code>b = 20</code> :
+                  <code>b</code>の指す値を<code>20</code>に書き換える</li>
+                  </ul>
+                  <p>という操作が行われている。</p>
+                  <p>次に、リストのコピーを見てみよう。<code>[1, 2, 3]</code>というリストを指す変数<code>a</code>を<code>b</code>にコピーし、その後<code>b[1] = 4</code>と、リストを修正する操作を考える。すると、実際にはコピー元の<code>a</code>が指すリストも修正されている。この操作のメモリ上での表現を見てみよう。</p>
+                  <p>まず、<code>b = a</code>として他の変数にリストをコピーすると、整数等の場合と同様に、「ラベルの指している場所の値をコピーして、そこにラベルを貼る」という操作が行われる。この時コピーされるのは「リストの先頭の場所」という情報であるから、<code>a</code>と<code>b</code>のラベルは同じリストを指すことになる。したがって、<code>b</code>を通じてリストを修正すると、<code>a</code>が指すリストも修正されることになる。</p>
+                  <figure>
+                  <img src="fig/copy_list.png" alt="リストのコピー" />
+                  <figcaption
+                  aria-hidden="true">リストのコピー</figcaption>
+                  </figure>
+                  <p>さて、同じリストを指している変数<code>a</code>、<code>b</code>がある時、<code>b</code>に異なるリストを代入する。</p>
+                  <div class="sourceCode" id="cb29"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> a</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]</span></code></pre></div>
+                  <p>以後、<code>a</code>と<code>b</code>は異なるリストを指すようになるため、<code>b</code>を修正しても<code>a</code>は影響を受けなくなる。</p>
+                  <p>これは<code>b = a</code>を実行した時点では<code>a</code>と<code>b</code>は同じリストを指しているが、<code>b = [4, 5, 6]</code>を実行すると、まずメモリ上に<code>[4, 5, 6]</code>を表現するデータが作られ、その後<code>b</code>の指す内容が新しく作られたリストの先頭の場所となるため、<code>a</code>と<code>b</code>が無関係となるためである。</p>
+                  <figure>
+                  <img src="fig/copy_list2.png"
+                  alt="コピー後のリストの代入" />
+                  <figcaption
+                  aria-hidden="true">コピー後のリストの代入</figcaption>
+                  </figure>
+                  <p>リストを指す変数は、リストそのものではなく、リストの先頭の場所を記録した情報を指している。このように、値そのものではなく、「この場所を見よ」というような情報を
+                  <strong>参照(reference)</strong> と呼ぶ。</p>
+                  <h1 id="参照の値渡し">参照の値渡し</h1>
+                  <p>前回「関数」を学び、今回「リスト」を学んだ。これにより、関数の引数としてリストを受け渡せるようになった。この時、注意すべきことがある。まず、関数の引数は、関数が作るブロック内だけで有効なローカル変数である。グローバル変数と同じ名前をつけても、別の変数として扱われる。</p>
+                  <p>こんなコードを見てみよう。</p>
+                  <div class="sourceCode" id="cb30"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(a):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>func(a)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co"># =&gt; 1</span></span></code></pre></div>
+                  <p>関数<code>func</code>は、引数として変数<code>a</code>を受け取る。この時、<code>a</code>の値がコピーされ、「関数内のローカル変数<code>a</code>」が作成される。この変数<code>a</code>は関数内だけで有効なので、関数内で値を変更しても、外部の変数である<code>a</code>に影響は与えない。このような情報の渡し方を
+                  <strong>値渡し (call by value)</strong> と呼ぶ。</p>
+                  <figure>
+                  <img src="fig/ref1.png" alt="関数の引数の受け渡し" />
+                  <figcaption
+                  aria-hidden="true">関数の引数の受け渡し</figcaption>
+                  </figure>
+                  <p>このように、関数の引数としてグローバル変数と同じ名前を使ったり、関数内でグローバル変数と同じ名前のローカル変数を宣言しても、グローバル変数とは別の変数として扱われる(バグの原因となるので推奨されない)。また「関数の引数は値がコピーされてから渡される」ことは覚えておいて欲しい。</p>
+                  <p>次に、関数の引数としてリストを渡してみよう。リストを表す変数は、リストの「先頭」を指していることは既に説明した。それ以外は先程と同じで、関数の引数は、値がコピーされて渡される。</p>
+                  <div class="sourceCode" id="cb31"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(a):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    a[<span class="dv">1</span>] <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>func(a)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co"># =&gt; [1,4,3]</span></span></code></pre></div>
+                  <figure>
+                  <img src="fig/ref2.png"
+                  alt="リストを関数に渡した場合" />
+                  <figcaption
+                  aria-hidden="true">リストを関数に渡した場合</figcaption>
+                  </figure>
+                  <p>先程説明した、リストのコピーをした時とまったく同じことが起きて、関数内でリストを修正すると、関数の外部でもリストが修正される。</p>
+                  <p>また、引数として受け取ったリストに、あらたにリストを代入すると、それは関数ローカルだけで有効になり、外部のリストに影響を与えなくなるのも理解できるであろう。</p>
+                  <div class="sourceCode" id="cb32"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(b):</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>] <span class="co"># bにあらたなリストを代入</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>func(a)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co"># =&gt; [1,2,3] aは影響を受けない</span></span></code></pre></div>
+                  <figure>
+                  <img src="fig/ref3.png"
+                  alt="関数内で引数にリストを代入した場合" />
+                  <figcaption
+                  aria-hidden="true">関数内で引数にリストを代入した場合</figcaption>
+                  </figure>
+                  <p>このように、関数の引数に値をコピーして渡す方法を<strong>値渡し(call
+                  by
+                  value)</strong>と呼ぶ。Pythonは関数には値がコピーして渡されるため、値渡しとなる。また、リストを指す変数は、リストの値そのものではなく、リストの先頭の場所を指している。このような値の持ち方を
+                  <strong>参照(reference)</strong>と呼ぶ。</p>
+                  <p>リストを指す変数を関数に渡す時、「リストの先頭の場所」という「参照」の「値」をコピーして渡すので、<strong>参照の値渡し
+                  (call by
+                  sharing)</strong>と呼ばれる。いずれにせよ、やっていることは変数の値をコピーして渡しているだけであるが、その変数が参照であるかどうかによって挙動が異なるように見える。この仕組みを完全に理解する必要はないが、将来この問題に直面した時に「参照の値渡し」という言葉や仕組みをしらないと問題解決が難しくなるため、ここではぼんやりと「そういう問題もある」と覚えておいて欲しい。</p>
+                  <h1 id="リスト内包表記">リスト内包表記</h1>
+                  <figure>
+                  <img src="fig/report.png"
+                  alt="大量のレポートを採点する教員" />
+                  <figcaption
+                  aria-hidden="true">大量のレポートを採点する教員</figcaption>
+                  </figure>
+                  <p>日常業務において、何かまとまったデータを受け取り、それに何か処理をして、まとまったデータとして返す、という処理は非常に多い。例えば講義でレポートを出したら、全員分のレポートを受け取り、それを採点して、それぞれに成績をつける、という処理をしなければならない。同様に、プログラムでも、何かリストを受け取り、そのリストに何か処理をして、新しいリストを作成する、という処理をすることが多い。</p>
+                  <p>簡単な例として、整数のリストを受け取って、要素をすべて二倍にしたリストを作成するようなコードを書こう。普通にループを回すとこんな感じに書けるであろう。</p>
+                  <div class="sourceCode" id="cb33"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> []</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> source:</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    result.append(i<span class="op">*</span><span class="dv">2</span>)</span></code></pre></div>
+                  <p>Pythonには<strong>リスト内包表記 (list
+                  comprehension)</strong>という表記法があり、上記のコードは以下のように書ける。</p>
+                  <div class="sourceCode" id="cb34"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>source <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</span></code></pre></div>
+                  <p>リスト内包表記は</p>
+                  <div class="sourceCode" id="cb35"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>[新しいリストの要素 <span class="cf">for</span> 元のリストの要素 <span class="kw">in</span> 元のリスト]</span></code></pre></div>
+                  <p>という書き方をする。リスト内包表記は「後ろから」読むのがコツである。</p>
+                  <p>つまり、</p>
+                  <div class="sourceCode" id="cb36"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> source]</span></code></pre></div>
+                  <p>という内包表記は、</p>
+                  <ul>
+                  <li><code>source</code>というリストに含まれる</li>
+                  <li>それぞれの要素<code>i</code>について</li>
+                  <li><code>2*i</code>を要素とするような新しいリストを作ってください</li>
+                  </ul>
+                  <p>という意味となる。</p>
+                  <figure>
+                  <img src="fig/list_comp.png" alt="リスト内包表記" />
+                  <figcaption
+                  aria-hidden="true">リスト内包表記</figcaption>
+                  </figure>
+                  <p>もちろん<code>source</code>のところに直接リストを入れてしまって、</p>
+                  <div class="sourceCode" id="cb37"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]]</span></code></pre></div>
+                  <p>としてもかまわない。また、<code>range</code>を使って</p>
+                  <div class="sourceCode" id="cb38"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> [<span class="dv">2</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)]</span></code></pre></div>
+                  <p>と書くこともできる。リスト内包表記は「Pythonらしい」書き方で、使い方によってはスマートに書けるが、使いすぎると可読性を損なうこともあるため、バランスよく使って欲しい。</p>
+                  <h1 id="コッホ曲線">コッホ曲線</h1>
+                  <p>リストやタプルについて学んだので、それを利用して「コッホ曲線」を描画してみよう。コッホ曲線とはこんな図形である。</p>
+                  <figure>
+                  <img src="fig/koch.png" alt="コッホ曲線" />
+                  <figcaption aria-hidden="true">コッホ曲線</figcaption>
+                  </figure>
+                  <p>名前を知らなくても、その形は見たことがあるかと思う。この曲線は、以下のような手続きで作成される。</p>
+                  <ol type="1">
+                  <li>まず線分を用意する</li>
+                  <li>線分を三等分する</li>
+                  <li>中央の線分を、正三角形の形に盛り上げる</li>
+                  </ol>
+                  <p>この手続きをすると、一本の線分が4本の線分に変換される。こうしてできた4本の線分のそれぞれに同様な手続きを繰り返すと、コッホ曲線ができあがる。</p>
+                  <figure>
+                  <img src="fig/koch2.png" alt="コッホ曲線の作り方" />
+                  <figcaption
+                  aria-hidden="true">コッホ曲線の作り方</figcaption>
+                  </figure>
+                  <p>コッホ曲線は、再帰を使って描画するのが自然だが、今回はリストとタプルを駆使してコッホ曲線を描くプログラムを組んでみよう。</p>
+                  <p>コッホ曲線は、すべてつながった線分から構成されている。したがって、ある点から、次の点へのベクトルの集合とみなすことができる。さて、あるベクトルが与えられたとき、それをどのように変換したいかを表現したベクトルのリストを与えて変換することを考える。</p>
+                  <figure>
+                  <img src="fig/koch3.png" alt="ベクトルの変換" />
+                  <figcaption
+                  aria-hidden="true">ベクトルの変換</figcaption>
+                  </figure>
+                  <p>コッホ曲線では、最初にx方向に伸びた長さ1の線分がある。これを2次元ベクトル<span
+                  class="math inline">\((1,0)\)</span>で表現する。これを入力したら<span
+                  class="math inline">\((1/3, 0), (1/6, \sqrt{3}/6),
+                  (1/6, -\sqrt{3}/6),
+                  (1/3,0)\)</span>の4つのベクトルに変換したい。ここで、最初に与えたベクトルと、変換で与えたベクトルの始点から終点の長さが等しいことに注意せよ。ただ、変換リストを、長さを考えながら与えるのは面倒だ。変換リストとして<span
+                  class="math inline">\((1, 0), (1/2, \sqrt{3}/2), (1/2,
+                  -\sqrt{3}/2),
+                  (1,0)\)</span>を与えたら、長さを自動調節するようにしよう。
+                  また、傾いたベクトルを入力したら、傾いた4つのベクトルにする。</p>
+                  <p>このような変換プログラムを書いたら、最初にタプルのリスト<code>[(1,0)]</code>を入力すると、それを変換した4つのタプルのリストに変換され、さらにそれを変換したら16個のタプルのリストに変換され……と、この処理を繰り返すことでコッホ曲線を表現するベクトルのリストを作ることができる。以下、そのプログラムを少しずつ作っていこう。</p>
+                  <h1 id="リストとタプル課題">リストとタプル：課題</h1>
+                  <h2
+                  id="課題1コッホ曲線の描画">課題1：コッホ曲線の描画</h2>
+                  <p>新しいノートブックを開き、<code>koch.ipynb</code>という名前にせよ。</p>
+                  <h3 id="ライブラリのインポート">1.
+                  ライブラリのインポート</h3>
+                  <p>1つ目のセルでは、必要なライブラリをインポートする。ここでは<code>math</code>ライブラリの平方根<code>sqrt</code>と、描画に必要なライブラリをインポートしている。</p>
+                  <div class="sourceCode" id="cb39"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> sqrt</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</span></code></pre></div>
+                  <h3 id="ベクトルの和の長さ">2. ベクトルの和の長さ</h3>
+                  <p>長さの自動調節のため、変換ベクトルのリストが与えられたら、始点と終点を結ぶベクトルの長さを求めよう。変換ベクトルリストは、タプルのリストとして与える。例えば<code>[(1,0),(0,1)]</code>のようなリストが与えられた時に、<span
+                  class="math inline">\(\sqrt{2} \sim
+                  1.414\)</span>を返すような関数<code>length</code>を実装したい。</p>
+                  <p>これは要するにベクトルのリストを受けとって、そのベクトルの和を計算してから、得られたベクトルの長さを返す関数を作ればよい。2つ目のセルに以下を入力せよ。</p>
+                  <div class="sourceCode" id="cb40"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> length(a):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>        x <span class="op">+=</span> dx</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>        y <span class="op">+=</span> dy</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sqrt(x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)</span></code></pre></div>
+                  <p>ここで<code>a</code>は、タプルのリスト、例えば<code>[(1,0),(0,1)]</code>のような入力を想定している。<code>for (dx, dy) in a:</code>は、リスト<code>a</code>に含まれるタプルを直接<code>(dx, dy)</code>というタプルで受け取るという意味で、冗長に書けば</p>
+                  <div class="sourceCode" id="cb41"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ai <span class="kw">in</span> a:</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    dx, dy <span class="op">=</span> ai</span></code></pre></div>
+                  <p>と同じ意味である。</p>
+                  <p>入力したら、3つ目のセルを使って動作確認をしよう。以下を実行してみよ。</p>
+                  <div class="sourceCode" id="cb42"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">1</span>)]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>length(a)</span></code></pre></div>
+                  <p>次のような表示がなされれば正しく入力されている。</p>
+                  <div class="sourceCode" id="cb43"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>1.4142135623730951</span></code></pre></div>
+                  <p>確認が終わったら、3つ目のセルを削除すること。</p>
+                  <h3 id="タプルからリストを作成">3.
+                  タプルからリストを作成</h3>
+                  <p>次に、入力ベクトルを、変換ベクトルリストに基づいて変換することを考えよう。処理は以下の通りである。</p>
+                  <ul>
+                  <li>入力ベクトルの長さと変換ベクトルリストの長さの比<code>scale</code>を求める</li>
+                  <li>入力ベクトルの傾き角度<span
+                  class="math inline">\(\theta\)</span>の<span
+                  class="math inline">\(\sin\)</span>と<span
+                  class="math inline">\(\cos\)</span>の値を求める</li>
+                  <li>変換ベクトルリストに含まれるベクトルそれぞれについて、<code>scale</code>倍して<span
+                  class="math inline">\(\theta\)</span>だけ傾けたものをリストに追加する</li>
+                  </ul>
+                  <p>以上を実現する以下のコードを、3つ目のセルに入力せよ。</p>
+                  <div class="sourceCode" id="cb44"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert(a, b):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    ax, ay <span class="op">=</span> a</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> ax<span class="op">/</span>alen</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> ay<span class="op">/</span>alen</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    scale <span class="op">=</span> alen<span class="op">/</span>length(b)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b</span></code></pre></div>
+                  <p>上記を実装したら、4つ目のセルで動作確認をしよう。</p>
+                  <p>例えば入力として<code>(0,1)</code>というベクトルを、変換リストとして<code>[(1,1),(1,-1)]</code>というリストを与えたら、<code>[(-0.5, 0.5), (0.5, 0.5)]</code>という出力が得られなくてはならない。</p>
+                  <p>入力</p>
+                  <div class="sourceCode" id="cb45"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>convert(a,b)</span></code></pre></div>
+                  <p>出力</p>
+                  <div class="sourceCode" id="cb46"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>[(-0.5, 0.5), (0.5, 0.5)]</span></code></pre></div>
+                  <p>正しい動作が確認できたら、テスト用のセルを削除しておこう。</p>
+                  <h3 id="タプルのリストそれぞれに適用">4.
+                  タプルのリストそれぞれに適用</h3>
+                  <p>今、「ベクトルをタプルとして与えられたら、変換ベクトルリストに従って、タプルのリストに変換する関数」を<code>convert</code>として実装した。これを使えば、「タプルのリスト」が与えられたとき、それぞれのタプルに<code>convert</code>を適用した結果をまとめたリストを作る関数<code>apply</code>は簡単に実装できる。以下を4つ目のセルに入力せよ。</p>
+                  <div class="sourceCode" id="cb47"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="bu">apply</span>(a, b):</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> []</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> a:</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>        r <span class="op">+=</span> convert(i, b)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r</span></code></pre></div>
+                  <p>入力したら動作確認しよう。5つ目のセルに以下を実行し、結果が正しいことを確認せよ。</p>
+                  <p>入力</p>
+                  <div class="sourceCode" id="cb48"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">apply</span>(a,b)</span></code></pre></div>
+                  <p>出力</p>
+                  <div class="sourceCode" id="cb49"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>[(0.5, 0.5), (0.5, -0.5), (0.5, -0.5), (-0.5, -0.5)]</span></code></pre></div>
+                  <p>動作確認ができたら、テスト用のコード(5つ目のセル)は削除してよい。</p>
+                  <h3 id="線の描画">5. 線の描画</h3>
+                  <p>ベクトルのリストが与えられたら、描画するのは難しくない。与えられたベクトルの通りに線を描画すればよい。ただし、線を描画したら、次に描画する始点を、現在の終点に取り直す必要がある。</p>
+                  <p>以下のプログラムを、5つ目のセルに入力せよ。</p>
+                  <div class="sourceCode" id="cb50"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_line(draw, a, size):</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (dx, dy) <span class="kw">in</span> a:</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>        x1, y1 <span class="op">=</span> x2, y2</span></code></pre></div>
+                  <p>これは、ベクトルのリストを受け取り、そのベクトルの通りに線を描画する関数である。</p>
+                  <h3 id="画像の表示">6. 画像の表示</h3>
+                  <p>では、最後に描画してみよう。以下のコードを6つ目のセルに入力せよ。</p>
+                  <div class="sourceCode" id="cb51"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">512</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(size, <span class="dv">0</span>)]</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>) <span class="op">/</span> <span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>draw_line(draw, a, size)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
+                  <p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
+                  <p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
+                  <h2
+                  id="課題2オリジナルのフラクタル曲線">課題2：オリジナルのフラクタル曲線</h2>
+                  <p>6つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
+                  <p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
+                  <div class="sourceCode" id="cb52"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</span></code></pre></div>
+                  <p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
+                  <h2
+                  id="発展課題色付きフラクタル曲線">発展課題：色付きフラクタル曲線</h2>
+                  <p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。まずは一色で塗るプログラムを書く。</p>
+                  <h3 id="線に色を塗る">7. 線に色を塗る</h3>
+                  <p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
+                  <div class="sourceCode" id="cb53"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_line_color(draw, a, colors, size):</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> colors[<span class="dv">0</span>]</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>        x1, y1 <span class="op">=</span> x2, y2</span></code></pre></div>
+                  <p>これは、色のリスト<code>colors</code>を受け取るが、その最初の要素<code>colors[0]</code>だけを使って色を塗るコードになっている。</p>
+                  <h3 id="色付きのフラクタル図形">8.
+                  色付きのフラクタル図形</h3>
+                  <p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
+                  <div class="sourceCode" id="cb54"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">512</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(size, <span class="dv">0</span>)]</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)]</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>draw_line_color(draw, a, c, size)</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
+                  <p>成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。</p>
+                  <ul>
+                  <li>ヒント1：
+                  修正するのは<code>draw_line_color</code>関数である</li>
+                  <li>ヒント2：
+                  リスト<code>colors</code>のサイズは<code>len(colors)</code>で取得できる</li>
+                  <li>ヒント3：
+                  ループカウンタ<code>i</code>を、リスト<code>colors</code>のサイズで割った余りを活用せよ</li>
+                  <li>ヒント4：
+                  ある数<code>i</code>を3で割ったあまりは<code>i % 3</code>で得ることができる</li>
+                  </ul>
+                  <p>完成したら、オリジナルのフラクタル図形も色付きにしてみよ。</p>
+                  <h2 id="内包表記">内包表記</h2>
+                  <p>リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
+                  <div class="sourceCode" id="cb55"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert(a, b):</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    ax, ay <span class="op">=</span> a</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    alen <span class="op">=</span> sqrt(ax<span class="op">**</span><span class="dv">2</span><span class="op">+</span>ay<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> ax<span class="op">/</span>alen</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> ay<span class="op">/</span>alen</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    scale <span class="op">=</span> alen<span class="op">/</span>length(b)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b</span></code></pre></div>
+                  <p><code>b</code>に関してリスト内包表記を使っている部分がある。</p>
+                  <div class="sourceCode" id="cb56"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(scale<span class="op">*</span>x, scale<span class="op">*</span>y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> [(c <span class="op">*</span> x <span class="op">-</span> s<span class="op">*</span> y, s <span class="op">*</span>x <span class="op">+</span> c <span class="op">*</span> y) <span class="cf">for</span> (x, y) <span class="kw">in</span> b]</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> b</span></code></pre></div>
+                  <p>これは、</p>
+                  <ul>
+                  <li>タプルのリスト<code>b</code>の要素<code>(x,y)</code>それぞれについて、まず<code>(x,y)</code>をそれぞれ<code>scale</code>倍したリストを作成せよ</li>
+                  <li>そうしてできた新しいリスト<code>b</code>の要素<code>(x,y)</code>それぞれについて、<code>(c * x - s* y, s *x + c * y)</code>という変換(回転行列の演算)をしたリストを作成せよ</li>
+                  <li>できたリストを<code>b</code>に返せ</li>
+                  </ul>
+                  <p>という意味だ。毎回<code>b</code>に上書き代入していることに注意。</p>
+                  <p>これを、<code>for</code>文で書くとこのようになるだろう。</p>
+                  <div class="sourceCode" id="cb57"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> []</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (bx, by) <span class="kw">in</span> b:</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>        bx <span class="op">*=</span> scale</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>        by <span class="op">*=</span> scale</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>        nx <span class="op">=</span> c <span class="op">*</span> bx <span class="op">-</span> s <span class="op">*</span> by</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>        ny <span class="op">=</span> s <span class="op">*</span> bx <span class="op">+</span> c<span class="op">*</span>by</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>        r.append((nx, ny))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> r</span></code></pre></div>
+                  <p>これは</p>
+                  <ul>
+                  <li><code>r</code>という空リストを作成しておく</li>
+                  <li><code>b</code>の要素を<code>(bx, by)</code>というタプルで受け取る</li>
+                  <li><code>bx, by</code>の要素をそれぞれ<code>scale</code>倍する</li>
+                  <li><code>nx = c * bx - s * by、ny = s * bx + c*by</code>という変換(回転行列の演算)をして</li>
+                  <li>得られた<code>(nx, ny)</code>というタプルを<code>r</code>に追加し</li>
+                  <li><code>r</code>を返す</li>
+                  </ul>
+                  <p>という処理をしている。リスト内包表記を使うと、<code>for</code>文が消え、かつ「リストにどのような処理を施しているのか」が明確になったのがわかるであろう。しかし、なんでも内包表記を使いすぎると、逆に何をやっているかの手続きがわかりづらくなる場合もある。リスト内包表記を使った方が良いか、素直に<code>for</code>で回した方が良いかは場合によるので、なんでもかんでも内包表記を使おうとせず、どちらが良いか毎回考えながら決めること。</p>
+                  <h1
+                  id="余談osを作ってミュージシャンになった人">余談：OSを作ってミュージシャンになった人</h1>
+                  <p>普段、Windowsが入っているパソコンを使うことが多いであろう。WindowsとはOS
+                  (Operating
+                  System)の一種である。OSとは基本ソフトとも言われ、ユーザとハードウェアの仲立ちをする非常に重要なソフトウェアだ。マイクロソフトはMS-DOSというOSの成功から急成長した会社だが、現在はWindows
+                  というOSを開発している。さて、Windowsには様々な種類があるが、2006年にリリースされた「Windows
+                  Vista」というOSがあった。私はVistaがプリインストールされたノートPCを購入したが、Vistaのあまりのひどさに「これを開発したのは誰だ？」と思って調べてみたら、開発責任者はVistaの発売翌日にマイクロソフトを退職し、ミュージシャンになっていた。彼の名前はジム・オールチン。Windows
+                  95を作るはずの人物であった。</p>
+                  <p>1994年。マイクロソフトのCEO、ビル・ゲイツは「指先で情報を」という基調講演を行った。当時マイクロソフトはWindows
+                  3.1の後継となり、Appleの洗練されたOSに対抗できる次世代OSがぜひとも必要であった。そのために進められていたのが「Cairo」というプロジェクトであり、そのリーダーがジム・オールチンであった。しかし、Cairoの進捗は悪く、別に「Chicago」というプロジェクトが走り出した。最終的にCairoはChicagoに破れ、Chicagoが「Windows
+                  95」としてリリース。Windows
+                  95は大ヒットし、市場におけるマイクロソフトの立場を盤石なものにした。</p>
+                  <p>マイクロソフトはコンシューマ向けであるWindows
+                  95とは別に、サーバ向けに安定動作するWindows
+                  NTの開発も進めていた。そのストーリーは「闘うプログラマー」に詳しいので是非読んでみてほしい。コンシューマ向けに使いやすい95ファミリと、サーバ向けに安定しているNT、その両方の良さを受け継いだOSがWindows
+                  XPで、これまたヒット、Windowsユーザを一気に増やすことに成功した。</p>
+                  <p>2001年、XPのリリースと同時に、ジム・オールチンをリーダーとしてXPの後継となるOS開発プロジェクトが始まった。コードネームはLonghorn、後のVistaである。Vistaは当初、XPのマイナーバージョンアップという位置付けであったが、いつのまにか野心的な機能が次々と追加され、プロジェクトは膨れ上がっていった。もともと2001年にリリースされたXPの後を継いで2003年頃にリリースされるはずだったが、リリース延期を重ねていく。そして2005年頃にどうにもならなくなり、プログラムの作り直しを決断する(Longhorn
+                  Reset)。そこから一年でなんとかVistaはリリースされたが、約束された先進的な機能はほとんど実装されず、VistaプリインストールマシンはWindows
+                  XPへダウングレードができるようにされるなど市場からも不評であり、マイクロソフトはOSのリリース計画を大幅に変更せざるを得なくなった。</p>
+                  <p>ジム・オールチンは、Cairoで実現できなかった「指先で情報を」というスローガンをVistaで実現しようとしたのだろうか。Vistaで約束され、実装されなかった機能の多くは、Cairoで実現しようとしていたものと重なるものが多い。ジム・オールチンの公式サイトには「私のマイクロソフトでの最大の貢献はサーバービジネスだ」とあり、その経歴には、キャリアのほぼすべてで関わったはずのCairoとVistaの名前はない。</p>
           </article>
   </body>
 

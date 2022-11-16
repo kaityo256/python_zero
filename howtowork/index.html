@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title>howtowork/index.md</title>
+                <title>Pythonが動く仕組み</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -242,251 +242,348 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="pythonが動く仕組み">Pythonが動く仕組み</h1>
-<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
-<ul>
-<li>プログラムの実行の仕組み</li>
-<li>抽象構文木とバイトコード</li>
-</ul>
-<h2 id="コンピュータはどうやって動くのか">コンピュータはどうやって動くのか</h2>
-<p>車を運転していない人でも、「車はガソリンという可燃性の液体を燃料とし、それを噴射して点火、爆発させてピストンを動かし、そのピストンの運動を回転運動に変換してタイヤに伝えて動いている」、ということはぼんやりと知っていることだろう。この知識は、車を運転するときにはあまり必要ない。実際、よほど車好きでない限り、車の運転をする際にエンジンやトランスミッションの仕組みを意識することはないであろう。しかしそれでも、車の仕組みは簡単に知っておくべきだと筆者は思う。冷蔵庫や電子レンジ、これらの家電は、その動作原理を知らずとも使うことは可能だし、おぼろげに原理を知っているからといってあまり役に立つ気はしないが、やはりざっくりとは知っておくべきである。それが教養というものだ。コンピュータの動作についても同様である。</p>
-<p>これまで、ブラウザ上でプログラムを入力し、実行させ、その結果を表示させてきた。Pythonのプログラムはクラウド上で実行されたが、そのブラウザを実行しているのは皆さんの目の前にあるのはコンピュータである。コンピュータとはcomputeするもの、つまり計算機であり、何かしら計算してその結果を表示することを繰り返す機械である。では、そもそもプログラムとはどうやって動いているのだろうか？そのようなことを知っていても今後の人生の役には立たないと思うが、せっかくプログラミングを覚えるのだから、計算機がどういう仕組みで動いているのか知っておいても良いだろう。</p>
-<h2 id="機械語">機械語</h2>
-<p>いま、目の前にある計算機は、ディスプレイ(表示装置)、キーボードやマウス(入力装置)、CPU(中央演算処理装置)、メモリ(記憶装置)などから構成されている。ディスクなどのストレージやネットワークなどの通信装置については今は忘れよう。このうちCPUがもっとも重要な装置であるが、やっていることは単純であり、</p>
-<ul>
-<li>メモリから命令とデータを取ってくる</li>
-<li>命令を解釈し、データを演算器に投げる</li>
-<li>演算器から返ってきた結果をメモリに書き戻す</li>
-</ul>
-<p>という一連の動作をひたすら繰り返しているに過ぎない。「命令」も一種のデータであり、メモリに置いてあることに注意しよう。演算器というのは、文字通り演算する機械である。例えば足し算をしたければ加算器を、掛け算をしたければ乗算器が必要になる。また、整数演算と浮動小数点演算は全く異なる演算器を用いる。</p>
-<p>さて、計算機が解釈できるのは数字だけであるため、機械には数字列を使って命令を行う。この数字列による言葉を <strong>機械語 (machine language)</strong>と呼ぶ。コンピュータとは計算機であり、計算とはデータに四則演算などの演算をすることである。したがって、計算機に何か計算させたければ「何を(データ)」「どうするか(命令)」がセットである必要があることがわかるだろう。機械語というと難しそうだが、結局のところ「何を」「どうするか」を羅列しているに過ぎない。</p>
-<figure>
-<img src="fig/opcode.png" alt="機械語の実行" /><figcaption>機械語の実行</figcaption>
-</figure>
-<p>例えば一桁の整数を二つ受け取って四則演算をする計算機があったとしよう。四則演算をするので、演算は加算、減算、乗算、除算の4種類である。なのでそれぞれに0,1,2,3の数字を割り当てよう。四則演算をするには、整数が二つ必要だ。その数字も並べよう。例えば「034」という数字列は「3+4」を、「185」は「8-5」を表す。計算機は、メモリから三つの数字をとってきて、最初の数字を見て「どの演算器に投げるか」を決める(命令を最初に置いたのはそのためだ)。そして続く二つのデータを演算器に投げる。かなり単純化されているが、これが機械語である。このように、「何をするか」を表す部分をオペコード(operation code, opcode)、「データ」を表す部分をオペランド(operand、被演算子)と呼ぶ。</p>
-<h2 id="プログラム言語とコンパイラ">プログラム言語とコンパイラ</h2>
-<p>さて、計算機が解釈できるのは機械語だけである。機械語は難しくはないが、「足し算は0で・・・」と覚えるのは面倒だ。そこで「034」という数字の羅列の代わりに「ADD 3,4」という書き方をしよう。これを「034」に変換するのは簡単だし、人間が見て「3と4を足すんだな」とわかりやすい。このように機械語と一対一対応する言語を<strong>アセンブリ言語(assembly language)</strong>と呼ぶ。しかし、アセンブリ言語でもまだ面倒だ。もっと、人間にわかりやすい形式、先ほどの例なら「3+4」と書いて、それを計算機が理解できる形式に変換したい、と思うのは自然であろう。その「人間が理解できる形式」がプログラム言語と呼ばれるものである。</p>
-<p>プログラム言語は人間にわかりやすい形式になっているが、そのままでは機械は理解できない。そこで、プログラムを機械語に「翻訳」する必要がでてくる。この翻訳作業をするのがコンパイラである。一口に「翻訳」と言っても、コンパイラがやるべき仕事は多い。まず「3 + 4」というひと続きの文字列が与えられたときに、「3」「+」「4」という文字に分割しなければならない。これを<strong>字句解析(lexical analysis)</strong>と呼ぶ。さらに、「3と4は整数であり、+という演算子の引数である」と認識する必要がある。これが<strong>構文解析(syntax analysis)</strong>と<strong>意味解析(semantics analysis)</strong>である。この構文解析を行うのがパーサ(parser, 構文解析器)である。パーサは、プログラムを<strong>抽象構文木 (abstract syntax tree, AST)</strong>と呼ばれるデータ構造に変換する。</p>
-<figure>
-<img src="fig/compile.png" alt="コンパイラの仕事" /><figcaption>コンパイラの仕事</figcaption>
-</figure>
-<p>パーサによって抽象構文木が与えられたら、そこからアセンブリコードを生成する。通常は途中で中間コードを生成し、その後にアセンブリ言語に変換する。アセンブリを実行ファイルにするためには、さらに「リンク」という作業工程がある。リンクを行うのがリンカ(linker)というプログラムで、これもかなり複雑なことをしているのだが、本書では扱わない。</p>
-<p>最初に、プログラム言語には大きく分けてコンパイル言語とインタプリタの二種類があることに触れた。プログラムをコンパイラが機械語に翻訳し、そのまま実行するのがコンパイル言語であり、C++などはコンパイル言語の代表格的な言語である。</p>
-<p>一方、プログラム言語を逐次的に解釈して実行するのがインタプリタ言語であり、Pythonもインタプリタ言語に属す。しかし、プログラムをそのまま解釈しながら実行すると遅いため、多くのインタプリタ言語は<strong>バイトコード(bytecode)</strong> と呼ばれる中間コードを生成し、それを実行することで高速化を図る。</p>
-<figure>
-<img src="fig/interpret.png" alt="インタプリタの仕事" /><figcaption>インタプリタの仕事</figcaption>
-</figure>
-<p>Pythonは、まずプログラムを抽象構文木に変換する。その後、その構文木からバイトコードを生成する。バイトコードは仮想的な機械語である。機械語は、現実に存在する機械で動作するが、バイトコードは仮想的な機械向けの機械語である。このバイトコードを実行するプログラムを<strong>仮想マシン(Virtual Machine, VM)</strong>と呼ぶ。「エミュレータ」という言葉を聞いたことがあるかもしれない。昔のゲームハード用のゲームを、現在のゲームで実行するのに使われたりする。仮想マシンは、実際には存在しないハードウェアであるが、それを現実の計算機でエミュレートすることでプログラムを実行する。</p>
-<p>本講ではPythonが動く仕組みを理解するため、実際に抽象構文木とバイトコードを見てみることにしよう。</p>
-<h2 id="バイトコードとスタックマシン">バイトコードとスタックマシン</h2>
-<p>Pythonは、与えられたプログラムを、仮想的なアセンブリであるバイトコードに変換し、それを仮想マシン上で実行する。Pythonの仮想マシンは、メモリとしてスタックを用いる。</p>
-<figure>
-<img src="fig/stack.png" alt="スタック" /><figcaption>スタック</figcaption>
-</figure>
-<p><strong>スタック(stack)</strong>とは、データ構造の一つである。重い荷物を積み上げたような状態を想像せよ。荷物は重いので、一度に一つしか持ち上げることができない。従って、「手持ちの荷物を一番上に積む」か「一番上の荷物を取り出す」ことしかできず、積み上がった荷物の途中に別の荷物を入れたり、一番上ではない荷物を取り出すこともできない。新しい荷物を一番上に載せることをプッシュ(push)、積み上がった荷物の一番上にあるものを取り出すことをポップ(pop)と呼ぶ。</p>
-<p>スタックでは「入った順番」と「出る順番」が逆になっている。これを「後入れ先出し」の意味でLast In First Out (LIFO)と呼ぶ。逆に、「最初に入った人が最初に出てくる」ようなデータ構造は「先入れ先出し」の意味でFirst In First Out (FIFOと呼び、このような振る舞いをするデータ構造を<strong>キュー(queue)</strong>と呼ぶ。</p>
-<p>Pythonはの仮想マシンは、スタックにデータをプッシュしたりポップしたりすることでプログラムを実行する。たとえば<code>3 + 4</code>というプログラムは、</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb1-1" title="1">LOAD_CONST 3</a>
-<a class="sourceLine" id="cb1-2" title="2">LOAD_CONST 4</a>
-<a class="sourceLine" id="cb1-3" title="3">BINARY_ADD</a></code></pre></div>
-<p>というバイトコード列に変換される。</p>
-<p><code>LOAD_CONST 3</code>は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば<code>BINARY_ADD</code>は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である<code>7</code>がプッシュされる。</p>
-<figure>
-<img src="fig/binary_add.png" alt="スタックマシン上での加算" /><figcaption>スタックマシン上での加算</figcaption>
-</figure>
-<p>このように、メモリとしてスタックを用いるような計算機を<strong>スタックマシン (stack machine)</strong>と呼ぶ。Pythonの仮想マシンはスタックマシンである。</p>
-<p>既にみたように、スタックのデータのやりとりは「一番上」のみ、取り出せるデータも「最後に入れたもの」だけに限られ、途中にデータを挿入することも、任意の場所のデータを取り出すこともできない、いわば「不自由」なデータ構造である。なぜこのような「不自由」なデータ構造をメモリに採用しているかというと、命令セットが簡単になるというメリットがあるからである。</p>
-<p>我々が通常使っている計算機は「レジスタマシン」と呼ばれる方式を採用している。レジスタマシンは、レジスタという計算を行うための小さく高速な作業領域を複数持ち、メモリも任意の場所に読み書きできる。すると、当然のことながら「メモリのどこから、どのレジスタに値をロードし、計算結果をどこに書き込むか」を指定しなければならない。それに対して、スタックマシンはメモリの「入り口」と「出口」が決まっているため、例えば足し算をする命令<code>BINARY_ADD</code>は引数を必要としない。このように、スタックマシンは命令セットが単純になるというメリットがあり、仮想マシンのモデルとして広く採用されている。</p>
-<h2 id="逆ポーランド記法">逆ポーランド記法</h2>
-<p>さて、先程見たように、<code>3 + 4</code>というプログラムは、</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb2-1" title="1">LOAD_CONST 3</a>
-<a class="sourceLine" id="cb2-2" title="2">LOAD_CONST 4</a>
-<a class="sourceLine" id="cb2-3" title="3">BINARY_ADD</a></code></pre></div>
-<p>という命令列に変換された。ここで、<code>LOAD_CONST</code>は省略し、かつ<code>BINARY_ADD</code>を<code>+</code>で表記すると、この命令列は<code>3 4 +</code>と表現できる。このように、演算子が、被演算子の後ろに置かれる記法を後置記法、もしくは<strong>逆ポーランド記法(Reverse Polish Notation, RPN)</strong>と呼ぶ。我々が普段目にする<code>3 + 4</code>という記法は、演算子が被演算子の中に置かれるため、中置記法と呼ばれる。</p>
-<p>逆ポーランド記法は、スタックマシンと相性が良い。<code>3 4 +</code>という命令列が来た時、それを一つ一つの区切り( <strong>トークン(token)</strong> と呼ぶ)に分解して、</p>
-<ul>
-<li>もしトークンが数字ならスタックにプッシュ</li>
-<li>もしトークンが演算子なら、スタックから二つデータを取り出して演算、結果をスタックにプッシュ</li>
-</ul>
-<p>とするだけで計算が実行できる。</p>
-<p>例えば、<code>a * b + c</code>という計算は、逆ポーランド記法なら<code>a b * c +</code>と表記できる。また、<code>a + b * c</code>の場合、先に<code>b * c</code>を実行する必要があるが、逆ポーランド記法なら<code>a b c * +</code>と表記され、演算子の優先順位を気にすることなく順番に処理すれば良い(より正確には、演算子の優先順位を考慮して逆ポーランド記法を構成する)。</p>
-<p>実際にPythonのバイトコードが逆ポーランド記法になっているのを見てみよう。バイトコードを表示するには<code>dis</code>をインポートする。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="im">import</span> dis</a></code></pre></div>
-<p>この状態で、</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1">dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</a></code></pre></div>
-<p>を実行すると、</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb5-1" title="1">  1           0 LOAD_NAME                0 (a)</a>
-<a class="sourceLine" id="cb5-2" title="2">              2 LOAD_NAME                1 (b)</a>
-<a class="sourceLine" id="cb5-3" title="3">              4 BINARY_MULTIPLY</a>
-<a class="sourceLine" id="cb5-4" title="4">              6 LOAD_NAME                2 (c)</a>
-<a class="sourceLine" id="cb5-5" title="5">              8 BINARY_ADD</a>
-<a class="sourceLine" id="cb5-6" title="6">             10 RETURN_VALUE</a></code></pre></div>
-<p>となり、これが<code>a b * c +</code>に対応しているのがわかるであろう。</p>
-<figure>
-<img src="fig/calc1.png" alt="a * b + cの計算" /><figcaption><code>a * b + c</code>の計算</figcaption>
-</figure>
-<p>また、</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</a></code></pre></div>
-<p>を実行すると</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb7-1" title="1">  1           0 LOAD_NAME                0 (a)</a>
-<a class="sourceLine" id="cb7-2" title="2">              2 LOAD_NAME                1 (b)</a>
-<a class="sourceLine" id="cb7-3" title="3">              4 LOAD_NAME                2 (c)</a>
-<a class="sourceLine" id="cb7-4" title="4">              6 BINARY_MULTIPLY</a>
-<a class="sourceLine" id="cb7-5" title="5">              8 BINARY_ADD</a>
-<a class="sourceLine" id="cb7-6" title="6">             10 RETURN_VALUE</a></code></pre></div>
-<p>となる。これが<code>a b c * +</code>になっていることは見てわかるであろう。</p>
-<figure>
-<img src="fig/calc2.png" alt="a + b * cの計算" /><figcaption><code>a + b * c</code>の計算</figcaption>
-</figure>
-<h2 id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h2>
-<h3 id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h3>
-<p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、<code>ast.ipynb</code>として保存せよ。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
-<p>最初のセルで必要なライブラリをインポートする。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> ast</a>
-<a class="sourceLine" id="cb8-2" title="2"><span class="im">import</span> dis</a>
-<a class="sourceLine" id="cb8-3" title="3"><span class="im">import</span> IPython</a>
-<a class="sourceLine" id="cb8-4" title="4"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</a></code></pre></div>
-<h4 id="抽象構文木をグラフに変換する関数">2. 抽象構文木をグラフに変換する関数</h4>
-<p>２つ目のセルに抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">def</span> visit(node, nodes, pindex, g):</a>
-<a class="sourceLine" id="cb9-2" title="2">    name <span class="op">=</span> <span class="bu">str</span>(<span class="bu">type</span>(node).<span class="va">__name__</span>)</a>
-<a class="sourceLine" id="cb9-3" title="3">    index <span class="op">=</span> <span class="bu">len</span>(nodes)</a>
-<a class="sourceLine" id="cb9-4" title="4">    nodes.append(index)</a>
-<a class="sourceLine" id="cb9-5" title="5">    g.node(<span class="bu">str</span>(index), name)</a>
-<a class="sourceLine" id="cb9-6" title="6">    <span class="cf">if</span> index <span class="op">!=</span> pindex:</a>
-<a class="sourceLine" id="cb9-7" title="7">        g.edge(<span class="bu">str</span>(pindex), <span class="bu">str</span>(index))</a>
-<a class="sourceLine" id="cb9-8" title="8">    <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):</a>
-<a class="sourceLine" id="cb9-9" title="9">        visit(n, nodes, index, g)</a></code></pre></div>
-<p><code>__name__</code>は前後にアンダースコアが二つずつであることに注意。</p>
-<h4 id="グラフを可視化する関数">3. グラフを可視化する関数</h4>
-<p>3つ目のセルに抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">def</span> show_ast(src):</a>
-<a class="sourceLine" id="cb10-2" title="2">    graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)</a>
-<a class="sourceLine" id="cb10-3" title="3">    tree <span class="op">=</span> ast.parse(src)</a>
-<a class="sourceLine" id="cb10-4" title="4">    visit(tree, [], <span class="dv">0</span>, graph)</a>
-<a class="sourceLine" id="cb10-5" title="5">    img <span class="op">=</span> graph.render(<span class="st">&quot;test.png&quot;</span>)</a>
-<a class="sourceLine" id="cb10-6" title="6">    <span class="cf">return</span> IPython.display.Image(img)</a></code></pre></div>
-<p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコード(<code>visit</code>及び<code>show_ast</code>関数)の仕組みである。</p>
-<h4 id="抽象構文木の表示">4. 抽象構文木の表示</h4>
-<p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">src<span class="op">=</span><span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="st">3+4</span></a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb11-4" title="4">show_ast(src)</a></code></pre></div>
-<p>ここで<code>src=</code>の後、及び<code>show_ast</code>の前に<code>"</code>(ダブルクォーテーションマーク)が三つ続いていることに注意。</p>
-<p>ここまで正しく入力されていれば、抽象構文木のグラフが表示されるはずである。うまくできたら、パースするプログラム文字列を変え、別のプログラムをパースしてみよ。まずは<code>3+4</code>の<code>+</code>を<code>-</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">def</span> func(a,b):</a>
-<a class="sourceLine" id="cb13-2" title="2">    <span class="cf">return</span> a<span class="op">+</span>b</a></code></pre></div>
-<p>上記のプログラムを入力するには、<code>"""</code>で囲まれた領域に入力すること。例えば最初の例なら、</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="st">a, b = (1,2)</span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">&quot;&quot;&quot;</span></a></code></pre></div>
-<p>と入力する。抽象構文木とプログラムの対応がわかるだろうか？</p>
-<h3 id="課題1-2バイトコード">課題1-2：バイトコード</h3>
-<h4 id="バイトコードの表示">5. バイトコードの表示</h4>
-<p>以下のプログラムを実行し、バイトコードが得られることを確認せよ。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">dis.dis(<span class="st">&quot;a + b&quot;</span>)</a></code></pre></div>
-<p>バイトコードが得られたら、以下のプログラムに対応するバイトコードを出力し、逆ポーランド記法に対応していることを確認せよ。</p>
-<ul>
-<li><code>a + b + c</code></li>
-<li><code>a + b * c</code></li>
-</ul>
-<h3 id="課題2-1逆ポーランド記法電卓">課題2-1：逆ポーランド記法電卓</h3>
-<p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。逆ポーランド記法とは、「3 + 4」を「3 4 +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
-<p>具体的には、以下のような「プログラム」を組む。</p>
-<ul>
-<li>プログラムは、整数、‘+’、`-’の三種類の<strong>トークン</strong>で構成される</li>
-<li>プログラムを一つ読み込み、以下の動作をする
-<ul>
-<li>プログラムが演算子なら、スタックから二つデータをポップして、計算し、結果をプッシュする</li>
-<li>整数なら、そのままスタックにプッシュする</li>
-</ul></li>
-<li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
-</ul>
-<p>新しいノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
-<h4 id="ライブラリのインポート-1">1. ライブラリのインポート</h4>
-<p>まずは必要なライブラリをインポートしておこう。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1"><span class="im">import</span> dis</a></code></pre></div>
-<h4 id="計算機の実装">2. 計算機の実装</h4>
-<p>では計算機のプログラムを記述しよう。まずは加減算のみに対応させる。最初のセルに以下を入力せよ。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">def</span> calc(code):</a>
-<a class="sourceLine" id="cb17-2" title="2">    data <span class="op">=</span> code.split()</a>
-<a class="sourceLine" id="cb17-3" title="3">    stack <span class="op">=</span> []</a>
-<a class="sourceLine" id="cb17-4" title="4">    <span class="cf">for</span> x <span class="kw">in</span> data:</a>
-<a class="sourceLine" id="cb17-5" title="5">        <span class="bu">print</span>(stack, x, end<span class="op">=</span><span class="st">&quot; =&gt; &quot;</span>)</a>
-<a class="sourceLine" id="cb17-6" title="6">        <span class="cf">if</span> x <span class="op">==</span> <span class="st">&#39;+&#39;</span>:</a>
-<a class="sourceLine" id="cb17-7" title="7">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb17-8" title="8">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb17-9" title="9">            stack.append(a<span class="op">+</span>b)</a>
-<a class="sourceLine" id="cb17-10" title="10">        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;-&#39;</span>:</a>
-<a class="sourceLine" id="cb17-11" title="11">            b <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb17-12" title="12">            a <span class="op">=</span> stack.pop()</a>
-<a class="sourceLine" id="cb17-13" title="13">            stack.append(a<span class="op">-</span>b)</a>
-<a class="sourceLine" id="cb17-14" title="14">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb17-15" title="15">            stack.append(<span class="bu">int</span>(x))</a>
-<a class="sourceLine" id="cb17-16" title="16">        <span class="bu">print</span>(stack)</a>
-<a class="sourceLine" id="cb17-17" title="17">    <span class="bu">print</span>(stack.pop())</a></code></pre></div>
-<h4 id="計算のテスト">2. 計算のテスト</h4>
-<p>実際に計算してみよう。2つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1">calc(<span class="st">&quot;1 2 +&quot;</span>)</a></code></pre></div>
-<p>以下のような実行結果が得られたはずである。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb19-1" title="1">[] 1 =&gt; [1]</a>
-<a class="sourceLine" id="cb19-2" title="2">[1] 2 =&gt; [1, 2]</a>
-<a class="sourceLine" id="cb19-3" title="3">[1, 2] + =&gt; [3]</a>
-<a class="sourceLine" id="cb19-4" title="4">3</a></code></pre></div>
-<p>これは、</p>
-<ul>
-<li>最初はスタックが空<code>[]</code>で、そこに<code>1</code>が来たのでプッシュされて<code>[1]</code>になった</li>
-<li>次に<code>2</code>が来たので、それもプッシュしてスタックの状態が<code>[1,2]</code>になった</li>
-<li>次に<code>+</code>が来たので、スタックから値を二つ取り出し、その和をプッシュして<code>[3]</code>になった</li>
-<li>実行すべきプログラムがなくなったので、スタックの一番上にある数字<code>3</code>を表示して終了</li>
-</ul>
-<p>という処理内容を表している、</p>
-<h3 id="課題2-2-乗算除算の実装">課題2-2: 乗算、除算の実装</h3>
-<p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、入力プログラムとしては<code>/</code>を入力するが、実際の処理(<code>stack.append</code>)では<code>//</code>を実行することで、実行結果を整数にすること。</p>
-<p>ヒント： <code>calc</code>関数に<code>elif</code>文を追加し、<code>x</code>が<code>*</code>や<code>/</code>の場合の処理を追加する。</p>
-<p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb21-1" title="1">[] 1 =&gt; [1]</a>
-<a class="sourceLine" id="cb21-2" title="2">[1] 2 =&gt; [1, 2]</a>
-<a class="sourceLine" id="cb21-3" title="3">[1, 2] + =&gt; [3]</a>
-<a class="sourceLine" id="cb21-4" title="4">[3] 3 =&gt; [3, 3]</a>
-<a class="sourceLine" id="cb21-5" title="5">[3, 3] * =&gt; [9]</a>
-<a class="sourceLine" id="cb21-6" title="6">[9] 4 =&gt; [9, 4]</a>
-<a class="sourceLine" id="cb21-7" title="7">[9, 4] / =&gt; [2]</a>
-<a class="sourceLine" id="cb21-8" title="8">2</a></code></pre></div>
-<h3 id="発展課題-中置記法から逆ポーランド記法への変換">発展課題: 中置記法から逆ポーランド記法への変換</h3>
-<p><code>dis</code>を用いてバイトコードを出力することで、中置記法の計算式を逆ポーランド記法に変換できる。</p>
-<p>例えば、<code>1 + 2 * 3</code>の例なら</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" title="1">dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</a></code></pre></div>
-<p>を実行すると、</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode txt"><code class="sourceCode default"><a class="sourceLine" id="cb23-1" title="1"> 0 LOAD_NAME                0 (a)</a>
-<a class="sourceLine" id="cb23-2" title="2"> 2 LOAD_NAME                1 (b)</a>
-<a class="sourceLine" id="cb23-3" title="3"> 4 LOAD_NAME                2 (c)</a>
-<a class="sourceLine" id="cb23-4" title="4"> 6 BINARY_MULTIPLY</a>
-<a class="sourceLine" id="cb23-5" title="5"> 8 BINARY_ADD</a>
-<a class="sourceLine" id="cb23-6" title="6"> 10 RETURN_VALUE</a></code></pre></div>
-<p>という表示が得られる。ここから、<code>a,b,c</code>を<code>1,2,3</code>に変換し、バイトコードの順番どおりに" 1 2 3 * +"と並べれば、<code>1 + 2 * 3</code>の逆ポーランド記法が得られる。なお、<code>dis.dis</code>に数字ではなくアルファベットを入力するのは、最適化により計算されてしまうことを防ぐためだ。</p>
-<p>同様にして、以下の中置記法の計算式を逆ポーランド記法に変換し、先程実装した計算機で実行し答えが合っていることを確かめよ。演算子の優先順位も考慮すること。</p>
-<ul>
-<li><code>1 + 2 * 3 - 4</code></li>
-<li><code>(1 + 2 * 3) / 4</code></li>
-</ul>
-<h2 id="余談機械がやるべきことやるべきでないこと">余談：機械がやるべきこと、やるべきでないこと</h2>
-<p>今でこそ「面倒な単純作業は人間ではなく機械にやらせるべき」という考えが(たぶん)浸透しているが、昔は計算機は非常に高価であり、その計算時間は貴重な資源であった。アセンブリを機械語、つまり数字の羅列に変換するのを「アセンブル」と呼ぶが、それを人間が手で行うことを「ハンドアセンブル」と言う。計算機が使われ始めた当初は、もちろんアセンブラなどなかったから、みんなハンドアセンブルをしていた。さて、世界で初めてアセンブラを作ったと思われているのはドナルド・ギリース(Donald B. Gillies)である。1950年代、ギリースは、フォン・ノイマンの学生だった時、アセンブリを機械語に自動で翻訳するプログラムを書いていた。ギリースがアセンブラを書いているのをフォン・ノイマンが見つけたときのことを、ダグラス・ジョーンズという人が以下のように紹介している。</p>
-<blockquote>
-<p>John Von Neumann’s reaction was extremely negative. Gillies quotes his boss as having said “We do not use a valuable scientific computing instrument to do clerical work!” (I wish I could reproduce Gillies’ imitation of Von Neumann’s Hungarian accent, he was very good at it!)</p>
-</blockquote>
-<p>(筆者による訳)</p>
-<blockquote>
-<p>ノイマンの反応は極めてネガティブだった。ギリースはボス(ノイマンのこと)の口真似をしながらこう言った「我々は貴重な科学計算機をそのようなつまらない仕事に使うべきでない！」 (ギリースの口真似を再現できたらと思う。彼はフォン・ノイマンのハンガリー訛りの英語の真似がすごく上手いんだ)</p>
-</blockquote>
-<p>現在、「AIが人間を超える(シンギュラリティ)」とか「AIにより人間の仕事が奪われる」とかいった、一種の終末思想が盛んに喧伝されている。私はAIの専門家ではないので、将来どうなるかはわからない。しかし、AIは人間が作るものである。自動車が普及することで運転手という職業ができたように、「AIが人間の可能性を奪う」という「引き算の考え」よりは、「AIと人間の組み合わせで新たな可能性が生まれる」と「足し算の考え」でポジティブに考えたい。おそらくそのほうが生産的であろう。</p>
-<p>参考URL:</p>
-<p><a href="https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ">https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ</a></p>
+                  <header>
+        <h1 class="title">Pythonが動く仕組み</h1>
+                              </header>
+                  <p><a href="../index.html">[Up]</a> <a
+                  href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+                  <h1 id="本講で学ぶこと">本講で学ぶこと</h1>
+                  <ul>
+                  <li>プログラムの実行の仕組み</li>
+                  <li>抽象構文木とバイトコード</li>
+                  </ul>
+                  <h1
+                  id="コンピュータはどうやって動くのか">コンピュータはどうやって動くのか</h1>
+                  <p>車を運転していない人でも、「車はガソリンという可燃性の液体を燃料とし、それを噴射して点火、爆発させてピストンを動かし、そのピストンの運動を回転運動に変換してタイヤに伝えて動いている」、ということはぼんやりと知っていることだろう。この知識は、車を運転するときにはあまり必要ない。実際、よほど車好きでない限り、車の運転をする際にエンジンやトランスミッションの仕組みを意識することはないであろう。しかしそれでも、車の仕組みは簡単に知っておくべきだと筆者は思う。冷蔵庫や電子レンジ、これらの家電は、その動作原理を知らずとも使うことは可能だし、おぼろげに原理を知っているからといってあまり役に立つ気はしないが、やはりざっくりとは知っておくべきである。それが教養というものだ。コンピュータの動作についても同様である。</p>
+                  <p>これまで、ブラウザ上でプログラムを入力し、実行させ、その結果を表示させてきた。Pythonのプログラムはクラウド上で実行されたが、そのブラウザを実行しているのは皆さんの目の前にあるのはコンピュータである。コンピュータとはcomputeするもの、つまり計算機であり、何かしら計算してその結果を表示することを繰り返す機械である。では、そもそもプログラムとはどうやって動いているのだろうか？そのようなことを知っていても今後の人生の役には立たないと思うが、せっかくプログラミングを覚えるのだから、計算機がどういう仕組みで動いているのか知っておいても良いだろう。</p>
+                  <h1 id="機械語">機械語</h1>
+                  <p>いま、目の前にある計算機は、ディスプレイ(表示装置)、キーボードやマウス(入力装置)、CPU(中央演算処理装置)、メモリ(記憶装置)などから構成されている。ディスクなどのストレージやネットワークなどの通信装置については今は忘れよう。このうちCPUがもっとも重要な装置であるが、やっていることは単純であり、</p>
+                  <ul>
+                  <li>メモリから命令とデータを取ってくる</li>
+                  <li>命令を解釈し、データを演算器に投げる</li>
+                  <li>演算器から返ってきた結果をメモリに書き戻す</li>
+                  </ul>
+                  <p>という一連の動作をひたすら繰り返しているに過ぎない。「命令」も一種のデータであり、メモリに置いてあることに注意しよう。演算器というのは、文字通り演算する機械である。例えば足し算をしたければ加算器を、掛け算をしたければ乗算器が必要になる。また、整数演算と浮動小数点演算は全く異なる演算器を用いる。</p>
+                  <p>さて、計算機が解釈できるのは数字だけであるため、機械には数字列を使って命令を行う。この数字列による言葉を
+                  <strong>機械語 (machine
+                  language)</strong>と呼ぶ。コンピュータとは計算機であり、計算とはデータに四則演算などの演算をすることである。したがって、計算機に何か計算させたければ「何を(データ)」「どうするか(命令)」がセットである必要があることがわかるだろう。機械語というと難しそうだが、結局のところ「何を」「どうするか」を羅列しているに過ぎない。</p>
+                  <figure>
+                  <img src="fig/opcode.png" alt="機械語の実行" />
+                  <figcaption
+                  aria-hidden="true">機械語の実行</figcaption>
+                  </figure>
+                  <p>例えば一桁の整数を二つ受け取って四則演算をする計算機があったとしよう。四則演算をするので、演算は加算、減算、乗算、除算の4種類である。なのでそれぞれに0,1,2,3の数字を割り当てよう。四則演算をするには、整数が二つ必要だ。その数字も並べよう。例えば「034」という数字列は「3+4」を、「185」は「8-5」を表す。計算機は、メモリから三つの数字をとってきて、最初の数字を見て「どの演算器に投げるか」を決める(命令を最初に置いたのはそのためだ)。そして続く二つのデータを演算器に投げる。かなり単純化されているが、これが機械語である。このように、「何をするか」を表す部分をオペコード(operation
+                  code,
+                  opcode)、「データ」を表す部分をオペランド(operand、被演算子)と呼ぶ。</p>
+                  <h1
+                  id="プログラム言語とコンパイラ">プログラム言語とコンパイラ</h1>
+                  <p>さて、計算機が解釈できるのは機械語だけである。機械語は難しくはないが、「足し算は0で・・・」と覚えるのは面倒だ。そこで「034」という数字の羅列の代わりに「ADD
+                  3,4」という書き方をしよう。これを「034」に変換するのは簡単だし、人間が見て「3と4を足すんだな」とわかりやすい。このように機械語と一対一対応する言語を<strong>アセンブリ言語(assembly
+                  language)</strong>と呼ぶ。しかし、アセンブリ言語でもまだ面倒だ。もっと、人間にわかりやすい形式、先ほどの例なら「3+4」と書いて、それを計算機が理解できる形式に変換したい、と思うのは自然であろう。その「人間が理解できる形式」がプログラム言語と呼ばれるものである。</p>
+                  <p>プログラム言語は人間にわかりやすい形式になっているが、そのままでは機械は理解できない。そこで、プログラムを機械語に「翻訳」する必要がでてくる。この翻訳作業をするのがコンパイラである。一口に「翻訳」と言っても、コンパイラがやるべき仕事は多い。まず「3
+                  +
+                  4」というひと続きの文字列が与えられたときに、「3」「+」「4」という文字に分割しなければならない。これを<strong>字句解析(lexical
+                  analysis)</strong>と呼ぶ。さらに、「3と4は整数であり、+という演算子の引数である」と認識する必要がある。これが<strong>構文解析(syntax
+                  analysis)</strong>と<strong>意味解析(semantics
+                  analysis)</strong>である。この構文解析を行うのがパーサ(parser,
+                  構文解析器)である。パーサは、プログラムを<strong>抽象構文木
+                  (abstract syntax tree,
+                  AST)</strong>と呼ばれるデータ構造に変換する。</p>
+                  <figure>
+                  <img src="fig/compile.png" alt="コンパイラの仕事" />
+                  <figcaption
+                  aria-hidden="true">コンパイラの仕事</figcaption>
+                  </figure>
+                  <p>パーサによって抽象構文木が与えられたら、そこからアセンブリコードを生成する。通常は途中で中間コードを生成し、その後にアセンブリ言語に変換する。アセンブリを実行ファイルにするためには、さらに「リンク」という作業工程がある。リンクを行うのがリンカ(linker)というプログラムで、これもかなり複雑なことをしているのだが、本書では扱わない。</p>
+                  <p>最初に、プログラム言語には大きく分けてコンパイル言語とインタプリタの二種類があることに触れた。プログラムをコンパイラが機械語に翻訳し、そのまま実行するのがコンパイル言語であり、C++などはコンパイル言語の代表格的な言語である。</p>
+                  <p>一方、プログラム言語を逐次的に解釈して実行するのがインタプリタ言語であり、Pythonもインタプリタ言語に属す。しかし、プログラムをそのまま解釈しながら実行すると遅いため、多くのインタプリタ言語は<strong>バイトコード(bytecode)</strong>
+                  と呼ばれる中間コードを生成し、それを実行することで高速化を図る。</p>
+                  <figure>
+                  <img src="fig/interpret.png"
+                  alt="インタプリタの仕事" />
+                  <figcaption
+                  aria-hidden="true">インタプリタの仕事</figcaption>
+                  </figure>
+                  <p>Pythonは、まずプログラムを抽象構文木に変換する。その後、その構文木からバイトコードを生成する。バイトコードは仮想的な機械語である。機械語は、現実に存在する機械で動作するが、バイトコードは仮想的な機械向けの機械語である。このバイトコードを実行するプログラムを<strong>仮想マシン(Virtual
+                  Machine,
+                  VM)</strong>と呼ぶ。「エミュレータ」という言葉を聞いたことがあるかもしれない。昔のゲームハード用のゲームを、現在のゲームで実行するのに使われたりする。仮想マシンは、実際には存在しないハードウェアであるが、それを現実の計算機でエミュレートすることでプログラムを実行する。</p>
+                  <p>本講ではPythonが動く仕組みを理解するため、実際に抽象構文木とバイトコードを見てみることにしよう。</p>
+                  <h1
+                  id="バイトコードとスタックマシン">バイトコードとスタックマシン</h1>
+                  <p>Pythonは、与えられたプログラムを、仮想的なアセンブリであるバイトコードに変換し、それを仮想マシン上で実行する。Pythonの仮想マシンは、メモリとしてスタックを用いる。</p>
+                  <figure>
+                  <img src="fig/stack.png" alt="スタック" />
+                  <figcaption aria-hidden="true">スタック</figcaption>
+                  </figure>
+                  <p><strong>スタック(stack)</strong>とは、データ構造の一つである。重い荷物を積み上げたような状態を想像せよ。荷物は重いので、一度に一つしか持ち上げることができない。従って、「手持ちの荷物を一番上に積む」か「一番上の荷物を取り出す」ことしかできず、積み上がった荷物の途中に別の荷物を入れたり、一番上ではない荷物を取り出すこともできない。新しい荷物を一番上に載せることをプッシュ(push)、積み上がった荷物の一番上にあるものを取り出すことをポップ(pop)と呼ぶ。</p>
+                  <p>スタックでは「入った順番」と「出る順番」が逆になっている。これを「後入れ先出し」の意味でLast
+                  In First Out
+                  (LIFO)と呼ぶ。逆に、「最初に入った人が最初に出てくる」ようなデータ構造は「先入れ先出し」の意味でFirst
+                  In First Out
+                  (FIFOと呼び、このような振る舞いをするデータ構造を<strong>キュー(queue)</strong>と呼ぶ。</p>
+                  <p>Pythonはの仮想マシンは、スタックにデータをプッシュしたりポップしたりすることでプログラムを実行する。たとえば<code>3 + 4</code>というプログラムは、</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 3</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 4</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>BINARY_ADD</span></code></pre></div>
+                  <p>というバイトコード列に変換される。</p>
+                  <p><code>LOAD_CONST 3</code>は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば<code>BINARY_ADD</code>は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である<code>7</code>がプッシュされる。</p>
+                  <figure>
+                  <img src="fig/binary_add.png"
+                  alt="スタックマシン上での加算" />
+                  <figcaption
+                  aria-hidden="true">スタックマシン上での加算</figcaption>
+                  </figure>
+                  <p>このように、メモリとしてスタックを用いるような計算機を<strong>スタックマシン
+                  (stack
+                  machine)</strong>と呼ぶ。Pythonの仮想マシンはスタックマシンである。</p>
+                  <p>既にみたように、スタックのデータのやりとりは「一番上」のみ、取り出せるデータも「最後に入れたもの」だけに限られ、途中にデータを挿入することも、任意の場所のデータを取り出すこともできない、いわば「不自由」なデータ構造である。なぜこのような「不自由」なデータ構造をメモリに採用しているかというと、命令セットが簡単になるというメリットがあるからである。</p>
+                  <p>我々が通常使っている計算機は「レジスタマシン」と呼ばれる方式を採用している。レジスタマシンは、レジスタという計算を行うための小さく高速な作業領域を複数持ち、メモリも任意の場所に読み書きできる。すると、当然のことながら「メモリのどこから、どのレジスタに値をロードし、計算結果をどこに書き込むか」を指定しなければならない。それに対して、スタックマシンはメモリの「入り口」と「出口」が決まっているため、例えば足し算をする命令<code>BINARY_ADD</code>は引数を必要としない。このように、スタックマシンは命令セットが単純になるというメリットがあり、仮想マシンのモデルとして広く採用されている。</p>
+                  <h1 id="逆ポーランド記法">逆ポーランド記法</h1>
+                  <p>さて、先程見たように、<code>3 + 4</code>というプログラムは、</p>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 3</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 4</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BINARY_ADD</span></code></pre></div>
+                  <p>という命令列に変換された。ここで、<code>LOAD_CONST</code>は省略し、かつ<code>BINARY_ADD</code>を<code>+</code>で表記すると、この命令列は<code>3 4 +</code>と表現できる。このように、演算子が、被演算子の後ろに置かれる記法を後置記法、もしくは<strong>逆ポーランド記法(Reverse
+                  Polish Notation,
+                  RPN)</strong>と呼ぶ。我々が普段目にする<code>3 + 4</code>という記法は、演算子が被演算子の中に置かれるため、中置記法と呼ばれる。</p>
+                  <p>逆ポーランド記法は、スタックマシンと相性が良い。<code>3 4 +</code>という命令列が来た時、それを一つ一つの区切り(
+                  <strong>トークン(token)</strong>
+                  と呼ぶ)に分解して、</p>
+                  <ul>
+                  <li>もしトークンが数字ならスタックにプッシュ</li>
+                  <li>もしトークンが演算子なら、スタックから二つデータを取り出して演算、結果をスタックにプッシュ</li>
+                  </ul>
+                  <p>とするだけで計算が実行できる。</p>
+                  <p>例えば、<code>a * b + c</code>という計算は、逆ポーランド記法なら<code>a b * c +</code>と表記できる。また、<code>a + b * c</code>の場合、先に<code>b * c</code>を実行する必要があるが、逆ポーランド記法なら<code>a b c * +</code>と表記され、演算子の優先順位を気にすることなく順番に処理すれば良い(より正確には、演算子の優先順位を考慮して逆ポーランド記法を構成する)。</p>
+                  <p>実際にPythonのバイトコードが逆ポーランド記法になっているのを見てみよう。バイトコードを表示するには<code>dis</code>をインポートする。</p>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dis</span></code></pre></div>
+                  <p>この状態で、</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</span></code></pre></div>
+                  <p>を実行すると、</p>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  1           0 LOAD_NAME                0 (a)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>              2 LOAD_NAME                1 (b)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              4 BINARY_MULTIPLY</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>              6 LOAD_NAME                2 (c)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>              8 BINARY_ADD</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             10 RETURN_VALUE</span></code></pre></div>
+                  <p>となり、これが<code>a b * c +</code>に対応しているのがわかるであろう。</p>
+                  <figure>
+                  <img src="fig/calc1.png" alt="a * b + cの計算" />
+                  <figcaption
+                  aria-hidden="true"><code>a * b + c</code>の計算</figcaption>
+                  </figure>
+                  <p>また、</p>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</span></code></pre></div>
+                  <p>を実行すると</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  1           0 LOAD_NAME                0 (a)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>              2 LOAD_NAME                1 (b)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                2 (c)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>              6 BINARY_MULTIPLY</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              8 BINARY_ADD</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>             10 RETURN_VALUE</span></code></pre></div>
+                  <p>となる。これが<code>a b c * +</code>になっていることは見てわかるであろう。</p>
+                  <figure>
+                  <img src="fig/calc2.png" alt="a + b * cの計算" />
+                  <figcaption
+                  aria-hidden="true"><code>a + b * c</code>の計算</figcaption>
+                  </figure>
+                  <h1
+                  id="pythonはどうやって動くのか課題">Pythonはどうやって動くのか：課題</h1>
+                  <h2
+                  id="課題1-1抽象構文木の可視化">課題1-1：抽象構文木の可視化</h2>
+                  <p>Pythonのプログラムが抽象構文木に変換される様子を観察してみよう。新しいノートブックを開き、<code>ast.ipynb</code>として保存せよ。</p>
+                  <h3 id="ライブラリのインポート">1.
+                  ライブラリのインポート</h3>
+                  <p>最初のセルで必要なライブラリをインポートする。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ast</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dis</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> graphviz <span class="im">import</span> Digraph</span></code></pre></div>
+                  <h3 id="抽象構文木をグラフに変換する関数">2.
+                  抽象構文木をグラフに変換する関数</h3>
+                  <p>２つ目のセルに抽象構文木を解析してグラフに変換する関数<code>visit</code>を書く。</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visit(node, nodes, pindex, g):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> <span class="bu">str</span>(<span class="bu">type</span>(node).<span class="va">__name__</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="bu">len</span>(nodes)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    nodes.append(index)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    g.node(<span class="bu">str</span>(index), name)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> index <span class="op">!=</span> pindex:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        g.edge(<span class="bu">str</span>(pindex), <span class="bu">str</span>(index))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> ast.iter_child_nodes(node):</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        visit(n, nodes, index, g)</span></code></pre></div>
+                  <p><code>__name__</code>は前後にアンダースコアが二つずつであることに注意。</p>
+                  <h3 id="グラフを可視化する関数">3.
+                  グラフを可視化する関数</h3>
+                  <p>3つ目のセルに抽象構文木をグラフとして可視化する関数<code>show_ast</code>を書く。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_ast(src):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    graph <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&quot;png&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    tree <span class="op">=</span> ast.parse(src)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    visit(tree, [], <span class="dv">0</span>, graph)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    img <span class="op">=</span> graph.render(<span class="st">&quot;test.png&quot;</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> IPython.display.Image(img)</span></code></pre></div>
+                  <p><code>ast.parse</code>は、引数として与えられた文字列をPythonのプログラムとして解釈し、抽象構文木に変換する。返り値は、構文木の根(root)である。それを<code>ast.iter_child_nodes</code>に渡すと、そこにぶら下がるノードが返ってくるので、それらすべてに対してfor文をまわして、子ノードに対して再帰的に<code>visit</code>を呼び出し、子孫ノードを取得していく、というのがこのコード(<code>visit</code>及び<code>show_ast</code>関数)の仕組みである。</p>
+                  <h3 id="抽象構文木の表示">4. 抽象構文木の表示</h3>
+                  <p>ここまで作成した関数を使って、プログラムの抽象構文木を表示させて見よう。解析したいソースコードを<code>src</code>という文字列に代入し、<code>show_ast(src)</code>を呼ぶことで抽象構文木を表示することができる。</p>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>src<span class="op">=</span><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">3+4</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>show_ast(src)</span></code></pre></div>
+                  <p>ここで<code>src=</code>の後、及び<code>show_ast</code>の前に<code>"</code>(ダブルクォーテーションマーク)が三つ続いていることに注意。</p>
+                  <p>ここまで正しく入力されていれば、抽象構文木のグラフが表示されるはずである。うまくできたら、パースするプログラム文字列を変え、別のプログラムをパースしてみよ。まずは<code>3+4</code>の<code>+</code>を<code>-</code>に変えてみよ。次に、以下のプログラムをパースせよ。</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> (<span class="dv">1</span>,<span class="dv">2</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(a,b):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a<span class="op">+</span>b</span></code></pre></div>
+                  <p>上記のプログラムを入力するには、<code>"""</code>で囲まれた領域に入力すること。例えば最初の例なら、</p>
+                  <div class="sourceCode" id="cb14"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>src <span class="op">=</span> <span class="st">&quot;&quot;&quot;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">a, b = (1,2)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;&quot;&quot;</span></span></code></pre></div>
+                  <p>と入力する。抽象構文木とプログラムの対応がわかるだろうか？</p>
+                  <h2
+                  id="課題1-2バイトコード">課題1-2：バイトコード</h2>
+                  <h3 id="バイトコードの表示">5. バイトコードの表示</h3>
+                  <p>以下のプログラムを実行し、バイトコードが得られることを確認せよ。</p>
+                  <div class="sourceCode" id="cb15"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b&quot;</span>)</span></code></pre></div>
+                  <p>バイトコードが得られたら、以下のプログラムに対応するバイトコードを出力し、逆ポーランド記法に対応していることを確認せよ。</p>
+                  <ul>
+                  <li><code>a + b + c</code></li>
+                  <li><code>a + b * c</code></li>
+                  </ul>
+                  <h2
+                  id="課題2-1逆ポーランド記法電卓">課題2-1：逆ポーランド記法電卓</h2>
+                  <p>最も簡単なスタックマシンの例として、逆ポーランド記法による計算機を実装してみよう。逆ポーランド記法とは、「3
+                  + 4」を「3 4
+                  +」と表記する方式だ。人間には読みづらいが、電卓を実装しやすい、という特徴がある。</p>
+                  <p>具体的には、以下のような「プログラム」を組む。</p>
+                  <ul>
+                  <li>プログラムは、整数、‘+’、`-’の三種類の<strong>トークン</strong>で構成される</li>
+                  <li>プログラムを一つ読み込み、以下の動作をする
+                  <ul>
+                  <li>プログラムが演算子なら、スタックから二つデータをポップして、計算し、結果をプッシュする</li>
+                  <li>整数なら、そのままスタックにプッシュする</li>
+                  </ul></li>
+                  <li>プログラム終了時、スタックの一番上にある数字を表示して終了する</li>
+                  </ul>
+                  <p>新しいノートブックを開き、<code>calc.ipynb</code>として保存せよ。</p>
+                  <h3 id="ライブラリのインポート-1">1.
+                  ライブラリのインポート</h3>
+                  <p>まずは必要なライブラリをインポートしておこう。</p>
+                  <div class="sourceCode" id="cb16"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dis</span></code></pre></div>
+                  <h3 id="計算機の実装">2. 計算機の実装</h3>
+                  <p>では計算機のプログラムを記述しよう。まずは加減算のみに対応させる。最初のセルに以下を入力せよ。</p>
+                  <div class="sourceCode" id="cb17"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc(code):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> code.split()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    stack <span class="op">=</span> []</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> data:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(stack, x, end<span class="op">=</span><span class="st">&quot; =&gt; &quot;</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">==</span> <span class="st">&#39;+&#39;</span>:</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">+</span>b)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> x <span class="op">==</span> <span class="st">&#39;-&#39;</span>:</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> stack.pop()</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>            a <span class="op">=</span> stack.pop()</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>            stack.append(a<span class="op">-</span>b)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>            stack.append(<span class="bu">int</span>(x))</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(stack)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(stack.pop())</span></code></pre></div>
+                  <h3 id="計算のテスト">2. 計算のテスト</h3>
+                  <p>実際に計算してみよう。2つ目のセルで以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb18"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>calc(<span class="st">&quot;1 2 +&quot;</span>)</span></code></pre></div>
+                  <p>以下のような実行結果が得られたはずである。</p>
+                  <div class="sourceCode" id="cb19"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>[] 1 =&gt; [1]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>[1] 2 =&gt; [1, 2]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>[1, 2] + =&gt; [3]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>3</span></code></pre></div>
+                  <p>これは、</p>
+                  <ul>
+                  <li>最初はスタックが空<code>[]</code>で、そこに<code>1</code>が来たのでプッシュされて<code>[1]</code>になった</li>
+                  <li>次に<code>2</code>が来たので、それもプッシュしてスタックの状態が<code>[1,2]</code>になった</li>
+                  <li>次に<code>+</code>が来たので、スタックから値を二つ取り出し、その和をプッシュして<code>[3]</code>になった</li>
+                  <li>実行すべきプログラムがなくなったので、スタックの一番上にある数字<code>3</code>を表示して終了</li>
+                  </ul>
+                  <p>という処理内容を表している、</p>
+                  <h2 id="課題2-2-乗算除算の実装">課題2-2:
+                  乗算、除算の実装</h2>
+                  <p>作成した電卓に、乗算と除算を実装せよ。ただし、除算に関しては、入力プログラムとしては<code>/</code>を入力するが、実際の処理(<code>stack.append</code>)では<code>//</code>を実行することで、実行結果を整数にすること。</p>
+                  <p>ヒント：
+                  <code>calc</code>関数に<code>elif</code>文を追加し、<code>x</code>が<code>*</code>や<code>/</code>の場合の処理を追加する。</p>
+                  <p>以下の「プログラム」に対して、以下のような実行結果が得られれば正しく実装できている。</p>
+                  <div class="sourceCode" id="cb20"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>calc(<span class="st">&quot;1 2 + 3 * 4 /&quot;</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb21"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>[] 1 =&gt; [1]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>[1] 2 =&gt; [1, 2]</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>[1, 2] + =&gt; [3]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>[3] 3 =&gt; [3, 3]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>[3, 3] * =&gt; [9]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>[9] 4 =&gt; [9, 4]</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>[9, 4] / =&gt; [2]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>2</span></code></pre></div>
+                  <h2
+                  id="発展課題-中置記法から逆ポーランド記法への変換">発展課題:
+                  中置記法から逆ポーランド記法への変換</h2>
+                  <p><code>dis</code>を用いてバイトコードを出力することで、中置記法の計算式を逆ポーランド記法に変換できる。</p>
+                  <p>例えば、<code>1 + 2 * 3</code>の例なら</p>
+                  <div class="sourceCode" id="cb22"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</span></code></pre></div>
+                  <p>を実行すると、</p>
+                  <div class="sourceCode" id="cb23"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> 0 LOAD_NAME                0 (a)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> 2 LOAD_NAME                1 (b)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> 4 LOAD_NAME                2 (c)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> 6 BINARY_MULTIPLY</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> 8 BINARY_ADD</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> 10 RETURN_VALUE</span></code></pre></div>
+                  <p>という表示が得られる。ここから、<code>a,b,c</code>を<code>1,2,3</code>に変換し、バイトコードの順番どおりに”
+                  1 2 3 *
+                  +“と並べれば、<code>1 + 2 * 3</code>の逆ポーランド記法が得られる。なお、<code>dis.dis</code>に数字ではなくアルファベットを入力するのは、最適化により計算されてしまうことを防ぐためだ。</p>
+                  <p>同様にして、以下の中置記法の計算式を逆ポーランド記法に変換し、先程実装した計算機で実行し答えが合っていることを確かめよ。演算子の優先順位も考慮すること。</p>
+                  <ul>
+                  <li><code>1 + 2 * 3 - 4</code></li>
+                  <li><code>(1 + 2 * 3) / 4</code></li>
+                  </ul>
+                  <h1
+                  id="余談機械がやるべきことやるべきでないこと">余談：機械がやるべきこと、やるべきでないこと</h1>
+                  <p>今でこそ「面倒な単純作業は人間ではなく機械にやらせるべき」という考えが(たぶん)浸透しているが、昔は計算機は非常に高価であり、その計算時間は貴重な資源であった。アセンブリを機械語、つまり数字の羅列に変換するのを「アセンブル」と呼ぶが、それを人間が手で行うことを「ハンドアセンブル」と言う。計算機が使われ始めた当初は、もちろんアセンブラなどなかったから、みんなハンドアセンブルをしていた。さて、世界で初めてアセンブラを作ったと思われているのはドナルド・ギリース(Donald
+                  B.
+                  Gillies)である。1950年代、ギリースは、フォン・ノイマンの学生だった時、アセンブリを機械語に自動で翻訳するプログラムを書いていた。ギリースがアセンブラを書いているのをフォン・ノイマンが見つけたときのことを、ダグラス・ジョーンズという人が以下のように紹介している。</p>
+                  <blockquote>
+                  <p>John Von Neumann’s reaction was extremely negative.
+                  Gillies quotes his boss as having said “We do not use
+                  a valuable scientific computing instrument to do
+                  clerical work!” (I wish I could reproduce Gillies’
+                  imitation of Von Neumann’s Hungarian accent, he was
+                  very good at it!)</p>
+                  </blockquote>
+                  <p>(筆者による訳)</p>
+                  <blockquote>
+                  <p>ノイマンの反応は極めてネガティブだった。ギリースはボス(ノイマンのこと)の口真似をしながらこう言った「我々は貴重な科学計算機をそのようなつまらない仕事に使うべきでない！」
+                  (ギリースの口真似を再現できたらと思う。彼はフォン・ノイマンのハンガリー訛りの英語の真似がすごく上手いんだ)</p>
+                  </blockquote>
+                  <p>現在、「AIが人間を超える(シンギュラリティ)」とか「AIにより人間の仕事が奪われる」とかいった、一種の終末思想が盛んに喧伝されている。私はAIの専門家ではないので、将来どうなるかはわからない。しかし、AIは人間が作るものである。自動車が普及することで運転手という職業ができたように、「AIが人間の可能性を奪う」という「引き算の考え」よりは、「AIと人間の組み合わせで新たな可能性が生まれる」と「足し算の考え」でポジティブに考えたい。おそらくそのほうが生産的であろう。</p>
+                  <p>参考URL:</p>
+                  <p><a
+                  href="https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ">https://groups.google.com/forum/#!msg/alt.folklore.computers/2fdmW2PU8dU/OJ_-6BjoP0YJ</a></p>
           </article>
   </body>
 

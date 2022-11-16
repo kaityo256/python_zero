@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title>scope/index.md</title>
+                <title>関数とスコープ</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -234,7 +234,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script src="/usr/share/javascript/mathjax/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+        <script
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
@@ -243,347 +245,463 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="関数とスコープ">関数とスコープ</h1>
-<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
-<ul>
-<li>while文</li>
-<li>ループのスキップと脱出</li>
-<li>関数</li>
-<li>スコープ</li>
-</ul>
-<h2 id="while文">While文</h2>
-<p>「10回繰り返したい」という場合にはfor文が使えるが、「ある条件が満たされている限り繰り返したい」という場合もあるだろう。そんな、事前にループの回転数がわからない場合に使えるのがwhile文である。while文は以下のような構文になる。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">while</span> 条件:</a>
-<a class="sourceLine" id="cb1-2" title="2">    処理</a></code></pre></div>
-<p>例えば、ある変数が正である限り1をひきながら表示するプログラムは以下のようになる。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="cf">while</span> a <span class="op">&gt;</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb2-3" title="3">    <span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb2-4" title="4">    a <span class="op">-=</span> <span class="dv">1</span></a></code></pre></div>
-<p>Pythonでは、整数は0で無い限り「真」、「0」は「偽」として扱われるため、以下のように書くこともできる。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="cf">while</span> a:</a>
-<a class="sourceLine" id="cb3-3" title="3">    <span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb3-4" title="4">    a <span class="op">-=</span> <span class="dv">1</span></a></code></pre></div>
-<h2 id="ループのスキップと脱出">ループのスキップと脱出</h2>
-<p><code>for</code>や<code>while</code>といった「ループを作る構文」を使っていると、ある条件を満たした時にループをスキップしたり、ループから脱出したくなることがある。それぞれ<code>continue</code>、<code>break</code>で実現できる。</p>
-<h3 id="continue"><code>continue</code></h3>
-<p>例えば、0から9までの数字を表示するループを考えてみよう。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb4-2" title="2">    <span class="bu">print</span>(i)</a></code></pre></div>
-<p>実行すると、0から9まで表示される。これを、「偶数の時だけ表示する」ようにしたい。そのまま書くと以下のようになるだろう。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb5-2" title="2">    <span class="cf">if</span> i<span class="op">%</span><span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb5-3" title="3">        <span class="bu">print</span>(i)</a></code></pre></div>
-<p>同じ処理を、「奇数の時だけループをスキップする」という形でも書ける。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="cf">if</span> <span class="kw">not</span> i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb6-3" title="3">        <span class="cf">continue</span></a>
-<a class="sourceLine" id="cb6-4" title="4">    <span class="bu">print</span>(i)</a></code></pre></div>
-<p><code>continue</code>は、「以下の処理をスキップして、次のループに飛べ」という指示文である。やりたい処理を<code>if</code>文で囲むべきか、やりたくない処理を<code>continue</code>で飛ばすべきかは場合による。</p>
-<figure>
-<img src="fig/continue.png" alt="continueによる深いブロックの縮小" /><figcaption>continueによる深いブロックの縮小</figcaption>
-</figure>
-<p>上記の左では、ある条件が満たされた時に「何かやりたい処理」を実行しているが、右図では条件が満たされなかったらループをスキップして、スキップされなかった場合に「何かやりたい処理」を実行している。どちらも全く同じ処理を行うが、左は「for文が作るブロック」の中の「if文が作るブロック」が大きいのに対し、右では「if文が作るブロック」が小さくなり、「何かやりたい処理」が「for文の作るブロック」に移動している。</p>
-<p>このように、処理の冒頭で条件をチェックし、<code>continue</code>したり<code>return</code>したりすることを<strong>ガード節</strong>と呼ぶ。まるでガードマンが入り口の前に立ち、不要な来訪者を追い払う様に似ているからと思われる。人間の頭はネストした構造を正しく把握するのにコストがかかるため、一般に構造のネストは浅い方が良く、深いブロックは小さい方が望ましい。ガード節はそのような深くて大きいネスト構造を防ぐ基本的なテクニックの一つである。</p>
-<h3 id="break"><code>break</code></h3>
-<p>ある条件が満たされたら、ループを終了したい場合は、<code>break</code>を使う。例えば、所持金5万円からスタートし、確率1/2で所持金が1万円増えるか減るかするギャンブルをしたとしよう。所持金が0になったら負け、10になったら勝ちで、いずれも終了とする。そのようなコードは、たとえば以下のように書ける。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1"><span class="im">import</span> random</a>
-<a class="sourceLine" id="cb7-2" title="2">  </a>
-<a class="sourceLine" id="cb7-3" title="3">money <span class="op">=</span> <span class="dv">5</span></a>
-<a class="sourceLine" id="cb7-4" title="4"></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="cf">while</span> <span class="va">True</span>:</a>
-<a class="sourceLine" id="cb7-6" title="6">    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>) <span class="op">*</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb7-7" title="7">    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb7-8" title="8">        <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)</a>
-<a class="sourceLine" id="cb7-9" title="9">        <span class="cf">break</span></a>
-<a class="sourceLine" id="cb7-10" title="10">    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">10</span>:</a>
-<a class="sourceLine" id="cb7-11" title="11">        <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</a>
-<a class="sourceLine" id="cb7-12" title="12">        <span class="cf">break</span></a></code></pre></div>
-<p><code>random.randint(0, 1)</code>は、確率1/2で0か1を返す乱数であり、2倍して1を引くことで、+1か-1を返すようにしている。所持金<code>money</code>にそれを加算し、0になったら「Lose」と表示して終了、10になったら「Win」と表示して終了している。</p>
-<p>ここでは<code>while True:</code>でループ構造を作っている。<code>while 条件:</code>は、条件が満たされている限りループする、というものであった。その条件に<code>True</code>を設定しているので、ループの条件は常に真であり、無限にループが回る。このようなループを <strong>無限ループ</strong> (infinite loop) と呼ぶ。無限ループを抜けるには、<code>break</code>もしくは関数からの<code>return</code>、プログラムを終了させる<code>exit()</code>などを使うしかない。もし適切な終了条件を設定せずにループを無限ループにしてしまった場合は、コンソールプログラムならCtrl+Cを入力、Google Colab上ならば実行中のセルの四角いボタンを押せば停止できる。</p>
-<p>なお、先程と同じプログラムは、<code>break</code>を使わずに<code>while</code>の条件を工夫することでも実現できる。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="im">import</span> random</a>
-<a class="sourceLine" id="cb8-2" title="2">  </a>
-<a class="sourceLine" id="cb8-3" title="3">money <span class="op">=</span> <span class="dv">5</span></a>
-<a class="sourceLine" id="cb8-4" title="4"></a>
-<a class="sourceLine" id="cb8-5" title="5"><span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;</span> money <span class="op">&lt;</span> <span class="dv">10</span>:</a>
-<a class="sourceLine" id="cb8-6" title="6">    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2-1</span></a>
-<a class="sourceLine" id="cb8-7" title="7"></a>
-<a class="sourceLine" id="cb8-8" title="8"><span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb8-9" title="9">    <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)</a>
-<a class="sourceLine" id="cb8-10" title="10"><span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb8-11" title="11">    <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</a></code></pre></div>
-<p><code>money</code>が1から9の間にある場合のみループを実行し、この条件を満たさなくなったら<code>while</code>文を終了するコードである。最終的に<code>money</code>が0になったか<code>10</code>になったかを確認し、「Lose」や「Win」を表示している。先程のコードよりも、このループがどのような条件で実行されるべきかがわかりやすくなっているのがわかるであろう。</p>
-<p>さきほどの例では<code>money</code>が1から9の間にある条件を<code>0 &lt; money &lt; 10</code>と書いたが、よりPythonらしく書くなら<code>range</code>を使って</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1"><span class="cf">while</span> money <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</a>
-<a class="sourceLine" id="cb9-2" title="2">    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2-1</span></a></code></pre></div>
-<p>と書くこともできる。<code>range(x,y)</code>はx以上y未満の数字の範囲を表す。</p>
-<p>一般に、等価な制御構造の書き方は複数存在する。例えば終了条件を<code>while</code>の条件に含めるべきか、<code>break</code>で脱出すべきかは場合による。こういった「良いコード」の書き方に興味のある人は「リーダブルコード」という古典的な名著があるので参照されたい。</p>
-<h2 id="関数">関数</h2>
-<p>Pythonでは、よく使う処理を <strong>関数</strong> (function) という形で定義し、何度も利用することができる。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">def</span> sayhello():</a>
-<a class="sourceLine" id="cb10-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</a></code></pre></div>
-<p>関数は「def 関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。Pythonはコロンの後にインデントによりブロックを作る言語である。</p>
-<p>定義した関数は後から何度でも呼ぶこともできる。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></a></code></pre></div>
-<p>関数にインプットを与えることもできる。このインプットを<strong>引数</strong> (argument)と呼ぶ。引数は「ひきすう」と読む。「いんすう」と間違える人が多いので注意。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">def</span> say(s):</a>
-<a class="sourceLine" id="cb12-2" title="2">    <span class="bu">print</span>(s)</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1">say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></a></code></pre></div>
-<p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">def</span> add(a, b):</a>
-<a class="sourceLine" id="cb14-2" title="2">    <span class="cf">return</span> a <span class="op">+</span> b</a></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">add(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co">#=&gt; 7</span></a></code></pre></div>
-<p>関数が返した値を変数に代入することもできる。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" title="1">a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></a></code></pre></div>
-<p>次回学ぶ「タプル」を用いると、複数の値を一度に返すこともできる。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">def</span> func(i):</a>
-<a class="sourceLine" id="cb17-2" title="2">    <span class="cf">return</span> i, i <span class="op">+</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb17-3" title="3"></a>
-<a class="sourceLine" id="cb17-4" title="4">a, b <span class="op">=</span> func(<span class="dv">5</span>)  <span class="co"># a = 5, b = 6が代入される。</span></a></code></pre></div>
-<h2 id="スコープ">スコープ</h2>
-<p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。この変数の有効範囲のことを <strong>スコープ(scope)</strong> と呼ぶ。</p>
-<p>最初に述べたように、プログラムの文法やライブラリの使い方の詳細については覚える必要はなく「なんとなくそういうものがあったなぁ」と覚えておくだけでよい。なぜなら、やりかたを忘れてしまっても、例えば関数の定義の仕方を忘れてしまっても、「Python 関数」で検索すればすぐにやり方はわかるからだ。しかし、「スコープ」については、ここである程度しっかり理解しておいた方が良い。将来スコープによる「変数の名前解決がらみ」で問題を起こした時、そうと知らなければ「これはスコープの問題だ」と認識することができないため、適切な検索ワードも思いつかず、自力では解決できなくなるからだ。</p>
-<p>例えば以下のようなコードを見てみよう。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">def</span> func():</a>
-<a class="sourceLine" id="cb18-2" title="2">    a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb18-3" title="3">    <span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb18-4" title="4"></a>
-<a class="sourceLine" id="cb18-5" title="5">func()</a>
-<a class="sourceLine" id="cb18-6" title="6"><span class="bu">print</span>(a)</a></code></pre></div>
-<p>関数<code>func</code>内で、変数<code>a</code>に10を代入し、その値を表示されている。その後、関数<code>func</code>を実行すると10が表示され、確かに<code>a</code>に10が入っていることがわかるが、その後で<code>a</code>を表示しようとすると<code>NameError: name 'a' is not defined</code>、つまり「変数<code>a</code>なんて知らないよ」というエラーが出てしまう。このように、関数内で宣言された変数は<strong>ローカル変数</strong>と呼ばれ、その有効範囲は関数内に制限される。特に、ローカル変数が住むスコープを<strong>ローカルスコープ</strong>と呼ぶ。</p>
-<p>逆に、関数の外で宣言された変数は、関数の中からも見ることができる。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb19-2" title="2"></a>
-<a class="sourceLine" id="cb19-3" title="3"><span class="kw">def</span> func():</a>
-<a class="sourceLine" id="cb19-4" title="4">    <span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb19-5" title="5"></a>
-<a class="sourceLine" id="cb19-6" title="6">func()</a></code></pre></div>
-<p>このコードは問題なく実行され、10が表示される。関数の外、つまりインデントがなく、地面に「ベタ」についている場所で宣言された変数を<strong>グローバル変数</strong>と呼ぶ。グローバル変数は<strong>グローバルスコープ</strong>に住んでいる。</p>
-<p>実はPythonには、ここで挙げた「ローカルスコープ」「グローバルスコープ」の他に、「関数内関数のスコープ」「ビルトインスコープ」というものもあるのだが、本書では取り上げない。</p>
-<p>この「ローカルスコープ」と「グローバルスコープ」についてとりあえず知っておくべきことは</p>
-<ul>
-<li>ローカルからグローバルは見える</li>
-<li>グローバルからローカルは見えない</li>
-</ul>
-<p>の二点である。</p>
-<figure>
-<img src="fig/scope.png" alt="グローバルスコープとローカルスコープ" /><figcaption>グローバルスコープとローカルスコープ</figcaption>
-</figure>
-<p>スコープには直感に反する振る舞いがいくつかあるのだが、ここでは一つだけ将来ハマりそうな例として、ローカルスコープからグローバル変数の参照と代入の問題について紹介する。こんなコードを考えよう。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb20-2" title="2"></a>
-<a class="sourceLine" id="cb20-3" title="3"><span class="kw">def</span> func():</a>
-<a class="sourceLine" id="cb20-4" title="4">    a <span class="op">=</span> <span class="dv">20</span></a>
-<a class="sourceLine" id="cb20-5" title="5">    <span class="bu">print</span>(a)</a>
-<a class="sourceLine" id="cb20-6" title="6"></a>
-<a class="sourceLine" id="cb20-7" title="7">func()</a>
-<a class="sourceLine" id="cb20-8" title="8"><span class="bu">print</span>(a)</a></code></pre></div>
-<p>このコードは</p>
-<ul>
-<li>最初にグローバル変数<code>a</code>に10が代入され、</li>
-<li>内部で変数<code>a</code>に20を代入して表示する関数<code>func</code>を実行し、</li>
-<li>最後に<code>a</code>の変数の値を表示する</li>
-</ul>
-<p>というプログラムである。どんな結果になるか想像できるだろうか？</p>
-<p>実はこのコードでは、関数<code>func</code>を実行しても、グローバル変数の値は変更されない。これは<code>a=20</code>が、関数<code>func</code>内のローカル変数の宣言とみなされるからだ。ここで出てきた<code>func</code>や<code>a</code>といった「関数名」や「変数名」を 識別子 <strong>(identifier)</strong> と呼ぶ。また、ある識別子がどのスコープに属すものであるかを調べる仕組みを <strong>名前解決(Name Resolution)</strong> と呼ぶ。</p>
-<figure>
-<img src="fig/scope2.png" alt="ローカル変数によるグローバル変数の上書き" /><figcaption>ローカル変数によるグローバル変数の上書き</figcaption>
-</figure>
-<p>さて、多くの場合においてこれは意図する動作ではないであろう。ローカルスコープからグローバル変数を修正したい場合、ローカルスコープ内で<code>global</code>宣言をする。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" title="1">a <span class="op">=</span> <span class="dv">10</span></a>
-<a class="sourceLine" id="cb21-2" title="2"></a>
-<a class="sourceLine" id="cb21-3" title="3"><span class="kw">def</span> func():</a>
-<a class="sourceLine" id="cb21-4" title="4">    <span class="kw">global</span> a  <span class="co"># 変数aがグローバル変数であることを宣言する</span></a>
-<a class="sourceLine" id="cb21-5" title="5">    a <span class="op">=</span> <span class="dv">20</span></a>
-<a class="sourceLine" id="cb21-6" title="6">    <span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span></a>
-<a class="sourceLine" id="cb21-7" title="7"></a>
-<a class="sourceLine" id="cb21-8" title="8">func()</a>
-<a class="sourceLine" id="cb21-9" title="9"><span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span></a></code></pre></div>
-<p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
-<p>しかし、このようなコードはバグの元であり、推奨されない。一般にはグローバル変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。慣れるまでは「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
-<p>さて、名前解決の仕組みはプログラミング言語ごとに異なるため、ある言語の内容をそのまま別の言語で書き直した時に思うような動作にならない時がある。例えば、Pythonは<code>if</code>文が作るブロックはスコープを作らないが、C言語はスコープを作る。例えば以下のコードはC言語ではエラーになる。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb22-1" title="1">if (true){</a>
-<a class="sourceLine" id="cb22-2" title="2">  int a = <span class="dv">10</span>; <span class="co">//変数aはこのif文のみで有効</span></a>
-<a class="sourceLine" id="cb22-3" title="3">}</a>
-<a class="sourceLine" id="cb22-4" title="4">if (true){</a>
-<a class="sourceLine" id="cb22-5" title="5">  printf(<span class="st">&quot;%d</span><span class="sc">\n</span><span class="st">&quot;</span>,a); <span class="co">// 変数aはここから見えないのでエラー</span></a>
-<a class="sourceLine" id="cb22-6" title="6">}</a></code></pre></div>
-<p>Pythonの同等なコードはエラーにならない。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" title="1">if True:</a>
-<a class="sourceLine" id="cb23-2" title="2">    a <span class="op">=</span> <span class="dv">10</span> <span class="co"># このif文はスコープを作らない</span></a>
-<a class="sourceLine" id="cb23-3" title="3">if True:</a>
-<a class="sourceLine" id="cb23-4" title="4">    print(a) <span class="co"># ここから変数aが見える</span></a></code></pre></div>
-<p>繰り返しになるが、プログラミング言語には「スコープ」という概念があり、変数がどのスコープに属すか決める仕組みは言語ごとに異なる、ということは覚えておいて欲しい。名前解決がらみで問題が起きた時に、そもそも「スコープ」という単語を知らないと、問題解決が難しくなるからだ。</p>
-<h2 id="関数とスコープ課題">関数とスコープ：課題</h2>
-<h3 id="課題1-1ロジスティック写像">課題1-1：ロジスティック写像</h3>
-<p>関数と繰り返しを使い、ロジスティック写像を可視化してみよう。ロジスティック写像は</p>
-<p><span class="math display">\[
-n_{i+1} = a n_i (1- n_i)
-\]</span></p>
-<p>という漸化式で定められる写像である。<span class="math inline">\(n_i\)</span>は、ある生物の<span class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span class="math inline">\(a\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span class="math inline">\(n_{i+1} = n_i = n\)</span>が成り立つから、</p>
-<p><span class="math display">\[
-n = 1 - \frac{1}{a}
-\]</span></p>
-<p>に落ち着くはずである。この振る舞いを確認してみよう。新しいノートブックを開き、<code>logistic.ipynb</code>と名前を付けよう。</p>
-<h4 id="インポート">1. インポート</h4>
-<p>まずは後で使うライブラリをインポートしておこう。</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" title="1"><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</a></code></pre></div>
-<h4 id="関数logisticの実装">2. 関数<code>logistic</code>の実装</h4>
-<p>パラメタ<span class="math inline">\(a\)</span>を受け取って、個体数<span class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">def</span> logistic(a):</a>
-<a class="sourceLine" id="cb25-2" title="2">    n <span class="op">=</span> <span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb25-3" title="3">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</a>
-<a class="sourceLine" id="cb25-4" title="4">        n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)</a>
-<a class="sourceLine" id="cb25-5" title="5">        <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:</a>
-<a class="sourceLine" id="cb25-6" title="6">            <span class="bu">print</span>(n)</a></code></pre></div>
-<p>これは、初期値を<span class="math inline">\(n=0.1\)</span>として、<span class="math inline">\(n \leftarrow a n(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span class="math inline">\(n\)</span>を表示する関数だ。</p>
-<h4 id="関数logisticの動作確認">3. 関数<code>logistic</code>の動作確認</h4>
-<p>３つ目のセルで、関数<code>logistic</code>を実行してみよう。</p>
-<p>まずは、<span class="math inline">\(a=1.5\)</span>を代入してみよう。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" title="1">logistic(<span class="fl">1.5</span>)</a></code></pre></div>
-<p>結果が、予想される定常解<span class="math inline">\(n = 1 - 1/a\)</span>になっているか確認せよ。<span class="math inline">\(a=2.0\)</span>ではどうか。また、<span class="math inline">\(a=3.1\)</span>を代入すると、定常解に収束しないはずである。何が起きるか確認せよ。</p>
-<h3 id="課題1-2ロジスティック写像の可視化">課題1-2：ロジスティック写像の可視化</h3>
-<p>ロジスティック写像は、<span class="math inline">\(r\)</span>が小さいうちは定常解に収束するが、ある値を超えると個体数が振動することがわかった。では、どのような振る舞いをするのか、可視化してみよう。</p>
-<h4 id="関数logistic_plotの実装">4. 関数<code>logistic_plot</code>の実装</h4>
-<p>ある範囲の<span class="math inline">\(a\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">def</span> logistic_plot(start, end, x, y):</a>
-<a class="sourceLine" id="cb27-2" title="2">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</a>
-<a class="sourceLine" id="cb27-3" title="3">        a <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start</a>
-<a class="sourceLine" id="cb27-4" title="4">        n <span class="op">=</span> <span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb27-5" title="5">        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</a>
-<a class="sourceLine" id="cb27-6" title="6">            n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)</a>
-<a class="sourceLine" id="cb27-7" title="7">            <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:</a>
-<a class="sourceLine" id="cb27-8" title="8">                x.append(a)</a>
-<a class="sourceLine" id="cb27-9" title="9">                y.append(n)</a></code></pre></div>
-<h4 id="関数plotの実装">5. 関数<code>plot</code>の実装</h4>
-<p><code>logistic_plot</code>の結果を受け取って、グラフに描画する関数<code>plot</code>を実装しよう。5つ目のセルに以下を入力せよ。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">def</span> plot(start, end):</a>
-<a class="sourceLine" id="cb28-2" title="2">    x, y <span class="op">=</span> [], []</a>
-<a class="sourceLine" id="cb28-3" title="3">    logistic_plot(start, end, x, y)</a>
-<a class="sourceLine" id="cb28-4" title="4">    plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</a></code></pre></div>
-<h4 id="定常状態の表示">6. 定常状態の表示</h4>
-<p>では、まずは定常状態に落ち着く領域<span class="math inline">\(1 &lt; a &lt; 3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1">plot(<span class="fl">1.0</span>, <span class="fl">3.0</span>)</a></code></pre></div>
-<h4 id="振動状態の表示">7. 振動状態の表示</h4>
-<p><span class="math inline">\(a&gt;3\)</span>では、個体数が定常状態にならない。それを見てみよう。7つ目のセルで以下を実行せよ。</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1">plot(<span class="fl">1.0</span>, <span class="fl">4.0</span>)</a></code></pre></div>
-<p>どんなグラフが現れただろうか？</p>
-<p>また、興味のある人は<span class="math inline">\(3.54 &lt; a &lt; 3.58\)</span>の領域を拡大してみよう。次のセル(8つ目)で以下を実行せよ。</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" title="1">plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])</a>
-<a class="sourceLine" id="cb31-2" title="2">plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</a></code></pre></div>
-<p>どんなグラフが現れただろうか？拡大前のグラフと見比べて見よ。</p>
-<h3 id="課題2コラッツ問題">課題2：コラッツ問題</h3>
-<p>while文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
-<ul>
-<li>何か正の整数を考えよ</li>
-<li>それが偶数なら2で割れ</li>
-<li>それが奇数なら3倍して1を足せ</li>
-<li>以上の処理を数字が1になるまでずっと繰り返せ</li>
-</ul>
-<p>たとえば「5」を考えよう。これは奇数なので3倍して1を足すと「16」になる。 これは偶数だから2で割って「8」、さらに2で割って「4」「2」「１」となる。</p>
-<p>コラッツ問題とは「上記の手続きを繰り返した場合、すべての整数について有限回の手続きで1になるか？」というものであり、未だに解決されていない。この問題をプログラムで確認してみよう。新しいノートブックを開き、<code>collatz.ipynb</code>と名前を付けておこう。</p>
-<h4 id="インポート-1">1. インポート</h4>
-<p>まずは最初のセルで、可視化に使うライブラリをインポートしておこう。</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" title="1"><span class="im">from</span> graphviz <span class="im">import</span> Digraph</a>
-<a class="sourceLine" id="cb32-2" title="2"><span class="im">from</span> PIL <span class="im">import</span> Image</a></code></pre></div>
-<h4 id="関数collatzの実装">2. 関数<code>collatz</code>の実装</h4>
-<p>与えられた数字に対して、</p>
-<ul>
-<li>偶数なら2で割る</li>
-<li>奇数なら3倍して1を足す</li>
-</ul>
-<p>という処理を、</p>
-<ul>
-<li>その数字が1になるまで</li>
-</ul>
-<p>繰り返しながら表示する関数<code>collatz</code>を作りたい。以下の「条件1」「条件2」を埋めて関数を完成させよ。</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">def</span> collatz(i):</a>
-<a class="sourceLine" id="cb33-2" title="2">    <span class="bu">print</span>(i)</a>
-<a class="sourceLine" id="cb33-3" title="3">    <span class="cf">while</span> (条件1):</a>
-<a class="sourceLine" id="cb33-4" title="4">        <span class="cf">if</span> (条件2):</a>
-<a class="sourceLine" id="cb33-5" title="5">            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb33-6" title="6">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb33-7" title="7">            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb33-8" title="8">        <span class="bu">print</span>(i)</a></code></pre></div>
-<p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
-<ul>
-<li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる。</li>
-<li>ヒント2：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる。</li>
-<li>ヒント3：「整数<code>i</code>が0に等しい」という条件は<code>i == 0</code>と表現できる。</li>
-</ul>
-<h4 id="関数collatzの動作確認">3. 関数<code>collatz</code>の動作確認</h4>
-<p>3つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1">collatz(<span class="dv">3</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb35-1" title="1"><span class="ex">3</span></a>
-<a class="sourceLine" id="cb35-2" title="2"><span class="ex">10</span></a>
-<a class="sourceLine" id="cb35-3" title="3"><span class="ex">5</span></a>
-<a class="sourceLine" id="cb35-4" title="4"><span class="ex">16</span></a>
-<a class="sourceLine" id="cb35-5" title="5"><span class="ex">8</span></a>
-<a class="sourceLine" id="cb35-6" title="6"><span class="ex">4</span></a>
-<a class="sourceLine" id="cb35-7" title="7"><span class="ex">2</span></a>
-<a class="sourceLine" id="cb35-8" title="8"><span class="ex">1</span></a></code></pre></div>
-<p>もし正しい結果が得られたら、いろいろな数字を入れて、すべて最終的に1になることを確認せよ。収束するまでの手続きが長い数を探せ。例えば27を入れたらどうなるだろうか。</p>
-<h4 id="関数collatz_graphの実装">4. 関数<code>collatz_graph</code>の実装</h4>
-<p>コラッツ数列を可視化するための関数<code>collatz_graph</code>を実装しよう。条件1、条件2は先程と同じものを入力せよ。</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1"><span class="kw">def</span> collatz_graph(i, edges):</a>
-<a class="sourceLine" id="cb36-2" title="2">    <span class="cf">while</span> (条件1):</a>
-<a class="sourceLine" id="cb36-3" title="3">        j <span class="op">=</span> i</a>
-<a class="sourceLine" id="cb36-4" title="4">        <span class="cf">if</span> (条件2):</a>
-<a class="sourceLine" id="cb36-5" title="5">            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb36-6" title="6">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb36-7" title="7">            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb36-8" title="8">        edges.add((j, i))</a></code></pre></div>
-<h4 id="グラフの作成">5. グラフの作成</h4>
-<p>5つ目のセルに以下を入力、実行せよ。</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" title="1"><span class="kw">def</span> make_graph(n):</a>
-<a class="sourceLine" id="cb37-2" title="2">    g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)</a>
-<a class="sourceLine" id="cb37-3" title="3">    edges <span class="op">=</span> <span class="bu">set</span>()</a>
-<a class="sourceLine" id="cb37-4" title="4">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):</a>
-<a class="sourceLine" id="cb37-5" title="5">        collatz_graph(i, edges)</a>
-<a class="sourceLine" id="cb37-6" title="6">    <span class="cf">for</span> i, j <span class="kw">in</span> edges:</a>
-<a class="sourceLine" id="cb37-7" title="7">        g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))</a>
-<a class="sourceLine" id="cb37-8" title="8">    g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</a>
-<a class="sourceLine" id="cb37-9" title="9">    g.render(<span class="st">&quot;test&quot;</span>)</a>
-<a class="sourceLine" id="cb37-10" title="10">    <span class="cf">return</span> Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</a></code></pre></div>
-<p>これは、1から<code>n</code>までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。</p>
-<h4 id="グラフの表示">6. グラフの表示</h4>
-<p>実際にコラッツ数列のグラフ表示をさせてみよう。以下を入力、実行せよ。</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1">make_graph(<span class="dv">3</span>)</a></code></pre></div>
-<p>ここまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。コラッツ予想とは、このグラフがいかなる場合も木構造、つまりループ構造が無いことを主張するものである。グラフの表示に成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1">    g.attr(size<span class="op">=</span><span class="st">&quot;20,20&quot;</span>)</a></code></pre></div>
-<p>とすると、生成されるイメージが大きくなるため見やすくなる。</p>
-<h3 id="発展課題拡張コラッツ問題">発展課題：拡張コラッツ問題</h3>
-<p>コラッツ予想には様々な変種がある。例えば、</p>
-<ul>
-<li>何か正の整数を考えよ</li>
-<li>それが偶数なら2で割れ</li>
-<li>それが奇数なら3倍して <strong>3</strong> を足せ</li>
-<li>以上の処理を数字が <strong>1か3</strong> になるまでずっと繰り返せ</li>
-</ul>
-<p>というものである。これもやはり有限回の手順で止まるらしい(こちらも未解決問題)。これを確認してみよう。</p>
-<p>課題2で作成した<code>collatz.ipynb</code>をコピーして使おう。「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab Notebooks」に「collatz.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2.ipynb」という名前にしよう。「collatz2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
-<p>「collatz2.ipynb」がGoogle Colabで開かれたら、「ランタイム」メニューの「すべてのセルを実行」を選び、すべてのセルを実行済みにしよう。その後、</p>
-<ul>
-<li>数字が1か3になったら終了とする</li>
-<li>奇数だったら3倍して3を足す</li>
-</ul>
-<p>となるように関数<code>collatz_graph</code>を修正せよ。</p>
-<ul>
-<li>ヒント：「条件XかつY」は、<code>if X and Y:</code>で、「条件XもしくはY」は、<code>if X or Y:</code>で表現できる。</li>
-</ul>
-<p>修正したら、すべてのセルを実行してから、例えば<code>make_graph(5)</code>を実行せよ。<code>make_graph(50)</code>ではどうなるだろうか。1に収束する数字と3に収束する数字があるはずだ。1に収束するのはどういう数字かについて考察せよ。</p>
-<h2 id="余談数論について">余談：数論について</h2>
-<p>コラッツ予想に代表されるような、「整数がこの条件を満たすか？」のような問いを扱うのが整数論(数論)である。一般に数論は「問いを理解するのは易しいが、その解決は極めて難しい」という性質を持つ。ガウスの「数学は科学の女王であり、数論は数学の女王である」という言葉は有名だ。数論の中でも特に有名なのは「フェルマーの最終定理」であろう。これは「三以上の自然数nについて、<span class="math inline">\(x^n + y^n = z^n\)</span>を満たす自然数の組<span class="math inline">\((x,y,z)\)</span>は存在しない」という定理である。フェルマーはフランスの弁護士であったが、余暇に行った数学で大きな功績を残し、「数論の父」とも呼ばれる。彼は趣味でディオファントスの著作「算術」の注釈本を読み、その余白に有名な注釈を書き込んだ。その多くは後に証明、もしくは反証されたが、一つだけ証明も反証もされずに残ったのが「フェルマーの最終定理」である。フェルマーが「フェルマーの最終定理」を記述した横に「私はこの定理の驚くべき証明を手に入れたが、ここに書くには余白が足りない」と書いたのは有名である。アンドリュー・ワイルズは、7年の間、秘密裏にこの問題に取り組み、1995年に解決した。フェルマーによる提唱から証明に至るまで、実に360年かかっている。数論の面白さは、整数しか扱わないにもかかわらず、そこに幾何や解析がからんでくることである。</p>
-<p>数論は入門しやすく、一方で極めて奥が深いため、その難しさ、美しさに魅せられて人生を捧げる人も多い。2011年5月にコラッツの弟子が「コラッツ予想を解決した」という論文を投稿した。しかし、すぐに証明の不備が見つかり、6月に撤回された。その<a href="https://preprint.math.uni-hamburg.de/public/papers/hbam/hbam2011-09.pdf">論文</a>には、</p>
-<blockquote>
-<p>The reasoning on p. 11, that “The set of all vertices (2n,l) in all levels will contain all even numbers 2n ≧ 6 exactly once.” has turned out to be incomplete. Thus, the statement “that the collatz conjecture is true” has to be withdrawn, at least temporarily.(11ページにある証明は不完全であることがわかった。したがって、『コラッツ予想は真である』という主張は、今のところは撤回する)</p>
-</blockquote>
-<p>とある。最後の「at least temporarily (今のところは)」に悔しさがにじむ。サイモン・シンは、こうした数学の未解決問題へ取り憑かれることを熱病に例えた。フェルマーの最終定理に取り憑かれるフェルマー熱、ポアンカレ予想に取り憑かれるポアンカレ熱などが有名だが、この二つは近年解決した。しかし、コラッツ予想は未解決であり、今後もコラッツ熱の感染者を生み続けるのであろう。</p>
-<p>このような数学の話に興味のある人は「数学を作った人々 (E. T. Bell著、田中 勇、銀林 浩 訳)」をおすすめする。数学という、一種無味乾燥にも思える学問の構築の裏に、様々な人間ドラマがあったことを知れば、数学を学ぶ楽しさも増えるに違いない。</p>
+                  <header>
+        <h1 class="title">関数とスコープ</h1>
+                              </header>
+                  <p><a href="../index.html">[Up]</a> <a
+                  href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+                  <h1 id="本講で学ぶこと">本講で学ぶこと</h1>
+                  <ul>
+                  <li>while文</li>
+                  <li>ループのスキップと脱出</li>
+                  <li>関数</li>
+                  <li>スコープ</li>
+                  </ul>
+                  <h1 id="while文">While文</h1>
+                  <p>「10回繰り返したい」という場合にはfor文が使えるが、「ある条件が満たされている限り繰り返したい」という場合もあるだろう。そんな、事前にループの回転数がわからない場合に使えるのがwhile文である。while文は以下のような構文になる。</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> 条件:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    処理</span></code></pre></div>
+                  <p>例えば、ある変数が正である限り1をひきながら表示するプログラムは以下のようになる。</p>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> a <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    a <span class="op">-=</span> <span class="dv">1</span></span></code></pre></div>
+                  <p>Pythonでは、整数は0で無い限り「真」、「0」は「偽」として扱われるため、以下のように書くこともできる。</p>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> a:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    a <span class="op">-=</span> <span class="dv">1</span></span></code></pre></div>
+                  <h1
+                  id="ループのスキップと脱出">ループのスキップと脱出</h1>
+                  <p><code>for</code>や<code>while</code>といった「ループを作る構文」を使っていると、ある条件を満たした時にループをスキップしたり、ループから脱出したくなることがある。それぞれ<code>continue</code>、<code>break</code>で実現できる。</p>
+                  <h2 id="continue"><code>continue</code></h2>
+                  <p>例えば、0から9までの数字を表示するループを考えてみよう。</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+                  <p>実行すると、0から9まで表示される。これを、「偶数の時だけ表示する」ようにしたい。そのまま書くと以下のようになるだろう。</p>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i<span class="op">%</span><span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(i)</span></code></pre></div>
+                  <p>同じ処理を、「奇数の時だけループをスキップする」という形でも書ける。</p>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> i<span class="op">%</span><span class="dv">2</span><span class="op">==</span><span class="dv">0</span>:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span></code></pre></div>
+                  <p><code>continue</code>は、「以下の処理をスキップして、次のループに飛べ」という指示文である。やりたい処理を<code>if</code>文で囲むべきか、やりたくない処理を<code>continue</code>で飛ばすべきかは場合による。</p>
+                  <figure>
+                  <img src="fig/continue.png"
+                  alt="continueによる深いブロックの縮小" />
+                  <figcaption
+                  aria-hidden="true">continueによる深いブロックの縮小</figcaption>
+                  </figure>
+                  <p>上記の左では、ある条件が満たされた時に「何かやりたい処理」を実行しているが、右図では条件が満たされなかったらループをスキップして、スキップされなかった場合に「何かやりたい処理」を実行している。どちらも全く同じ処理を行うが、左は「for文が作るブロック」の中の「if文が作るブロック」が大きいのに対し、右では「if文が作るブロック」が小さくなり、「何かやりたい処理」が「for文の作るブロック」に移動している。</p>
+                  <p>このように、処理の冒頭で条件をチェックし、<code>continue</code>したり<code>return</code>したりすることを<strong>ガード節</strong>と呼ぶ。まるでガードマンが入り口の前に立ち、不要な来訪者を追い払う様に似ているからと思われる。人間の頭はネストした構造を正しく把握するのにコストがかかるため、一般に構造のネストは浅い方が良く、深いブロックは小さい方が望ましい。ガード節はそのような深くて大きいネスト構造を防ぐ基本的なテクニックの一つである。</p>
+                  <h2 id="break"><code>break</code></h2>
+                  <p>ある条件が満たされたら、ループを終了したい場合は、<code>break</code>を使う。例えば、所持金5万円からスタートし、確率1/2で所持金が1万円増えるか減るかするギャンブルをしたとしよう。所持金が0になったら負け、10になったら勝ちで、いずれも終了とする。そのようなコードは、たとえば以下のように書ける。</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>money <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>) <span class="op">*</span> <span class="dv">2</span> <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> money <span class="op">==</span> <span class="dv">10</span>:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span></code></pre></div>
+                  <p><code>random.randint(0, 1)</code>は、確率1/2で0か1を返す乱数であり、2倍して1を引くことで、+1か-1を返すようにしている。所持金<code>money</code>にそれを加算し、0になったら「Lose」と表示して終了、10になったら「Win」と表示して終了している。</p>
+                  <p>ここでは<code>while True:</code>でループ構造を作っている。<code>while 条件:</code>は、条件が満たされている限りループする、というものであった。その条件に<code>True</code>を設定しているので、ループの条件は常に真であり、無限にループが回る。このようなループを
+                  <strong>無限ループ</strong> (infinite loop)
+                  と呼ぶ。無限ループを抜けるには、<code>break</code>もしくは関数からの<code>return</code>、プログラムを終了させる<code>exit()</code>などを使うしかない。もし適切な終了条件を設定せずにループを無限ループにしてしまった場合は、コンソールプログラムならCtrl+Cを入力、Google
+                  Colab上ならば実行中のセルの四角いボタンを押せば停止できる。</p>
+                  <p>なお、先程と同じプログラムは、<code>break</code>を使わずに<code>while</code>の条件を工夫することでも実現できる。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>money <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="dv">0</span> <span class="op">&lt;</span> money <span class="op">&lt;</span> <span class="dv">10</span>:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> money <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Lose&quot;</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Win&quot;</span>)</span></code></pre></div>
+                  <p><code>money</code>が1から9の間にある場合のみループを実行し、この条件を満たさなくなったら<code>while</code>文を終了するコードである。最終的に<code>money</code>が0になったか<code>10</code>になったかを確認し、「Lose」や「Win」を表示している。先程のコードよりも、このループがどのような条件で実行されるべきかがわかりやすくなっているのがわかるであろう。</p>
+                  <p>さきほどの例では<code>money</code>が1から9の間にある条件を<code>0 &lt; money &lt; 10</code>と書いたが、よりPythonらしく書くなら<code>range</code>を使って</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> money <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">10</span>):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    money <span class="op">+=</span> random.randint(<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">*</span><span class="dv">2</span><span class="op">-</span><span class="dv">1</span></span></code></pre></div>
+                  <p>と書くこともできる。<code>range(x,y)</code>はx以上y未満の数字の範囲を表す。</p>
+                  <p>一般に、等価な制御構造の書き方は複数存在する。例えば終了条件を<code>while</code>の条件に含めるべきか、<code>break</code>で脱出すべきかは場合による。こういった「良いコード」の書き方に興味のある人は「リーダブルコード」という古典的な名著があるので参照されたい。</p>
+                  <h1 id="関数">関数</h1>
+                  <p>Pythonでは、よく使う処理を <strong>関数</strong>
+                  (function)
+                  という形で定義し、何度も利用することができる。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sayhello():</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Hello!&quot;</span>)</span></code></pre></div>
+                  <p>関数は「def
+                  関数名(引数):」という形で定義する。関数定義の右側にある「コロン」を忘れないように。Pythonはコロンの後にインデントによりブロックを作る言語である。</p>
+                  <p>定義した関数は後から何度でも呼ぶこともできる。</p>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sayhello() <span class="co">#=&gt; &quot;Hello!&quot;</span></span></code></pre></div>
+                  <p>関数にインプットを与えることもできる。このインプットを<strong>引数</strong>
+                  (argument)と呼ぶ。引数は「ひきすう」と読む。「いんすう」と間違える人が多いので注意。</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> say(s):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(s)</span></code></pre></div>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>say(<span class="st">&quot;Bye!&quot;</span>) <span class="co">#=&gt; Bye!</span></span></code></pre></div>
+                  <p>関数を実行した結果、値を返すこともできる。返す値は<code>return</code>文で指定する。</p>
+                  <div class="sourceCode" id="cb14"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add(a, b):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span></code></pre></div>
+                  <div class="sourceCode" id="cb15"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>add(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co">#=&gt; 7</span></span></code></pre></div>
+                  <p>関数が返した値を変数に代入することもできる。</p>
+                  <div class="sourceCode" id="cb16"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> add(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a) <span class="co">#=&gt; 3</span></span></code></pre></div>
+                  <p>次回学ぶ「タプル」を用いると、複数の値を一度に返すこともできる。</p>
+                  <div class="sourceCode" id="cb17"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(i):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i, i <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>a, b <span class="op">=</span> func(<span class="dv">5</span>)  <span class="co"># a = 5, b = 6が代入される。</span></span></code></pre></div>
+                  <h1 id="スコープ">スコープ</h1>
+                  <p>Pythonはコードブロックをインデントで表現する言語であり、<code>if</code>や<code>for</code>、<code>while</code>などがブロックを作ることは既に学んだ。同様に、関数もブロックを作るが、その関数が作るブロック内で宣言された変数の有効範囲は、そのブロック内に制限される。この変数の有効範囲のことを
+                  <strong>スコープ(scope)</strong> と呼ぶ。</p>
+                  <p>最初に述べたように、プログラムの文法やライブラリの使い方の詳細については覚える必要はなく「なんとなくそういうものがあったなぁ」と覚えておくだけでよい。なぜなら、やりかたを忘れてしまっても、例えば関数の定義の仕方を忘れてしまっても、「Python
+                  関数」で検索すればすぐにやり方はわかるからだ。しかし、「スコープ」については、ここである程度しっかり理解しておいた方が良い。将来スコープによる「変数の名前解決がらみ」で問題を起こした時、そうと知らなければ「これはスコープの問題だ」と認識することができないため、適切な検索ワードも思いつかず、自力では解決できなくなるからだ。</p>
+                  <p>例えば以下のようなコードを見てみよう。</p>
+                  <div class="sourceCode" id="cb18"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func():</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>func()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span></code></pre></div>
+                  <p>関数<code>func</code>内で、変数<code>a</code>に10を代入し、その値を表示されている。その後、関数<code>func</code>を実行すると10が表示され、確かに<code>a</code>に10が入っていることがわかるが、その後で<code>a</code>を表示しようとすると<code>NameError: name 'a' is not defined</code>、つまり「変数<code>a</code>なんて知らないよ」というエラーが出てしまう。このように、関数内で宣言された変数は<strong>ローカル変数</strong>と呼ばれ、その有効範囲は関数内に制限される。特に、ローカル変数が住むスコープを<strong>ローカルスコープ</strong>と呼ぶ。</p>
+                  <p>逆に、関数の外で宣言された変数は、関数の中からも見ることができる。</p>
+                  <div class="sourceCode" id="cb19"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func():</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>func()</span></code></pre></div>
+                  <p>このコードは問題なく実行され、10が表示される。関数の外、つまりインデントがなく、地面に「ベタ」についている場所で宣言された変数を<strong>グローバル変数</strong>と呼ぶ。グローバル変数は<strong>グローバルスコープ</strong>に住んでいる。</p>
+                  <p>実はPythonには、ここで挙げた「ローカルスコープ」「グローバルスコープ」の他に、「関数内関数のスコープ」「ビルトインスコープ」というものもあるのだが、本書では取り上げない。</p>
+                  <p>この「ローカルスコープ」と「グローバルスコープ」についてとりあえず知っておくべきことは</p>
+                  <ul>
+                  <li>ローカルからグローバルは見える</li>
+                  <li>グローバルからローカルは見えない</li>
+                  </ul>
+                  <p>の二点である。</p>
+                  <figure>
+                  <img src="fig/scope.png"
+                  alt="グローバルスコープとローカルスコープ" />
+                  <figcaption
+                  aria-hidden="true">グローバルスコープとローカルスコープ</figcaption>
+                  </figure>
+                  <p>スコープには直感に反する振る舞いがいくつかあるのだが、ここでは一つだけ将来ハマりそうな例として、ローカルスコープからグローバル変数の参照と代入の問題について紹介する。こんなコードを考えよう。</p>
+                  <div class="sourceCode" id="cb20"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func():</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>func()</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)</span></code></pre></div>
+                  <p>このコードは</p>
+                  <ul>
+                  <li>最初にグローバル変数<code>a</code>に10が代入され、</li>
+                  <li>内部で変数<code>a</code>に20を代入して表示する関数<code>func</code>を実行し、</li>
+                  <li>最後に<code>a</code>の変数の値を表示する</li>
+                  </ul>
+                  <p>というプログラムである。どんな結果になるか想像できるだろうか？</p>
+                  <p>実はこのコードでは、関数<code>func</code>を実行しても、グローバル変数の値は変更されない。これは<code>a=20</code>が、関数<code>func</code>内のローカル変数の宣言とみなされるからだ。ここで出てきた<code>func</code>や<code>a</code>といった「関数名」や「変数名」を
+                  識別子 <strong>(identifier)</strong>
+                  と呼ぶ。また、ある識別子がどのスコープに属すものであるかを調べる仕組みを
+                  <strong>名前解決(Name Resolution)</strong>
+                  と呼ぶ。</p>
+                  <figure>
+                  <img src="fig/scope2.png"
+                  alt="ローカル変数によるグローバル変数の上書き" />
+                  <figcaption
+                  aria-hidden="true">ローカル変数によるグローバル変数の上書き</figcaption>
+                  </figure>
+                  <p>さて、多くの場合においてこれは意図する動作ではないであろう。ローカルスコープからグローバル変数を修正したい場合、ローカルスコープ内で<code>global</code>宣言をする。</p>
+                  <div class="sourceCode" id="cb21"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func():</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> a  <span class="co"># 変数aがグローバル変数であることを宣言する</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>func()</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a)  <span class="co"># =&gt; 20</span></span></code></pre></div>
+                  <p>実行すると、関数内でグローバル変数<code>a</code>の値を書き換えることができたことがわかる。</p>
+                  <p>しかし、このようなコードはバグの元であり、推奨されない。一般にはグローバル変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。慣れるまでは「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
+                  <p>さて、名前解決の仕組みはプログラミング言語ごとに異なるため、ある言語の内容をそのまま別の言語で書き直した時に思うような動作にならない時がある。例えば、Pythonは<code>if</code>文が作るブロックはスコープを作らないが、C言語はスコープを作る。例えば以下のコードはC言語ではエラーになる。</p>
+                  <div class="sourceCode" id="cb22"><pre
+                  class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span>true<span class="op">){</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  int a <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> <span class="co">//変数aはこのif文のみで有効</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span>true<span class="op">){</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;%d</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span>a<span class="op">);</span> <span class="co">// 変数aはここから見えないのでエラー</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+                  <p>Pythonの同等なコードはエラーにならない。</p>
+                  <div class="sourceCode" id="cb23"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>if True:</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="dv">10</span> <span class="co"># このif文はスコープを作らない</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>if True:</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    print(a) <span class="co"># ここから変数aが見える</span></span></code></pre></div>
+                  <p>繰り返しになるが、プログラミング言語には「スコープ」という概念があり、変数がどのスコープに属すか決める仕組みは言語ごとに異なる、ということは覚えておいて欲しい。名前解決がらみで問題が起きた時に、そもそも「スコープ」という単語を知らないと、問題解決が難しくなるからだ。</p>
+                  <h1 id="関数とスコープ課題">関数とスコープ：課題</h1>
+                  <h2
+                  id="課題1-1ロジスティック写像">課題1-1：ロジスティック写像</h2>
+                  <p>関数と繰り返しを使い、ロジスティック写像を可視化してみよう。ロジスティック写像は</p>
+                  <p><span class="math display">\[
+                  n_{i+1} = a n_i (1- n_i)
+                  \]</span></p>
+                  <p>という漸化式で定められる写像である。<span
+                  class="math inline">\(n_i\)</span>は、ある生物の<span
+                  class="math inline">\(i\)</span>世代目の個体密度(環境が許す最大の個体数に対する現在の個体数の割合)、<span
+                  class="math inline">\(a\)</span>が環境の快適度を表し、大きい方が生物は増えやすい。もし、これが定常状態であれば、<span
+                  class="math inline">\(n_{i+1} = n_i =
+                  n\)</span>が成り立つから、</p>
+                  <p><span class="math display">\[
+                  n = 1 - \frac{1}{a}
+                  \]</span></p>
+                  <p>に落ち着くはずである。この振る舞いを確認してみよう。新しいノートブックを開き、<code>logistic.ipynb</code>と名前を付けよう。</p>
+                  <h3 id="インポート">1. インポート</h3>
+                  <p>まずは後で使うライブラリをインポートしておこう。</p>
+                  <div class="sourceCode" id="cb24"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div>
+                  <h3 id="関数logisticの実装">2.
+                  関数<code>logistic</code>の実装</h3>
+                  <p>パラメタ<span
+                  class="math inline">\(a\)</span>を受け取って、個体数<span
+                  class="math inline">\(n\)</span>の収束を調べる関数<code>logistic</code>を実装しよう。</p>
+                  <div class="sourceCode" id="cb25"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logistic(a):</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">990</span>:</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(n)</span></code></pre></div>
+                  <p>これは、初期値を<span
+                  class="math inline">\(n=0.1\)</span>として、<span
+                  class="math inline">\(n \leftarrow a
+                  n(1-n)\)</span>という写像を1000回繰り返し、最後の10回だけ<span
+                  class="math inline">\(n\)</span>を表示する関数だ。</p>
+                  <h3 id="関数logisticの動作確認">3.
+                  関数<code>logistic</code>の動作確認</h3>
+                  <p>３つ目のセルで、関数<code>logistic</code>を実行してみよう。</p>
+                  <p>まずは、<span
+                  class="math inline">\(a=1.5\)</span>を代入してみよう。</p>
+                  <div class="sourceCode" id="cb26"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>logistic(<span class="fl">1.5</span>)</span></code></pre></div>
+                  <p>結果が、予想される定常解<span
+                  class="math inline">\(n = 1 -
+                  1/a\)</span>になっているか確認せよ。<span
+                  class="math inline">\(a=2.0\)</span>ではどうか。また、<span
+                  class="math inline">\(a=3.1\)</span>を代入すると、定常解に収束しないはずである。何が起きるか確認せよ。</p>
+                  <h2
+                  id="課題1-2ロジスティック写像の可視化">課題1-2：ロジスティック写像の可視化</h2>
+                  <p>ロジスティック写像は、<span
+                  class="math inline">\(r\)</span>が小さいうちは定常解に収束するが、ある値を超えると個体数が振動することがわかった。では、どのような振る舞いをするのか、可視化してみよう。</p>
+                  <h3 id="関数logistic_plotの実装">4.
+                  関数<code>logistic_plot</code>の実装</h3>
+                  <p>ある範囲の<span
+                  class="math inline">\(a\)</span>を受け取って個体数の振動を調べる関数<code>logistic_plot</code>を実装しよう。4つ目のセルに以下を入力せよ。</p>
+                  <div class="sourceCode" id="cb27"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> logistic_plot(start, end, x, y):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> (end <span class="op">-</span> start) <span class="op">*</span> i <span class="op">/</span> <span class="dv">1000</span> <span class="op">+</span> start</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> a <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> n)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> j <span class="op">&gt;</span> <span class="dv">900</span>:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                x.append(a)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                y.append(n)</span></code></pre></div>
+                  <h3 id="関数plotの実装">5.
+                  関数<code>plot</code>の実装</h3>
+                  <p><code>logistic_plot</code>の結果を受け取って、グラフに描画する関数<code>plot</code>を実装しよう。5つ目のセルに以下を入力せよ。</p>
+                  <div class="sourceCode" id="cb28"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot(start, end):</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> [], []</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    logistic_plot(start, end, x, y)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x, y, s<span class="op">=</span><span class="fl">0.1</span>)</span></code></pre></div>
+                  <h3 id="定常状態の表示">6. 定常状態の表示</h3>
+                  <p>では、まずは定常状態に落ち着く領域<span
+                  class="math inline">\(1 &lt; a &lt;
+                  3\)</span>を描画してみよう。6つ目のセルで以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb29"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>plot(<span class="fl">1.0</span>, <span class="fl">3.0</span>)</span></code></pre></div>
+                  <h3 id="振動状態の表示">7. 振動状態の表示</h3>
+                  <p><span
+                  class="math inline">\(a&gt;3\)</span>では、個体数が定常状態にならない。それを見てみよう。7つ目のセルで以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb30"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>plot(<span class="fl">1.0</span>, <span class="fl">4.0</span>)</span></code></pre></div>
+                  <p>どんなグラフが現れただろうか？</p>
+                  <p>また、興味のある人は<span
+                  class="math inline">\(3.54 &lt; a &lt;
+                  3.58\)</span>の領域を拡大してみよう。次のセル(8つ目)で以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb31"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="fl">0.335</span>,<span class="fl">0.39</span>])</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>plot(<span class="fl">3.54</span>, <span class="fl">3.58</span>)</span></code></pre></div>
+                  <p>どんなグラフが現れただろうか？拡大前のグラフと見比べて見よ。</p>
+                  <h2 id="課題2コラッツ問題">課題2：コラッツ問題</h2>
+                  <p>while文と関数を使ってプログラムを作ってみよう。題材としてコラッツ問題(Collatz
+                  problem)を取り上げる。コラッツ問題とは、以下のようなものである。</p>
+                  <ul>
+                  <li>何か正の整数を考えよ</li>
+                  <li>それが偶数なら2で割れ</li>
+                  <li>それが奇数なら3倍して1を足せ</li>
+                  <li>以上の処理を数字が1になるまでずっと繰り返せ</li>
+                  </ul>
+                  <p>たとえば「5」を考えよう。これは奇数なので3倍して1を足すと「16」になる。
+                  これは偶数だから2で割って「8」、さらに2で割って「4」「2」「１」となる。</p>
+                  <p>コラッツ問題とは「上記の手続きを繰り返した場合、すべての整数について有限回の手続きで1になるか？」というものであり、未だに解決されていない。この問題をプログラムで確認してみよう。新しいノートブックを開き、<code>collatz.ipynb</code>と名前を付けておこう。</p>
+                  <h3 id="インポート-1">1. インポート</h3>
+                  <p>まずは最初のセルで、可視化に使うライブラリをインポートしておこう。</p>
+                  <div class="sourceCode" id="cb32"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> graphviz <span class="im">import</span> Digraph</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image</span></code></pre></div>
+                  <h3 id="関数collatzの実装">2.
+                  関数<code>collatz</code>の実装</h3>
+                  <p>与えられた数字に対して、</p>
+                  <ul>
+                  <li>偶数なら2で割る</li>
+                  <li>奇数なら3倍して1を足す</li>
+                  </ul>
+                  <p>という処理を、</p>
+                  <ul>
+                  <li>その数字が1になるまで</li>
+                  </ul>
+                  <p>繰り返しながら表示する関数<code>collatz</code>を作りたい。以下の「条件1」「条件2」を埋めて関数を完成させよ。</p>
+                  <div class="sourceCode" id="cb33"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collatz(i):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (条件<span class="dv">1</span>):</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (条件<span class="dv">2</span>):</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(i)</span></code></pre></div>
+                  <p>インデントに注意。最初の<code>print</code>と二番目の<code>print</code>はインデントの位置が異なる。</p>
+                  <ul>
+                  <li>ヒント1：「整数<code>i</code>の値が<code>a</code>ではない」という条件は<code>i != a</code>と表現できる。</li>
+                  <li>ヒント2：整数<code>i</code>を数<code>N</code>で割った余りは<code>i % N</code>で求められる。</li>
+                  <li>ヒント3：「整数<code>i</code>が0に等しい」という条件は<code>i == 0</code>と表現できる。</li>
+                  </ul>
+                  <h3 id="関数collatzの動作確認">3.
+                  関数<code>collatz</code>の動作確認</h3>
+                  <p>3つ目のセルで、<code>collatz</code>関数を呼び出し、所望の動作になっているか確認せよ。例えば初期値として「3」を代入し、以下の数列が得られるだろうか？</p>
+                  <div class="sourceCode" id="cb34"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>collatz(<span class="dv">3</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb35"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">3</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">10</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">5</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="ex">16</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="ex">8</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="ex">4</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="ex">2</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span></span></code></pre></div>
+                  <p>もし正しい結果が得られたら、いろいろな数字を入れて、すべて最終的に1になることを確認せよ。収束するまでの手続きが長い数を探せ。例えば27を入れたらどうなるだろうか。</p>
+                  <h3 id="関数collatz_graphの実装">4.
+                  関数<code>collatz_graph</code>の実装</h3>
+                  <p>コラッツ数列を可視化するための関数<code>collatz_graph</code>を実装しよう。条件1、条件2は先程と同じものを入力せよ。</p>
+                  <div class="sourceCode" id="cb36"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> collatz_graph(i, edges):</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (条件<span class="dv">1</span>):</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>        j <span class="op">=</span> i</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (条件<span class="dv">2</span>):</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>            i <span class="op">=</span> i <span class="op">*</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>        edges.add((j, i))</span></code></pre></div>
+                  <h3 id="グラフの作成">5. グラフの作成</h3>
+                  <p>5つ目のセルに以下を入力、実行せよ。</p>
+                  <div class="sourceCode" id="cb37"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_graph(n):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> Digraph(<span class="bu">format</span><span class="op">=</span><span class="st">&#39;png&#39;</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    edges <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, n<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        collatz_graph(i, edges)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, j <span class="kw">in</span> edges:</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        g.edge(<span class="bu">str</span>(i), <span class="bu">str</span>(j))</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    g.attr(size<span class="op">=</span><span class="st">&quot;10,10&quot;</span>)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>    g.render(<span class="st">&quot;test&quot;</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Image.<span class="bu">open</span>(<span class="st">&quot;test.png&quot;</span>)</span></code></pre></div>
+                  <p>これは、1から<code>n</code>までの数についてコラッツ数列を作りつつ、すでに出現した数字になったら、そこに「つなぐ」ことでグラフにする関数である。</p>
+                  <h3 id="グラフの表示">6. グラフの表示</h3>
+                  <p>実際にコラッツ数列のグラフ表示をさせてみよう。以下を入力、実行せよ。</p>
+                  <div class="sourceCode" id="cb38"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>make_graph(<span class="dv">3</span>)</span></code></pre></div>
+                  <p>ここまで正しく入力されていれば、何か木構造のグラフが表示されたはずである。コラッツ予想とは、このグラフがいかなる場合も木構造、つまりループ構造が無いことを主張するものである。グラフの表示に成功したら、いろんな数字を<code>make_graph</code>に入れて実行してみよ。20ぐらいがちょうどよいと思うが、27に挑戦してもよい。なお、図のサイズが小さすぎる場合は、</p>
+                  <div class="sourceCode" id="cb39"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>    g.attr(size<span class="op">=</span><span class="st">&quot;20,20&quot;</span>)</span></code></pre></div>
+                  <p>とすると、生成されるイメージが大きくなるため見やすくなる。</p>
+                  <h2
+                  id="発展課題拡張コラッツ問題">発展課題：拡張コラッツ問題</h2>
+                  <p>コラッツ予想には様々な変種がある。例えば、</p>
+                  <ul>
+                  <li>何か正の整数を考えよ</li>
+                  <li>それが偶数なら2で割れ</li>
+                  <li>それが奇数なら3倍して <strong>3</strong>
+                  を足せ</li>
+                  <li>以上の処理を数字が <strong>1か3</strong>
+                  になるまでずっと繰り返せ</li>
+                  </ul>
+                  <p>というものである。これもやはり有限回の手順で止まるらしい(こちらも未解決問題)。これを確認してみよう。</p>
+                  <p>課題2で作成した<code>collatz.ipynb</code>をコピーして使おう。「ファイル」メニューから「ドライブで探す」をクリックせよ。「マイドライブ」の「Colab
+                  Notebooks」に「collatz.ipynb」があるはずである。それを右クリックし「コピーを作成」を選ぶと「collatz.ipynbのコピー」というファイルが作成されるので、それを右クリックして「名前を変更」を選び、「collatz2.ipynb」という名前にしよう。「collatz2.ipynb」が作成されたら、右クリック→「アプリで開く」→「Colaboratory」を選ぶことで開くことができる。</p>
+                  <p>「collatz2.ipynb」がGoogle
+                  Colabで開かれたら、「ランタイム」メニューの「すべてのセルを実行」を選び、すべてのセルを実行済みにしよう。その後、</p>
+                  <ul>
+                  <li>数字が1か3になったら終了とする</li>
+                  <li>奇数だったら3倍して3を足す</li>
+                  </ul>
+                  <p>となるように関数<code>collatz_graph</code>を修正せよ。</p>
+                  <ul>
+                  <li>ヒント：「条件XかつY」は、<code>if X and Y:</code>で、「条件XもしくはY」は、<code>if X or Y:</code>で表現できる。</li>
+                  </ul>
+                  <p>修正したら、すべてのセルを実行してから、例えば<code>make_graph(5)</code>を実行せよ。<code>make_graph(50)</code>ではどうなるだろうか。1に収束する数字と3に収束する数字があるはずだ。1に収束するのはどういう数字かについて考察せよ。</p>
+                  <h1 id="余談数論について">余談：数論について</h1>
+                  <p>コラッツ予想に代表されるような、「整数がこの条件を満たすか？」のような問いを扱うのが整数論(数論)である。一般に数論は「問いを理解するのは易しいが、その解決は極めて難しい」という性質を持つ。ガウスの「数学は科学の女王であり、数論は数学の女王である」という言葉は有名だ。数論の中でも特に有名なのは「フェルマーの最終定理」であろう。これは「三以上の自然数nについて、<span
+                  class="math inline">\(x^n + y^n =
+                  z^n\)</span>を満たす自然数の組<span
+                  class="math inline">\((x,y,z)\)</span>は存在しない」という定理である。フェルマーはフランスの弁護士であったが、余暇に行った数学で大きな功績を残し、「数論の父」とも呼ばれる。彼は趣味でディオファントスの著作「算術」の注釈本を読み、その余白に有名な注釈を書き込んだ。その多くは後に証明、もしくは反証されたが、一つだけ証明も反証もされずに残ったのが「フェルマーの最終定理」である。フェルマーが「フェルマーの最終定理」を記述した横に「私はこの定理の驚くべき証明を手に入れたが、ここに書くには余白が足りない」と書いたのは有名である。アンドリュー・ワイルズは、7年の間、秘密裏にこの問題に取り組み、1995年に解決した。フェルマーによる提唱から証明に至るまで、実に360年かかっている。数論の面白さは、整数しか扱わないにもかかわらず、そこに幾何や解析がからんでくることである。</p>
+                  <p>数論は入門しやすく、一方で極めて奥が深いため、その難しさ、美しさに魅せられて人生を捧げる人も多い。2011年5月にコラッツの弟子が「コラッツ予想を解決した」という論文を投稿した。しかし、すぐに証明の不備が見つかり、6月に撤回された。その<a
+                  href="https://preprint.math.uni-hamburg.de/public/papers/hbam/hbam2011-09.pdf">論文</a>には、</p>
+                  <blockquote>
+                  <p>The reasoning on p. 11, that “The set of all
+                  vertices (2n,l) in all levels will contain all even
+                  numbers 2n ≧ 6 exactly once.” has turned out to be
+                  incomplete. Thus, the statement “that the collatz
+                  conjecture is true” has to be withdrawn, at least
+                  temporarily.(11ページにある証明は不完全であることがわかった。したがって、『コラッツ予想は真である』という主張は、今のところは撤回する)</p>
+                  </blockquote>
+                  <p>とある。最後の「at least temporarily
+                  (今のところは)」に悔しさがにじむ。サイモン・シンは、こうした数学の未解決問題へ取り憑かれることを熱病に例えた。フェルマーの最終定理に取り憑かれるフェルマー熱、ポアンカレ予想に取り憑かれるポアンカレ熱などが有名だが、この二つは近年解決した。しかし、コラッツ予想は未解決であり、今後もコラッツ熱の感染者を生み続けるのであろう。</p>
+                  <p>このような数学の話に興味のある人は「数学を作った人々
+                  (E. T. Bell著、田中 勇、銀林 浩
+                  訳)」をおすすめする。数学という、一種無味乾燥にも思える学問の構築の裏に、様々な人間ドラマがあったことを知れば、数学を学ぶ楽しさも増えるに違いない。</p>
           </article>
   </body>
 

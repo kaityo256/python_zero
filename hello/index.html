@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="generator" content="pandoc">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-                <title>hello/index.md</title>
+                <title>Pythonの概要とGoogle Colabの使い方</title>
     <style type="text/css">
       code {
         white-space: pre;
@@ -242,186 +242,286 @@
 
   <body>
     <article class="markdown-body">
-                        <h1 id="pythonの概要とgoogle-colabの使い方">Pythonの概要とGoogle Colabの使い方</h1>
-<p><a href="../index.html">[Up]</a> <a href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
-<h2 id="本講で学ぶこと">本講で学ぶこと</h2>
-<ul>
-<li>Pythonの概要</li>
-<li>Google Colabの使い方</li>
-</ul>
-<h2 id="pythonの特徴">Pythonの特徴</h2>
-<h3 id="プログラミング言語">プログラミング言語</h3>
-<p>Pythonとはプログラミング言語の一つである。 <strong>プログラミング言語 (programming language)</strong> とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
-<p>コンピュータは <strong>機械語 (machine language)</strong> という言葉しか解さない。機械語は数字の羅列であり、昔は人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
-<p>プログラムの実行方式として、大きく分けて人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式と、機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式があり、前者をスクリプト言語、後者をコンパイラ言語と呼ぶ。ただし、両者の区別は絶対ではない。</p>
-<figure>
-<img src="fig/language.png" alt="スクリプト言語とコンパイラ言語" /><figcaption>スクリプト言語とコンパイラ言語</figcaption>
-</figure>
-<h3 id="オフサイドルール">オフサイドルール</h3>
-<p>プログラムは、いくつかの「文(statement)」でできている。「文」とはプログラム実行の単位である。プログラムは「文」が並んだものとして構成される。プログラムは原則として「上から順番に」実行されていく。しかし、例えば条件分岐などで「AならばXを、そうでなければYを実行したい」ということがあるだろう。この時、なんらかの方法で「X」や「Y」といった「かたまり」を表現しなければならない。いくつかの文で表現された「かたまり」を「コードブロック (code block)」あるいは単に「ブロック」と呼ぶ。このブロックをどのように表現するかが、プログラミング言語の見た目を決める。Pythonはブロックをインデントによって表現するのが大きな特徴である。これをオフサイドルールと呼ぶ。ブロックの表現方法としては、他に中括弧方式やキーワード方式がある。</p>
-<figure>
-<img src="fig/codeblock.png" alt="コードブロックの表現方法" /><figcaption>コードブロックの表現方法</figcaption>
-</figure>
-<p>中括弧方式は、C言語、及びC言語に影響を受けた言語が採用している方法であり、コードブロックを中括弧<code>{}</code>で囲んで表現する。例えば「<code>a</code>が正ならYes、そうでなければNoを表示する」プログラムなら</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){</a>
-<a class="sourceLine" id="cb1-2" title="2">  puts(<span class="st">&quot;Yes&quot;</span>);</a>
-<a class="sourceLine" id="cb1-3" title="3">}<span class="cf">else</span>{</a>
-<a class="sourceLine" id="cb1-4" title="4">  puts(<span class="st">&quot;No&quot;</span>);</a>
-<a class="sourceLine" id="cb1-5" title="5">}</a></code></pre></div>
-<p>と表現する。中括弧で囲まれた部分がブロックとなる。C、C++、Java、C#などのコンパイル言語や、JavaScriptやPerl、PHPといったスクリプト言語など、多くの言語がこの中括弧方式を採用している。</p>
-<p>キーワード方式は、例えば<code>begin</code>や<code>do</code>、<code>end</code>といった、あらかじめ決められた言葉(予約語と呼ぶ)によってブロックを表現する方法である。例えばRubyなら</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode rb"><code class="sourceCode ruby"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">if</span> a &gt; <span class="dv">0</span> <span class="kw">then</span></a>
-<a class="sourceLine" id="cb2-2" title="2">  puts(<span class="st">&quot;Yes&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">else</span></a>
-<a class="sourceLine" id="cb2-4" title="4">  puts(<span class="st">&quot;No&quot;</span>)</a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="kw">end</span></a></code></pre></div>
-<p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
-<p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは <strong>インデント (indent)</strong> と呼ばれ、特にブロックの中にブロックが含まれる(ネストする)場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは、　</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb3-1" title="1"><span class="cf">if</span> (a &gt; <span class="dv">0</span>){puts(<span class="st">&quot;Yes&quot;</span>);}<span class="cf">else</span>{puts(<span class="st">&quot;No&quot;</span>);}</a></code></pre></div>
-<p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" title="1"><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:</a>
-<a class="sourceLine" id="cb4-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;Yes&quot;</span>)</a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb4-4" title="4">    <span class="bu">print</span>(<span class="st">&quot;No&quot;</span>)</a></code></pre></div>
-<p>Pythonではこのように、「キーワード + コロン(<code>:</code>)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)</a>
-<a class="sourceLine" id="cb5-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></a></code></pre></div>
-<p>このように、インデントでブロックを表現する方法を <strong>オフサイドルール (off-side rule)</strong> と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
-<p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はフィボナッチ数の計算ルーチンである。</p>
-<figure>
-<img src="fig/codeblock2.png" alt="Pythonのコードブロック" /><figcaption>Pythonのコードブロック</figcaption>
-</figure>
-<p>関数が作るブロックの中に、if文が作るブロックがネストしており、その文だけインデントが深くなっている。</p>
-<h3 id="pythonの哲学とコーディングスタイル">Pythonの哲学とコーディングスタイル</h3>
-<p>Pythonに限らず、どのプログラミング言語にも、開発者の設計思想が強く表れる。Pythonの哲学は、例えば<a href="https://www.python.org/dev/peps/pep-0020/">The Zen of Python</a>にまとまっている。全部で19あるが、そのうちいくつかを引用してみよう(和訳は筆者による)。</p>
-<blockquote>
-<p>美しいことはよいことだ (Beautiful is better than ugly)</p>
-<p>単純であることはよいことだ(Simple is better than complex)</p>
-<p>しかし、ややこしいよりは複雑であるほうが良い(Complex is better than complicated)</p>
-<p>ネストは浅い方が良い(Flat is better than nested)</p>
-<p>読みやすさが正義(Readability counts)</p>
-<p>特別な場合を許さない(Special cases aren’t special enough to break the rules)</p>
-<p>純粋さよりは実用を重視せよ(Although practicality beats purity)</p>
-<p>「いつか」より「今」(Now is better than never)</p>
-<p>しかし、あわてて今やるよりはやらない方が良いこともある(Although never is often better than <em>right</em> now)</p>
-</blockquote>
-<p>この文章はPython Enhancement Proposals、通称PEPの20番として登録されたものだ。PEPとはPython開発コミュニティやユーザが参照するドキュメントのことで、様々な種類があり、多くのドキュメントが登録されているが、よく参照されるのが「Pythonのコーディング規約」を定めた<a href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>である。コーディング規約とは、コードを書く際の決まりごと、いわばマナーである。Pythonを貫く哲学の一つに、「誰が書いても同じようになるべし」というものがある。PEP8に従って書くことで、例えば「人によってインデントの深さや変数名の付け方が異なるので、大きなプロジェクトで流儀が混ざって読みづらくなる」といったことを防ぐことができる。また、バグの発生源となりやすい表記方法を禁止することで、バグの混入を防ぐ、という目的もある。</p>
-<p>PEP8は実に多くのルールを定めている。その多くは、「処理内容は変わらないが、より好ましい書き方を推奨する」というものだ。例えばある変数が真である時に何かを処理したい場合、</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" title="1"><span class="cf">if</span> a <span class="op">==</span> <span class="va">True</span>:</a>
-<a class="sourceLine" id="cb6-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</a></code></pre></div>
-<p>と冗長に書くより、</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" title="1"><span class="cf">if</span> a:</a>
-<a class="sourceLine" id="cb7-2" title="2">    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</a></code></pre></div>
-<p>と書きましょう、といった具合だ。他にも「インデントは空白4文字」「空白の入れ方」「改行の入れ方」など、様々な細かい「マナー」が書いてある。</p>
-<p>Pythonを学ぶにあたり、とりあえず「マナー」は気にしなくて良いが、実際にPythonを使ってコードを書いたり、それを外部に公開したりする場合は気にした方がよいだろう。Pythonには、コードがPEP8に従っているかチェックしてくれる<code>pep8</code>というツールや、コーディングスタイルだけではなく品質チェックもする<code>pylint</code>といったツールがある。広く使われているエディタはほとんどこういったツールとの連携機能があるので、それらを有効にするだけで自動的にコーディングスタイルを守れるようになるはずだ。</p>
-<h2 id="google-colabの使い方">Google Colabの使い方</h2>
-<p>本書では、Google Colaboratory、略してGoogle Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google ColabはGoogleによるクラウドに用意されたJupyter Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
-<p>まず、Googleにログインした状態で、<a href="https://colab.research.google.com">Google Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle ColabやGoogleドライブのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
-<p>正しくアクセスできると、以下のようなウェルカムメニューが表示される。</p>
-<figure>
-<img src="fig/colab_welcome.png" alt="Google Colabのウェルカムメニュー" /><figcaption>Google Colabのウェルカムメニュー</figcaption>
-</figure>
-<p>ここで「ノートブックを新規作成」をクリックしよう。Untitled0.ipynbという名前のファイルが作成され、入力待ちとなる。</p>
-<figure>
-<img src="fig/colab_newnote.png" alt="新しいノートブックを作成した直後の状態" /><figcaption>新しいノートブックを作成した直後の状態</figcaption>
-</figure>
-<p>この三角の矢印のある行に、なにか入力してみよう。たとえば「3+5」と入力し、「三角ボタンをクリック」するか、「シフトキーを押しながらリターン」を入力する。以下、この動作を「実行する」と呼ぶ。</p>
-<figure>
-<img src="fig/colab_firstcode.png" alt="3+5を実行した状態" /><figcaption><code>3+5</code>を実行した状態</figcaption>
-</figure>
-<p>矢印がしばらくくるくる回ってから、<code>[1]</code>という表記に変わり、答えである8が表示されたと思う。これは、</p>
-<ul>
-<li>「3+5」というPythonのコードがクラウドに送信され</li>
-<li>クラウドでPythonが実行され</li>
-<li>その結果である8が表示された</li>
-</ul>
-<p>ということが起きている。</p>
-<p>Jupyterノートブックは、<strong>セル (cell)</strong> と呼ばれる単位で編集を行う。先程入力した「3+5」と、結果の「8」がまとめて一つのセルである。実行後、新たなセルが作られ、入力待ちになっている。そこに「a = 12345」と入力して、また実行してみよう。</p>
-<figure>
-<img src="fig/colab2.png" alt="a = 12345を実行した状態" /><figcaption><code>a = 12345</code>を実行した状態</figcaption>
-</figure>
-<p>こんどは何も実行結果が出力されない。これは「aという変数を作成し、そこに12345という値を代入せよ」という意味だ。これにより「a」という変数に「12345」という整数の値が記憶されている。これを表示してみよう。次のセルに「print(a)」と入力して実行せよ。</p>
-<figure>
-<img src="fig/colab3.png" alt="print(a)を実行した状態" /><figcaption><code>print(a)</code>を実行した状態</figcaption>
-</figure>
-<p>「12345」という表示が得られたはずである。変数の値を表示するだけなら、「print」は不要である。左上の「+ コード」と書かれたところをクリックし、出てきたセルに「a」とだけ入力して実行せよ。やはり「12345」という表示が得られたはずである。</p>
-<p>さて、ここまでで5つのセルができたはずである。これらは自由に編集、再実行することができる。<code>[2]</code>の「a=12345」を修正し、「a=6789」として実行してみよう。その後、4番の「print(a)」や5番の「a」のセルを実行し、出力が変わることを確認せよ。</p>
-<p>不要なセルは削除することができる。セルの右側のメニューから「セルの削除」を選ぶとセルが削除できる。また、上段のメニューの「↑ セル」や「↓ セル」で、セルの順番を入れ替えることもできる。</p>
-<h2 id="pythonの概要とgoogle-colabの使い方課題">Pythonの概要とGoogle Colabの使い方：課題</h2>
-<h3 id="課題1google-colabを使う">課題1：Google Colabを使う</h3>
-<p>まず、Google Colabへのログインと簡単なプログラムの実行、セルの編集のテストをする。</p>
-<h4 id="課題1-1google-colabへのログイン">課題1-1：Google Colabへのログイン</h4>
-<p><code>https://colab.research.google.com/</code>にアクセスし、右上に表示された「ログイン」ボタンを押してログインせよ。</p>
-<h4 id="課題1-2プログラムの動作テスト">課題1-2：プログラムの動作テスト</h4>
-<p>最初のセルに、以下のプログラムを入力し、実行せよ。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" title="1"><span class="bu">print</span>(<span class="st">&quot;Hello World!&quot;</span>)</a></code></pre></div>
-<p>セルの左にある再生ボタンを押すか、セル内で「シフト+エンターキー」を押すことでそのセルを実行できる。</p>
-<h4 id="課題1-3プログラムの失敗テスト">課題1-3：プログラムの失敗テスト</h4>
-<p>「＋コード」を押して、2つ目のセルを表示させ、 以下のプログラムを入力し、実行せよ。わざと<code>print</code>を<code>plint</code>と間違って記載している。</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" title="1">plint(<span class="st">&quot;Hello World!&quot;</span>)</a></code></pre></div>
-<p>実行し、<code>NameError</code>が出ることを確認したら、<code>plint</code>を<code>print</code>と修正して、同じセルを再度実行し、正しく実行されることを確認せよ。</p>
-<h4 id="課題1-4セルの移動削除">課題1-4：セルの移動、削除</h4>
-<p>二つ目のセルを一番上に移動させた後、そのセルを削除せよ。</p>
-<h4 id="課題1-5ファイル名の指定">課題1-5：ファイル名の指定</h4>
-<p>このノートブックに<code>hello.ipynb</code>という名前をつけて保存せよ。保存されたファイルはGoogleドライブに保存される。「ファイル」メニューから「ドライブで探す」を選び、このファイルが見つかることを確認せよ。</p>
-<h3 id="課題2-1描画プログラム">課題2-1：描画プログラム</h3>
-<p>Google Colab上で、簡単な描画プログラムを作成、実行してみよう。現在開いているノートを閉じて、新たにノートブックを作成する。「ファイル」メニューから「ノートブックを新規作成」をクリックせよ。新しいノートブックが開かれたら<code>draw.ipynb</code>という名前に変更せよ。</p>
-<p>以下、番号はセルの順番を表している。</p>
-<h4 id="ライブラリのインポート">1. ライブラリのインポート</h4>
-<p>最初のセルに以下のプログラムを書いて実行せよ。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</a></code></pre></div>
-<p>これは、イメージ描画ライブラリを利用するよ、という宣言である。ライブラリとは、よく使う機能をパッケージ化したものだ。<code>import</code>文については今は気にしなくて良い。</p>
-<h4 id="描画">2. 描画</h4>
-<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" title="1">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb11-2" title="2">draw <span class="op">=</span> ImageDraw.Draw(img)</a>
-<a class="sourceLine" id="cb11-3" title="3">cx <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb11-4" title="4">cy <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb11-5" title="5">r <span class="op">=</span> <span class="dv">96</span></a>
-<a class="sourceLine" id="cb11-6" title="6">draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</a></code></pre></div>
-<p><code>draw.ellipse</code>は、指定された二つの座標を左上と右下とする長方形に接する楕円を描く命令である。今回は正方形を入力しているので円を描く命令となっている。正しく入力されていればエラーは出ないはずだが、エラーが出たら、実行してエラーがでなくなるまで修正、実行を繰り返そう。</p>
-<h4 id="イメージの表示">3. イメージの表示</h4>
-<p>３つ目のセルに以下を入力し、実行せよ。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" title="1">img</a></code></pre></div>
-<p>これまで正しく入力していれば、白地に黒い線で円が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
-<h3 id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h3>
-<p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
-<h4 id="インポートの追加">1. インポートの追加</h4>
-<p>一番目のセルを以下のように修正し、実行せよ。</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" title="1"><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></a></code></pre></div>
-<p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
-<h4 id="五芒星の描画">2. 五芒星の描画</h4>
-<p>2番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" title="1">img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</a>
-<a class="sourceLine" id="cb14-2" title="2">draw <span class="op">=</span> ImageDraw.Draw(img)</a>
-<a class="sourceLine" id="cb14-3" title="3">cx <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb14-4" title="4">cy <span class="op">=</span> <span class="dv">128</span></a>
-<a class="sourceLine" id="cb14-5" title="5">r <span class="op">=</span> <span class="dv">96</span></a>
-<a class="sourceLine" id="cb14-6" title="6">draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="co"># ↓ここから追加 (このコメントは入力しなくて良い)</span></a>
-<a class="sourceLine" id="cb14-8" title="8">N <span class="op">=</span> <span class="dv">5</span></a>
-<a class="sourceLine" id="cb14-9" title="9">s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> pi <span class="op">/</span> N</a>
-<a class="sourceLine" id="cb14-10" title="10">k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb14-11" title="11"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</a>
-<a class="sourceLine" id="cb14-12" title="12">    s1 <span class="op">=</span> ((i <span class="op">*</span> k) <span class="op">%</span> N) <span class="op">*</span> s <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</a>
-<a class="sourceLine" id="cb14-13" title="13">    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</a>
-<a class="sourceLine" id="cb14-14" title="14">    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb14-15" title="15">    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb14-16" title="16">    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</a>
-<a class="sourceLine" id="cb14-17" title="17">    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</a>
-<a class="sourceLine" id="cb14-18" title="18">    draw.line((x1, y1, x2, y2))</a></code></pre></div>
-<p><code>for i in range(N):</code>の行を入力して改行すると(行末のコロンを忘れないこと)、カーソルの位置が少し右にずれたはずである。これを <strong>インデント</strong> と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントの深さに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
-<p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
-<h4 id="イメージの表示-1">3. イメージの表示</h4>
-<p>さて、一つ目のセルの<code>import</code>文、二つ目のセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" title="1">img</a></code></pre></div>
-<p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力する。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
-<h3 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h3>
-<p>先ほどの二つ目のセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考察せよ。</p>
-<h3 id="発展課題">発展課題</h3>
-<p>先ほどのプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
-<h2 id="余談タッチタイピング">余談：タッチタイピング</h2>
-<p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インタフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は <strong>キー入力で肩が凝らないようにする</strong> ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
+                  <header>
+        <h1 class="title">Pythonの概要とGoogle Colabの使い方</h1>
+                              </header>
+                  <p><a href="../index.html">[Up]</a> <a
+                  href="https://github.com/kaityo256/python_zero">[Repository]</a></p>
+                  <h1 id="本講で学ぶこと">本講で学ぶこと</h1>
+                  <ul>
+                  <li>Pythonの概要</li>
+                  <li>Google Colabの使い方</li>
+                  </ul>
+                  <h1 id="pythonの特徴">Pythonの特徴</h1>
+                  <h2 id="プログラミング言語">プログラミング言語</h2>
+                  <p>Pythonとはプログラミング言語の一つである。
+                  <strong>プログラミング言語 (programming
+                  language)</strong>
+                  とは、人間がコンピュータに指示をするための言葉であり、非常に多くの種類がある。その中でもPythonは、昨今の機械学習ブームもあり、非常に人気のある言語の一つとなっている。ここでは、プログラミング言語とは何か、それがなぜ必要か、実際にプログラミング言語がどのように実行されているのか見てみよう。</p>
+                  <p>コンピュータは <strong>機械語 (machine
+                  language)</strong>
+                  という言葉しか解さない。機械語は数字の羅列であり、昔は人間が手で書いていたのだが、それは大変なので「もう少し人間からわかりやすい言葉から機械語に翻訳しよう」という試みが生まれた。これがプログラミング言語である。</p>
+                  <p>プログラムの実行方式として、大きく分けて人間の書いたプログラムをその都度翻訳しながらコンピュータに教えるインタプリタ方式と、機械語に全て翻訳してから一気にコンピュータにわたすコンパイル方式があり、前者をスクリプト言語、後者をコンパイラ言語と呼ぶ。ただし、両者の区別は絶対ではない。</p>
+                  <figure>
+                  <img src="fig/language.png"
+                  alt="スクリプト言語とコンパイラ言語" />
+                  <figcaption
+                  aria-hidden="true">スクリプト言語とコンパイラ言語</figcaption>
+                  </figure>
+                  <h2 id="オフサイドルール">オフサイドルール</h2>
+                  <p>プログラムは、いくつかの「文(statement)」でできている。「文」とはプログラム実行の単位である。プログラムは「文」が並んだものとして構成される。プログラムは原則として「上から順番に」実行されていく。しかし、例えば条件分岐などで「AならばXを、そうでなければYを実行したい」ということがあるだろう。この時、なんらかの方法で「X」や「Y」といった「かたまり」を表現しなければならない。いくつかの文で表現された「かたまり」を「コードブロック
+                  (code
+                  block)」あるいは単に「ブロック」と呼ぶ。このブロックをどのように表現するかが、プログラミング言語の見た目を決める。Pythonはブロックをインデントによって表現するのが大きな特徴である。これをオフサイドルールと呼ぶ。ブロックの表現方法としては、他に中括弧方式やキーワード方式がある。</p>
+                  <figure>
+                  <img src="fig/codeblock.png"
+                  alt="コードブロックの表現方法" />
+                  <figcaption
+                  aria-hidden="true">コードブロックの表現方法</figcaption>
+                  </figure>
+                  <p>中括弧方式は、C言語、及びC言語に影響を受けた言語が採用している方法であり、コードブロックを中括弧<code>{}</code>で囲んで表現する。例えば「<code>a</code>が正ならYes、そうでなければNoを表示する」プログラムなら</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>a <span class="op">&gt;</span> <span class="dv">0</span><span class="op">){</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  puts<span class="op">(</span><span class="st">&quot;Yes&quot;</span><span class="op">);</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span><span class="cf">else</span><span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  puts<span class="op">(</span><span class="st">&quot;No&quot;</span><span class="op">);</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+                  <p>と表現する。中括弧で囲まれた部分がブロックとなる。C、C++、Java、C#などのコンパイル言語や、JavaScriptやPerl、PHPといったスクリプト言語など、多くの言語がこの中括弧方式を採用している。</p>
+                  <p>キーワード方式は、例えば<code>begin</code>や<code>do</code>、<code>end</code>といった、あらかじめ決められた言葉(予約語と呼ぶ)によってブロックを表現する方法である。例えばRubyなら</p>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode rb"><code class="sourceCode ruby"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a <span class="kw">&gt;</span> <span class="dv">0</span> <span class="cf">then</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">puts</span>(<span class="st">&quot;Yes&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">puts</span>(<span class="st">&quot;No&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+                  <p>と書ける。ここでは<code>then</code>と<code>else</code>、<code>else</code>と<code>end</code>で囲まれた部分がそれぞれブロックである(この例では<code>then</code>は省略可能)。この方式の最初の採用例はおそらくALGOLだと思われる。Rubyの他にはBASICやシェルスクリプト、Pascalなどがキーワード方式を採用している。</p>
+                  <p>先程二つの例では、コードブロックの中の文頭にいくつか空白が入っていた。これは
+                  <strong>インデント (indent)</strong>
+                  と呼ばれ、特にブロックの中にブロックが含まれる(ネストする)場合にコードブロックを見やすくするための工夫である。多くの言語では空白は無視される。C言語では改行も無視される(空白とみなされる)ため、先のコードは、　</p>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>a <span class="op">&gt;</span> <span class="dv">0</span><span class="op">){</span>puts<span class="op">(</span><span class="st">&quot;Yes&quot;</span><span class="op">);}</span><span class="cf">else</span><span class="op">{</span>puts<span class="op">(</span><span class="st">&quot;No&quot;</span><span class="op">);}</span></span></code></pre></div>
+                  <p>と書いても同じ意味となる。これでは見づらいため、適宜改行やインデントを入れてプログラムを見やすくすることがよく行われていた。しかし、Pythonはコードブロックをインデントで表現するため、空白がプログラム上の意味を持つ。先程のプログラムをPythonで書くと以下のようになる。</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Yes&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;No&quot;</span>)</span></code></pre></div>
+                  <p>Pythonではこのように、「キーワード +
+                  コロン(<code>:</code>)」でブロックが始まり、続くブロックはインデントで表現される。インデントは同じ高さなら空白何文字でも、タブ文字でも良いが、同じブロックに含まれる文のインデントが異なるとエラーとなる。</p>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Python&quot;</span>) <span class="co"># ←ここで「IndentationError: unexpected indent」というエラーになる</span></span></code></pre></div>
+                  <p>このように、インデントでブロックを表現する方法を
+                  <strong>オフサイドルール (off-side rule)</strong>
+                  と呼ぶ。このオフサイドルールを採用していることがPythonの大きな特徴である。</p>
+                  <p>コードブロックはネストすることがあるが、その度にインデントが深くなる。例えば以下はフィボナッチ数の計算ルーチンである。</p>
+                  <figure>
+                  <img src="fig/codeblock2.png"
+                  alt="Pythonのコードブロック" />
+                  <figcaption
+                  aria-hidden="true">Pythonのコードブロック</figcaption>
+                  </figure>
+                  <p>関数が作るブロックの中に、if文が作るブロックがネストしており、その文だけインデントが深くなっている。</p>
+                  <h2
+                  id="pythonの哲学とコーディングスタイル">Pythonの哲学とコーディングスタイル</h2>
+                  <p>Pythonに限らず、どのプログラミング言語にも、開発者の設計思想が強く表れる。Pythonの哲学は、例えば<a
+                  href="https://www.python.org/dev/peps/pep-0020/">The
+                  Zen of
+                  Python</a>にまとまっている。全部で19あるが、そのうちいくつかを引用してみよう(和訳は筆者による)。</p>
+                  <blockquote>
+                  <p>美しいことはよいことだ (Beautiful is better than
+                  ugly)</p>
+                  <p>単純であることはよいことだ(Simple is better than
+                  complex)</p>
+                  <p>しかし、ややこしいよりは複雑であるほうが良い(Complex
+                  is better than complicated)</p>
+                  <p>ネストは浅い方が良い(Flat is better than
+                  nested)</p>
+                  <p>読みやすさが正義(Readability counts)</p>
+                  <p>特別な場合を許さない(Special cases aren’t special
+                  enough to break the rules)</p>
+                  <p>純粋さよりは実用を重視せよ(Although practicality
+                  beats purity)</p>
+                  <p>「いつか」より「今」(Now is better than never)</p>
+                  <p>しかし、あわてて今やるよりはやらない方が良いこともある(Although
+                  never is often better than <em>right</em> now)</p>
+                  </blockquote>
+                  <p>この文章はPython Enhancement
+                  Proposals、通称PEPの20番として登録されたものだ。PEPとはPython開発コミュニティやユーザが参照するドキュメントのことで、様々な種類があり、多くのドキュメントが登録されているが、よく参照されるのが「Pythonのコーディング規約」を定めた<a
+                  href="https://www.python.org/dev/peps/pep-0008/">PEP8</a>である。コーディング規約とは、コードを書く際の決まりごと、いわばマナーである。Pythonを貫く哲学の一つに、「誰が書いても同じようになるべし」というものがある。PEP8に従って書くことで、例えば「人によってインデントの深さや変数名の付け方が異なるので、大きなプロジェクトで流儀が混ざって読みづらくなる」といったことを防ぐことができる。また、バグの発生源となりやすい表記方法を禁止することで、バグの混入を防ぐ、という目的もある。</p>
+                  <p>PEP8は実に多くのルールを定めている。その多くは、「処理内容は変わらないが、より好ましい書き方を推奨する」というものだ。例えばある変数が真である時に何かを処理したい場合、</p>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a <span class="op">==</span> <span class="va">True</span>:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</span></code></pre></div>
+                  <p>と冗長に書くより、</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> a:</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;True&quot;</span>)</span></code></pre></div>
+                  <p>と書きましょう、といった具合だ。他にも「インデントは空白4文字」「空白の入れ方」「改行の入れ方」など、様々な細かい「マナー」が書いてある。</p>
+                  <p>Pythonを学ぶにあたり、とりあえず「マナー」は気にしなくて良いが、実際にPythonを使ってコードを書いたり、それを外部に公開したりする場合は気にした方がよいだろう。Pythonには、コードがPEP8に従っているかチェックしてくれる<code>pep8</code>というツールや、コーディングスタイルだけではなく品質チェックもする<code>pylint</code>といったツールがある。広く使われているエディタはほとんどこういったツールとの連携機能があるので、それらを有効にするだけで自動的にコーディングスタイルを守れるようになるはずだ。</p>
+                  <h1 id="google-colabの使い方">Google
+                  Colabの使い方</h1>
+                  <p>本書では、Google Colaboratory、略してGoogle
+                  Colab(グーグル・コラボ)を使ってPythonを学ぶ。Google
+                  ColabはGoogleによるクラウドに用意されたJupyter
+                  Notebook(ジュパイター・ノートブーク)環境であり、ブラウザさえあれば無料で利用可能である。まずはGoogle
+                  Colabの簡単な使い方を学ぼう。以下、Googleアカウントは持っているものと仮定する。</p>
+                  <p>まず、Googleにログインした状態で、<a
+                  href="https://colab.research.google.com">Google
+                  Colabのウェブサイト</a>にアクセスする。Googleアカウントの優先言語が日本語になっていれば日本語で表示されると思うが、もし英語で表示されたら、アカウント設定で日本語に設定する。稀に日本語に設定してもGoogle
+                  ColabやGoogleドライブのメニューが日本語にならない場合がある。その際は一度、英語などの別の言語に設定してから日本語に戻すとうまく設定されるようだ。</p>
+                  <p>正しくアクセスできると、以下のようなウェルカムメニューが表示される。</p>
+                  <figure>
+                  <img src="fig/colab_welcome.png"
+                  alt="Google Colabのウェルカムメニュー" />
+                  <figcaption aria-hidden="true">Google
+                  Colabのウェルカムメニュー</figcaption>
+                  </figure>
+                  <p>ここで「ノートブックを新規作成」をクリックしよう。Untitled0.ipynbという名前のファイルが作成され、入力待ちとなる。</p>
+                  <figure>
+                  <img src="fig/colab_newnote.png"
+                  alt="新しいノートブックを作成した直後の状態" />
+                  <figcaption
+                  aria-hidden="true">新しいノートブックを作成した直後の状態</figcaption>
+                  </figure>
+                  <p>この三角の矢印のある行に、なにか入力してみよう。たとえば「3+5」と入力し、「三角ボタンをクリック」するか、「シフトキーを押しながらリターン」を入力する。以下、この動作を「実行する」と呼ぶ。</p>
+                  <figure>
+                  <img src="fig/colab_firstcode.png"
+                  alt="3+5を実行した状態" />
+                  <figcaption
+                  aria-hidden="true"><code>3+5</code>を実行した状態</figcaption>
+                  </figure>
+                  <p>矢印がしばらくくるくる回ってから、<code>[1]</code>という表記に変わり、答えである8が表示されたと思う。これは、</p>
+                  <ul>
+                  <li>「3+5」というPythonのコードがクラウドに送信され</li>
+                  <li>クラウドでPythonが実行され</li>
+                  <li>その結果である8が表示された</li>
+                  </ul>
+                  <p>ということが起きている。</p>
+                  <p>Jupyterノートブックは、<strong>セル (cell)</strong>
+                  と呼ばれる単位で編集を行う。先程入力した「3+5」と、結果の「8」がまとめて一つのセルである。実行後、新たなセルが作られ、入力待ちになっている。そこに「a
+                  = 12345」と入力して、また実行してみよう。</p>
+                  <figure>
+                  <img src="fig/colab2.png"
+                  alt="a = 12345を実行した状態" />
+                  <figcaption
+                  aria-hidden="true"><code>a = 12345</code>を実行した状態</figcaption>
+                  </figure>
+                  <p>こんどは何も実行結果が出力されない。これは「aという変数を作成し、そこに12345という値を代入せよ」という意味だ。これにより「a」という変数に「12345」という整数の値が記憶されている。これを表示してみよう。次のセルに「print(a)」と入力して実行せよ。</p>
+                  <figure>
+                  <img src="fig/colab3.png"
+                  alt="print(a)を実行した状態" />
+                  <figcaption
+                  aria-hidden="true"><code>print(a)</code>を実行した状態</figcaption>
+                  </figure>
+                  <p>「12345」という表示が得られたはずである。変数の値を表示するだけなら、「print」は不要である。左上の「+
+                  コード」と書かれたところをクリックし、出てきたセルに「a」とだけ入力して実行せよ。やはり「12345」という表示が得られたはずである。</p>
+                  <p>さて、ここまでで5つのセルができたはずである。これらは自由に編集、再実行することができる。<code>[2]</code>の「a=12345」を修正し、「a=6789」として実行してみよう。その後、4番の「print(a)」や5番の「a」のセルを実行し、出力が変わることを確認せよ。</p>
+                  <p>不要なセルは削除することができる。セルの右側のメニューから「セルの削除」を選ぶとセルが削除できる。また、上段のメニューの「↑
+                  セル」や「↓
+                  セル」で、セルの順番を入れ替えることもできる。</p>
+                  <h1
+                  id="pythonの概要とgoogle-colabの使い方課題">Pythonの概要とGoogle
+                  Colabの使い方：課題</h1>
+                  <h2 id="課題1google-colabを使う">課題1：Google
+                  Colabを使う</h2>
+                  <p>まず、Google
+                  Colabへのログインと簡単なプログラムの実行、セルの編集のテストをする。</p>
+                  <h3
+                  id="課題1-1google-colabへのログイン">課題1-1：Google
+                  Colabへのログイン</h3>
+                  <p><code>https://colab.research.google.com/</code>にアクセスし、右上に表示された「ログイン」ボタンを押してログインせよ。</p>
+                  <h3
+                  id="課題1-2プログラムの動作テスト">課題1-2：プログラムの動作テスト</h3>
+                  <p>最初のセルに、以下のプログラムを入力し、実行せよ。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Hello World!&quot;</span>)</span></code></pre></div>
+                  <p>セルの左にある再生ボタンを押すか、セル内で「シフト+エンターキー」を押すことでそのセルを実行できる。</p>
+                  <h3
+                  id="課題1-3プログラムの失敗テスト">課題1-3：プログラムの失敗テスト</h3>
+                  <p>「＋コード」を押して、2つ目のセルを表示させ、
+                  以下のプログラムを入力し、実行せよ。わざと<code>print</code>を<code>plint</code>と間違って記載している。</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plint(<span class="st">&quot;Hello World!&quot;</span>)</span></code></pre></div>
+                  <p>実行し、<code>NameError</code>が出ることを確認したら、<code>plint</code>を<code>print</code>と修正して、同じセルを再度実行し、正しく実行されることを確認せよ。</p>
+                  <h3
+                  id="課題1-4セルの移動削除">課題1-4：セルの移動、削除</h3>
+                  <p>二つ目のセルを一番上に移動させた後、そのセルを削除せよ。</p>
+                  <h3
+                  id="課題1-5ファイル名の指定">課題1-5：ファイル名の指定</h3>
+                  <p>このノートブックに<code>hello.ipynb</code>という名前をつけて保存せよ。保存されたファイルはGoogleドライブに保存される。「ファイル」メニューから「ドライブで探す」を選び、このファイルが見つかることを確認せよ。</p>
+                  <h2
+                  id="課題2-1描画プログラム">課題2-1：描画プログラム</h2>
+                  <p>Google
+                  Colab上で、簡単な描画プログラムを作成、実行してみよう。現在開いているノートを閉じて、新たにノートブックを作成する。「ファイル」メニューから「ノートブックを新規作成」をクリックせよ。新しいノートブックが開かれたら<code>draw.ipynb</code>という名前に変更せよ。</p>
+                  <p>以下、番号はセルの順番を表している。</p>
+                  <h3 id="ライブラリのインポート">1.
+                  ライブラリのインポート</h3>
+                  <p>最初のセルに以下のプログラムを書いて実行せよ。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</span></code></pre></div>
+                  <p>これは、イメージ描画ライブラリを利用するよ、という宣言である。ライブラリとは、よく使う機能をパッケージ化したものだ。<code>import</code>文については今は気にしなくて良い。</p>
+                  <h3 id="描画">2. 描画</h3>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>cy <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="dv">96</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</span></code></pre></div>
+                  <p><code>draw.ellipse</code>は、指定された二つの座標を左上と右下とする長方形に接する楕円を描く命令である。今回は正方形を入力しているので円を描く命令となっている。正しく入力されていればエラーは出ないはずだが、エラーが出たら、実行してエラーがでなくなるまで修正、実行を繰り返そう。</p>
+                  <h3 id="イメージの表示">3. イメージの表示</h3>
+                  <p>３つ目のセルに以下を入力し、実行せよ。</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
+                  <p>これまで正しく入力していれば、白地に黒い線で円が表示されたはずである。エラーが出たり、うまく表示されなかったら、入力したセルの内容を見直そう。</p>
+                  <h2
+                  id="課題2-2五芒星の描画">課題2-2：五芒星の描画</h2>
+                  <p>Jupyterノートブックは、すでに入力済みのセルを修正することができる。</p>
+                  <h3 id="インポートの追加">1. インポートの追加</h3>
+                  <p>一番目のセルを以下のように修正し、実行せよ。</p>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> PIL <span class="im">import</span> Image, ImageDraw</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> pi, sin, cos <span class="co"># この行を追加</span></span></code></pre></div>
+                  <p>コメントの<code># この行を追加</code>という文章は入力しなくて良い。三行目に、<code>math</code>ライブラリから円周率、sin、cos関数を使うよ、という宣言を追加した。</p>
+                  <h3 id="五芒星の描画">2. 五芒星の描画</h3>
+                  <p>2番目のセルの円を描く命令の直後に、以下のようにプログラムを追加しよう。</p>
+                  <div class="sourceCode" id="cb14"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;L&quot;</span>, (<span class="dv">256</span>, <span class="dv">256</span>), <span class="dv">255</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>cy <span class="op">=</span> <span class="dv">128</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="dv">96</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>draw.ellipse((cx <span class="op">-</span> r, cy <span class="op">-</span> r, cx <span class="op">+</span> r, cy <span class="op">+</span> r))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ↓ここから追加 (このコメントは入力しなくて良い)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> pi <span class="op">/</span> N</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> N <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    s1 <span class="op">=</span> ((i <span class="op">*</span> k) <span class="op">%</span> N) <span class="op">*</span> s <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> pi</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    s2 <span class="op">=</span> s1 <span class="op">+</span> s <span class="op">*</span> k</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    x1 <span class="op">=</span> r <span class="op">*</span> cos(s1) <span class="op">+</span> cx</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> r <span class="op">*</span> sin(s1) <span class="op">+</span> cy</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    x2 <span class="op">=</span> r <span class="op">*</span> cos(s2) <span class="op">+</span> cx</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    y2 <span class="op">=</span> r <span class="op">*</span> sin(s2) <span class="op">+</span> cy</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    draw.line((x1, y1, x2, y2))</span></code></pre></div>
+                  <p><code>for i in range(N):</code>の行を入力して改行すると(行末のコロンを忘れないこと)、カーソルの位置が少し右にずれたはずである。これを
+                  <strong>インデント</strong>
+                  と呼ぶ。インデントは、プログラムの階層構造を視覚的に表現するのに使われる工夫であったが、Pythonはそれを言語仕様として取り込んだ。<code>for i in range(N):</code>以下はすべて同じインデントの深さに記載すること。そのまま入力していけば正しいインデントになるが、もしずれた場合には、一度左の空白をすべて消してからタブキーを一度押せば正しいインデントになる。</p>
+                  <p>二つ目のセルの入力が終わったら実行してみよう。この時点ではまだ何も表示されない。</p>
+                  <h3 id="イメージの表示-1">3. イメージの表示</h3>
+                  <p>さて、一つ目のセルの<code>import</code>文、二つ目のセルの描画プログラムが完成し、それぞれ正しく実行できたら、最後に三つ目のセル</p>
+                  <div class="sourceCode" id="cb15"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
+                  <p>を実行してみよう。こちらは修正しないでそのまま再実行すれば良い。実行するには、三つ目のセルの三角マークをクリックをクリックするか、クリックしてフォーカスを移してからシフト+リターンを入力する。正しく実行できていれば、「黒字に白い丸」のイメージに、五芒星が表示されたはずである。</p>
+                  <h2 id="課題2-3n芒星の描画">課題2-3：N芒星の描画</h2>
+                  <p>先ほどの二つ目のセルの<code>N = 5</code>の値を7や9に変えて実行してみよ。51などと大きな値にするとどうなるだろう？また、このプログラムは<code>N</code>が偶数の時にはうまく描画できない。プログラムの動作原理を推測し、なぜ偶数で動かないのか考察せよ。</p>
+                  <h2 id="発展課題">発展課題</h2>
+                  <p>先ほどのプログラムを<code>N = 6</code>のときに六芒星が描かれるように修正せよ。ヒント：三角形をずらして二つ描画せよ。</p>
+                  <h1
+                  id="余談タッチタイピング">余談：タッチタイピング</h1>
+                  <p>今後どうなるかはわからないが、少なくとも現時点において最速の情報入力デバイスはキーボードであろう。今後もしばらく重要な入力インタフェースとしてキーボードが使われる見込みである。さて、キーボードを使って情報を入力するためには、指でキーを叩かなければならない。この時、キーボードを見ないでキーを叩くことを「タッチタイピング」と呼ぶ。この講義を受けている人で、もしまだタッチタイピングができない人がいたら、絶対にマスターしたほうが良い。よく誤解されるが、タッチタイピングは「キーをすばやく叩く」ためのものではない。もちろんキー入力は早いに越したことはないが、それより重要な役目は
+                  <strong>キー入力で肩が凝らないようにする</strong>
+                  ことである。今後、どのような職業につくにせよ、その多くはパソコンを使った作業を伴うであろう。この時、正しくない姿勢で打鍵したり、ディスプレイとキーボードの間を忙しく視線移動しながら打鍵していると、そのうちひどい肩凝りに悩まされるようになる。肩凝りに悩まされながら知的作業を行うのはかなり困難である。キーボードの「F」と「J」のキーを見よ。小さな突起があり、手で触ってわかるようになっているであろう。左右の人差し指を「F」と「J」のキーに置くことを「ホームポジション」という。そこから様々なキーを「見ないで」打鍵するのがタッチタイピングである。早く打鍵するのではなく、ゆっくり正確に、手の重さを机に逃がすことを意識しながら打鍵するように心がけよう。一週間も練習すればタッチタイピングできるようになり、一生その恩恵を受けることができる。タッチタイピングは絶対にマスターする価値がある技術の一つである。</p>
           </article>
   </body>
 
