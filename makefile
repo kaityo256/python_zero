@@ -10,7 +10,6 @@ pdf: $(ASSIGNMENT)
 
 index.md: README.md
 	sed 's/README.md/index.html/' $< > $@
-	sed -i 's/assignment.md/assignment.html/' $@
 
 index.html: index.md
 	pandoc -s $< -o $@ $(PANDOC_HTMLOPT) --shift-heading-level-by=-1 
@@ -19,7 +18,6 @@ index.html: index.md
 %/index.md: %/README.md
 	sed '2a [[Up]](../index.html)' $< > $@
 	sed -i '3a [[Repository]](https://github.com/kaityo256/python_zero)\n' $@
-	sed -i 's/assignment.md/assignment.html/' $@ 
 
 %/index.html: %/index.md
 	pandoc -s $< -o $@ $(PANDOC_HTMLOPT) --shift-heading-level-by=-1 
