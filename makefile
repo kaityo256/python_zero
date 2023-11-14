@@ -48,7 +48,7 @@ copy-pdf: $(ASSIGNMENT)
 	cp simulation/assignment.pdf assignment13.pdf
 	cp ml/assignment.pdf assignment14.pdf
 
-copy-pptx: $(ASSIGNMENT)
+copy-pptx: 
 	cp hello/fig/slide.pptx python01.pptx
 	cp basic/fig/slide.pptx python02.pptx
 	cp scope/fig/slide.pptx python03.pptx
