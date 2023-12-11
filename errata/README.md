@@ -16,8 +16,8 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 | ページ番号 | 誤 | 正 |
 | ---  | --- | --- |
-| p. XX| こうして「突然キレるガンジー」が誕生したのである。 | こうして「突然キレるガンジー」が誕生した、というものだ。この話は広く信じられていたが、実際にはソフトウェア的にこのようなバグは発生しないと、Civilizationの制作者、シド・マイヤー自身が否定している。 |
-| p. XX| `https://note.mu/ruiu/n/n89d18450b1bb` | 参考：Sid Meier's Memoir! A Life in Computer Games |
+| p. 27| こうして「突然キレるガンジー」が誕生したのである。 | こうして「突然キレるガンジー」が誕生した、というものだ。この話は広く信じられていたが、実際にはソフトウェア的にこのようなバグは発生しないと、Civilizationの制作者、シド・マイヤー自身が否定している。 |
+| p. 27| `https://note.mu/ruiu/n/n89d18450b1bb` | 参考：Sid Meier's Memoir! A Life in Computer Games |
 
 ## 第3,4刷正誤表
 
