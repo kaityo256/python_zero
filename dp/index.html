@@ -499,7 +499,7 @@
                   class="sourceCode py"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_memo(n, budget):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;</span> <span class="dv">0</span>:</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dic[(n, budget)] <span class="op">!=</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> dic[(n, budget)]    <span class="co"># 追加(1)</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    c1 <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> prices[n] <span class="op">&lt;=</span> budget:</span>
@@ -511,7 +511,7 @@
                   <p>先ほどの関数<code>search</code>に、3行追加しただけだ。</p>
                   <p>まず、新たな終端条件として「もしすでに調べた<code>(n, budget)</code>の組み合わせなら、計算済みの値を返す」という処理を追加したのが「追加(1)」だ。</p>
                   <div class="sourceCode" id="cb15"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span></span>
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dic[(n, budget)] <span class="op">!=</span> <span class="dv">0</span>:  <span class="co"># 追加(1)</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> dic[(n, budget)]    <span class="co"># 追加(1)</span></span></code></pre></div>
                   <p>ここで、<code>n</code>と<code>budget</code>をまとめたタプル<code>(n, budget)</code>を辞書のキーとしている。</p>
                   <p>もし計算したことがない組み合わせなら、そのまま計算するが、せっかく計算したので、それを最後に覚えておく(メモしておく)のが「追加(2)」だ。</p>
@@ -550,9 +550,9 @@
                   class="sourceCode py"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_menu(budget, cal):</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    menu <span class="op">=</span> []</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">reversed</span>(<span class="bu">range</span>(<span class="bu">len</span>(names))):</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cal <span class="kw">is</span> <span class="dv">0</span>:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cal <span class="op">==</span> <span class="dv">0</span>:</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> dic[(n, budget)] <span class="kw">is</span> <span class="kw">not</span> dic[(n <span class="op">-</span> <span class="dv">1</span>, budget)]:</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> dic[(n, budget)] <span class="op">!=</span> dic[(n <span class="op">-</span> <span class="dv">1</span>, budget)]:</span>
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            cal <span class="op">-=</span> cals[n]</span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>            budget <span class="op">-=</span> prices[n]</span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            menu.append(n)</span>

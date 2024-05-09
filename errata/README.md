@@ -18,6 +18,10 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | ---  | --- | --- |
 | p. 27| こうして「突然キレるガンジー」が誕生したのである。 | こうして「突然キレるガンジー」が誕生した、というものだ。この話は広く信じられていたが、実際にはソフトウェア的にこのようなバグは発生しないと、Civilizationの制作者、シド・マイヤー自身が否定している。 |
 | p. 27| `https://note.mu/ruiu/n/n89d18450b1bb` | 参考：Sid Meier's Memoir! A Life in Computer Games |
+| p. 180| 11.6.4の「8. メモ化再帰の実装」の以下のコード(2箇所)<BR> `if dic[(n, budget)] is not 0:  # 追加(1)`| <BR>`if dic[(n, budget)] != 0:  # 追加(1)`|
+| p. 182| 11.6.5の「10. 解の再構成 get_menuの実装」の以下のコード<BR> `if calc is 0:` | <BR>`if calc == 0:`|
+| p. 182| 11.6.5の「10. 解の再構成 get_menuの実装」の以下のコード<BR> `if dic[(n, budget)] is not dic[(n - 1, budget)]:` | <BR>`if dic[(n, budget)] != dic[(n - 1, budget)]:`|
+| p. 224| 以下の式の右辺第二項は$a$が不要<BR>$\displaystyle\frac{dC}{da} = \sum_i^N (2 a x_i^2 - 2a x_i y_i) = 0$ | <BR>$\displaystyle\frac{dC}{da} = \sum_i^N (2 a x_i^2 - 2 x_i y_i) = 0$|
 
 ## 第3,4刷正誤表
 

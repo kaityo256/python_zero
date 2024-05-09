@@ -295,7 +295,7 @@ print(f"{cal} kcal")
 def search_memo(n, budget):
     if n < 0:
         return 0
-    if dic[(n, budget)] is not 0:  # 追加(1)
+    if dic[(n, budget)] != 0:  # 追加(1)
         return dic[(n, budget)]    # 追加(1)
     c1 = 0
     if prices[n] <= budget:
@@ -311,7 +311,7 @@ def search_memo(n, budget):
 まず、新たな終端条件として「もしすでに調べた`(n, budget)`の組み合わせなら、計算済みの値を返す」という処理を追加したのが「追加(1)」だ。
 
 ```py
-    if dic[(n, budget)] is not 0:  # 追加(1)
+    if dic[(n, budget)] != 0:  # 追加(1)
         return dic[(n, budget)]    # 追加(1)
 ```
 
@@ -373,9 +373,9 @@ dic[(n, budget)] = search(n-1, budget)
 def get_menu(budget, cal):
     menu = []
     for n in reversed(range(len(names))):
-        if cal is 0:
+        if cal == 0:
             break
-        if dic[(n, budget)] is not dic[(n - 1, budget)]:
+        if dic[(n, budget)] != dic[(n - 1, budget)]:
             cal -= cals[n]
             budget -= prices[n]
             menu.append(n)
