@@ -8,7 +8,7 @@
 
 なお、この講義ノートを元にした書籍が出版されている。
 
-![ゼロから学ぶPythonプログラミング](img/book.png)
+<a href="https://www.amazon.co.jp/dp/4065218837/"><img src="img/book.png" style="width: 240px"></a>
 
 * 書籍版「[ゼロから学ぶPythonプログラミング](https://www.amazon.co.jp/dp/4065218837/)」
 * Kindle版「[ゼロから学ぶPythonプログラミング](https://www.amazon.co.jp/dp/B08Y8N7C11)」
