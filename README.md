@@ -170,11 +170,11 @@
 
 Copyright (C) 2018-present Hiroshi Watanabe
 
-この文章と絵(pptxファイルを含む)はクリエイティブ・コモンズ 4.0 表示 (CC-BY 4.0)で提供する。
+この文章と絵(pptxファイルを含む)は、[クリエイティブ・コモンズ 表示 - 非営利 4.0 国際 (CC-BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/)で提供されています。
 
-This article and pictures are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+The text and illustrations (including pptx files) are licensed under [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).
 
-本リポジトリに含まれるプログラムは、[MITライセンス](https://opensource.org/licenses/MIT)で提供する。
+本リポジトリに含まれるプログラムは、[MITライセンス](https://opensource.org/licenses/MIT)で提供されています。
 
 The source codes in this repository are licensed under [the MIT License](https://opensource.org/licenses/MIT).
 
