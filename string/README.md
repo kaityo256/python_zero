@@ -375,13 +375,13 @@ Setting up mecab-jumandic (7.0-20130310-4) ...
 最後に、MeCabのPythonバインディングをインストールする。
 
 ```py
-!pip install mecab-python3==0.7
+!pip install mecab-python3==1.0.8
 ```
 
-最新版は不具合があるようなので、バージョン0.7を指定してインストールする。
+最新版は不具合があるようなので、バージョン1.0.8を指定してインストールする。
 
 ```txt
-Successfully installed mecab-python3-0.7
+Successfully installed mecab-python3-1.0.8
 ```
 
 と表示されれば完了である。
