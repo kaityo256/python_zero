@@ -8,7 +8,15 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 他に誤りや修正すべき点を見つけた方は、[GitHubのIssue](https://github.com/kaityo256/python_zero/issues)にてご指摘いただければ幸いです。
 
-最終更新日：2023年11月30日
+最終更新日：2025年12月8日
+
+## 第7刷正誤表
+
+以下はGoogle Colabのアップデートにより、修正が必要になった箇所です。
+
+| ページ番号 | 誤 | 正 |
+| ---  | --- | --- |
+| p. XX| `!pip install mecab-python3==0.7`| `!pip install mecab-python3==1.0.8`| 
 
 ## 第5,6刷正誤表
 

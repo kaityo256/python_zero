@@ -456,10 +456,10 @@
                   <p>しかし、このようなコードはバグの元であり、推奨されない。一般にはグローバル変数を使うことそのものが推奨されず、それに伴って<code>global</code>宣言の利用も非推奨である。Pythonには、コードが「ちゃんと」書かれているか確認するツールがいくつかあるが、そのうちの一つであるPylintを使うと、先ほどのコードは「global宣言を使っているよ」と怒られる。慣れるまでは「グローバル変数はなるべく使わない」「グローバル変数をいじっていておかしくなったらスコープを疑う」ということを覚えておくと良い。</p>
                   <p>さて、名前解決の仕組みはプログラミング言語ごとに異なるため、ある言語の内容をそのまま別の言語で書き直した時に思うような動作にならない時がある。例えば、Pythonは<code>if</code>文が作るブロックはスコープを作らないが、C言語はスコープを作る。例えば以下のコードはC言語ではエラーになる。</p>
                   <div class="sourceCode" id="cb22"><pre
-                  class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span>true<span class="op">){</span></span>
+                  class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span><span class="kw">true</span><span class="op">){</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  int a <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> <span class="co">//変数aはこのif文のみで有効</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span>true<span class="op">){</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>if <span class="op">(</span><span class="kw">true</span><span class="op">){</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span>a<span class="op">);</span> <span class="co">// 変数aはここから見えないのでエラー</span></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
                   <p>Pythonの同等なコードはエラーにならない。</p>

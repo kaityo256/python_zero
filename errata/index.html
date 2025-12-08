@@ -255,7 +255,31 @@
                   <p>注意深く執筆したつもりですが、現時点でに以下のミスや修正点が見つかっております。ご迷惑をおかけして申し訳ありません。</p>
                   <p>他に誤りや修正すべき点を見つけた方は、<a
                   href="https://github.com/kaityo256/python_zero/issues">GitHubのIssue</a>にてご指摘いただければ幸いです。</p>
-                  <p>最終更新日：2023年11月30日</p>
+                  <p>最終更新日：2025年12月8日</p>
+                  <h1 id="第7刷正誤表">第7刷正誤表</h1>
+                  <p>以下はGoogle
+                  Colabのアップデートにより、修正が必要になった箇所です。</p>
+                  <table>
+                  <colgroup>
+                  <col style="width: 33%" />
+                  <col style="width: 33%" />
+                  <col style="width: 33%" />
+                  </colgroup>
+                  <thead>
+                  <tr>
+                  <th>ページ番号</th>
+                  <th>誤</th>
+                  <th>正</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                  <td>p. XX</td>
+                  <td><code>!pip install mecab-python3==0.7</code></td>
+                  <td><code>!pip install mecab-python3==1.0.8</code></td>
+                  </tr>
+                  </tbody>
+                  </table>
                   <h1 id="第56刷正誤表">第5,6刷正誤表</h1>
                   <p>以下の誤植は5,6刷のものです。</p>
                   <table>
@@ -265,46 +289,46 @@
                   <col style="width: 33%" />
                   </colgroup>
                   <thead>
-                  <tr class="header">
+                  <tr>
                   <th>ページ番号</th>
                   <th>誤</th>
                   <th>正</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 27</td>
                   <td>こうして「突然キレるガンジー」が誕生したのである。</td>
                   <td>こうして「突然キレるガンジー」が誕生した、というものだ。この話は広く信じられていたが、実際にはソフトウェア的にこのようなバグは発生しないと、Civilizationの制作者、シド・マイヤー自身が否定している。</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 27</td>
                   <td><code>https://note.mu/ruiu/n/n89d18450b1bb</code></td>
                   <td>参考：Sid Meier’s Memoir! A Life in Computer
                   Games</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 180</td>
                   <td>11.6.4の「8.
                   メモ化再帰の実装」の以下のコード(2箇所)<BR>
                   <code>if dic[(n, budget)] is not 0:  # 追加(1)</code></td>
                   <td><BR><code>if dic[(n, budget)] != 0:  # 追加(1)</code></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 182</td>
                   <td>11.6.5の「10. 解の再構成
                   get_menuの実装」の以下のコード<BR>
                   <code>if calc is 0:</code></td>
                   <td><BR><code>if calc == 0:</code></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 182</td>
                   <td>11.6.5の「10. 解の再構成
                   get_menuの実装」の以下のコード<BR>
                   <code>if dic[(n, budget)] is not dic[(n - 1, budget)]:</code></td>
                   <td><BR><code>if dic[(n, budget)] != dic[(n - 1, budget)]:</code></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 224</td>
                   <td>以下の式の右辺第二項は<span
                   class="math inline">\(a\)</span>が不要<BR><span
@@ -325,21 +349,21 @@
                   <col style="width: 33%" />
                   </colgroup>
                   <thead>
-                  <tr class="header">
+                  <tr>
                   <th>ページ番号</th>
                   <th>誤</th>
                   <th>正</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="odd">
+                  <tr>
                   <td>p.47</td>
                   <td>図4.1に<code>a=[1]=4</code>とある<BR><img
                   src="fig/fig04_1_error.png" alt="図4.1誤" /></td>
                   <td>正しくは<code>a[1]=4</code> <BR><img
                   src="fig/fig04_1_correct.png" alt="図4.1正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p.49</td>
                   <td>図4.3に<code>a=[1]=4</code>、<code>a=[1] #=&gt; 4</code>とある<BR><img
                   src="fig/fig04_3_error.png" alt="図4.3誤" /></td>
@@ -347,14 +371,14 @@
                   <BR><img src="fig/fig04_3_correct.png"
                   alt="図4.3正" /></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p.50</td>
                   <td>図4.4の中央に<code>a=[4,5,6]</code>とある<BR><img
                   src="fig/fig04_4_error.png" alt="図4.4誤" /></td>
                   <td>正しくは<code>b=[4,5,6]</code> <BR><img
                   src="fig/fig04_4_correct.png" alt="図4.4正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p.132</td>
                   <td>ページ最後のコードに使われない<code>s2</code>がある<BR>
                   <img src="fig/p132_error.png" alt="p132誤" /></td>
@@ -372,14 +396,14 @@
                   <col style="width: 33%" />
                   </colgroup>
                   <thead>
-                  <tr class="header">
+                  <tr>
                   <th>ページ番号</th>
                   <th>誤</th>
                   <th>正</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="odd">
+                  <tr>
                   <td>p.21</td>
                   <td>数式の右辺に添字<span
                   class="math inline">\(n\)</span>が抜けている。<BR><span
@@ -388,7 +412,7 @@
                   <td><span class="math inline">\(x_{n+1} = x_n -
                   \frac{x_n^3 - 1}{3x_n^2}\)</span></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p.26</td>
                   <td>2.4.3発展課題の数式の右辺に添字<span
                   class="math inline">\(n\)</span>が抜けている。<BR><span
@@ -397,7 +421,7 @@
                   <td><span class="math inline">\(x_{n+1} = x_n -
                   \frac{x_n^4 - 1}{4x_n^3}\)</span></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 124</td>
                   <td>図8.3のインスタンス変数が<code>self.num</code>になっている。
                   <br> <img src="fig/fig08_3_error2.jpg"
@@ -406,18 +430,18 @@
                   <br> <img src="fig/fig08_3_correct2.jpg"
                   alt="図8.3正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 206</td>
                   <td>2行目
                   「したがって、極限すれば物理学とは微分方程式を解く学問である。」</td>
                   <td>「したがって、<strong>極言</strong>すれば物理学とは微分方程式を解く学問である。」</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 93</td>
                   <td>一番下の<code>Archive: popmap.zip</code>の記載されたボックスの色が入力を意味する青色</td>
                   <td>ボックスの色は出力を意味するベージュ</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 124</td>
                   <td>図8.3のクラスのコードが<code>self.num</code>となっている<BR>
                   <img src="fig/fig08_3_error2.png" alt="error" /></td>
@@ -426,25 +450,25 @@
                   <img src="fig/fig08_3_correct2.png"
                   alt="error" /></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 140</td>
                   <td>9.3.2の2つ目のボックスの以下の記述<BR>
                   <code>data = np.array([1,2,3])</code></td>
                   <td><code>a = np.array([1,2,3])</code></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 140</td>
                   <td>9.3.2の下から二つ目のボックスの以下の記述<BR>
                   <code>print(data)</code></td>
                   <td><BR><code>print(a)</code></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 141</td>
                   <td>9.3.3の最初のボックスの以下の記述<BR>
                   <code>data.shape # =&gt; (2,2)</code></td>
                   <td><BR> <code>a.shape # =&gt; (2,2)</code></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 177</td>
                   <td>「4.
                   貪欲法の実装」の<code>greedy</code>関数の11行目<BR><code>print(f"{names[i]} {price[i]} Yen {cals[i]} kcal")</code></td>
@@ -462,54 +486,54 @@
                   <col style="width: 33%" />
                   </colgroup>
                   <thead>
-                  <tr class="header">
+                  <tr>
                   <th>ページ番号</th>
                   <th>誤</th>
                   <th>正</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="odd">
+                  <tr>
                   <td>p. ix</td>
                   <td>Numpy</td>
                   <td>NumPy (Pは大文字)</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 10</td>
                   <td>「2. 五芒星の描画」のコードの2行目
                   <br><code>draw = ImageDraw.raw(im)</code></td>
                   <td><br> <code>draw = ImageDraw.raw(img)</code></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 34</td>
                   <td>図3.2の「関数が作る」のが「ローカルグループ」「中から外を見ることはできない」「右側の矢印が右向き」<BR>
                   <img src="fig/fig03_2_error.jpg" alt="図3.2誤" /></td>
                   <td>「関数が作る」のは「ローカル<strong>スコープ</strong>」「中から外を見ることは<strong>できる</strong>」「右側の矢印は<strong>左向き</strong>」<BR><img
                   src="fig/fig03_2_correct.jpg" alt="図3.2正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 41</td>
                   <td>とすると、生成するイメージを大きくすると見やすくなる。</td>
                   <td>とすると、生成されるイメージが大きくなるため見やすくなる。</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 61</td>
                   <td>できたリストをb返せ</td>
                   <td>できたリストをb<strong>に</strong>返せ</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 66</td>
                   <td>12行目 <br>「8ビットが0でない」</td>
                   <td><br>「8ビット<strong>目</strong>が0でない」</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 124</td>
                   <td>図8.3のクラスのコードのインデントが不正。 <br>
                   <img src="fig/fig08_3_error.jpg" alt="図8.3誤" /></td>
                   <td>正しいインデントは以下の通り。<br> <img
                   src="fig/fig08_3_correct.jpg" alt="図8.3正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 124</td>
                   <td>図8.4のメッセージが「<code>c = Counter()</code>」
                   <br> <img src="fig/fig08_4_error.jpg"
@@ -518,30 +542,30 @@
                   src="fig/fig08_4_correct.jpg"
                   alt="図8.4正しい" /></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 140</td>
                   <td>Numpy</td>
                   <td>NumPy (Pは大文字)</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 141</td>
                   <td><code>np.zeros((2,2)))</code></td>
                   <td><code>np.zeros((2,2))</code>
                   (右側の閉じカッコが一つ多い)</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 156</td>
                   <td>8行目
                   「一方、プログラミング言語を逐次的に解釈して実行するのがスクリプト言語であり」</td>
                   <td>「一方、プログラミング言語を逐次的に解釈して実行するのが<strong>インタプリタ言語</strong>であり」</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 156</td>
                   <td>9行目
                   「多くのスクリプト言語はバイトコード（bytecode）と呼ばれる」</td>
                   <td>「多くの<strong>インタプリタ言語</strong>はバイトコード（bytecode）と呼ばれる」</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 161</td>
                   <td>図10.7のBINARY_MULTIPLYの箱のラベルが誤っている<br>
                   <img src="fig/fig10_7_error.jpg"
@@ -549,41 +573,41 @@
                   <td>正しくは以下の通り。<br> <img
                   src="fig/fig10_7_correct.jpg" alt="図10.7正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 174</td>
                   <td>図11.6のAとCの間のコストが2 <img
                   src="fig/fig11_6_error.jpg" alt="図11.6誤" /></td>
                   <td>AとCの間のコストは7 <img
                   src="fig/fig11_6_correct.jpg" alt="図11.6正" /></td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 174</td>
                   <td>図11.7のAとCの間のコストが2 <img
                   src="fig/fig11_7_error.jpg" alt="図11.7誤" /></td>
                   <td>AとCの間のコストは7 <img
                   src="fig/fig11_7_correct.jpg" alt="図11.6正" /></td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p.184</td>
                   <td>アッペルとハーケンは、四色問題問題を四色問題<strong>問題</strong>を</td>
                   <td>アッペルとハーケンは、四色問題四色問題を</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 188</td>
                   <td>「random.randint」から2行目<br>「これは6面サイコロを10回ふることを」</td>
                   <td><br>「これは6面サイコロを<strong>5</strong>回ふることを」</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 197</td>
                   <td>6行目「いま、先ほどの図で3の所属する会社と5の所属する会社を」</td>
                   <td>「<strong>図12.6の下の図で</strong>3の所属する会社と5の所属する会社を」</td>
                   </tr>
-                  <tr class="odd">
+                  <tr>
                   <td>p. 209</td>
                   <td>「優位に立つため<strong>ため</strong>に必要」</td>
                   <td>「優位に立つために必要」</td>
                   </tr>
-                  <tr class="even">
+                  <tr>
                   <td>p. 240</td>
                   <td>「言われるの注意」</td>
                   <td>「言われるの<strong>で</strong>注意」</td>
