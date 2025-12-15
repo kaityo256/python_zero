@@ -16,7 +16,9 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 | ページ番号 | 誤 | 正 |
 | ---  | --- | --- |
-| p. XX| `!pip install mecab-python3==0.7`| `!pip install mecab-python3==1.0.8`| 
+| p. 76| `!pip install mecab-python3==0.7`| `!pip install mecab-python3==1.0.8`| 
+| p. 76| `Successfully installed mecab-python3-0.7`| `Successfully installed mecab-python3-1.0.8`| 
+| p. 76| 最新版は不具合があるようなので、バージョン0.7を指定してインストールする。| 最新版は不具合があるようなので、バージョン1.0.8を指定してインストールする。| 
 
 ## 第5,6刷正誤表
 
