@@ -323,11 +323,11 @@
                   (FIFOと呼び、このような振る舞いをするデータ構造を<strong>キュー(queue)</strong>と呼ぶ。</p>
                   <p>Pythonはの仮想マシンは、スタックにデータをプッシュしたりポップしたりすることでプログラムを実行する。たとえば<code>3 + 4</code>というプログラムは、</p>
                   <div class="sourceCode" id="cb1"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 3</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 4</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>BINARY_ADD</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST               0 (3)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST               0 (4)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>BINARY_OP                0 (+)</span></code></pre></div>
                   <p>というバイトコード列に変換される。</p>
-                  <p><code>LOAD_CONST 3</code>は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば<code>BINARY_ADD</code>は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である<code>7</code>がプッシュされる。</p>
+                  <p><code>LOAD_CONST 3</code>は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば<code>BINARY_OP</code>は、「スタックから二つデータをポップし、指定した演算(今回は加算)を適用した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である<code>7</code>がプッシュされる。</p>
                   <figure>
                   <img src="fig/binary_add.png"
                   alt="スタックマシン上での加算" />
@@ -342,9 +342,9 @@
                   <h1 id="逆ポーランド記法">逆ポーランド記法</h1>
                   <p>さて、先程見たように、<code>3 + 4</code>というプログラムは、</p>
                   <div class="sourceCode" id="cb2"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 3</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST 4</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BINARY_ADD</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LOAD_CONST               0 (3)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>LOAD_CONST               0 (4)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>BINARY_OP                0 (+)</span></code></pre></div>
                   <p>という命令列に変換された。ここで、<code>LOAD_CONST</code>は省略し、かつ<code>BINARY_ADD</code>を<code>+</code>で表記すると、この命令列は<code>3 4 +</code>と表現できる。このように、演算子が、被演算子の後ろに置かれる記法を後置記法、もしくは<strong>逆ポーランド記法(Reverse
                   Polish Notation,
                   RPN)</strong>と呼ぶ。我々が普段目にする<code>3 + 4</code>という記法は、演算子が被演算子の中に置かれるため、中置記法と呼ばれる。</p>
@@ -365,12 +365,14 @@
                   class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a * b + c&quot;</span>)</span></code></pre></div>
                   <p>を実行すると、</p>
                   <div class="sourceCode" id="cb5"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  1           0 LOAD_NAME                0 (a)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>              2 LOAD_NAME                1 (b)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>              4 BINARY_MULTIPLY</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>              6 LOAD_NAME                2 (c)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>              8 BINARY_ADD</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             10 RETURN_VALUE</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  0           0 RESUME                   0</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  1           2 LOAD_NAME                0 (a)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                1 (b)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>              6 BINARY_OP                5 (*)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             10 LOAD_NAME                2 (c)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>             12 BINARY_OP                0 (+)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>             16 RETURN_VALUE</span></code></pre></div>
                   <p>となり、これが<code>a b * c +</code>に対応しているのがわかるであろう。</p>
                   <figure>
                   <img src="fig/calc1.png" alt="a * b + cの計算" />
@@ -382,12 +384,14 @@
                   class="sourceCode py"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</span></code></pre></div>
                   <p>を実行すると</p>
                   <div class="sourceCode" id="cb7"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  1           0 LOAD_NAME                0 (a)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>              2 LOAD_NAME                1 (b)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                2 (c)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>              6 BINARY_MULTIPLY</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              8 BINARY_ADD</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>             10 RETURN_VALUE</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>  0           0 RESUME                   0</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  1           2 LOAD_NAME                0 (a)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                1 (b)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>              6 LOAD_NAME                2 (c)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>              8 BINARY_OP                5 (*)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>             12 BINARY_OP                0 (+)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             16 RETURN_VALUE</span></code></pre></div>
                   <p>となる。これが<code>a b c * +</code>になっていることは見てわかるであろう。</p>
                   <figure>
                   <img src="fig/calc2.png" alt="a + b * cの計算" />
@@ -548,12 +552,14 @@
                   class="sourceCode py"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dis.dis(<span class="st">&quot;a + b * c&quot;</span>)</span></code></pre></div>
                   <p>を実行すると、</p>
                   <div class="sourceCode" id="cb23"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a> 0 LOAD_NAME                0 (a)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> 2 LOAD_NAME                1 (b)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> 4 LOAD_NAME                2 (c)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> 6 BINARY_MULTIPLY</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> 8 BINARY_ADD</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> 10 RETURN_VALUE</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>  0           0 RESUME                   0</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  1           2 LOAD_NAME                0 (a)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              4 LOAD_NAME                1 (b)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>              6 LOAD_NAME                2 (c)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>              8 BINARY_OP                5 (*)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>             12 BINARY_OP                0 (+)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>             16 RETURN_VALUE</span></code></pre></div>
                   <p>という表示が得られる。ここから、<code>a,b,c</code>を<code>1,2,3</code>に変換し、バイトコードの順番どおりに”
                   1 2 3 *
                   +“と並べれば、<code>1 + 2 * 3</code>の逆ポーランド記法が得られる。なお、<code>dis.dis</code>に数字ではなくアルファベットを入力するのは、最適化により計算されてしまうことを防ぐためだ。</p>

@@ -19,6 +19,15 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p. 76| `!pip install mecab-python3==0.7`| `!pip install mecab-python3==1.0.8`| 
 | p. 76| `Successfully installed mecab-python3-0.7`| `Successfully installed mecab-python3-1.0.8`| 
 | p. 76| 最新版は不具合があるようなので、バージョン0.7を指定してインストールする。| 最新版は不具合があるようなので、バージョン1.0.8を指定してインストールする。| 
+| p. 158 | | | 
+| p. 158 | 例えば`BINARY_ADD`は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。| 例えば`BINARY_OP`は、「スタックから二つデータをポップし、指定した演算(今回は加算)を適用した結果をまたスタックにプッシュせよ」という命令だ。|
+| p. 158 | ![p158誤](fig/p158_error.png) | ![p158正](fig/p158_correct.png) |
+| p. 158| 図10.5の`BINARY_ADD`| `BINARY_OP (+)`|
+| p. 159 | ![p159誤](fig/p158_error.png) | ![p159正](fig/p158_correct.png)| 
+| p. 160 | ![p160誤](fig/p160_error1.png) | ![p160正](fig/p160_correct1.png)| 
+| p. 160 | 図10.6の`BINARY_MULTIPLY`と`BINARY_ADD` | `BINARY_OP (*)` と`BINARY_OP (+)` |
+| p. 160 | ![p160誤](fig/p160_error2.png) | ![p160正](fig/p160_correct2.png)| 
+| p. 165 | ![p165誤](fig/p165_error.png) | ![p165正](fig/p165_correct.png)| 
 
 ## 第5,6刷正誤表
 

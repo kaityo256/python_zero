@@ -60,14 +60,14 @@ Pythonは、与えられたプログラムを、仮想的なアセンブリで�
 Pythonはの仮想マシンは、スタックにデータをプッシュしたりポップしたりすることでプログラムを実行する。たとえば`3 + 4`というプログラムは、
 
 ```txt
-LOAD_CONST 3
-LOAD_CONST 4
-BINARY_ADD
+LOAD_CONST               0 (3)
+LOAD_CONST               0 (4)
+BINARY_OP                0 (+)
 ```
 
 というバイトコード列に変換される。
 
-`LOAD_CONST 3`は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば`BINARY_ADD`は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である`7`がプッシュされる。
+`LOAD_CONST 3`は、スタックに「3」をプッシュせよ、という意味である。また、演算は、必要な数だけスタックからデータをポップして行う。例えば`BINARY_OP`は、「スタックから二つデータをポップし、指定した演算(今回は加算)を適用した結果をまたスタックにプッシュせよ」という命令だ。以上の結果、スタックの一番上には演算結果である`7`がプッシュされる。
 
 ![スタックマシン上での加算](fig/binary_add.png)
 
@@ -82,9 +82,9 @@ BINARY_ADD
 さて、先程見たように、`3 + 4`というプログラムは、
 
 ```txt
-LOAD_CONST 3
-LOAD_CONST 4
-BINARY_ADD
+LOAD_CONST               0 (3)
+LOAD_CONST               0 (4)
+BINARY_OP                0 (+)
 ```
 
 という命令列に変換された。ここで、`LOAD_CONST`は省略し、かつ`BINARY_ADD`を`+`で表記すると、この命令列は`3 4 +`と表現できる。このように、演算子が、被演算子の後ろに置かれる記法を後置記法、もしくは**逆ポーランド記法(Reverse Polish Notation, RPN)**と呼ぶ。我々が普段目にする`3 + 4`という記法は、演算子が被演算子の中に置かれるため、中置記法と呼ばれる。
@@ -113,12 +113,14 @@ dis.dis("a * b + c")
 を実行すると、
 
 ```txt
-  1           0 LOAD_NAME                0 (a)
-              2 LOAD_NAME                1 (b)
-              4 BINARY_MULTIPLY
-              6 LOAD_NAME                2 (c)
-              8 BINARY_ADD
-             10 RETURN_VALUE
+  0           0 RESUME                   0
+
+  1           2 LOAD_NAME                0 (a)
+              4 LOAD_NAME                1 (b)
+              6 BINARY_OP                5 (*)
+             10 LOAD_NAME                2 (c)
+             12 BINARY_OP                0 (+)
+             16 RETURN_VALUE
 ```
 
 となり、これが`a b * c +`に対応しているのがわかるであろう。
@@ -134,12 +136,14 @@ dis.dis("a + b * c")
 を実行すると
 
 ```txt
-  1           0 LOAD_NAME                0 (a)
-              2 LOAD_NAME                1 (b)
-              4 LOAD_NAME                2 (c)
-              6 BINARY_MULTIPLY
-              8 BINARY_ADD
-             10 RETURN_VALUE
+  0           0 RESUME                   0
+
+  1           2 LOAD_NAME                0 (a)
+              4 LOAD_NAME                1 (b)
+              6 LOAD_NAME                2 (c)
+              8 BINARY_OP                5 (*)
+             12 BINARY_OP                0 (+)
+             16 RETURN_VALUE
 ```
 
 となる。これが`a b c * +`になっていることは見てわかるであろう。
@@ -353,12 +357,14 @@ dis.dis("a + b * c")
 を実行すると、
 
 ```txt
- 0 LOAD_NAME                0 (a)
- 2 LOAD_NAME                1 (b)
- 4 LOAD_NAME                2 (c)
- 6 BINARY_MULTIPLY
- 8 BINARY_ADD
- 10 RETURN_VALUE
+  0           0 RESUME                   0
+
+  1           2 LOAD_NAME                0 (a)
+              4 LOAD_NAME                1 (b)
+              6 LOAD_NAME                2 (c)
+              8 BINARY_OP                5 (*)
+             12 BINARY_OP                0 (+)
+             16 RETURN_VALUE
 ```
 
 という表示が得られる。ここから、`a,b,c`を`1,2,3`に変換し、バイトコードの順番どおりに" 1 2 3 * +"と並べれば、`1 + 2 * 3`の逆ポーランド記法が得られる。なお、`dis.dis`に数字ではなくアルファベットを入力するのは、最適化により計算されてしまうことを防ぐためだ。
