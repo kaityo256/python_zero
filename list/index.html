@@ -234,8 +234,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        <script defer=""
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
         type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -685,47 +685,39 @@
 <span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
                   <p>ここまで正しく入力できていれば、上向きの三角形が一つ表示されたはずだ。これはコッホ曲線の一段階目の変換をした画像である。</p>
                   <p>できていたら、<code>N</code>の数字を一つずつ増やしてみよ。最大でも5くらいにとどめておくこと。</p>
-                  <h2
-                  id="課題2オリジナルのフラクタル曲線">課題2：オリジナルのフラクタル曲線</h2>
-                  <p>6つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
-                  <p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
-                  <div class="sourceCode" id="cb52"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</span></code></pre></div>
-                  <p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
-                  <h2
-                  id="発展課題色付きフラクタル曲線">発展課題：色付きフラクタル曲線</h2>
-                  <p>コッホ曲線の線分に色を塗るプログラムを組んでみよう。まずは一色で塗るプログラムを書く。</p>
+                  <h2 id="課題2-色つきのフラクタル曲線">課題2：
+                  色つきのフラクタル曲線</h2>
                   <h3 id="線に色を塗る">7. 線に色を塗る</h3>
                   <p>7つ目のセルに、色付きの線を塗る関数<code>draw_line_color</code>を入力せよ。</p>
-                  <div class="sourceCode" id="cb53"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_line_color(draw, a, colors, size):</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> colors[<span class="dv">0</span>]</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c)</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>        x1, y1 <span class="op">=</span> x2, y2</span></code></pre></div>
+                  <div class="sourceCode" id="cb52"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw_line_color(draw, a, colors, size):</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    x1, y1 <span class="op">=</span> <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, (dx, dy) <span class="kw">in</span> <span class="bu">enumerate</span>(a):</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>        x2 <span class="op">=</span> x1 <span class="op">+</span> dx</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>        y2 <span class="op">=</span> y1 <span class="op">+</span> dy</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> colors[<span class="dv">0</span>] <span class="co"># ここを後で修正する</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        draw.line((x1, size<span class="op">/</span><span class="dv">2</span><span class="op">-</span> y1, x2, size<span class="op">/</span><span class="dv">2</span> <span class="op">-</span> y2), fill<span class="op">=</span>c)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>        x1, y1 <span class="op">=</span> x2, y2</span></code></pre></div>
                   <p>これは、色のリスト<code>colors</code>を受け取るが、その最初の要素<code>colors[0]</code>だけを使って色を塗るコードになっている。</p>
                   <h3 id="色付きのフラクタル図形">8.
                   色付きのフラクタル図形</h3>
                   <p>8つ目のセルに、<code>draw_line_color</code>を使った描画プログラムを書いてみよう。</p>
-                  <div class="sourceCode" id="cb54"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">512</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(size, <span class="dv">0</span>)]</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)]</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>draw_line_color(draw, a, c, size)</span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
+                  <div class="sourceCode" id="cb53"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">512</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>img <span class="op">=</span> Image.new(<span class="st">&quot;RGB&quot;</span>, (size, size))</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>draw <span class="op">=</span> ImageDraw.Draw(img)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [(size, <span class="dv">0</span>)]</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>, <span class="dv">0</span>), (<span class="fl">0.5</span>, sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="fl">0.5</span>, <span class="op">-</span>sqrt(<span class="fl">3.0</span>)<span class="op">/</span><span class="dv">2</span>), (<span class="dv">1</span>, <span class="dv">0</span>)]</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> [(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">255</span>, <span class="dv">0</span>), (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">255</span>)]</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> <span class="bu">apply</span>(a, b)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>draw_line_color(draw, a, c, size)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>img</span></code></pre></div>
                   <p>成功したら、赤一色になったはずである。ここから、線を一本書くたびに色を変えながら描画するコードに修正せよ。</p>
                   <ul>
                   <li>ヒント1：
-                  修正するのは<code>draw_line_color</code>関数である</li>
+                  修正するのは<code>draw_line_color</code>関数の<code>c = colors[0]</code>の部分である</li>
                   <li>ヒント2：
                   リスト<code>colors</code>のサイズは<code>len(colors)</code>で取得できる</li>
                   <li>ヒント3：
@@ -733,8 +725,14 @@
                   <li>ヒント4：
                   ある数<code>i</code>を3で割ったあまりは<code>i % 3</code>で得ることができる</li>
                   </ul>
-                  <p>完成したら、オリジナルのフラクタル図形も色付きにしてみよ。</p>
-                  <h2 id="内包表記">内包表記</h2>
+                  <h2
+                  id="発展課題オリジナルのフラクタル曲線">発展課題：オリジナルのフラクタル曲線</h2>
+                  <p>6つ目もしくは8つ目のセルの<code>b</code>のリストに好きなベクトル列を入れて、オリジナルのフラクタル曲線を作成せよ。</p>
+                  <p>例えば、繰り返し数を<code>N=1</code>としてから、</p>
+                  <div class="sourceCode" id="cb54"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> [(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>),(<span class="dv">0</span>,<span class="op">-</span><span class="dv">1</span>),(<span class="dv">1</span>,<span class="dv">0</span>)]</span></code></pre></div>
+                  <p>として描画し、繰り返し数を増やした場合にどんな図形になるか想像してみよ。想像した後に<code>N=5</code>に変えて描画し、想像と合致していたか確認せよ。</p>
+                  <h2 id="内包表記について">内包表記について</h2>
                   <p>リスト内包表記を使うとコードを簡潔に書くことができる。先程書いた<code>convert</code>関数を見てみよう。</p>
                   <div class="sourceCode" id="cb55"><pre
                   class="sourceCode py"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> convert(a, b):</span>
