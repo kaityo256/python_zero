@@ -234,8 +234,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        <script defer=""
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
         type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -531,7 +531,7 @@
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>cal <span class="op">=</span> search_memo(<span class="bu">len</span>(names)<span class="op">-</span><span class="dv">1</span>,<span class="dv">10000</span>) <span class="co"># ←ここを10000に修正して再実行せよ</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>cal<span class="sc">}</span><span class="ss"> kcal&quot;</span>)</span></code></pre></div>
-                  <p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。また、ここで得たカロリーは次の「発展課題：解の再構成」で使うので覚えておくこと。</p>
+                  <p>出力された「最大摂取カロリー」を貪欲法によって得た結果と比較せよ。</p>
                   <h2 id="発展課題解の再構成">発展課題：解の再構成</h2>
                   <p>さて、メモ化再帰により、「ある予算内で得られる最大カロリー」はわかったが、「その最大カロリーを与えるメニュー」はわからない。しかし、先ほどメモしたリストと、最大カロリーがわかれば、そのメニューを構成するのは簡単である。</p>
                   <p>探索が終わったら、<code>dic[(n, budget)]</code>には、<code>n</code>番目のメニューまでを使って、予算<code>budget</code>内で得られる最大のカロリーがメモされているはずだ。再帰コードをもう一度見ると、この辞書が更新されるのは、メニュー<code>n</code>が注文されるか、されないかの二通りのどちらかだ。</p>
