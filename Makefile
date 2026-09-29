@@ -1,6 +1,6 @@
 INDEX=$(shell ls */README.md | sed 's/README.md/index.html/')
 PANDOC_HTMLOPT=--mathjax -t html --template=template
-PANDOC_TEXOPT=--highlight-style tango --pdf-engine=lualatex -V documentclass=ltjarticle -V geometry:margin=1in -H ../mytemplate.tex
+PANDOC_TEXOPT=--syntax-highlighting=tango --pdf-engine=lualatex -V documentclass=ltjarticle -V geometry:margin=1in -H ../mytemplate.tex
 TARGET=$(INDEX)
 ASSIGNMENT=$(shell grep --exclude=answer/*.md -l ^\#.*課題 */README.md | sed 's/README.md/assignment.pdf/')
 
