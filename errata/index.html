@@ -234,8 +234,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        <script defer=""
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
         type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -249,21 +249,22 @@
         <h1 class="title">『ゼロから学ぶPythonプログラミング』
 正誤表</h1>
                               </header>
-                  <!-- 
+                  <!--
                   pandocでHTMLを作成した後、tableのwidth指定を削除しなければならない(sedにより自動化されている)。
                   -->
-                  <p>注意深く執筆したつもりですが、現時点でに以下のミスや修正点が見つかっております。ご迷惑をおかけして申し訳ありません。</p>
+                  <p>拙著『ゼロから学ぶPythonプログラミング』につきまして、以下のミスや修正点が見つかっております。ご迷惑をおかけして申し訳ありません。</p>
                   <p>他に誤りや修正すべき点を見つけた方は、<a
                   href="https://github.com/kaityo256/python_zero/issues">GitHubのIssue</a>にてご指摘いただければ幸いです。</p>
                   <p>最終更新日：2025年12月8日</p>
                   <h1 id="第7刷正誤表">第7刷正誤表</h1>
                   <p>以下はGoogle
                   Colabのアップデートにより、修正が必要になった箇所です。</p>
+                  <!-- prettier-ignore -->
                   <table>
                   <colgroup>
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
+                  <col style="width: 6%" />
+                  <col style="width: 46%" />
+                  <col style="width: 47%" />
                   </colgroup>
                   <thead>
                   <tr>
@@ -274,24 +275,34 @@
                   </thead>
                   <tbody>
                   <tr>
+                  <td>p. 75</td>
+                  <td><code>!apt install aptitude</code></td>
+                  <td><code>!apt-get update -qq</code></td>
+                  </tr>
+                  <tr>
                   <td>p. 76</td>
                   <td><code>!pip install mecab-python3==0.7</code></td>
                   <td><code>!pip install mecab-python3==1.0.8</code></td>
                   </tr>
                   <tr>
                   <td>p. 76</td>
-                  <td><code>Successfully installed mecab-python3-0.7</code></td>
-                  <td><code>Successfully installed mecab-python3-1.0.8</code></td>
+                  <td><code>!aptitude install git make curl xz-utils file -y</code><br><code>!aptitude install mecab libmecab-dev mecab-ipadic-utf8 -y</code></td>
+                  <td>削除</td>
                   </tr>
                   <tr>
                   <td>p. 76</td>
-                  <td>最新版は不具合があるようなので、バージョン0.7を指定してインストールする。</td>
-                  <td>最新版は不具合があるようなので、バージョン1.0.8を指定してインストールする。</td>
+                  <td><code>!pip install mecab-python3==1.0.8</code></td>
+                  <td><code>!pip install -q mecab-python3 unidic-lite</code></td>
                   </tr>
                   <tr>
-                  <td>p. 158</td>
-                  <td></td>
-                  <td></td>
+                  <td>p. 78</td>
+                  <td><code>if a[0] == u"名詞" and a[1] == u"一般" and key != "":</code></td>
+                  <td><code>if a[0] == u"名詞" and a[1] ==u'普通名詞' and key != "":</code></td>
+                  </tr>
+                  <tr>
+                  <td>p. 79</td>
+                  <td><code>if a[0] == u"名詞" and a[1] == u"一般" and key != "":</code></td>
+                  <td><code>if a[0] == u"名詞" and a[1] ==u'普通名詞' and key != "":</code></td>
                   </tr>
                   <tr>
                   <td>p. 158</td>
@@ -335,15 +346,21 @@
                   <td><img src="fig/p160_correct2.png"
                   alt="p160正" /></td>
                   </tr>
+                  <tr>
+                  <td>p. 165</td>
+                  <td><img src="fig/p165_error.png" alt="p165誤" /></td>
+                  <td><img src="fig/p165_correct.png"
+                  alt="p165正" /></td>
+                  </tr>
                   </tbody>
                   </table>
                   <h1 id="第56刷正誤表">第5,6刷正誤表</h1>
                   <p>以下の誤植は5,6刷のものです。</p>
                   <table>
                   <colgroup>
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
+                  <col style="width: 3%" />
+                  <col style="width: 34%" />
+                  <col style="width: 62%" />
                   </colgroup>
                   <thead>
                   <tr>
@@ -401,9 +418,9 @@
                   <p>以下の誤植は第3,4刷及びKindle版でも未修正のものです。</p>
                   <table>
                   <colgroup>
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
+                  <col style="width: 6%" />
+                  <col style="width: 47%" />
+                  <col style="width: 45%" />
                   </colgroup>
                   <thead>
                   <tr>
@@ -448,9 +465,9 @@
                   <p>以下の誤植は第2刷のもので、第3刷及びKindle版では修正されています。</p>
                   <table>
                   <colgroup>
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
+                  <col style="width: 4%" />
+                  <col style="width: 46%" />
+                  <col style="width: 48%" />
                   </colgroup>
                   <thead>
                   <tr>
@@ -538,9 +555,9 @@
                   <p>以下の誤植については書籍版第1刷にあるものであり、第2刷及びKindle版では修正されています。</p>
                   <table>
                   <colgroup>
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
-                  <col style="width: 33%" />
+                  <col style="width: 3%" />
+                  <col style="width: 47%" />
+                  <col style="width: 48%" />
                   </colgroup>
                   <thead>
                   <tr>

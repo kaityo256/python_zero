@@ -234,8 +234,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <script
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+        <script defer=""
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
         type="text/javascript"></script>
         <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -557,155 +557,144 @@
                   scraping)</strong>と呼ぶ。今回の作業は、ウェブスクレイピングのうちもっとも単純なものである。</p>
                   <p><strong>注意</strong>：ウェブスクレイピングは、相手のサーバに負担がかからないように注意しながら行うこと。例えば「指定のパス以下のファイルをすべて取得する」といった作業は厳禁である。また、利用規約によってそもそもウェブスクレイピングが禁止されているサービスもある(例えばTwitterなど)。その場合はサービスが提供しているAPIを通じて情報を取得することが多い。</p>
                   <p>新しいノートブックを開き、<code>aozora.ipynb</code>として保存し、以下の課題を実行せよ。</p>
-                  <h3 id="aptitudeのインストール">1.
-                  aptitudeのインストール</h3>
-                  <p>まず、Debianのパッケージ管理ソフトウェアであるaptitudeをインストールする。最初のセルに以下を入力、実行せよ。冒頭の「!」を忘れないこと。</p>
+                  <h3 id="パッケージのアップデート">1.
+                  パッケージのアップデート</h3>
+                  <p>まず、パッケージのアップデートをしよう。冒頭の<code>!</code>の入力を忘れないこと。</p>
                   <div class="sourceCode" id="cb29"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>apt install aptitude</span></code></pre></div>
-                  <p>最後に「Processing triggers for libc-bin
-                  …」などと表示され、実行が終了したら完了である。</p>
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>apt<span class="op">-</span>get update <span class="op">-</span>qq</span></code></pre></div>
+                  <p>最後に「W: Skipping acquire of configured file
+                  …」という警告が出るが、無視して良い。</p>
                   <h3 id="mecabのインストール">2.
                   MeCabのインストール</h3>
-                  <p>次に、先程インストールしたaptitudeを使ってMeCabと必要なライブラリをインストールする。最後の<code>-y</code>を忘れないように。</p>
+                  <p>形態素解析のライブラリMeCabをインストールする。</p>
                   <div class="sourceCode" id="cb30"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>aptitude install git make curl xz<span class="op">-</span>utils <span class="bu">file</span> <span class="op">-</span>y</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>aptitude install mecab libmecab<span class="op">-</span>dev mecab<span class="op">-</span>ipadic<span class="op">-</span>utf8 <span class="op">-</span>y</span></code></pre></div>
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q mecab<span class="op">-</span>python3 unidic<span class="op">-</span>lite</span></code></pre></div>
                   <p>出力の最後に</p>
                   <div class="sourceCode" id="cb31"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>done!</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Setting up mecab-jumandic (7.0-20130310-4) ...</span></code></pre></div>
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Building wheel for unidic-lite (setup.py) ... done</span></code></pre></div>
                   <p>などと表示されれば完了である。</p>
-                  <h3 id="mecabのpythonバインディングのインストール">3.
-                  MeCabのPythonバインディングのインストール</h3>
-                  <p>最後に、MeCabのPythonバインディングをインストールする。</p>
-                  <div class="sourceCode" id="cb32"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install mecab<span class="op">-</span>python3<span class="op">==</span><span class="fl">1.0.8</span></span></code></pre></div>
-                  <p>最新版は不具合があるようなので、バージョン1.0.8を指定してインストールする。</p>
-                  <div class="sourceCode" id="cb33"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>Successfully installed mecab-python3-1.0.8</span></code></pre></div>
-                  <p>と表示されれば完了である。</p>
-                  <h3 id="mecabのインポート">4. MeCabのインポート</h3>
+                  <h3 id="mecabのインポート">3. MeCabのインポート</h3>
                   <p>先程まででインストールしたライブラリを早速importしてみよう。</p>
-                  <div class="sourceCode" id="cb34"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> MeCab</span></code></pre></div>
+                  <div class="sourceCode" id="cb32"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> MeCab</span></code></pre></div>
                   <p>これを実行してエラーがでなければインストールに成功している。</p>
-                  <h3 id="形態素解析のテスト">5. 形態素解析のテスト</h3>
+                  <h3 id="形態素解析のテスト">4. 形態素解析のテスト</h3>
                   <p>次のセルに以下を入力してみよう。</p>
-                  <div class="sourceCode" id="cb35"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> MeCab.Tagger()</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m.parse(<span class="st">&quot;すもももももももものうち&quot;</span>))</span></code></pre></div>
+                  <div class="sourceCode" id="cb33"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> MeCab.Tagger()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m.parse(<span class="st">&quot;すもももももももものうち&quot;</span>))</span></code></pre></div>
                   <p>品詞情報が出力されれば形態素解析に成功している。</p>
                   <h2
                   id="課題2青空文庫からのデータ取得">課題2：青空文庫からのデータ取得</h2>
                   <p>青空文庫のデータを取得して解析する。同じノートブックに続けてプログラムを書くこと。</p>
-                  <h3 id="ライブラリのインポート">6.
+                  <h3 id="ライブラリのインポート">5.
                   ライブラリのインポート</h3>
                   <p>追加で必要なライブラリをインポートしよう。</p>
-                  <div class="sourceCode" id="cb36"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zipfile <span class="im">import</span> ZipFile</span></code></pre></div>
-                  <h3 id="ウェブからデータ取得する関数">7.
+                  <div class="sourceCode" id="cb34"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> defaultdict</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> io</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> urllib.request</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> zipfile <span class="im">import</span> ZipFile</span></code></pre></div>
+                  <h3 id="ウェブからデータ取得する関数">6.
                   ウェブからデータ取得する関数</h3>
                   <p>次のセルに、ウェブからデータを取得する関数<code>load_from_url</code>を以下のように実装せよ。</p>
-                  <div class="sourceCode" id="cb37"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_from_url(url):</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> urllib.request.urlopen(url).read()</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    zipdata <span class="op">=</span> ZipFile(io.BytesIO(data))</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    filename <span class="op">=</span> zipdata.namelist()[<span class="dv">0</span>]</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> zipdata.read(filename).decode(<span class="st">&quot;shift-jis&quot;</span>)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r&#39;［</span><span class="dv">.</span><span class="op">*?</span><span class="vs">］&#39;</span>, <span class="st">&#39;&#39;</span>, text)</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r&#39;《</span><span class="dv">.</span><span class="op">*?</span><span class="vs">》&#39;</span>, <span class="st">&#39;&#39;</span>, text)</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div>
+                  <div class="sourceCode" id="cb35"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_from_url(url):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> urllib.request.urlopen(url).read()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    zipdata <span class="op">=</span> ZipFile(io.BytesIO(data))</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    filename <span class="op">=</span> zipdata.namelist()[<span class="dv">0</span>]</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> zipdata.read(filename).decode(<span class="st">&quot;shift-jis&quot;</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r&#39;［</span><span class="dv">.</span><span class="op">*?</span><span class="vs">］&#39;</span>, <span class="st">&#39;&#39;</span>, text)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r&#39;《</span><span class="dv">.</span><span class="op">*?</span><span class="vs">》&#39;</span>, <span class="st">&#39;&#39;</span>, text)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code></pre></div>
                   <p>ファイルをダウンロードし、zipを展開してから正規表現による文字列処理を行っている。ここで、正規表現に入力するカギカッコは、それぞれ<code>［］</code>全角の角カッコと、<code>《》</code>全角の二重山括弧であることに注意。どちらも日本語入力モードで<code>「</code>や<code>」</code>を変換すると候補に出てくると思われる。ここで出てくる正規表現の意味は、「全角の角カッコや二重山括弧に囲まれた文字列を削除せよ」である。それぞれ注釈やルビに対応する。</p>
-                  <h3 id="青空文庫からのデータ取得テスト">8.
+                  <h3 id="青空文庫からのデータ取得テスト">7.
                   青空文庫からのデータ取得テスト</h3>
                   <p><code>load_from_url</code>を実装して実行したら、以下を入力、実行せよ。</p>
-                  <div class="sourceCode" id="cb38"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>text.split()[<span class="dv">0</span>]</span></code></pre></div>
+                  <div class="sourceCode" id="cb36"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>text.split()[<span class="dv">0</span>]</span></code></pre></div>
                   <p>以下のようにタイトルが出力されれば成功である。</p>
                   <p><code>山月記</code></p>
                   <p>これは、中島敦という作家の「山月記」という小説である。</p>
-                  <h3 id="出現頻度解析をする関数">9.
+                  <h3 id="出現頻度解析をする関数">8.
                   出現頻度解析をする関数</h3>
                   <p>ではいよいよ形態素解析をしてみよう。といってもMeCabを使えば楽勝である。MeCabを使って、文中に出現する名詞の出現頻度トップ10を抽出してみよう。以下を入力せよ。</p>
-                  <div class="sourceCode" id="cb39"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_top10(text):</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> MeCab.Tagger()</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> m.parseToNode(text)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> node:</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> node.surface</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span> <span class="kw">and</span> key <span class="op">!=</span> <span class="st">&quot;&quot;</span>:</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>            dic[key] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> node.<span class="bu">next</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(k <span class="op">+</span> <span class="st">&quot;:&quot;</span> <span class="op">+</span> <span class="bu">str</span>(v))</span></code></pre></div>
-                  <h3 id="出現頻度解析の実行">10.
-                  出現頻度解析の実行</h3>
+                  <div class="sourceCode" id="cb37"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> show_top10(text):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> MeCab.Tagger()</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> m.parseToNode(text)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    dic <span class="op">=</span> defaultdict(<span class="bu">int</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> node:</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        key <span class="op">=</span> node.surface</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span><span class="st">u&#39;普通名詞&#39;</span> <span class="kw">and</span> key <span class="op">!=</span> <span class="st">&quot;&quot;</span>:</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>            dic[key] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> node.<span class="bu">next</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k, v <span class="kw">in</span> <span class="bu">sorted</span>(dic.items(), key<span class="op">=</span><span class="kw">lambda</span> x: <span class="op">-</span>x[<span class="dv">1</span>])[<span class="dv">0</span>:<span class="dv">10</span>]:</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">:</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+                  <h3 id="出現頻度解析の実行">9. 出現頻度解析の実行</h3>
                   <p>テキストをダウンロードし、形態素解析をしてみよう。以下を入力、実行せよ。</p>
-                  <div class="sourceCode" id="cb40"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>show_top10(text)</span></code></pre></div>
+                  <div class="sourceCode" id="cb38"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>show_top10(text)</span></code></pre></div>
                   <p>文章に使われている一般名詞の頻度トップ10が、回数とともに出力されたはずである。</p>
                   <h2
                   id="課題3ワードクラウド">課題3：ワードクラウド</h2>
                   <p>先程得られた青空文庫の単語リストを使って、青空文庫のワードクラウドを作ってみよう。</p>
-                  <h3 id="フォントのインストール">11.
+                  <h3 id="フォントのインストール">10.
                   フォントのインストール</h3>
                   <p>日本語表示に使うフォント(IPAゴシック)をインストールする。</p>
-                  <div class="sourceCode" id="cb41"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>apt<span class="op">-</span>get <span class="op">-</span>y install fonts<span class="op">-</span>ipafont<span class="op">-</span>gothic</span></code></pre></div>
-                  <div class="sourceCode" id="cb42"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Processing triggers for fontconfig (2.12.6-0ubuntu2) ...</span></code></pre></div>
+                  <div class="sourceCode" id="cb39"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>apt<span class="op">-</span>get <span class="op">-</span>y install fonts<span class="op">-</span>ipafont<span class="op">-</span>gothic</span></code></pre></div>
+                  <div class="sourceCode" id="cb40"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...</span></code></pre></div>
                   <p>と表示されれば成功である。</p>
-                  <h3 id="ライブラリのインポート-1">12.
+                  <h3 id="ライブラリのインポート-1">11.
                   ライブラリのインポート</h3>
                   <p>必要な追加ライブラリをインポートする。</p>
-                  <div class="sourceCode" id="cb43"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span></code></pre></div>
+                  <div class="sourceCode" id="cb41"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span></code></pre></div>
                   <h3 id="名詞を抽出する関数">13.
                   名詞を抽出する関数</h3>
-                  <p>WordCloundに入力するデータは、半角空白で区切られた文字列である。そこで、与えられた文章を解析して、一般名詞だけを空白文字列を区切り文字としてつないだ文字列を返す関数、<code>get_words</code>を実装しよう。<code>return w</code>のインデント位置(<code>while</code>と同じ高さ)に気をつけよ。</p>
-                  <div class="sourceCode" id="cb44"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_words(text):</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> MeCab.Tagger()</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> m.parseToNode(text)</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> node:</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;一般&quot;</span>:</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>            w <span class="op">+=</span> node.surface <span class="op">+</span> <span class="st">&quot; &quot;</span></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> node.<span class="bu">next</span></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> w</span></code></pre></div>
+                  <p>WordCloundに入力するデータは、半角空白で区切られた文字列である。そこで、与えられた文章を解析して、一般名詞だけを空白文字列を区切り文字としてつないだ文字列を返す関数、<code>get_words</code>を実装しよう。<code>return w</code>のインデント位置(<code>while</code>と同じ高さ)に気をつけよ。また、<code>node.surface + " "</code>のところで、<code>" "</code>に空白を入れ忘れると正しくワードクラウドが表示されないので気をつけること。</p>
+                  <div class="sourceCode" id="cb42"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_words(text):</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> MeCab.Tagger()</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> m.parseToNode(text)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> node:</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> node.feature.split(<span class="st">&quot;,&quot;</span>)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> a[<span class="dv">0</span>] <span class="op">==</span> <span class="st">u&quot;名詞&quot;</span> <span class="kw">and</span> a[<span class="dv">1</span>] <span class="op">==</span> <span class="st">u&quot;普通名詞&quot;</span>:</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>            w <span class="op">+=</span> node.surface <span class="op">+</span> <span class="st">&quot; &quot;</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>        node <span class="op">=</span> node.<span class="bu">next</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> w</span></code></pre></div>
                   <h3 id="ワードクラウドの作成">14.
                   ワードクラウドの作成</h3>
                   <p>ではいよいよワードクラウドを作ろう。以下を入力、実行せよ。上から14番目のセルになるはずである。</p>
-                  <div class="sourceCode" id="cb45"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> get_words(text)</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>fpath<span class="op">=</span><span class="st">&#39;/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf&#39;</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>wc <span class="op">=</span> WordCloud(background_color<span class="op">=</span><span class="st">&quot;white&quot;</span>, width<span class="op">=</span><span class="dv">480</span>, height<span class="op">=</span><span class="dv">320</span>, font_path<span class="op">=</span>fpath)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>wc.generate(words)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>wc.to_file(<span class="st">&quot;wc.png&quot;</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb43"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/624_ruby_5668.zip&quot;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> load_from_url(URL)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> get_words(text)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>fpath<span class="op">=</span><span class="st">&#39;/usr/share/fonts/opentype/ipafont-gothic/ipagp.ttf&#39;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>wc <span class="op">=</span> WordCloud(background_color<span class="op">=</span><span class="st">&quot;white&quot;</span>, width<span class="op">=</span><span class="dv">480</span>, height<span class="op">=</span><span class="dv">320</span>, font_path<span class="op">=</span>fpath)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>wc.generate(words)</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>wc.to_file(<span class="st">&quot;wc.png&quot;</span>)</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>IPython.display.Image(<span class="st">&quot;wc.png&quot;</span>)</span></code></pre></div>
                   <p>日本語表示のため、フォントの場所を指定してやる必要があることに注意。しかし、あとは<code>WordCloud</code>が勝手にやってくれる。実際にワードクラウドが出力されれば成功である。</p>
                   <h2
                   id="発展課題自分の好きな小説でワードクラウド">発展課題：自分の好きな小説でワードクラウド</h2>
                   <p>青空文庫で好きな小説を探し、ワードクラウドを作成して、その感想を述べよ。</p>
                   <p>「小説名　青空文庫」で検索し、出てきたページの下の方にある「図書カード」のリンクをたどると、「ファイルのダウンロード」の箇所に「テキストファイル(ルビあり)」というzipファイルがあるはずである。ブラウザによるが、右クリックで「リンクのアドレスをコピー」できるはずなので、それをURLに指定してやってみよ。</p>
                   <p>例えば中島敦の「名人伝」ならば、</p>
-                  <div class="sourceCode" id="cb46"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span></span></code></pre></div>
+                  <div class="sourceCode" id="cb44"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&quot;https://www.aozora.gr.jp/cards/000119/files/621_ruby_661.zip&quot;</span></span></code></pre></div>
                   <p>として実行してみよう。実行の度に結果は変わるが、おそらく中央に大きく「名人」と表示されたことと思う。</p>
+                  <p>好きな小説からワードクラウドを作って友人に送り、タイトルを推定させるのも面白い。</p>
                   <p>どうしても小説が思いつかない場合は、以下から選んで良い。</p>
                   <ul>
                   <li>「<a
@@ -734,26 +723,26 @@
                   <p>スマホアプリを作って公開したら人気が出たとしよう。せっかくだから全世界に展開したい。その時に直面するのが国際化対応である。英語でInternationalizationと呼ぶが、20文字と長いので中間の18文字を略して「I18N」と呼ぶ。少しでも経験のある人は「I18Nは悪夢だ」と思うであろう。まず、文字コードはどうするのか？日本語だけでも文字コードは何種類もあるのだ。面倒だからUnicodeしかサポートしない？よろしい。でも地獄はここからだ。</p>
                   <p>有名なところでは、アラビア語は「右から左」に文字を書く。メニューなどが左寄せになっている場合、アラビア語に対応するためには「右寄せ」にしなければならない。Twitterにアカウントを持っている人は<code>https://twitter.com/home?lang=ar</code>にアクセスしてみよ。左右が反転するのがわかるだろう。</p>
                   <p>数詞も頭が痛い問題だ。英語には単数、複数の区別があることは知っているであろう。例えばある検索条件で何個ファイルを見つけたかを表示したい場合、</p>
-                  <div class="sourceCode" id="cb47"><pre
-                  class="sourceCode py"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Found </span><span class="sc">{</span>files<span class="sc">}</span><span class="ss"> files.&quot;</span>)</span></code></pre></div>
+                  <div class="sourceCode" id="cb45"><pre
+                  class="sourceCode py"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> files <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Found a file.&quot;</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Found </span><span class="sc">{</span>files<span class="sc">}</span><span class="ss"> files.&quot;</span>)</span></code></pre></div>
                   <p>などと書きたくなる。しかし、たとえはポーランド語の数詞はもっとややこしい。ポーランド語で「a
                   file」は「pilk」だ。ではGoogle翻訳で「英語」から「ポーランド語」の翻訳にして、</p>
-                  <div class="sourceCode" id="cb48"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>a file.</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>2 files.</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>5 files.</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>22 files.</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>25 files.</span></code></pre></div>
+                  <div class="sourceCode" id="cb46"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>a file.</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>2 files.</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>5 files.</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>22 files.</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>25 files.</span></code></pre></div>
                   <p>を翻訳してみよ。</p>
-                  <div class="sourceCode" id="cb49"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>plik.</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>2 pliki.</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>5 plików.</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>22 pliki.</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>25 plików.</span></code></pre></div>
+                  <div class="sourceCode" id="cb47"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>plik.</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>2 pliki.</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>5 plików.</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>22 pliki.</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>25 plików.</span></code></pre></div>
                   <p>となるはずだ。ここから「31 files.」や「32
                   files.」はどうなるか予想できるだろうか？101や102は？今コンピュータで日本語が使えるのも先人たちの血のにじむような努力あってのことだ。「○○はおかしい」「○○は非合理的だ」などと思ってはならない。国際化とは、まず世界の多様性を認めることからスタートしなければならない。</p>
                   <p>参考：<a
