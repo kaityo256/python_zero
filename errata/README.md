@@ -22,6 +22,7 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p. 76      | `!aptitude install git make curl xz-utils file -y`<br>`!aptitude install mecab libmecab-dev mecab-ipadic-utf8 -y` | 削除 |
 | p. 76      | `!pip install mecab-python3==1.0.8` | `!pip install -q mecab-python3 unidic-lite` |
 | p. 78      | `if a[0] == u"名詞" and a[1] == u"一般" and key != "":` | `if a[0] == u"名詞" and a[1] ==u'普通名詞' and key != "":` |
+| p. 78      | `print(k + ":" + str(v))` | `print(f"{v}:{k}")` |
 | p. 79      | `if a[0] == u"名詞" and a[1] == u"一般" and key != "":` | `if a[0] == u"名詞" and a[1] ==u'普通名詞' and key != "":` |
 | p. 158     | 例えば`BINARY_ADD`は、「スタックから二つデータをポップし、それを足した結果をまたスタックにプッシュせよ」という命令だ。 | 例えば`BINARY_OP`は、「スタックから二つデータをポップし、指定した演算(今回は加算)を適用した結果をまたスタックにプッシュせよ」という命令だ。 |
 | p. 158     | ![p158誤](fig/p158_error.png)                                             | ![p158正](fig/p158_correct.png)                                             |
