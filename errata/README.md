@@ -12,7 +12,7 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 
 ## 第7刷正誤表
 
-以下はGoogle Colabのアップデートにより、修正が必要になった箇所です。
+主にGoogle Colabのアップデートにより、修正が必要になった箇所です。
 
 <!-- prettier-ignore -->
 | ページ番号 | 誤                                                                        | 正                                                                          |
@@ -32,6 +32,7 @@ pandocでHTMLを作成した後、tableのwidth指定を削除しなければな
 | p. 160     | 図10.6の`BINARY_MULTIPLY`と`BINARY_ADD`                                   | `BINARY_OP (*)` と`BINARY_OP (+)`                                           |
 | p. 160     | ![p160誤](fig/p160_error2.png)                                            | ![p160正](fig/p160_correct2.png)                                            |
 | p. 165     | ![p165誤](fig/p165_error.png)                                             | ![p165正](fig/p165_correct.png)                                             |
+| p. 181     | また、ここで得たカロリーは次の「発展課題：解の再構成」で使うので覚えておくこと。 | (削除) |
 
 ## 第5,6刷正誤表
 
